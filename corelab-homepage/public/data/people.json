@@ -53,12 +53,19 @@
   "alumni": [
     {
       "id": "alumni-sample",
-      "name": "예시 졸업생",
-      "photo": "",
+      "name": "최지수",
+      "photo": "images/people/최지수-mudvd9pn.jpg",
       "degree": "MA",
       "graduation": "2023-02",
-      "affiliation": "현재 근무지 / 직함",
-      "bio": ""
+      "affiliation": "기아(KIA) 조직개발팀 매니저",
+      "photoCrop": {
+        "x": 48,
+        "y": 10,
+        "zoom": 1
+      },
+      "detail": [
+        "기아 양재 본사에서 조직 진단 데이터를 기반으로 조직문화 개선과 조직 변화 활동을 설계·지원하여 조직의 효과성을 높이는 조직개발 업무를 담당하고 있다."
+      ]
     }
   ]
 }
