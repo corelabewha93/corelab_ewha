@@ -57,26 +57,44 @@ button {
 
 /* ---------- Hero (About page title) ---------- */
 .hero {
-  margin-bottom: var(--space-5);
+  padding-top: var(--space-2);
+  margin-bottom: var(--space-6);
+}
+
+.hero-eyebrow {
+  text-transform: uppercase;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  color: var(--color-accent);
+  margin: 0 0 0.9rem;
 }
 
 .hero-title {
-  font-size: 2.4rem;
+  font-size: 3rem;
   font-weight: 800;
   color: var(--color-primary);
-  margin: 0 0 0.4rem;
-  letter-spacing: -0.01em;
+  margin: 0 0 0.5rem;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
 }
 
 .hero-subtitle {
   color: var(--color-text-muted);
-  font-size: 1rem;
-  margin: 0;
+  font-size: 1.1rem;
+  margin: 0 0 var(--space-3);
+}
+
+.hero-rule {
+  width: 48px;
+  height: 3px;
+  background: var(--color-accent);
+  border-radius: 2px;
 }
 
 @media (max-width: 560px) {
   .hero-title {
-    font-size: 1.9rem;
+    font-size: 2.1rem;
   }
 }
 
@@ -100,11 +118,10 @@ button {
 
 .brand {
   display: flex;
-  align-items: center;
-  gap: var(--space-1);
+  flex-direction: column;
+  gap: 0.1rem;
   color: var(--color-on-primary);
-  font-weight: 700;
-  font-size: 1.1rem;
+  line-height: 1.2;
 }
 
 .brand:hover {
@@ -112,9 +129,23 @@ button {
   opacity: 0.9;
 }
 
-.brand img {
-  width: 32px;
-  height: 32px;
+.brand-dept {
+  font-size: 0.68rem;
+  font-weight: 400;
+  letter-spacing: 0.01em;
+  color: rgba(255, 253, 241, 0.75);
+}
+
+.brand-name {
+  font-size: 1.15rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+}
+
+@media (max-width: 480px) {
+  .brand-dept {
+    display: none;
+  }
 }
 
 .nav {
@@ -420,9 +451,11 @@ button {
 }
 
 .person-photo-btn {
+  display: block;
   background: none;
   border: none;
   padding: 0;
+  margin: 0 auto;
   cursor: pointer;
 }
 
@@ -431,14 +464,16 @@ button {
 }
 
 .person-name-btn {
+  display: flex;
+  width: 100%;
   background: none;
   border: none;
   padding: 0;
   margin: 0 auto;
   cursor: pointer;
-  display: inline-flex;
   align-items: center;
-  gap: 0.25rem;
+  justify-content: center;
+  gap: 0.3rem;
   font: inherit;
   color: inherit;
 }
@@ -469,13 +504,14 @@ button {
 .person-position {
   color: var(--color-accent);
   font-size: 0.85rem;
-  margin: 0.15rem 0;
+  margin: 0.3rem 0 0;
 }
 
 .person-bio {
   font-size: 0.85rem;
   color: var(--color-text-muted);
-  margin: 0.15rem 0 0;
+  margin: 0.4rem 0 0;
+  line-height: 1.5;
 }
 
 .person-detail {

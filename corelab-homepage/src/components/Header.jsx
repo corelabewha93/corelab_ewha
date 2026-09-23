@@ -18,8 +18,8 @@ export default function Header() {
     <header className="site-header">
       <div className="container">
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
-          <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="" />
-          <span>{data?.labName ?? 'CoRe Lab'}</span>
+          <span className="brand-dept">이화여자대학교 교육공학과</span>
+          <span className="brand-name">{data?.labName ?? 'CoRe Lab'}</span>
         </Link>
 
         <button

@@ -11,14 +11,10 @@ export default function About() {
   return (
     <div className="page container">
       <section className="section hero">
+        {university && <p className="hero-eyebrow">{university}</p>}
         {labName && <h1 className="hero-title">{labName}</h1>}
-        {(labTagline || university) && (
-          <p className="hero-subtitle">
-            {labTagline}
-            {labTagline && university ? ' · ' : ''}
-            {university}
-          </p>
-        )}
+        {labTagline && <p className="hero-subtitle">{labTagline}</p>}
+        <div className="hero-rule" />
       </section>
 
       <section className="section">
