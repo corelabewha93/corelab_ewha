@@ -352,23 +352,28 @@
   ],
   "alumni": [
     {
-      "id": "alumni-sample",
-      "name": "최지수",
-      "photo": "images/people/최지수-mue05n9i.jpg",
-      "degree": "MA",
-      "graduation": "2023-02",
-      "affiliation": "기아(KIA) 조직개발팀 매니저",
-      "bio": "",
+      "name": "Anita Emefa Hato",
+      "photo": "images/people/anita-emefa-hato-mue7ivmt.jpeg",
       "photoCrop": {
-        "x": 51.1,
-        "y": 24.2,
-        "zoom": 1.17
+        "x": 37.2,
+        "y": 32,
+        "zoom": 1.62
       },
+      "degree": "MA",
+      "affiliation": "피부친구(Pibu Chingu) Founder & CEO",
+      "bio": "",
       "detail": [
         "#소개",
-        "조직 진단 데이터를 기반으로 조직문화 개선과 조직 변화 활동을 설계·지원하여 조직의 효과성을 높이는 조직개발 업무를 담당하고 있다."
+        "한국과 아프리카를 연결하는 뷰티·비즈니스 플랫폼 ‘피부친구(Pibu Chingu)’를 창업하여 운영하고 있다",
+        "한국의 뷰티 브랜드와 혁신적인 제품이 아프리카 시장과 효과적으로 연결될 수 있도록 시장 진출, 유통, 소비자 리서치 및 교육 프로젝트를 기획하고 있다"
       ],
-      "links": []
+      "links": [
+        {
+          "label": "Pibu Chingu 홈페이지",
+          "url": "https://pibuchingu.com/"
+        }
+      ],
+      "id": "person-mue7j0qztyo"
     },
     {
       "name": "임지영",
@@ -410,6 +415,25 @@
       "id": "person-mue71g7y55e"
     },
     {
+      "id": "alumni-sample",
+      "name": "최지수",
+      "photo": "images/people/최지수-mue05n9i.jpg",
+      "degree": "MA",
+      "graduation": "2023-02",
+      "affiliation": "기아(KIA) 조직개발팀 매니저",
+      "bio": "",
+      "photoCrop": {
+        "x": 51.1,
+        "y": 24.2,
+        "zoom": 1.17
+      },
+      "detail": [
+        "#소개",
+        "조직 진단 데이터를 기반으로 조직문화 개선과 조직 변화 활동을 설계·지원하여 조직의 효과성을 높이는 조직개발 업무를 담당하고 있다."
+      ],
+      "links": []
+    },
+    {
       "name": "박하은",
       "photo": "images/people/박하은-mue6665g.jpg",
       "photoCrop": {
@@ -426,25 +450,6 @@
       ],
       "links": [],
       "id": "person-mue66891djv"
-    },
-    {
-      "name": "이다혜",
-      "photo": "images/people/이다혜-mue7figa.jpg",
-      "photoCrop": {
-        "x": 53.6,
-        "y": 4.9,
-        "zoom": 1.56
-      },
-      "degree": "MA",
-      "affiliation": "펜실베니아 주립대학교 LDT 프로그램 박사과정",
-      "bio": "",
-      "detail": [
-        "#소개",
-        "경기도교육청 소속 중등 영어교사로 근무한 후, 이화여자대학교에서 교육공학 석사과정을 마쳤다",
-        "현재 미국에서 박사과정을 밟고 있으며, 학습자들이 협력학습에서 공동의 이해와 의미를 구성하는 과정에 관심을 가지고 연구하고 있다"
-      ],
-      "links": [],
-      "id": "person-mue7fnvzf88"
     },
     {
       "name": "김혜준",
@@ -484,6 +489,25 @@
       "id": "person-mue7boc1zes"
     },
     {
+      "name": "이다혜",
+      "photo": "images/people/이다혜-mue7figa.jpg",
+      "photoCrop": {
+        "x": 53.6,
+        "y": 4.9,
+        "zoom": 1.56
+      },
+      "degree": "MA",
+      "affiliation": "펜실베니아 주립대학교 LDT 프로그램 박사과정",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "경기도교육청 소속 중등 영어교사로 근무한 후, 이화여자대학교에서 교육공학 석사과정을 마쳤다",
+        "현재 미국에서 박사과정을 밟고 있으며, 학습자들이 협력학습에서 공동의 이해와 의미를 구성하는 과정에 관심을 가지고 연구하고 있다"
+      ],
+      "links": [],
+      "id": "person-mue7fnvzf88"
+    },
+    {
       "name": "김다현",
       "photo": "images/people/김다현-mue70e8z.jpg",
       "photoCrop": {
@@ -503,30 +527,6 @@
       ],
       "links": [],
       "id": "person-mue6sv64kpi"
-    },
-    {
-      "name": "Anita Emefa Hato",
-      "photo": "images/people/anita-emefa-hato-mue7ivmt.jpeg",
-      "photoCrop": {
-        "x": 37.2,
-        "y": 32,
-        "zoom": 1.62
-      },
-      "degree": "MA",
-      "affiliation": "피부친구(Pibu Chingu) Founder & CEO",
-      "bio": "",
-      "detail": [
-        "#소개",
-        "한국과 아프리카를 연결하는 뷰티·비즈니스 플랫폼 ‘피부친구(Pibu Chingu)’를 창업하여 운영하고 있다",
-        "한국의 뷰티 브랜드와 혁신적인 제품이 아프리카 시장과 효과적으로 연결될 수 있도록 시장 진출, 유통, 소비자 리서치 및 교육 프로젝트를 기획하고 있다"
-      ],
-      "links": [
-        {
-          "label": "Pibu Chingu 홈페이지",
-          "url": "https://pibuchingu.com/"
-        }
-      ],
-      "id": "person-mue7j0qztyo"
     }
   ]
 }
