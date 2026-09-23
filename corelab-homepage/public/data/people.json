@@ -392,8 +392,8 @@
       "id": "person-mue0nja9m7m"
     },
     {
-      "name": "김혜준",
-      "photo": "images/people/김혜준-mue646h2.jpg",
+      "name": "진명화",
+      "photo": "",
       "photoCrop": {
         "x": 50,
         "y": 50,
@@ -404,10 +404,10 @@
       "bio": "",
       "detail": [
         "#관심분야",
-        "인간-AI 협력, 문제해결, CSCL"
+        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
       ],
       "links": [],
-      "id": "person-mue648lk2gx"
+      "id": "person-mue71g7y55e"
     },
     {
       "name": "박하은",
@@ -449,8 +449,8 @@
       "id": "person-mue6sv64kpi"
     },
     {
-      "name": "진명화",
-      "photo": "",
+      "name": "김혜준",
+      "photo": "images/people/김혜준-mue646h2.jpg",
       "photoCrop": {
         "x": 50,
         "y": 50,
@@ -461,10 +461,10 @@
       "bio": "",
       "detail": [
         "#관심분야",
-        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
+        "인간-AI 협력, 문제해결, CSCL"
       ],
       "links": [],
-      "id": "person-mue71g7y55e"
+      "id": "person-mue648lk2gx"
     }
   ]
 }
