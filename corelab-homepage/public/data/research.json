@@ -1,57 +1,2908 @@
 {
   "publications": [
     {
-      "id": "pub-2026-sample",
+      "id": "pub-1",
       "year": 2026,
       "type": "journal",
-      "authors": ["Lim, K.", "Hwang, H."],
-      "title": "예시 논문 제목입니다",
-      "venue": "Computers & Education",
-      "details": "212, 105001",
+      "authors": [
+        "이주원",
+        "김주람",
+        "전효정",
+        "임규연"
+      ],
+      "title": "컴퓨터 지원 협력학습에서 AI 기반 학습분석 연구의 동향 분석: BERTopic 기반 토픽모델링을 중심으로",
+      "venue": "교육공학연구",
+      "details": "42(3)",
       "doi": "",
       "link": ""
     },
     {
-      "id": "pub-2025-sample",
+      "id": "pub-2",
+      "year": 2026,
+      "type": "conference",
+      "authors": [
+        "박주은",
+        "임규연"
+      ],
+      "title": "Beyond ethical declarations: Exploring design directions for Responsible AI practice in education",
+      "venue": "ICER International Conference on Education Research",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-3",
+      "year": 2026,
+      "type": "conference",
+      "authors": [
+        "김혜준",
+        "김재현",
+        "김혜민",
+        "전효정",
+        "임규연"
+      ],
+      "title": "교육 분야에서의 책임있는 AI(Responsible AI) 연구 동향: BERTopic 기반 토픽모델링 분석",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-4",
+      "year": 2026,
+      "type": "conference",
+      "authors": [
+        "이주원",
+        "전효정",
+        "김주람",
+        "임규연"
+      ],
+      "title": "컴퓨터 지원 협력학습에서 AI 기반 학습분석 연구의 동향 분석: BERT 토픽모델링을 중심으로",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-5",
+      "year": 2026,
+      "type": "journal",
+      "authors": [
+        "김재현",
+        "임규연"
+      ],
+      "title": "중학생의 ICT 역량과 ICT 흥미에 따른 잠재프로파일 분류 및 자기조절학습과의 관계 탐색",
+      "venue": "컴퓨터교육학회 논문지",
+      "details": "29(6), 28-39",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-6",
+      "year": 2026,
+      "type": "journal",
+      "authors": [
+        "박주은",
+        "임규연"
+      ],
+      "title": "AI교육정책에 대한 뉴스 빅데이터 분석: 토픽모델링을 중심으로",
+      "venue": "교육정보미디어연구",
+      "details": "32(1), 545-568",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-7",
+      "year": 2026,
+      "type": "journal",
+      "authors": [
+        "이주원",
+        "정유진",
+        "김혜준",
+        "임규연"
+      ],
+      "title": "과정중심평가를 위한 교사와 생성형 AI의 상호증강적 협력 프레임워크 개발 연구",
+      "venue": "교육정보미디어연구",
+      "details": "32(1), 599-630",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-8",
+      "year": 2025,
+      "type": "journal",
+      "authors": [
+        "김선영",
+        "임규연"
+      ],
+      "title": "AI 기반 적응형 학습 시스템에 대한 학습자 반응 분석: 토픽 모델링을 통한 적응성 진단",
+      "venue": "교육정보미디어연구",
+      "details": "31(6), 2597-2627",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-9",
       "year": 2025,
       "type": "conference",
-      "authors": ["Lim, K.", "Jeon, H."],
-      "title": "예시 학회 발표 제목입니다",
-      "venue": "AECT Annual Convention",
+      "authors": [
+        "진명화",
+        "박주은",
+        "김다현",
+        "임규연"
+      ],
+      "title": "AI 기반 학습분석 데이터에 대한 초등 교사의 경험 탐색: AIDT를 중심으로",
+      "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-10",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "정유진",
+        "임규연"
+      ],
+      "title": "수업 맥락에서의 AI 연구 동향_행위자-네트워크 이론 관점의 주제범위 문헌고찰",
+      "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-11",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "김혜민",
+        "전효정",
+        "윤이슬",
+        "임규연"
+      ],
+      "title": "AI 기반 교수자 대시보드의 설계 요소 탐색: 체계적 문헌고찰을 바탕으로",
+      "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-12",
+      "year": 2025,
+      "type": "journal",
+      "authors": [
+        "Lim, J. Y.",
+        "Kim, H. J.",
+        "Lee, D.",
+        "Lim. K. Y."
+      ],
+      "title": "Relationship between Teachers’ Mindset Profile and Autonomy-supportive Behaviors",
+      "venue": "Educational Technology International",
+      "details": "26(2), 219-253",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-13",
+      "year": 2025,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "박주은",
+        "임규연"
+      ],
+      "title": "교사-AI 협력(TAC) 연구 동향에 대한 주제범위 문헌 고찰",
+      "venue": "교육정보미디어연구",
+      "details": "31(5), 2225-2248",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-14",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "박주은",
+        "임규연"
+      ],
+      "title": "대학 내 성인학습자의 학습 적응을 위한 AI 기반 교수·학습 지원 방안 탐색: 미국·영국 혁신 대학 사례를 중심으로",
+      "venue": "한국교육학회(평생교육학회 분과) 춘계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-15",
+      "year": 2025,
+      "type": "other",
+      "authors": [
+        "김다현"
+      ],
+      "title": "상호교류적 담화를 지원하는 화상회의 기반 CSCL 도구 설계: 학습자 경험을 중심으로 (석사학위논문)",
+      "venue": "",
       "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-16",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "김다현",
+        "임규연"
+      ],
+      "title": "화상회의 환경에서의 CSCL을 지원하는 LXD 기반 도구 설계",
+      "venue": "한국교육정보미디어학회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-17",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "김혜준",
+        "임규연"
+      ],
+      "title": "교수설계에서 생성형 인공지능(GAI) 활용에 대한 연구동향 분석: 주제범위 문헌고찰을 중심으로",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-18",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "Jin, M.",
+        "Jung, Y.",
+        "Lee, D.",
+        "Lim, K. Y."
+      ],
+      "title": "Exploring Generative AI for Automated English Writing Assessment",
+      "venue": "1st International Conference on Learning Sciences and Educational Innovation (ICOLSEI)",
+      "details": "Seoul, Korea",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-19",
+      "year": 2025,
+      "type": "conference",
+      "authors": [
+        "이주원",
+        "진명화",
+        "임규연"
+      ],
+      "title": "AI에 대한 학습자 인식과 적응적 피드백 사용 행동 간 관계 탐색",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-20",
+      "year": 2025,
+      "type": "other",
+      "authors": [
+        "김혜준"
+      ],
+      "title": "프로그래밍 문제해결에서 대학생 학습자의 문제해결 성과와 스캐폴딩 활용 행동 탐구: 공유된 통제를 중심으로 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-21",
+      "year": 2025,
+      "type": "journal",
+      "authors": [
+        "이다혜",
+        "진명화",
+        "김혜준",
+        "정유진",
+        "김다현",
+        "임규연"
+      ],
+      "title": "CSCL에서 균형 있는 참여(balanced participation)를 촉진하는 교수자 대시보드에 대한 인식 탐색",
+      "venue": "교육정보미디어연구",
+      "details": "31(1), 143-167",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-22",
+      "year": 2024,
+      "type": "conference",
+      "authors": [
+        "진명화",
+        "김혜준",
+        "김다현",
+        "태지원",
+        "임규연"
+      ],
+      "title": "AI의 교육적 활용(AIED)에 대한 교수자의 인식 연구 동향 분석",
+      "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
+      "details": "광주",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-23",
+      "year": 2024,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "태지원",
+        "이주원",
+        "김재현"
+      ],
+      "title": "컴퓨터기반 협력학습(CSCL) 연구에서의 인식연결망분석(ENA) 활용 동향 탐색: 체계적 문헌고찰을 적용하여",
+      "venue": "교육정보미디어연구",
+      "details": "30(6), 1847-1874",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-24",
+      "year": 2024,
+      "type": "journal",
+      "authors": [
+        "김다현",
+        "이다혜",
+        "임규연"
+      ],
+      "title": "CSCL에서의 교실 오케스트레이션: 교수자 대시보드의 기능 및 시각화 전략 탐색",
+      "venue": "컴퓨터교육학회 논문지",
+      "details": "27(7), 63-82",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-25",
+      "year": 2024,
+      "type": "other",
+      "authors": [
+        "진명화"
+      ],
+      "title": "컴퓨터기반 협력학습(CSCL)에서 실시간 적응적 피드백이 인지적 참여와 상호작용에 미치는 영향 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-26",
+      "year": 2024,
+      "type": "other",
+      "authors": [
+        "이다혜"
+      ],
+      "title": "영어 작문 활동에서 학습자의 인공지능 기반 피드백 활용 탐색 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-27",
+      "year": 2024,
+      "type": "journal",
+      "authors": [
+        "이주원",
+        "임규연"
+      ],
+      "title": "협력학습 지원 도구의 효과: 고등학생의 협력적 조절 및 협력학습 성과를 중심으로",
+      "venue": "교육공학연구",
+      "details": "40(2), 177-213",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-28",
+      "year": 2024,
+      "type": "journal",
+      "authors": [
+        "박하은",
+        "임규연"
+      ],
+      "title": "중학교 교사의 AI 활용교육 수용 및 영향 변인들 간의 관계 규명",
+      "venue": "교육정보미디어연구",
+      "details": "30(3), 789-813",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-29",
+      "year": 2024,
+      "type": "journal",
+      "authors": [
+        "차수민",
+        "임규연"
+      ],
+      "title": "SNA 대시보드에 대한 학습자 사용 행동과 인식 탐색: 상호작용성(Interactivity)과 데이터 시각화 리터러시",
+      "venue": "교육공학연구",
+      "details": "40(2), 331-360",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-30",
+      "year": 2024,
+      "type": "other",
+      "authors": [
+        "차수민"
+      ],
+      "title": "상호작용적 SNA 대시보드에 대한 학습자의 사용 행동과 인식 탐색: 데이터 시각화 리터러시를 중심으로 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-31",
+      "year": 2024,
+      "type": "other",
+      "authors": [
+        "박은주"
+      ],
+      "title": "생성형 인공지능을 활용한 학습자의 질문 유형이 문제해결 성과에 미치는 영향 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-32",
+      "year": 2024,
+      "type": "other",
+      "authors": [
+        "박하은"
+      ],
+      "title": "중학교 교사의 AI 활용교육 수용 및 영향 변인들 간의 구조적 관계 규명: 통합기술수용모델(UTAUT)을 중심으로 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-33",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "박은주",
+        "박하은",
+        "차수민",
+        "임규연"
+      ],
+      "title": "CSCL에서 다중양식(multimodal) 데이터 활용 연구 동향:토픽모델링과 의미연결망 분석을 중심으로",
+      "venue": "교육정보미디어연구",
+      "details": "29(4), 1183-1212",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-34",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "진명화",
+        "정유진",
+        "김혜준",
+        "이다혜"
+      ],
+      "title": "국내외 협력학습분석학(Collaborative Learning Analytics) 연구 동향에 대한 체계적 문헌고찰",
+      "venue": "교육공학연구",
+      "details": "39(4), 1081-1121",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-35",
+      "year": 2023,
+      "type": "conference",
+      "authors": [
+        "차수민",
+        "박은주",
+        "김다현",
+        "태지원",
+        "임규연"
+      ],
+      "title": "협력학습을 지원하는 학습 공간 구성 요소 탐색: PSTU 프레임워크를 중심으로",
+      "venue": "한국교육정보미디어학회·한국교육공학회 추계공동학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-36",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "이주원",
+        "박하은",
+        "박은주",
+        "진명화",
+        "임규연"
+      ],
+      "title": "프로그래밍 문제해결 과정 지원도구에 대한 학습자 인식 탐색",
+      "venue": "교육공학연구",
+      "details": "39(2), 379-416",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-37",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "박지우",
+        "임규연"
+      ],
+      "title": "대학 온라인 학습에서 LMS 로그데이터를 활용한 자기조절학습 예측 요인 탐색: 학습 시간 관리를 중심으로",
+      "venue": "교육정보미디어연구",
+      "details": "29(2), 485-510",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-38",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "차수민",
+        "이다혜"
+      ],
+      "title": "자동화된 피드백에 대한 체계적 문헌 고찰: 2013-2022년 국내 연구를 중심으로",
+      "venue": "교육정보미디어연구",
+      "details": "29(2), 511-540",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-39",
+      "year": 2023,
+      "type": "conference",
+      "authors": [
+        "박하은",
+        "박은주",
+        "차수민",
+        "임규연"
+      ],
+      "title": "CSCL을 지원하는 학습분석 기반 대시보드 사례 분석: 데이터 및 시각화 유형을 중심으로",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "제주",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-40",
+      "year": 2023,
+      "type": "conference",
+      "authors": [
+        "정유진",
+        "이다혜",
+        "김혜준",
+        "진명화",
+        "임규연"
+      ],
+      "title": "주제범위 문헌고찰 방법을 적용한 협력학습분석학 연구동향 분석",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "제주",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-41",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "진명화",
+        "이주원",
+        "박하은",
+        "임규연"
+      ],
+      "title": "테크놀로지 기반 자기조절 지원의 효과에 대한 메타분석",
+      "venue": "교육방법연구",
+      "details": "35(2), 295-328",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-42",
+      "year": 2023,
+      "type": "journal",
+      "authors": [
+        "박하은",
+        "정유진",
+        "조일현",
+        "임규연"
+      ],
+      "title": "국내 대학 문제중심학습(PBL)의 학습 효과에 대한 메타분석",
+      "venue": "학습자중심교과교육연구",
+      "details": "23(6), 557-579",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-43",
+      "year": 2023,
+      "type": "other",
+      "authors": [
+        "이주원"
+      ],
+      "title": "팀 프로젝트기반학습에서 모니터링을 지원하는 집단인식도구의 활용이 고등학생의 협력적 조절과 학습성과에 미치는 영향 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-44",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "진명화",
+        "정유진",
+        "박은주",
+        "김혜준",
+        "임규연"
+      ],
+      "title": "인식연결망분석(ENA)을 적용한 문제해결과정 비교: 초급자와 중급자, 전문가의 문제해결과정 탐색",
+      "venue": "교육공학연구",
+      "details": "38(4), 1059-1094",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-45",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "박지우",
+        "정성희",
+        "박하나",
+        "임규연"
+      ],
+      "title": "텍스트 마이닝을 활용한 국내 개별화 학습 연구동향 분석: TF-IDF, LDA 기반 텍스트 마이닝을 중심으로",
+      "venue": "교육방법연구",
+      "details": "34(4), 711-739",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-46",
+      "year": 2022,
+      "type": "conference",
+      "authors": [
+        "김혜준",
+        "어정인",
+        "최지수",
+        "박지우",
+        "차수민",
+        "임규연"
+      ],
+      "title": "자동화된 온라인 피드백의 내용 분석: 소프트웨어 교육 플랫폼을 중심으로",
+      "venue": "한국교육정보미디어학회·한국교육공학회 추계공동학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-47",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "정유진",
+        "박하나",
+        "이주원",
+        "임규연"
+      ],
+      "title": "대학생의 학습공동체 참여에서 나타나는 자기조절학습의 인식연결망 분석(ENA)",
+      "venue": "교육정보미디어연구",
+      "details": "28(3), 843-872",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-48",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "진명화",
+        "김혜준",
+        "임지영",
+        "임규연"
+      ],
+      "title": "온라인 학습에서 인지적 참여와 학업성취 간의 예측 관계에 대한 연구: 벌점회귀모형을 적용하여",
+      "venue": "교육정보미디어연구",
+      "details": "28(3), 791-820",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-49",
+      "year": 2022,
+      "type": "other",
+      "authors": [
+        "박지우"
+      ],
+      "title": "대학 온라인 학습에서 LMS 로그데이터를 활용한 자기조절학습전략 사용 예측요인 탐색 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-50",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "정성희",
+        "임규연"
+      ],
+      "title": "중학교 교사의 개별화 교수전략 교육요구도 탐색",
+      "venue": "한국교원교육연구",
+      "details": "39(2), 31-58",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-51",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "임지영",
+        "진명화",
+        "김혜준",
+        "이주원",
+        "임규연"
+      ],
+      "title": "대학 온라인 학습 환경에서 교수자와 학습자의 개별화 학습 지원 테크놀로지 사용 경험",
+      "venue": "교육정보미디어연구",
+      "details": "28(2), 347-384",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-52",
+      "year": 2022,
+      "type": "conference",
+      "authors": [
+        "진명화",
+        "정유진",
+        "이주원",
+        "김혜준",
+        "박하은",
+        "임규연"
+      ],
+      "title": "자기조절학습 지원에 대한 해외 연구 동향 분석: 토픽모델링 분석을 중심으로",
+      "venue": "한국교육공학회 춘계학술대회",
+      "details": "대전",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-53",
+      "year": 2022,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "박하나",
+        "정성희",
+        "임규연"
+      ],
+      "title": "국내 디지털 리터러시 교육 프로그램 효과에 대한 메타분석",
+      "venue": "교육정보미디어연구",
+      "details": "28(1), 105-131",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-54",
+      "year": 2022,
+      "type": "other",
+      "authors": [
+        "박하나"
+      ],
+      "title": "밀레니얼 세대의 실천공동체 참여에서 나타나는 비형식학습 경험 탐색 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-55",
+      "year": 2022,
+      "type": "other",
+      "authors": [
+        "정성희"
+      ],
+      "title": "중학교 교사의 개별화 교수전략에 대한 교육요구도 탐색 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-56",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "박지우",
+        "임규연"
+      ],
+      "title": "청소년 스마트폰 의존이 학업성취 인식에 미치는 영향: 자아존중감과 학업열의의 이중매개효과",
+      "venue": "학습자중심교과교육연구",
+      "details": "21(23), 477-492",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-57",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "정성희",
+        "임규연"
+      ],
+      "title": "중학교 교사의 수업 중 ICT 활용에 미치는 요인: ICT 교수효능감과 지각된 ICT 유용성을 중심으로",
+      "venue": "학습자중심교과교육연구",
+      "details": "21(24), 1099-1118",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-58",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "박하나",
+        "진명화",
+        "박지우",
+        "임규연"
+      ],
+      "title": "국내외 디지털 리터러시 교육과정 분석",
+      "venue": "교육문화연구",
+      "details": "27(5), 75-101",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-59",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "임지영",
+        "진명화"
+      ],
+      "title": "테크놀로지 기반 개별화학습에 대한 체계적 문헌분석: 2011-2020년 국내연구를 중심으로",
+      "venue": "교육공학연구",
+      "details": "37(3), 525-559",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-60",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "임규연"
+      ],
+      "title": "양육태도의 일관성, 스마트폰 사용 빈도, 스마트폰 의존도와 학업열의의 관계: 학교급에 따른 차이",
+      "venue": "미래교육학연구",
+      "details": "34(2), 105-131",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-61",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "어정인",
+        "임규연"
+      ],
+      "title": "방과 후 생활시간 활용에 따른 학교생활 만족도의 차이",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "21(12), 39-58",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-62",
+      "year": 2021,
+      "type": "conference",
+      "authors": [
+        "Lim, J. Y.",
+        "Lim, K. Y."
+      ],
+      "title": "Engagement patterns in an asynchronous virtual classroom: Different use of active observation and ICAP framework",
+      "venue": "the 15th International Conference of the Learning Sciences-ICLS 2021",
+      "details": "Bochum, Germany",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-63",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "임지영",
+        "김윤진",
+        "박지우",
+        "임규연"
+      ],
+      "title": "2015 개정 교육과정에 따른 초등 실과교과서 SW단원 학습 문제 분석",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "24(2), 1-14",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-64",
+      "year": 2021,
+      "type": "journal",
+      "authors": [
+        "진명화",
+        "임규연"
+      ],
+      "title": "중학생의 컴퓨터정보리터러시와 컴퓨팅 사고력에 영향을 미치는 요인: ICT 자기효능감, ICT에 대한 태도를 중심으로",
+      "venue": "교육과학연구",
+      "details": "52(1), 119-146",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-65",
+      "year": 2021,
+      "type": "other",
+      "authors": [
+        "김윤진"
+      ],
+      "title": "플립러닝 맥락에서 SNA 학습자료 대시보드에 대한 인식 및 사용: 사회비교경향성에 따른 차이 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-66",
+      "year": 2021,
+      "type": "other",
+      "authors": [
+        "어정인"
+      ],
+      "title": "비교정보를 제공하는 학습자 대시보드에 대한 사용 행동과 인식 분석: 성취목표지향에 따른 차이를 중심으로 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-67",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "임지영",
+        "진명화",
+        "임규연"
+      ],
+      "title": "SW교육에서 초등교원의 TPACK 역량에 대한 교육요구도 분석",
+      "venue": "교육정보미디어연구",
+      "details": "26(4), 879-907",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-68",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "박하나",
+        "임규연"
+      ],
+      "title": "지각된 교수-학생 관계와 대학생활적응 간의 관계에서 학업적 자기조절 및 정서조절의 매개효과",
+      "venue": "교육방법연구",
+      "details": "32(4), 533-556",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-69",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "김윤진",
+        "한가형",
+        "어정인",
+        "임규연"
+      ],
+      "title": "중등교사의 ICT 효능감, 디지털 리터러시가 수업에서의 ICT 활용 의향에 미치는 영향: ICT에 대한 인식의 매개효과를 중심으로",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "23(6), 67-76",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-70",
+      "year": 2020,
+      "type": "conference",
+      "authors": [
+        "김혜준",
+        "진명화",
+        "박지우",
+        "임규연"
+      ],
+      "title": "초등교사의 SW교육 경험에 따른 TPACK 역량 차이 분석",
+      "venue": "한국교육정보미디어학회·한국교육공학회 2020 추계공동학술대회",
+      "details": "온라인",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-71",
+      "year": 2020,
+      "type": "conference",
+      "authors": [
+        "김혜준",
+        "임지영",
+        "정성희",
+        "임규연"
+      ],
+      "title": "어떤 교사가 학습자의 자율성을 지지하는가? SW교육 연수경험에 따른 차이 연구",
+      "venue": "한국교육정보미디어학회·한국교육공학회 2020 추계공동학술대회",
+      "details": "온라인",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-72",
+      "year": 2020,
+      "type": "other",
+      "authors": [
+        "임규연",
+        "이재영",
+        "임지영",
+        "박지우"
+      ],
+      "title": "THE포트폴리오 시스템에 대한 인식 및 방향성 연구 (미간행)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-73",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "임지영",
+        "어정인",
+        "한가형",
+        "임규연"
+      ],
+      "title": "사회비교 정보를 제공하는 대시보드에 대한 학습자 인식 탐색",
+      "venue": "교육공학연구",
+      "details": "36(3), 443-477",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-74",
+      "year": 2020,
+      "type": "other",
+      "authors": [
+        "최지수"
+      ],
+      "title": "팀 프로젝트기반학습에서 과제가치와 지각된 학습성과의 관계: 협력적 자기조절과 팀 프로세스 인식의 매개효과를 중심으로 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-75",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "최지수",
+        "임지영",
+        "임규연"
+      ],
+      "title": "디지털 리터러시 교육 실행에 대한 교사의 인식: 학교의 지원을 중심으로",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "20(15), 139-161",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-76",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "Lim, J. Y.",
+        "Lim, K. Y."
+      ],
+      "title": "Co-regulation in collaborative learning: Grounded in achievement goal theory",
+      "venue": "International Journal of Educational Research",
+      "details": "103.0, 1-14",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-77",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김혜준",
+        "최지수",
+        "김윤진"
+      ],
+      "title": "학습자 대시보드의 사용성 평가: 상호작용 정보의 시각화에 대한 학습자 인식 탐색",
+      "venue": "교육정보미디어연구",
+      "details": "26(2), 395-424",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-78",
+      "year": 2020,
+      "type": "journal",
+      "authors": [
+        "Lim, K.Y.",
+        "Lim, J.Y.",
+        "Park, M.J.",
+        "Hato, A.E.",
+        "Kim, Y.J.",
+        "Eur, J."
+      ],
+      "title": "Systematic review of CSCL research 2012-2018: Comparing South Korean and international research",
+      "venue": "Journal of Interactive Learning Research",
+      "details": "31(1), 5-27",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-79",
+      "year": 2020,
+      "type": "conference",
+      "authors": [
+        "Lim, J. Y.",
+        "Lim, K. Y."
+      ],
+      "title": "Poster: Supporting groups to monitor themselves: Does it distribute the interaction?",
+      "venue": "the ineternational conference of the Learning Sciences 2020",
+      "details": "Nashville, TN",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-80",
+      "year": 2020,
+      "type": "other",
+      "authors": [
+        "임지영"
+      ],
+      "title": "컴퓨터기반 협력학습(CSCL)에서 공유된 조절에 대한 모니터링 지원이 협력학습 과정 및 성과에 미치는 영향 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-81",
+      "year": 2020,
+      "type": "other",
+      "authors": [
+        "한가형"
+      ],
+      "title": "MOOC 학습 맥락에서 자기조절학습전략의 매개효과 : 학습자의 인지욕구, 미디어 멀티태스킹행동, 지각된 학습 간의 관계를 중심으로 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-82",
+      "year": 2019,
+      "type": "journal",
+      "authors": [
+        "Jin, M.",
+        "Lim, K. Y."
+      ],
+      "title": "Effects of Peer Feedback Types and Feedback Acceptance Levels on Academic Achievement in Middle School Project-based Learning",
+      "venue": "Educational Technology International",
+      "details": "20.0, 57-81",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-83",
+      "year": 2019,
+      "type": "journal",
+      "authors": [
+        "Kim, J. Y.",
+        "Lim, K. Y."
+      ],
+      "title": "Promoting learning in online, ill-structured problem solving: The effects of scaffolding type and metacognition level",
+      "venue": "Computers & Education",
+      "details": "138.0, 116-129",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-84",
+      "year": 2019,
+      "type": "journal",
+      "authors": [
+        "Lim, J. Y.",
+        "Choi, J.",
+        "Kim, Y.",
+        "J",
+        "Eur, J.",
+        "Lim, K. Y."
+      ],
+      "title": "What is monitored and by whom in online collaborative learning?: Analysis of monitoring tools in learner dashboard",
+      "venue": "Educational Technology International",
+      "details": "20(2), 223-255",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-85",
+      "year": 2019,
+      "type": "conference",
+      "authors": [
+        "Han, G. H.",
+        "Kim, Y. J.",
+        "Eur, J.",
+        "Emilova, B.",
+        "Choi, J.",
+        "Lim, K. Y."
+      ],
+      "title": "Teachers’ intention to use ICT in South Korea: UTAUT model approach",
+      "venue": "2019 AECT international convention",
+      "details": "Las Vegas, US",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-86",
+      "year": 2019,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "임소혜",
+        "조일현",
+        "임지영",
+        "한가형"
+      ],
+      "title": "멀티미디어 설계원리를 적용한 공개교육자료 (Open Educational Resources) 사례 분석 및 학습자 인식 탐색",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "19.0, 1035-1060",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-87",
+      "year": 2019,
+      "type": "other",
+      "authors": [
+        "은주희"
+      ],
+      "title": "MOOC에서 자기조절학습 촉진을 위한 대시보드 개발연구 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-88",
+      "year": 2019,
+      "type": "other",
+      "authors": [
+        "이지현"
+      ],
+      "title": "팀 프로젝트기반학습에서 협력적 조절의 매개효과: 협력적 자기효능감, 공유정신모형, 만족도 간의 관계를 중심으로 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-89",
+      "year": 2019,
+      "type": "journal",
+      "authors": [
+        "김영주",
+        "임규연"
+      ],
+      "title": "동료피드백 시스템 개발 연구: 프로젝트기반학습에서의 팀간 피드백 도구 설계 사례",
+      "venue": "교육정보미디어연구",
+      "details": "25(4), 627-655",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-90",
+      "year": 2019,
+      "type": "journal",
+      "authors": [
+        "은주희",
+        "임규연"
+      ],
+      "title": "MOOC 대시보드 설계원리 개발: 자기조절학습 촉진을 중심으로",
+      "venue": "교육공학연구",
+      "details": "35(3), 655-685",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-91",
+      "year": 2019,
+      "type": "conference",
+      "authors": [
+        "Park, H.",
+        "Han, G. H.",
+        "Lim, J. Y.",
+        "Lim, K. Y."
+      ],
+      "title": "Poster: Can technology itself provide effective feedback?",
+      "venue": "2019 AERA annual meeting",
+      "details": "Toronto, Canada",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-92",
+      "year": 2018,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "은주희",
+        "정윤주",
+        "박하나"
+      ],
+      "title": "학습자중심 대시보드 설계를 위한 탐색적 연구: 학습정보를 중심으로",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "21(3), 35-50",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-93",
+      "year": 2018,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "임지영",
+        "이지현"
+      ],
+      "title": "대학생용 타인조절 척도 개발",
+      "venue": "교육과학연구",
+      "details": "49(2), 1-26",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-94",
+      "year": 2018,
+      "type": "journal",
+      "authors": [
+        "김혜준",
+        "임규연"
+      ],
+      "title": "온라인 토론학습에서 메타인지, 사회비교경향성, 팀에 대한 인식이 참여 수준에 미치는 영향",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "18.0, 1371-1399",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-95",
+      "year": 2018,
+      "type": "journal",
+      "authors": [
+        "이지현",
+        "임규연"
+      ],
+      "title": "팀 프로젝트기반학습에서 협력적 조절의 매개효과: 협력적 자기효능감, 공유정신모형, 만족도 간의 관계를 중심으로",
+      "venue": "교육정보미디어연구",
+      "details": "24(4), 805-831",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-96",
+      "year": 2018,
+      "type": "conference",
+      "authors": [
+        "한가형",
+        "최지수",
+        "Emilova",
+        "Bermet",
+        "임규연"
+      ],
+      "title": "포스터: 영어학습용 모바일 어플리케이션의 개별화 교수 지원전략 분석",
+      "venue": "한국교육정보미디어학회·한국교육공학회 추계공동학술대회 발표자료집",
+      "details": "대전",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-97",
+      "year": 2018,
+      "type": "conference",
+      "authors": [
+        "이지현",
+        "임규연"
+      ],
+      "title": "포스터: 학습자의 학업적 자기효능감과 협력적 자기효능감이 협력학습 과정과 만족도에 미치는 영향",
+      "venue": "한국교육정보미디어학회·한국교육공학회 추계공동학술대회 발표자료집",
+      "details": "대전",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-98",
+      "year": 2018,
+      "type": "conference",
+      "authors": [
+        "Lim J. Y.",
+        "Lee J. H.",
+        "Lim K. Y."
+      ],
+      "title": "Poster: Visual feedback for asynchronous online interaction: Exploratory study on the pattern of other-regulation",
+      "venue": "13th International Conferences of the Learning Sciences",
+      "details": "London, UK",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-99",
+      "year": 2018,
+      "type": "other",
+      "authors": [
+        "김영주"
+      ],
+      "title": "프로젝트기반학습을 위한 동료피드백 지원 시스템 개발연구 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-100",
+      "year": 2018,
+      "type": "other",
+      "authors": [
+        "Anita, E. H."
+      ],
+      "title": "The Impact of ICT use on digital literacy among middle students in Ghana (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-101",
+      "year": 2018,
+      "type": "other",
+      "authors": [
+        "정윤주"
+      ],
+      "title": "대학생의 협력적 문제해결 경험에 대한 내러티브 탐구 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-102",
+      "year": 2018,
+      "type": "other",
+      "authors": [
+        "박민정"
+      ],
+      "title": "디자인 사고(Design Thinking)를 활용한 문제해결 수업의 설계원리 규명 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-103",
+      "year": 2017,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "임지영",
+        "김영주",
+        "진명화",
+        "박민정"
+      ],
+      "title": "HCI 이론에 기반한 학습자 대시보드의 평가준거 개발 연구",
+      "venue": "교육정보미디어연구",
+      "details": "23(4), 861-889",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-104",
+      "year": 2017,
+      "type": "journal",
+      "authors": [
+        "고연주",
+        "김영주",
+        "이현주",
+        "임규연"
+      ],
+      "title": "교사학습공동체 관련 국내 연구동향 분석",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "17(4), 429-457",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-105",
+      "year": 2017,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김영주",
+        "은주희"
+      ],
+      "title": "기업 및 공공조직 실천공동체(CoP)국내 연구동향분석:C4P모델 구성요소를 중심으로",
+      "venue": "기업교육과인재연구",
+      "details": "33(1), 241～268",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-106",
+      "year": 2017,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "임지영",
+        "김혜준"
+      ],
+      "title": "대학생용 협력적 자기조절 척도의 구성요인 탐색",
+      "venue": "교육공학연구",
+      "details": "33(3), 567-598",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-107",
+      "year": 2017,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김영주",
+        "진명화",
+        "김주연"
+      ],
+      "title": "문제해결학습에서의 동료피드백: 피드백 수용도의 매개효과 탐색",
+      "venue": "교육공학연구",
+      "details": "33(2), 269-294",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-108",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "김주연",
+        "은주희",
+        "김영주",
+        "임규연"
+      ],
+      "title": "C4P 구성모델을 활용한 기업 및 공공조직 실천공동체(CoP) 국내 연구동향 분석",
+      "venue": "한국교육공학회 춘계학술대회 발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-109",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "은주희",
+        "박하나",
+        "정윤주",
+        "임규연"
+      ],
+      "title": "포스터: 대시보드 설계를 위한 온라인 학습경험분석",
+      "venue": "한국교육공학회·한국교육정보미디어학회 추계공동학술대회 발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-110",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "임지영",
+        "이지현",
+        "임규연"
+      ],
+      "title": "협력적 조절(co-regulation)의 구성개념에 대한 실증적 탐색",
+      "venue": "한국교육공학회·한국교육정보미디어학회 추계공동학술대회 발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-111",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "Eun J. H.",
+        "Jung Y. J.",
+        "Kim Y. J.",
+        "Jin M. H.",
+        "Lim K. Y."
+      ],
+      "title": "The development of a prototype of the peer feedback tool assisting project-based learning",
+      "venue": "40th Association for Educational Communications and Technology Conference",
+      "details": "Florida, US",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-112",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "Lim J. Y.",
+        "Park M. J.",
+        "Lim K. Y.",
+        "Hato A. E."
+      ],
+      "title": "Poster: CSCL research trend 2012-2016: Comparing korean and international journals",
+      "venue": "40th Association for Educational Communications and Technology Conference",
+      "details": "Florida, US",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-113",
+      "year": 2017,
+      "type": "other",
+      "authors": [
+        "김혜준"
+      ],
+      "title": "온라인 토론학습에서 메타인지, 사회비교경향성, 팀에 대한 인식이 참여도, 만족도에 미치는 영향 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-114",
+      "year": 2017,
+      "type": "other",
+      "authors": [
+        "진명화"
+      ],
+      "title": "프로젝트 기반 학습에서 동료피드백의 유형과 피드백 수용도가 학업성취도에 미치는 영향 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-115",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "김희준",
+        "임규연"
+      ],
+      "title": "온라인 토론학습에서 의사소통 자기효능감, 인지적 참여, 연결정도 중심성과 인지된 학업성취도 간의 관계",
+      "venue": "교육정보미디어연구",
+      "details": "22(1), 111-135",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-116",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김주연",
+        "김혜준",
+        "김영주"
+      ],
+      "title": "웹기반 협력적 문제해결학습에서의 문제해결 과정 분석: 스캐폴딩 유형에 따른 상호작용 내용패턴의 차이",
+      "venue": "교육공학연구",
+      "details": "32(4), 897-924",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-117",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "은주희",
+        "박민정"
+      ],
+      "title": "평생교육환경에서 인지적흥미와 학습자역할몰입의 조절효과: 자기결정성요인과 학습지속의지 간 관계를 중심으로",
+      "venue": "교육방법연구",
+      "details": "28(3), 561-585",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-118",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "김시원",
+        "임규연"
+      ],
+      "title": "플립드 러닝(Flipped learning) 환경에서 자기조절, 교수실재감, 인지된 상호작용과 학습성과와의 관계: 인지된 상호작용의 매개효과를 중심으로",
+      "venue": "교육방법연구",
+      "details": "28(4), 743-766",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-119",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "진명화",
+        "김시원",
+        "조일현"
+      ],
+      "title": "플립러닝에서 자기결정성 요인, 협력지향성, 인지적 실재감, 인지된 성취도의 관계",
+      "venue": "교육정보미디어연구",
+      "details": "22(3), 439-462",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-120",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "Jung Y. H.",
+        "Lim K. Y."
+      ],
+      "title": "Simulation game-based learning for middle school students’ academic emotions and learning achievement",
+      "venue": "Educational Technology International",
+      "details": "17(2), 151-174",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-121",
+      "year": 2016,
+      "type": "journal",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Kim N. H."
+      ],
+      "title": "The effects of secondary teachers' technostress on the intention to use technology in South Korea",
+      "venue": "Computers & Education",
+      "details": "95.0, 114-122",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-122",
+      "year": 2016,
+      "type": "conference",
+      "authors": [
+        "김영주",
+        "김주연",
+        "진명화",
+        "임규연"
+      ],
+      "title": "문제해결학습에서 동료피드백의 품질, 피드백 제공자에 대한 정서적 신뢰도, 피드백 수용도 및 학업성과 간의 관계 탐색",
+      "venue": "한국교육공학회 추계공동학술대회 발표자료집",
+      "details": "안동",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-123",
+      "year": 2016,
+      "type": "conference",
+      "authors": [
+        "Kim Y. J.",
+        "Kim J. Y.",
+        "Kim H. J.",
+        "Lim K. Y."
+      ],
+      "title": "A study on the difference in communication patterns according to scaffolding types in a web-based collaborative learning",
+      "venue": "International Conference of Educational Technology",
+      "details": "Seoul, Korea",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-124",
+      "year": 2016,
+      "type": "conference",
+      "authors": [
+        "Jin M. H.",
+        "Kim S. W.",
+        "Kim H. J.",
+        "Lim K. Y."
+      ],
+      "title": "The relationship among self-determined motivation, cognitive presence, teaching presence and achievement in flipped learning environment",
+      "venue": "International Conference of Educational Technology",
+      "details": "Seoul, Korea",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-125",
+      "year": 2016,
+      "type": "other",
+      "authors": [
+        "김시원"
+      ],
+      "title": "플립러닝 환경에서 자기조절, 교수실재감, 인지된 상호작용, 학습성과 간의 관계 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-126",
+      "year": 2016,
+      "type": "other",
+      "authors": [
+        "김예진"
+      ],
+      "title": "프로젝트 기반 협력학습에서 동료 피드백의 제공이 피드백 제공자의 학업적 효능감, 학업성취도, 만족도에 미치는 영향 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-127",
+      "year": 2016,
+      "type": "other",
+      "authors": [
+        "박효선"
+      ],
+      "title": "프로젝트기반학습에서 문제해결력, 협력적 자기효능감, 협력적 자기조절, 인지된 성취도 간의 관계 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-128",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "조경진",
+        "임규연"
+      ],
+      "title": "SNS를 활용한 성찰활동에서 동료학습자의 피드백 제공이 학습자의 학업적 자기효능감, 메타인지, 학업성취도에 미치는 영향",
+      "venue": "교육공학연구",
+      "details": "31(3), 401-430",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-129",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "안상란",
+        "임규연"
+      ],
+      "title": "사이버대학 교수자의 교수역량 진단을 통한 교육요구도 탐색",
+      "venue": "교육방법연구",
+      "details": "27(3), 375-400",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-130",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "이태구",
+        "김주연",
+        "임규연",
+        "이한주"
+      ],
+      "title": "스포츠모의중계수업을 활용한 문제해결학습에서 스캐폴딩 유형이 일반 대학생의 문제해결력과 성취도에 미치는 영향",
+      "venue": "체육과학연구",
+      "details": "26(4), 951-963",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-131",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "박효선",
+        "김주연"
+      ],
+      "title": "웹기반 협력적 문제해결학습에서 스캐폴딩 유형에 따른 상호작용 패턴 및 팀 성과 탐색",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "15(8), 1-25",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-132",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김예진",
+        "김희준"
+      ],
+      "title": "웹기반 협력학습에서 상호작용의 중심화 정도가 팀원의 공유정신모형, 만족도, 성취도에 미치는 영향",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "18(4), 41-53",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-133",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "김주연",
+        "박효선",
+        "임규연"
+      ],
+      "title": "창의적 사고기법을 활용한 문제해결학습에서 스캐폴딩 유형이 문제해결력과 성취도에 미치는 영향",
+      "venue": "교육정보미디어연구",
+      "details": "21(1), 111-136",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-134",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "이유정",
+        "임규연"
+      ],
+      "title": "학습조직화, 교사효능감, 수업전문성, 학교조직효과성 간의 구조적 관계 규명",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "15(11), 957-980",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-135",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김시원",
+        "김영주"
+      ],
+      "title": "협력학습 환경에서 메타인지적 자기조절, 정서조절과 성취도 간의 관계: 협력적 자기조절과 협력적 자기효능감의 조절효과",
+      "venue": "학습자중심교과교육연구연구",
+      "details": "15(10), 685-707",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-136",
+      "year": 2015,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "박하나",
+        "김시원"
+      ],
+      "title": "협력학습에서 학습자의 자기조절과 협력적 자기조절의 관계",
+      "venue": "교육방법연구",
+      "details": "27(2), 211-228",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-137",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "김시원",
+        "진명화",
+        "임규연"
+      ],
+      "title": "포스터: 플립러닝 환경에서 교수실재감의 매개효과 검증",
+      "venue": "한국교육정보미디어학회 학술대회 발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-138",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "김시원",
+        "김예진",
+        "김영주",
+        "임규연"
+      ],
+      "title": "포스터: 협력학습 환경에서 협력적 자기조절의 매개효과 검증",
+      "venue": "한국교육공학회 학술대회 발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-139",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "김희준",
+        "임규연"
+      ],
+      "title": "온라인 토론학습의 학습성과에 대한 인지적 참여와 연결정도 중심성의 예측력 규명",
+      "venue": "한국교육공학회 학술대회 발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-140",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "박효선",
+        "김주연",
+        "진명화",
+        "임규연"
+      ],
+      "title": "포스터: 웹기반 협력적 문제해결학습에서 스캐폴딩 유형이 상호작용패턴 및 팀 성과에 미치는 영향",
+      "venue": "한국교육공학회 학술대회발표자료집",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-141",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Kim Y. J.",
+        "Kim Y. J.",
+        "Jin M. H.",
+        "Kim H. J.",
+        "Lim K. Y."
+      ],
+      "title": "Effects of peer feedback on achievement in project-based collaborative learning",
+      "venue": "38th Association for Educational Communications and Technology Conference",
+      "details": "Indianapolis, US",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-142",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Park H. S.",
+        "Kim S. W.",
+        "Kim Y. J.",
+        "Lim K. Y."
+      ],
+      "title": "The effect of co-regulation in project-based learning",
+      "venue": "38th Association for Educational Communications and Technology Conference",
+      "details": "Indianapolis, US",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-143",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Kim S. W.",
+        "Jin M. H.",
+        "Lim K. Y."
+      ],
+      "title": "Research trends on flipped learning in South Korea",
+      "venue": "EdMedia: World Conference on Educational Media and Technology",
+      "details": "Montreal, Canada",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-144",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Kim Y. J.",
+        "Kim H. J.",
+        "Park H. S.",
+        "Lim K. Y."
+      ],
+      "title": "An exploratory study on the interaction pattern and shared mental model in a web-based collaborative learning",
+      "venue": "EdMedia: World Conference on Educational Media and Technology",
+      "details": "Montreal, Canada",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-145",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Lim K. Y.",
+        "Park H. S.",
+        "Kim Y. J.",
+        "Kim S. W."
+      ],
+      "title": "Social Network Analysis as a tool for exploring information flow in an online discussion",
+      "venue": "37th Association for Educational Communications and Technology Conference",
+      "details": "Dubai, UAE",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-146",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Ko E. H.",
+        "Lim K. Y.",
+        "Kim S. W."
+      ],
+      "title": "Design and development of WikiTalki application to promote english speaking practice in K-12 context",
+      "venue": "38th Association for Educational Communications and Technology Conference",
+      "details": "Indianapolis, US",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-147",
+      "year": 2015,
+      "type": "conference",
+      "authors": [
+        "Lim K. Y.",
+        "Kim S. W.",
+        "Park H. S.",
+        "Kim Y. J."
+      ],
+      "title": "The effect of co-regulation in a collaborative learning environment",
+      "venue": "37th Association for Educational Communications and Technology Conference",
+      "details": "Dubai, UAE",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-148",
+      "year": 2015,
+      "type": "other",
+      "authors": [
+        "김주연"
+      ],
+      "title": "웹 기반 문제해결학습에서 스캐폴딩 유형과 메타인지 수준이 실재감, 문제해결수행 및 성취도에 미치는 영향 (박사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-149",
+      "year": 2015,
+      "type": "other",
+      "authors": [
+        "김희준"
+      ],
+      "title": "온라인 토론학습의 학업성취도에 대한 의사소통 자기효능감, 인지적 참여와 연결정도 중심성의 예측력 규명 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-150",
+      "year": 2015,
+      "type": "other",
+      "authors": [
+        "박하나"
+      ],
+      "title": "협력학습 환경에서 협력적 자기조절과 자기조절, 집단 응집성, 성취도 간의 관계 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-151",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "주영주",
+        "임규연",
+        "강아란"
+      ],
+      "title": "교원 대상 이러닝 환경에서 학습전이를 위한 교육요구 분석",
+      "venue": "교육방법연구",
+      "details": "26(4), 717-739",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-152",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "주영주",
+        "임규연",
+        "박수영"
+      ],
+      "title": "교원 원격직무교육에서 시스템품질, 정보품질, 서비스품질, 사용수준과 사용자만족도, 학습, 학습전이 간의 구조적 관계 분석",
+      "venue": "교육과학연구",
+      "details": "45(3), 45-67",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-153",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "허희옥",
+        "임규연",
+        "이현우",
+        "김현진"
+      ],
+      "title": "스마트교육을 위한 교원의 교육요구도 분석",
+      "venue": "敎員敎育",
+      "details": "30(1), 93-112",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-154",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "박하나",
+        "김희준"
+      ],
+      "title": "온라인 토론학습에서 사회연결망분석 기반 피드백이 상호작용 및 성취도에 미치는 영향",
+      "venue": "교육공학연구",
+      "details": "30(3), 443-466",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-155",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "김희준",
+        "박하나"
+      ],
+      "title": "웹기반 협력학습에서 참여와 상호작용의 차이에 대한 고찰",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "17(4), 69-78",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-156",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "허희옥",
+        "이현우",
+        "강의성",
+        "김현진",
+        "임규연"
+      ],
+      "title": "지역화 기반 스마트교육 정책 방안 모색 : 전라남도를 중심으로",
+      "venue": "디지털융복합연구",
+      "details": "12(5), 25-37",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-157",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "주영주",
+        "임규연",
+        "임유진",
+        "하영자"
+      ],
+      "title": "컴퓨터활용교육 : 교원의 원격연수프로그램 성과측정 도구개발",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "17(2), 53-64",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-158",
+      "year": 2014,
+      "type": "journal",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Cho S. Y.",
+        "Lim E."
+      ],
+      "title": "Investigating the structural relationship among perceived innovation attributes, intention to use and actual use of mobile learning in an online university in South Korea",
+      "venue": "Australian Journal of Educational Technology",
+      "details": "30(4), 427-439",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-159",
+      "year": 2014,
+      "type": "conference",
+      "authors": [
+        "김주연",
+        "이태구",
+        "임규연"
+      ],
+      "title": "스포츠중계 모형을 활용한 문제해결학습에서스캐폴딩 유형이 문제해결력과 성취도에 미치는 영향",
+      "venue": "한국교육공학회 학술대회 발표자료집",
+      "details": "(개최지 미상)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-160",
+      "year": 2014,
+      "type": "conference",
+      "authors": [
+        "Park H. N.",
+        "Kim H. J.",
+        "Park H. S.",
+        "Lim K. Y."
+      ],
+      "title": "Poster: Effects of social network-based visual feedback on interaction in online discussion",
+      "venue": "International Conference on Smart Learning Environments",
+      "details": "Hong Kong, China",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-161",
+      "year": 2014,
+      "type": "conference",
+      "authors": [
+        "Lim K. Y.",
+        "Kim H. J.",
+        "Park H. N.",
+        "Jung Y. H."
+      ],
+      "title": "The effects of learner participation and interaction in web-based collaborative learning",
+      "venue": "10th International Conference on Technology, Knowledge and Society",
+      "details": "Madrid, Spain",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-162",
+      "year": 2014,
+      "type": "conference",
+      "authors": [
+        "Lim K. Y.",
+        "Park H. S.",
+        "Kim Y. J.",
+        "Kim H. J."
+      ],
+      "title": "Exploratory study on centralization and social construction of knowledge according to the level of density in online discussion",
+      "venue": "37th Association for Educational Communications and Technology Conference",
+      "details": "Dubai, UAE",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-163",
+      "year": 2014,
+      "type": "other",
+      "authors": [
+        "정윤하"
+      ],
+      "title": "시뮬레이션게임 기반 학습이 학업정서와 학업성취도에 미치는 영향 (석사학위논문)",
+      "venue": "",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-164",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "Jo I. H.",
+        "Heo H. O.",
+        "Lim K. Y.",
+        "Choi J.I.",
+        "Noh J.M."
+      ],
+      "title": "Usability study of middle school english digital textbook: A stimulated recall approach",
+      "venue": "Educational Technology International",
+      "details": "14(1), 10-136",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-165",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "허희옥",
+        "임규연",
+        "김현진",
+        "이현우"
+      ],
+      "title": "스마트교육을 위한 교원역량 진단 도구 개발",
+      "venue": "교육정보미디어연구",
+      "details": "19(2), 151-173",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-166",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "배지혜",
+        "임규연"
+      ],
+      "title": "스마트패드를 활용한 학습에서 인접성 원리의 적용이 학업성취 및 인지부하에 미치는 영향",
+      "venue": "교육공학연구",
+      "details": "29(3), 491-516",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-167",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "은주희",
+        "임규연"
+      ],
+      "title": "평생교육프로그램에서 참여동기, 교수실재감, 학습성과 간의 관계",
+      "venue": "교육방법연구",
+      "details": "25(2), 479-499",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-168",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "이재영",
+        "임규연"
+      ],
+      "title": "학습조직 구축수준과 성과의 관계에서 자기주도학습능력의 조절효과",
+      "venue": "기업교육연구",
+      "details": "15(2), 81-105",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-169",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "Lee H. W.",
+        "Lim K. Y."
+      ],
+      "title": "Does digital handwriting of instructors using the iPad enhance student learning?",
+      "venue": "Asia-Pacific Education Researcher",
+      "details": "22(3), 241-245",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-170",
+      "year": 2013,
+      "type": "journal",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Kim J."
+      ],
+      "title": "Locus of control, self-efficacy, and task value as predictors of learning outcome in an online university context",
+      "venue": "Computers & Education",
+      "details": "62.0, 149-158",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-171",
+      "year": 2013,
+      "type": "conference",
+      "authors": [
+        "강의성",
+        "허희옥",
+        "이현우",
+        "김현진",
+        "임규연"
+      ],
+      "title": "포스터 : 최신 스마트 기술에 기반한 스마트 교실 구축에 관한 고찰",
+      "venue": "한국컴퓨터교육학회 학술발표대회논문집",
+      "details": "(개최지 미상)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-172",
+      "year": 2013,
+      "type": "conference",
+      "authors": [
+        "허의옥",
+        "이현우",
+        "김현진",
+        "임규연",
+        "강의성"
+      ],
+      "title": "스마트교육에 대한 교사의 인식 조사: 전남 지역을 중심으로",
+      "venue": "한국컴퓨터교육학회 학술발표대회논문집",
+      "details": "(개최지 미상)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-173",
+      "year": 2013,
+      "type": "conference",
+      "authors": [
+        "정남호",
+        "조일현",
+        "임규연"
+      ],
+      "title": "학습자의 학습관리시스템 이용과 성과에 영향을 미치는 요인에 관한 연구-학습자 자기조절 학습능력과 과제의 실제성 역할을 중심으로",
+      "venue": "한국경영정보학회 학술대회",
+      "details": "(개최지 미상)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-174",
+      "year": 2013,
+      "type": "conference",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Han S. Y.",
+        "Kang A."
+      ],
+      "title": "The effects of self-determination on learning outcomes in a blended learning",
+      "venue": "International Conference e-Learning 2013",
+      "details": "(개최지 미상)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-175",
+      "year": 2013,
+      "type": "conference",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Cho S. Y.",
+        "Jung B. K.",
+        "Choi, S. B."
+      ],
+      "title": "Factors affecting teenager cyber delinquency",
+      "venue": "International Conference e-Learning 2013",
+      "details": "(개최지 미상)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-176",
+      "year": 2013,
+      "type": "conference",
+      "authors": [
+        "Jung Y. H.",
+        "Lim K. Y."
+      ],
+      "title": "The effects of simulation game-based learning on academic emotions and achievement",
+      "venue": "International Conference of Educational Technology",
+      "details": "Seoul, Korea",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-177",
+      "year": 2012,
+      "type": "journal",
+      "authors": [
+        "한승연",
+        "임규연"
+      ],
+      "title": "사이버대학 교수자의 교수역량 모델링",
+      "venue": "교육방법연구",
+      "details": "24(4), 837-862",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-178",
+      "year": 2012,
+      "type": "journal",
+      "authors": [
+        "이현우",
+        "임규연"
+      ],
+      "title": "시·도 교육청 고급관리자의 역량모델링에 따른 교육요구 분석",
+      "venue": "기업교육연구",
+      "details": "14(2), 25-44",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-179",
+      "year": 2012,
+      "type": "journal",
+      "authors": [
+        "임규연"
+      ],
+      "title": "위키 기반 협력학습에서 자기효능감과 위키에 대한 불안이 참여도 및 성취도에 미치는 영향",
+      "venue": "컴퓨터교육학회논문지",
+      "details": "15(6), 65-74",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-180",
+      "year": 2012,
+      "type": "journal",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Kim S. M."
+      ],
+      "title": "A model for predicting learning flow and achievement in corporate e- learning",
+      "venue": "Educational Technology and Society",
+      "details": "15(1), 313-325",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-181",
+      "year": 2011,
+      "type": "journal",
+      "authors": [
+        "임규연"
+      ],
+      "title": "집단탐구(Group Investigation) 협동학습에서 학업적 자기효능감, 협력적 자기효능감, 학업 성과의 관계",
+      "venue": "교육의이론과실천",
+      "details": "16(2), 19-36",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-182",
+      "year": 2011,
+      "type": "journal",
+      "authors": [
+        "Joo Y. J.",
+        "Lim K. Y.",
+        "Park S. Y."
+      ],
+      "title": "Investigating the structural relationships among organisational support, learning flow, learners' satisfaction and learning transfer in corporate e-learning",
+      "venue": "British Journal of Educational Technology",
+      "details": "42(6), 973-984",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-183",
+      "year": 2010,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "조현국",
+        "김영수"
+      ],
+      "title": "티칭 스타일(Teaching Style) 진단 도구 개발 및 활용 사례 연구",
+      "venue": "敎員敎育",
+      "details": "26(1), 37-52",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-184",
+      "year": 2009,
+      "type": "journal",
+      "authors": [
+        "임규연"
+      ],
+      "title": "개념도를 활용한 생성적 학습 및 자기 조절 학습 스킬 수준이 지식 습득에 미치는 효과",
+      "venue": "교육공학연구",
+      "details": "25(2), 1-25",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-185",
+      "year": 2009,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "허희옥",
+        "김영수"
+      ],
+      "title": "온라인 팀 프로젝트에서 팀 리더의 상호작용 패턴 분석",
+      "venue": "교육정보미디어연구",
+      "details": "15(4), 295-317",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-186",
+      "year": 2002,
+      "type": "journal",
+      "authors": [
+        "조일현",
+        "임규연"
+      ],
+      "title": "GBS 설계 모델을 적용한 기업 e-learning 학습 환경에서 학습 성과에 영향을 미치는 요인",
+      "venue": "교육공학연구",
+      "details": "18(4), 79-110",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-187",
+      "year": 2002,
+      "type": "journal",
+      "authors": [
+        "조일현",
+        "임규연",
+        "이현우"
+      ],
+      "title": "GBS+ 설계 모델을 적용한 e-learning 코스웨어 개발 연구",
+      "venue": "기업교육과인재연구",
+      "details": "4(2), 95-117",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-188",
+      "year": 2002,
+      "type": "journal",
+      "authors": [
+        "임규연",
+        "임영택",
+        "조일현"
+      ],
+      "title": "기업의 e-Learning 프로그램 개발을 위한 요구 조사 연구",
+      "venue": "기업교육과인재연구",
+      "details": "4(1), 123~156",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-189",
+      "year": 2000,
+      "type": "journal",
+      "authors": [
+        "정재삼",
+        "임규연"
+      ],
+      "title": "웹 기반 토론에서 학습자의 참여도, 성취도 및 만족도 관련 요인의 효과 분석",
+      "venue": "교육공학연구",
+      "details": "16(2), 107-135",
       "doi": "",
       "link": ""
     }
   ],
-  "projects": [
-    {
-      "id": "proj-sample",
-      "title": "예시 연구과제 제목",
-      "funder": "한국연구재단",
-      "start": "2024-03",
-      "end": "2027-02",
-      "description": "종료일이 비어있거나 미래 날짜면 '진행 중'으로 자동 표시됩니다."
-    }
-  ],
+  "projects": [],
   "patents": [
     {
-      "id": "pat-sample",
-      "title": "예시 특허 제목",
-      "inventors": ["임규연"],
-      "number": "10-2025-0000000",
+      "id": "patent-1",
+      "title": "학습 지원을 위한 프롬프트에 기반하는 문제해결 학습장치 및 그 동작방법",
+      "inventors": [
+        "임규연",
+        "김혜준",
+        "이주원",
+        "박하은",
+        "박은주"
+      ],
+      "number": "",
+      "status": "registered",
+      "date": "",
+      "country": "KR"
+    },
+    {
+      "id": "patent-2",
+      "title": "학습 지원을 위한 대시보드에 기반하는 문제해결 학습장치 및 그 동작방법",
+      "inventors": [
+        "임규연",
+        "김혜준",
+        "이주원",
+        "박하은",
+        "박은주"
+      ],
+      "number": "",
+      "status": "registered",
+      "date": "",
+      "country": "KR"
+    },
+    {
+      "id": "patent-3",
+      "title": "온라인 협력학습 모니터링 도구 비대면의 협력 학습을 위한 집단 협력 학습 방법 및 협력 학습 지원 장치",
+      "inventors": [
+        "임지영",
+        "임규연"
+      ],
+      "number": "1024429230000",
+      "status": "registered",
+      "date": "",
+      "country": "KR"
+    },
+    {
+      "id": "patent-4",
+      "title": "사회비교 관점에서의 학습 모니터링용 온라인학습 대시보드 학습 정보 제공 방법 및 장치",
+      "inventors": [
+        "임규연",
+        "어정인",
+        "임지영",
+        "한가형"
+      ],
+      "number": "",
       "status": "pending",
-      "date": "2025-06-01",
+      "date": "",
+      "country": "KR"
+    },
+    {
+      "id": "patent-5",
+      "title": "사회연결망 시각화를 활용한 적응적 온라인학습용 대시보드 상호작용 네트워크 제공 방법 및 장치",
+      "inventors": [
+        "임규연",
+        "김윤진",
+        "김혜준",
+        "최지수"
+      ],
+      "number": "1022189730000",
+      "status": "registered",
+      "date": "",
       "country": "KR"
     }
   ],
-  "tools": [
-    {
-      "id": "tool-sample",
-      "name": "예시 도구/시스템 이름",
-      "description": "한 줄 설명을 여기에 적습니다.",
-      "image": "",
-      "link": "",
-      "tags": ["Learning Analytics"]
-    }
-  ]
+  "tools": []
 }
