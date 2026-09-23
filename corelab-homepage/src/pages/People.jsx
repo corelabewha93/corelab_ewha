@@ -52,44 +52,49 @@ export default function People() {
   return (
     <div className="page container">
       <h1 className="section-title">People</h1>
-      <Tabs tabs={TABS} current={tab} onChange={setTab} />
 
-      {loading && <div>불러오는 중...</div>}
-      {error && <div className="error-state">{error}</div>}
+      <div className="tabs-layout">
+        <Tabs tabs={TABS} current={tab} onChange={setTab} />
 
-      {data && (
-        <>
-          {tab === 'faculty' && (
-            <div className="people-grid">
-              {(data.faculty ?? []).length === 0 ? (
-                <p className="empty-state">등록된 교수진이 없습니다.</p>
-              ) : (
-                data.faculty.map((f) => (
-                  <PersonCard key={f.id} person={f} positionLabel={f.position} />
-                ))
+        <div className="tabs-content">
+          {loading && <div>불러오는 중...</div>}
+          {error && <div className="error-state">{error}</div>}
+
+          {data && (
+            <>
+              {tab === 'faculty' && (
+                <div className="people-grid">
+                  {(data.faculty ?? []).length === 0 ? (
+                    <p className="empty-state">등록된 교수진이 없습니다.</p>
+                  ) : (
+                    data.faculty.map((f) => (
+                      <PersonCard key={f.id} person={f} positionLabel={f.position} />
+                    ))
+                  )}
+                </div>
               )}
-            </div>
-          )}
 
-          {tab === 'students' && <StudentsList items={data.students} />}
+              {tab === 'students' && <StudentsList items={data.students} />}
 
-          {tab === 'alumni' && (
-            <div className="people-grid">
-              {alumniSorted.length === 0 ? (
-                <p className="empty-state">등록된 졸업생이 없습니다.</p>
-              ) : (
-                alumniSorted.map((a) => (
-                  <PersonCard
-                    key={a.id}
-                    person={a}
-                    positionLabel={a.graduation ? `${a.graduation} 졸업` : ''}
-                  />
-                ))
+              {tab === 'alumni' && (
+                <div className="people-grid">
+                  {alumniSorted.length === 0 ? (
+                    <p className="empty-state">등록된 졸업생이 없습니다.</p>
+                  ) : (
+                    alumniSorted.map((a) => (
+                      <PersonCard
+                        key={a.id}
+                        person={a}
+                        positionLabel={a.graduation ? `${a.graduation} 졸업` : ''}
+                      />
+                    ))
+                  )}
+                </div>
               )}
-            </div>
+            </>
           )}
-        </>
-      )}
+        </div>
+      </div>
     </div>
   )
 }

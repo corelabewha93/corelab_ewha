@@ -15,7 +15,7 @@ export default function News() {
       {items.length === 0 ? (
         <p className="empty-state">등록된 소식이 없습니다.</p>
       ) : (
-        <div className="news-grid">
+        <div className="news-list">
           {items.map((item) => (
             <NewsCard key={item.id} item={item} />
           ))}

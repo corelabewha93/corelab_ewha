@@ -1,9 +1,9 @@
 {
-  "labName": "CoreLab",
-  "labNameFull": "Collaborative & Reflective Learning Lab",
-  "university": "이화여자대학교 교육공학과",
+  "labName": "CoRe Lab",
+  "labTagline": "Collaborative Learning Research",
+  "university": "이화여자대학교 교육공학과 임규연 교수 연구실",
   "overview": [
-    "CoreLab(Collaborative & Reflective Learning Lab)은 협력학습, 성찰, 학습분석을 중심으로 연구하는 이화여자대학교 교육공학과 연구실입니다.",
+    "CoRe Lab(Collaborative & Reflective Learning Lab)은 협력학습, 성찰, 학습분석을 중심으로 연구하는 이화여자대학교 교육공학과 연구실입니다.",
     "실제 학습 환경에서 수집되는 데이터를 기반으로, 학습자의 협력 과정과 성찰 활동을 이해하고 지원하는 방법을 탐구합니다."
   ],
   "researchAreas": [

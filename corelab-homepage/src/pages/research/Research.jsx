@@ -20,19 +20,24 @@ export default function Research() {
   return (
     <div className="page container">
       <h1 className="section-title">Research</h1>
-      <Tabs tabs={TABS} current={tab} onChange={setTab} />
 
-      {loading && <div>불러오는 중...</div>}
-      {error && <div className="error-state">{error}</div>}
+      <div className="tabs-layout">
+        <Tabs tabs={TABS} current={tab} onChange={setTab} />
 
-      {data && (
-        <>
-          {tab === 'publications' && <Publications items={data.publications} />}
-          {tab === 'projects' && <Projects items={data.projects} />}
-          {tab === 'patents' && <Patents items={data.patents} />}
-          {tab === 'tools' && <Tools items={data.tools} />}
-        </>
-      )}
+        <div className="tabs-content">
+          {loading && <div>불러오는 중...</div>}
+          {error && <div className="error-state">{error}</div>}
+
+          {data && (
+            <>
+              {tab === 'publications' && <Publications items={data.publications} />}
+              {tab === 'projects' && <Projects items={data.projects} />}
+              {tab === 'patents' && <Patents items={data.patents} />}
+              {tab === 'tools' && <Tools items={data.tools} />}
+            </>
+          )}
+        </div>
+      </div>
     </div>
   )
 }

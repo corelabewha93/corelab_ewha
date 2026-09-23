@@ -1,5 +1,6 @@
 import { useState } from 'react'
 import Link from '../router/Link'
+import { useData } from '../hooks/useData'
 
 const NAV_ITEMS = [
   { to: '/', label: 'About' },
@@ -11,13 +12,14 @@ const NAV_ITEMS = [
 
 export default function Header() {
   const [open, setOpen] = useState(false)
+  const { data } = useData('site.json')
 
   return (
     <header className="site-header">
       <div className="container">
         <Link to="/" className="brand" onClick={() => setOpen(false)}>
           <img src={`${import.meta.env.BASE_URL}images/logo.svg`} alt="" />
-          <span>CoreLab</span>
+          <span>{data?.labName ?? 'CoRe Lab'}</span>
         </Link>
 
         <button
