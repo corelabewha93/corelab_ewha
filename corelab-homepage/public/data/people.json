@@ -527,6 +527,26 @@
       ],
       "links": [],
       "id": "person-mue6sv64kpi"
+    },
+    {
+      "name": "이지현",
+      "photo": "images/people/이지현-mue7lgfv.jpg",
+      "photoCrop": {
+        "x": 46.1,
+        "y": 47.1,
+        "zoom": 1
+      },
+      "degree": "MA",
+      "affiliation": "한국생산성본부 전문위원",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "한국생산성본부에서 재직자 리더십 교육 개발 및 운영을 담당하고 있다",
+        "#관심분야",
+        "협력학습, 팀프로젝트기반학습"
+      ],
+      "links": [],
+      "id": "person-mue7lhz08aj"
     }
   ]
 }
