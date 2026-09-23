@@ -97,6 +97,37 @@ export const personFields = [
     showIf: (v) => v.category === 'faculty',
   },
   {
+    name: 'scholarLink',
+    label: 'Google Scholar 링크',
+    type: 'text',
+    placeholder: 'https://scholar.google.com/citations?user=...',
+    showIf: (v) => v.category === 'faculty',
+  },
+  {
+    name: 'education',
+    label: '학력',
+    type: 'lines',
+    hint: '한 줄에 한 항목씩. 예: The Pennsylvania State University Ph.D.(Instructional System)',
+    rows: 3,
+    showIf: (v) => v.category === 'faculty',
+  },
+  {
+    name: 'career',
+    label: '경력',
+    type: 'lines',
+    hint: '한 줄에 한 항목씩. 예: 교육공학과장  2014-02-01 ~ 2018-01-31',
+    rows: 5,
+    showIf: (v) => v.category === 'faculty',
+  },
+  {
+    name: 'awards',
+    label: '교내수상이력',
+    type: 'lines',
+    hint: '한 줄에 한 항목씩. 예: 강의우수  2014-03-01',
+    rows: 3,
+    showIf: (v) => v.category === 'faculty',
+  },
+  {
     name: 'detail',
     label: '상세 이력',
     type: 'lines',
@@ -105,33 +136,45 @@ export const personFields = [
     showIf: (v) => v.category !== 'faculty',
   },
   {
-    name: 'detail',
-    label: '경력 · 수상 (선택)',
-    type: 'lines',
-    hint: '한 줄에 한 항목씩. 프로필 하단에 목록으로 표시됩니다.',
-    rows: 5,
-    showIf: (v) => v.category === 'faculty',
+    name: 'links',
+    label: '포트폴리오 · 관련 링크 (선택)',
+    type: 'linklines',
+    hint: '한 줄에 하나씩, "표시할 글자 | 링크" 순서로 적으세요. 예: Google Scholar | https://scholar.google.com/citations?...',
+    rows: 3,
+    showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
 ]
 
 export const newsFields = [
   { name: 'title', label: '제목', type: 'text', required: true },
-  { name: 'date', label: '날짜', type: 'date', required: true },
-  { name: 'thumbnail', label: '대표 사진', type: 'image', folder: 'news' },
-  { name: 'summary', label: '내용 요약', type: 'textarea', rows: 4 },
+  {
+    name: 'body',
+    label: '내용',
+    type: 'paragraphs',
+    rows: 10,
+    hint: '기사처럼 자유롭게 적으세요. 문단 사이는 빈 줄로 구분하면 됩니다.',
+  },
+  { name: 'images', label: '사진 (여러 장 함께 선택 가능)', type: 'image', folder: 'news', multiple: true },
   { name: 'link', label: '관련 링크 (선택)', type: 'text', placeholder: 'https://...' },
 ]
 
-export const lablifeFields = (isNew) => [
+export const lablifeFields = () => [
   {
-    name: 'image',
-    label: isNew ? '사진 (여러 장 한 번에 선택 가능)' : '사진',
+    name: 'images',
+    label: '사진 (여러 장 함께 선택 가능)',
     type: 'image',
     folder: 'lablife',
     required: true,
-    multiple: isNew,
+    multiple: true,
   },
-  { name: 'caption', label: '설명', type: 'text', placeholder: '예: 2026 가을 랩 세미나' },
+  { name: 'caption', label: '제목 · 한 줄 설명', type: 'text', placeholder: '예: 2026 가을 랩 세미나' },
+  {
+    name: 'body',
+    label: '상세 설명 (선택)',
+    type: 'textarea',
+    rows: 4,
+    hint: '여러 문장으로 자유롭게 적을 수 있어요.',
+  },
   { name: 'date', label: '날짜', type: 'month', hint: '최신 날짜가 맨 앞에 나옵니다.' },
 ]
 

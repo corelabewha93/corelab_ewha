@@ -3,116 +3,42 @@
     {
       "id": "lim-gyuyeon",
       "name": "임규연",
-      "photo": "images/people/임규연-mudvgoag.jpg",
-      "position": "교수",
+      "photo": "",
+      "position": "교수 / 지도교수",
       "bio": "협력학습과 학습분석을 연구합니다.",
       "affiliation": "이화여자대학교 교육공학과",
       "detail": [
-        "임규연 교수는 사범대학 교육공학과 교수로서 테크놀로지기반 학습, 협력학습 및 자기조절학습, 학습경험설계(LXD) 분야에서 연구를 진행하고 있다.",
-        "연구재단 인문사회분야 신진/중견/융합연구자지원과제, BK21플러스과제 등 다양한 연구과제를 책임 혹은 공동연구원으로 수행하였으며, 이공분야 중견과제로 온라인 학습을 위한 대시보드 설계(2017-2019), 개별화학습 설계(2020-2022) 연구를 수주한 바 있다.",
-        "현재 교수자-AI 협력(2024-2026), 협력학습분석학(2023-2025) 관련 연구를 연구책임자로 수행 중이다.",
-        "2014년 이화여자대학교 강의우수교수상, 2022년 교육대학원 강의우수상을 수상하였다."
-      ],
-      "photoCrop": {
-        "x": 50.8,
-        "y": 46.8,
-        "zoom": 1
-      },
-      "email": "klim@ewha.ac.kr",
-      "phone": "02-3277-2714",
-      "office": "교육관 B동 563호",
-      "researchInterests": [
-        "Technology-enhanced learning",
-        "Collaborative learning analytics",
-        "Learning experience design",
-        "Human-AI interaction"
+        "예시 상세 이력입니다. 이름/사진을 누르면 펼쳐집니다.",
+        "학력, 경력, 주요 연구 관심사 등을 자유롭게 줄 단위로 넣으세요.",
+        "detail 필드가 없으면 이 버튼 자체가 생기지 않습니다."
       ]
     }
   ],
   "students": [
     {
-      "name": "전효정",
-      "photo": "images/people/전효정-mudvavj2.jpg",
-      "photoCrop": {
-        "x": 54.4,
-        "y": 22,
-        "zoom": 1
-      },
-      "degree": "MA",
-      "affiliation": "이화여자대학교 교육공학과",
-      "bio": "최강 귀요미",
-      "detail": [
-        "블라블라",
-        "암튼 효정샘 최고임"
-      ],
-      "id": "person-mudvay1x56k"
-    },
-    {
       "id": "hwang-hyejeong",
       "name": "황혜정",
-      "photo": "images/people/황혜정-mudva0te.jpg",
+      "photo": "",
       "degree": "MA",
+      "admission": "2026",
       "bio": "예시 소개 문구입니다.",
-      "affiliation": "이화여자대학교 교육공학과",
+      "affiliation": "",
+      "email": "",
       "detail": [
         "예시 상세 이력 항목입니다.",
         "필요 없으면 이 필드를 통째로 지워도 됩니다."
-      ],
-      "photoCrop": {
-        "x": 45.6,
-        "y": 17.6,
-        "zoom": 1
-      }
-    },
-    {
-      "name": "이주원",
-      "photo": "images/people/이주원-mudvippp.jpg",
-      "photoCrop": {
-        "x": 50.8,
-        "y": 16.8,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "이화여자대학교 교육공학과",
-      "bio": "이력 쓸 예정",
-      "detail": [
-        "어쩌구저쩌구 이력 쓸 예정"
-      ],
-      "id": "person-mudvis75eaw"
+      ]
     }
   ],
   "alumni": [
     {
       "id": "alumni-sample",
-      "name": "최지수",
-      "photo": "images/people/최지수-mudvd9pn.jpg",
+      "name": "예시 졸업생",
+      "photo": "",
       "degree": "MA",
       "graduation": "2023-02",
-      "affiliation": "기아(KIA) 조직개발팀 매니저",
-      "photoCrop": {
-        "x": 48,
-        "y": 10,
-        "zoom": 1
-      },
-      "detail": [
-        "기아 양재 본사에서 조직 진단 데이터를 기반으로 조직문화 개선과 조직 변화 활동을 설계·지원하여 조직의 효과성을 높이는 조직개발 업무를 담당하고 있다."
-      ]
-    },
-    {
-      "name": "임지영",
-      "photo": "images/people/임지영-mudveuhb.jpg",
-      "photoCrop": {
-        "x": 44.7,
-        "y": 27.5,
-        "zoom": 1.61
-      },
-      "degree": "PhD",
-      "affiliation": "부산교육대학교 교육학과 교수",
-      "detail": [
-        "새로운 테크놀로지를 통해 ‘어떤 배움을 만들어야 하는가’를 질문하는 연구자다. 교육 현장의 고민을 연구로 연결하고, 다시 연구에서 얻은 통찰을 더 나은 수업과 학습 경험으로 발전시키는 데 힘쓰고 있다.",
-        "관심분야: 테크놀로지 기반 교수설계, AI·디지털 활용 교육, 협력학습"
-      ],
-      "id": "person-mudvf3lete8"
+      "affiliation": "현재 근무지 / 직함",
+      "bio": ""
     }
   ]
 }

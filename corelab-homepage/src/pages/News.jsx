@@ -16,12 +16,15 @@ export default function News() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const items = [...(data ?? [])].sort((a, b) => new Date(b.date) - new Date(a.date))
+  // 날짜 입력을 없앴으므로, 저장된 순서 그대로 보여줍니다(새 글은 맨 앞에 추가됩니다).
+  const items = data ?? []
 
   const handleSave = async (values) => {
     const original = editing.item
-    const item = { ...values, id: original?.id ?? makeId('news') }
-    await upsertItem(token, 'news.json', null, item, original ? `소식 수정: ${item.title}` : `소식 추가: ${item.title}`)
+    const item = { ...values, id: original?.id ?? makeId('news'), createdAt: original?.createdAt ?? new Date().toISOString() }
+    await upsertItem(token, 'news.json', null, item, original ? `소식 수정: ${item.title}` : `소식 추가: ${item.title}`, {
+      prepend: !original,
+    })
   }
 
   const handleDelete = async () => {
@@ -54,8 +57,8 @@ export default function News() {
         <EditModal
           title={editing.item ? '소식 수정' : '새 소식 추가'}
           fields={newsFields}
-          initial={editing.item ?? { date: new Date().toISOString().slice(0, 10) }}
-          uploadName={(v) => `news-${v.date || ''}`}
+          initial={editing.item ?? {}}
+          uploadName={() => `news-${Date.now()}`}
           onSave={handleSave}
           onDelete={editing.item ? handleDelete : undefined}
           onClose={() => setEditing(null)}

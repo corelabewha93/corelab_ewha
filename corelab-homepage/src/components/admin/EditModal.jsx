@@ -28,6 +28,8 @@ function toForm(field, value) {
       return Array.isArray(value) ? value.join(', ') : value ?? ''
     case 'paragraphs':
       return Array.isArray(value) ? value.join('\n\n') : value ?? ''
+    case 'linklines':
+      return Array.isArray(value) ? value.map((l) => `${l.label ?? ''} | ${l.url ?? ''}`).join('\n') : value ?? ''
     case 'crop':
       return normalizeCrop({ photoCrop: value })
     case 'number':
@@ -54,6 +56,17 @@ function fromForm(field, value) {
         .split(/\n\s*\n/)
         .map((s) => s.replace(/\s*\n\s*/g, ' ').trim())
         .filter(Boolean)
+    case 'linklines':
+      return String(value)
+        .split('\n')
+        .map((s) => s.trim())
+        .filter(Boolean)
+        .map((line) => {
+          const idx = line.indexOf('|')
+          if (idx === -1) return { label: line, url: line }
+          return { label: line.slice(0, idx).trim(), url: line.slice(idx + 1).trim() }
+        })
+        .filter((l) => l.label || l.url)
     case 'number':
       return value === '' ? null : Number(value)
     case 'crop':
@@ -171,6 +184,7 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
       case 'textarea':
       case 'lines':
       case 'paragraphs':
+      case 'linklines':
         return <textarea {...common} className="modal-input modal-textarea" rows={f.rows ?? (f.type === 'paragraphs' ? 6 : 4)} />
       case 'number':
         return <input {...common} type="number" />
@@ -191,11 +205,21 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
       case 'image': {
         const picked = files[f.name] ?? []
         const current = picked.length ? previewUrls[f.name] : resolveImageSrc(value, true)
+        const existingMultiple = f.multiple && !picked.length && Array.isArray(value) ? value.filter(Boolean) : []
         return (
           <div className="image-field">
             {current && !f.multiple && (
               <div className="image-field-thumb">
                 <img src={current} alt="" />
+              </div>
+            )}
+            {existingMultiple.length > 0 && (
+              <div className="image-field-thumbs">
+                {existingMultiple.map((src, i) => (
+                  <div className="image-field-thumb" key={i}>
+                    <img src={resolveImageSrc(src, true)} alt="" />
+                  </div>
+                ))}
               </div>
             )}
             <div className="image-field-actions">

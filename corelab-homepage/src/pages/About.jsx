@@ -8,17 +8,9 @@ import { EditButton } from '../components/admin/AdminControls'
 import SafeImage from '../components/SafeImage'
 import Link from '../router/Link'
 
-function formatDate(dateStr) {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
-  if (Number.isNaN(d.getTime())) return dateStr
-  return d.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
-}
-
 function NewsPreview() {
   const { data } = useData('news.json')
-  const { isAdmin } = useAdminAuth()
-  const items = [...(data ?? [])].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3)
+  const items = (data ?? []).slice(0, 3)
 
   if (items.length === 0) return null
 
@@ -31,15 +23,17 @@ function NewsPreview() {
         </Link>
       </div>
       <div className="news-preview-grid">
-        {items.map((item) => (
-          <Link key={item.id} to="/news" className="news-preview-card">
-            <div className="news-preview-thumb">
-              <SafeImage src={item.thumbnail} alt="" fallback={<span />} />
-            </div>
-            {isAdmin && item.date && <div className="date admin-only-date">{formatDate(item.date)}</div>}
-            <h3 className="title">{item.title}</h3>
-          </Link>
-        ))}
+        {items.map((item) => {
+          const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
+          return (
+            <Link key={item.id} to="/news" className="news-preview-card">
+              <div className="news-preview-thumb">
+                <SafeImage src={thumb} alt="" fallback={<span />} />
+              </div>
+              <h3 className="title">{item.title}</h3>
+            </Link>
+          )
+        })}
       </div>
     </section>
   )

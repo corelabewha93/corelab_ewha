@@ -1,10 +1,13 @@
 import { useRef } from 'react'
 import { DEFAULT_CROP, clamp, cropToStyle } from '../../admin/photoCrop'
 
-const SIZE = 200
+// 실제 홈페이지의 people 사진과 같은 3:4 사각형 비율
+const WIDTH = 180
+const HEIGHT = 240
 
 /**
- * 동그란 미리보기 안에서 사진을 드래그해서 위치를 옮기고, 슬라이더로 확대/세부 조정합니다.
+ * 사각형 미리보기 안에서 사진을 드래그해서 위치를 옮기고, 슬라이더로 확대/세부 조정합니다.
+ * 실제 홈페이지에 보이는 증명사진 모양(사각형)과 똑같은 틀로 미리 볼 수 있습니다.
  */
 export default function CropEditor({ src, value, onChange }) {
   const crop = value ?? DEFAULT_CROP
@@ -22,11 +25,12 @@ export default function CropEditor({ src, value, onChange }) {
   const onPointerMove = (e) => {
     const drag = dragRef.current
     if (!drag) return
-    const factor = 100 / SIZE / drag.crop.zoom
+    const factorX = 100 / WIDTH / drag.crop.zoom
+    const factorY = 100 / HEIGHT / drag.crop.zoom
     onChange({
       ...drag.crop,
-      x: Math.round(clamp(drag.crop.x - (e.clientX - drag.startX) * factor, 0, 100) * 10) / 10,
-      y: Math.round(clamp(drag.crop.y - (e.clientY - drag.startY) * factor, 0, 100) * 10) / 10,
+      x: Math.round(clamp(drag.crop.x - (e.clientX - drag.startX) * factorX, 0, 100) * 10) / 10,
+      y: Math.round(clamp(drag.crop.y - (e.clientY - drag.startY) * factorY, 0, 100) * 10) / 10,
     })
   }
 
@@ -42,7 +46,7 @@ export default function CropEditor({ src, value, onChange }) {
     <div className="crop-editor">
       <div
         className={`crop-preview${src ? '' : ' empty'}`}
-        style={{ width: SIZE, height: SIZE }}
+        style={{ width: WIDTH, height: HEIGHT }}
         onPointerDown={onPointerDown}
         onPointerMove={onPointerMove}
         onPointerUp={onPointerUp}

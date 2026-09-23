@@ -1,34 +1,37 @@
 import SafeImage from './SafeImage'
-import { useAdminAuth } from '../admin/AdminAuthContext'
 
-function formatDate(dateStr) {
-  if (!dateStr) return ''
-  const d = new Date(dateStr)
-  if (Number.isNaN(d.getTime())) return dateStr
-  return d.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
-}
-
-// 날짜는 정렬용으로만 쓰고, 일반 방문자에게는 보여주지 않습니다 (관리자에게만 표시).
+/**
+ * 뉴스 기사 한 편을 클릭 없이 그대로 보여주는 카드.
+ * 날짜는 더 이상 어디에도 표시하지 않습니다 (정렬은 등록 순서로만 합니다).
+ */
 export default function NewsCard({ item }) {
-  const { isAdmin } = useAdminAuth()
+  const images = Array.isArray(item.images)
+    ? item.images.filter(Boolean)
+    : [item.images, item.thumbnail].filter(Boolean)
+  const body = Array.isArray(item.body) ? item.body : item.summary ? [item.summary] : []
+
   return (
-    <article className="news-row">
-      <div className="news-row-thumb">
-        <SafeImage src={item.thumbnail} alt="" fallback={<span />} />
-      </div>
-      <div className="news-row-body">
-        {isAdmin && item.date && <div className="date admin-only-date">{formatDate(item.date)}</div>}
-        <h3 className="title">
-          {item.link ? (
-            <a href={item.link} target="_blank" rel="noreferrer">
-              {item.title}
-            </a>
-          ) : (
-            item.title
-          )}
-        </h3>
-        {item.summary && <p className="summary">{item.summary}</p>}
-      </div>
+    <article className="news-article">
+      {item.title && <h3 className="news-article-title">{item.title}</h3>}
+      {body.map((paragraph, i) => (
+        <p key={i} className="news-article-p">
+          {paragraph}
+        </p>
+      ))}
+      {images.length > 0 && (
+        <div className={`news-article-images${images.length === 1 ? ' single' : ''}`}>
+          {images.map((src, i) => (
+            <div className="news-article-img" key={i}>
+              <SafeImage src={src} alt="" fallback={<span />} />
+            </div>
+          ))}
+        </div>
+      )}
+      {item.link && (
+        <a className="news-article-link" href={item.link} target="_blank" rel="noreferrer">
+          관련 링크 →
+        </a>
+      )}
     </article>
   )
 }

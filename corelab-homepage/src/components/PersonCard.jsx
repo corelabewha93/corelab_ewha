@@ -12,7 +12,10 @@ function initials(name) {
 function FacultyProfile({ person, onEdit, reorder }) {
   const contactLines = [person.email, person.office, person.phone].filter(Boolean)
   const interests = Array.isArray(person.researchInterests) ? person.researchInterests : []
-  const detail = Array.isArray(person.detail) ? person.detail : []
+  const education = Array.isArray(person.education) ? person.education : []
+  const career = Array.isArray(person.career) ? person.career : []
+  const awards = Array.isArray(person.awards) ? person.awards : []
+  const hasHistory = education.length > 0 || career.length > 0 || awards.length > 0
 
   return (
     <div className="faculty-profile admin-item">
@@ -60,12 +63,47 @@ function FacultyProfile({ person, onEdit, reorder }) {
           </div>
         )}
 
-        {detail.length > 0 && (
-          <ul className="person-detail faculty-history">
-            {detail.map((line, i) => (
-              <li key={i}>{line}</li>
-            ))}
-          </ul>
+        {person.scholarLink && (
+          <p className="faculty-scholar">
+            <a href={person.scholarLink} target="_blank" rel="noreferrer">
+              Google Scholar →
+            </a>
+          </p>
+        )}
+
+        {hasHistory && (
+          <div className="faculty-history-table">
+            {education.length > 0 && (
+              <div className="faculty-history-col">
+                <h4>학력</h4>
+                <ul>
+                  {education.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {career.length > 0 && (
+              <div className="faculty-history-col">
+                <h4>경력</h4>
+                <ul>
+                  {career.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+            {awards.length > 0 && (
+              <div className="faculty-history-col">
+                <h4>교내수상이력</h4>
+                <ul>
+                  {awards.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
+          </div>
         )}
       </div>
 
@@ -98,13 +136,14 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
 
   const isAlumni = category === 'alumni'
   const detail = Array.isArray(person.detail) ? person.detail : []
+  const links = Array.isArray(person.links) ? person.links.filter((l) => l.url) : []
 
   const expandLines = []
   if (isAlumni && person.affiliation) expandLines.push({ text: person.affiliation, strong: true })
   if (isAlumni && person.bio) expandLines.push({ text: person.bio })
   detail.forEach((text) => expandLines.push({ text }))
 
-  const expandable = expandLines.length > 0
+  const expandable = expandLines.length > 0 || links.length > 0
   const toggle = () => expandable && setOpen((v) => !v)
 
   return (
@@ -141,6 +180,13 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
           {expandLines.map((line, i) => (
             <li key={i} className={line.strong ? 'strong' : undefined}>
               {line.text}
+            </li>
+          ))}
+          {links.map((l, i) => (
+            <li key={`link-${i}`}>
+              <a href={l.url} target="_blank" rel="noreferrer" className="person-detail-link">
+                {l.label || l.url}
+              </a>
             </li>
           ))}
         </ul>

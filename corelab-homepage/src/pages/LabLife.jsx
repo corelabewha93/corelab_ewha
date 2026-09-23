@@ -1,12 +1,17 @@
 import { useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
-import { upsertItem, deleteItem, addItems } from '../admin/collection'
+import { upsertItem, deleteItem } from '../admin/collection'
 import { makeId } from '../admin/dataStore'
 import { lablifeFields } from '../admin/schemas'
 import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
+
+function imagesOf(item) {
+  if (Array.isArray(item.images)) return item.images.filter(Boolean)
+  return item.image ? [item.image] : []
+}
 
 export default function LabLife() {
   const { data, error, loading } = useData('lablife.json')
@@ -21,22 +26,18 @@ export default function LabLife() {
 
   const handleSave = async (values) => {
     const original = editing.item
-    if (original) {
-      await upsertItem(token, 'lablife.json', null, { ...values, id: original.id }, `Lab Life 수정: ${values.caption || original.id}`)
-      return
-    }
-    const paths = Array.isArray(values.image) ? values.image : [values.image]
-    const newItems = paths.map((image) => ({
-      id: makeId('lablife'),
-      image,
-      caption: values.caption,
-      date: values.date,
-    }))
-    await addItems(token, 'lablife.json', null, newItems, `Lab Life 사진 ${newItems.length}장 추가`)
+    const item = { ...values, id: original?.id ?? makeId('lablife') }
+    await upsertItem(
+      token,
+      'lablife.json',
+      null,
+      item,
+      original ? `Lab Life 수정: ${values.caption || original.id}` : `Lab Life 추가: ${values.caption || item.id}`,
+    )
   }
 
   const handleDelete = async () => {
-    await deleteItem(token, 'lablife.json', null, editing.item.id, 'Lab Life 사진 삭제')
+    await deleteItem(token, 'lablife.json', null, editing.item.id, 'Lab Life 게시물 삭제')
   }
 
   return (
@@ -55,7 +56,7 @@ export default function LabLife() {
                 onClick={() => setSelected(item)}
                 aria-label={item.caption || '사진 크게 보기'}
               >
-                <SafeImage src={item.image} alt={item.caption ?? ''} fallback={<span />} />
+                <SafeImage src={imagesOf(item)[0]} alt={item.caption ?? ''} fallback={<span />} />
               </button>
             </div>
           ))}
@@ -65,8 +66,13 @@ export default function LabLife() {
       {selected && (
         <div className="lightbox-overlay" onClick={() => setSelected(null)}>
           <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <SafeImage src={selected.image} alt={selected.caption ?? ''} fallback={<span />} />
+            <div className="lightbox-images">
+              {imagesOf(selected).map((src, i) => (
+                <SafeImage key={i} src={src} alt={selected.caption ?? ''} fallback={<span />} />
+              ))}
+            </div>
             {selected.caption && <p className="lightbox-caption">{selected.caption}</p>}
+            {selected.body && <p className="lightbox-body">{selected.body}</p>}
           </div>
         </div>
       )}
@@ -79,10 +85,10 @@ export default function LabLife() {
 
       {editing && (
         <EditModal
-          title={editing.item ? '사진 정보 수정' : '사진 추가'}
-          fields={lablifeFields(!editing.item)}
+          title={editing.item ? '게시물 수정' : '사진 추가'}
+          fields={lablifeFields()}
           initial={editing.item ?? { date: new Date().toISOString().slice(0, 7) }}
-          uploadName={(v) => `lablife-${v.date || ''}`}
+          uploadName={(v) => `lablife-${v.date || Date.now()}`}
           onSave={handleSave}
           onDelete={editing.item ? handleDelete : undefined}
           onClose={() => setEditing(null)}
