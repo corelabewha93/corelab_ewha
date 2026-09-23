@@ -90,9 +90,29 @@ export async function putTextFile(token, path, text, message, sha) {
 }
 
 /**
+ * 해당 경로에 파일이 이미 있으면 그 sha를, 없으면(404) null을 반환합니다.
+ * GitHub는 "이미 있는 파일을 덮어쓸 때" sha가 없으면 저장을 거부하기 때문에,
+ * 사진처럼 같은 파일명으로 다시 업로드될 수 있는 파일은 미리 이걸로 확인해야 합니다.
+ */
+async function getFileShaIfExists(token, path) {
+  const res = await fetch(
+    `${API_BASE}/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,
+    { headers: authHeaders(token) },
+  )
+  if (res.status === 404) return null
+  if (!res.ok) {
+    throw new Error(`파일 확인에 실패했습니다: ${path} (${res.status})`)
+  }
+  const json = await res.json()
+  return json.sha
+}
+
+/**
  * data URL(예: 사진 업로드 미리보기)로부터 바이너리 파일을 저장합니다.
+ * 같은 경로에 파일이 이미 있으면(=사진 교체) 자동으로 기존 sha를 찾아 덮어씁니다.
  */
 export async function putBase64File(token, path, dataUrl, message) {
   const base64Content = dataUrl.split(',')[1] || ''
-  return putRaw(token, path, base64Content, message)
+  const existingSha = await getFileShaIfExists(token, path)
+  return putRaw(token, path, base64Content, message, existingSha)
 }
