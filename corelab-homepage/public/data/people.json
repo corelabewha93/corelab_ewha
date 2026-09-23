@@ -408,6 +408,24 @@
       ],
       "links": [],
       "id": "person-mue648lk2gx"
+    },
+    {
+      "name": "박하은",
+      "photo": "images/people/박하은-mue6665g.jpg",
+      "photoCrop": {
+        "x": 53.1,
+        "y": 64.3,
+        "zoom": 1.08
+      },
+      "degree": "MA",
+      "affiliation": "고려대학교 컴퓨터학과 박사과정생",
+      "bio": "",
+      "detail": [
+        "#관심분야",
+        "Knowledge Tracing, AI in education"
+      ],
+      "links": [],
+      "id": "person-mue66891djv"
     }
   ]
 }
