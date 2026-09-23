@@ -1,7 +1,12 @@
+import { useState } from 'react'
 import { useData } from '../hooks/useData'
+import { useAdminAuth } from '../admin/AdminAuthContext'
+import AdminLoginModal from './AdminLoginModal'
 
 export default function Footer() {
   const { data: site } = useData('site.json')
+  const { isAdmin, logout } = useAdminAuth()
+  const [showLogin, setShowLogin] = useState(false)
   const year = new Date().getFullYear()
   const contact = site?.contact ?? {}
 
@@ -20,7 +25,13 @@ export default function Footer() {
           © {year} {site?.labName ?? 'CoRe Lab'}
           {site?.university ? `, ${site.university}` : ''}. All rights reserved.
         </p>
+
+        <button type="button" className="footer-admin-link" onClick={isAdmin ? logout : () => setShowLogin(true)}>
+          {isAdmin ? '관리자 모드 · 로그아웃' : '관리자 로그인'}
+        </button>
       </div>
+
+      {showLogin && <AdminLoginModal onClose={() => setShowLogin(false)} />}
     </footer>
   )
 }

@@ -1,8 +1,10 @@
-import { useMemo } from 'react'
+import { useMemo, useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useQueryTab } from '../router/useHashRoute'
+import { useAdminAuth } from '../admin/AdminAuthContext'
 import Tabs from '../components/Tabs'
 import PersonCard from '../components/PersonCard'
+import AdminRegisterModal from '../components/AdminRegisterModal'
 
 const TABS = [
   { key: 'faculty', label: 'Faculty' },
@@ -43,6 +45,8 @@ function StudentsList({ items = [] }) {
 export default function People() {
   const { data, error, loading } = useData('people.json')
   const [tab, setTab] = useQueryTab('/people', TABS.map((t) => t.key), 'faculty')
+  const { isAdmin } = useAdminAuth()
+  const [showRegister, setShowRegister] = useState(false)
 
   const alumniSorted = useMemo(() => {
     if (!data?.alumni) return []
@@ -95,6 +99,16 @@ export default function People() {
           )}
         </div>
       </div>
+
+      {isAdmin && (
+        <button type="button" className="admin-fab" onClick={() => setShowRegister(true)}>
+          + 등록
+        </button>
+      )}
+
+      {showRegister && (
+        <AdminRegisterModal initialCategory={tab} onClose={() => setShowRegister(false)} />
+      )}
     </div>
   )
 }

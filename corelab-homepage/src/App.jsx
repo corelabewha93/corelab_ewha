@@ -1,4 +1,5 @@
 import { useHashRoute } from './router/useHashRoute'
+import { AdminAuthProvider } from './admin/AdminAuthContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import About from './pages/About'
@@ -31,12 +32,12 @@ export default function App() {
   const Page = ROUTES[path] ?? NotFound
 
   return (
-    <>
+    <AdminAuthProvider>
       <Header />
       <main>
         <Page />
       </main>
       <Footer />
-    </>
+    </AdminAuthProvider>
   )
 }
