@@ -8,8 +8,6 @@ export const DEGREE_OPTIONS = [
   { value: 'BA', label: 'BA (학부연구생)' },
 ]
 
-const DETAIL_HINT = '한 줄에 한 항목씩 적으세요. 이름/사진을 누르면 펼쳐지는 내용입니다.'
-
 export const personFields = [
   {
     name: 'category',
@@ -44,7 +42,7 @@ export const personFields = [
     label: '소속',
     type: 'text',
     placeholder: '예: 이화여자대학교 교육공학과',
-    showIf: (v) => v.category !== 'alumni',
+    showIf: (v) => v.category === 'faculty',
   },
   {
     name: 'affiliation',
@@ -66,7 +64,8 @@ export const personFields = [
     name: 'bio',
     label: '한 줄 소개',
     type: 'text',
-    showIf: (v) => v.category === 'students',
+    hint: '이름을 누르면 펼쳐지는 칸 맨 위에 굵게 표시됩니다.',
+    showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
   {
     name: 'email',
@@ -112,27 +111,27 @@ export const personFields = [
     showIf: (v) => v.category === 'faculty',
   },
   {
-    name: 'career',
-    label: '경력',
-    type: 'lines',
-    hint: '한 줄에 한 항목씩. 예: 교육공학과장  2014-02-01 ~ 2018-01-31',
-    rows: 5,
-    showIf: (v) => v.category === 'faculty',
-  },
-  {
     name: 'awards',
     label: '교내수상이력',
     type: 'lines',
-    hint: '한 줄에 한 항목씩. 예: 강의우수  2014-03-01',
+    hint: '한 줄에 한 항목씩, "내용 | 날짜" 순서로 적으면 날짜가 오른쪽에 따로 표시됩니다. 예: 강의우수 | 2014-03-01',
     rows: 3,
+    showIf: (v) => v.category === 'faculty',
+  },
+  {
+    name: 'career',
+    label: '경력',
+    type: 'lines',
+    hint: '한 줄에 한 항목씩, "내용 | 날짜" 순서로 적으면 날짜가 오른쪽에 따로 표시됩니다. 예: 교육공학과장 | 2014-02-01 ~ 2018-01-31',
+    rows: 5,
     showIf: (v) => v.category === 'faculty',
   },
   {
     name: 'detail',
     label: '상세 이력',
     type: 'lines',
-    hint: DETAIL_HINT,
-    rows: 5,
+    hint: '자유롭게 이력서처럼 작성하세요. 소제목으로 쓰고 싶은 줄은 맨 앞에 #을 붙이세요 (예: #학력). # 없이 쓴 줄은 그 소제목 아래 내용으로 보여집니다.',
+    rows: 8,
     showIf: (v) => v.category !== 'faculty',
   },
   {
