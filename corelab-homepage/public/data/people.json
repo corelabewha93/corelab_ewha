@@ -390,6 +390,24 @@
       ],
       "links": [],
       "id": "person-mue0nja9m7m"
+    },
+    {
+      "name": "김혜준",
+      "photo": "images/people/김혜준-mue646h2.jpg",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "이화여자대학교 강사",
+      "bio": "",
+      "detail": [
+        "#관심분야",
+        "인간-AI 협력, 문제해결, CSCL"
+      ],
+      "links": [],
+      "id": "person-mue648lk2gx"
     }
   ]
 }
