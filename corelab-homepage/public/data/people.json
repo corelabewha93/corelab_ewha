@@ -415,6 +415,26 @@
       "id": "person-mue71g7y55e"
     },
     {
+      "name": "이지현",
+      "photo": "images/people/이지현-mue7lgfv.jpg",
+      "photoCrop": {
+        "x": 46.1,
+        "y": 47.1,
+        "zoom": 1
+      },
+      "degree": "MA",
+      "affiliation": "한국생산성본부 전문위원",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "한국생산성본부에서 재직자 리더십 교육 개발 및 운영을 담당하고 있다",
+        "#관심분야",
+        "협력학습, 팀프로젝트기반학습"
+      ],
+      "links": [],
+      "id": "person-mue7lhz08aj"
+    },
+    {
       "id": "alumni-sample",
       "name": "최지수",
       "photo": "images/people/최지수-mue05n9i.jpg",
@@ -432,24 +452,6 @@
         "조직 진단 데이터를 기반으로 조직문화 개선과 조직 변화 활동을 설계·지원하여 조직의 효과성을 높이는 조직개발 업무를 담당하고 있다."
       ],
       "links": []
-    },
-    {
-      "name": "박하은",
-      "photo": "images/people/박하은-mue6665g.jpg",
-      "photoCrop": {
-        "x": 53.1,
-        "y": 64.3,
-        "zoom": 1.08
-      },
-      "degree": "MA",
-      "affiliation": "고려대학교 컴퓨터학과 박사과정생",
-      "bio": "",
-      "detail": [
-        "#관심분야",
-        "Knowledge Tracing, AI in education"
-      ],
-      "links": [],
-      "id": "person-mue66891djv"
     },
     {
       "name": "김혜준",
@@ -487,6 +489,24 @@
       ],
       "links": [],
       "id": "person-mue7boc1zes"
+    },
+    {
+      "name": "박하은",
+      "photo": "images/people/박하은-mue6665g.jpg",
+      "photoCrop": {
+        "x": 53.1,
+        "y": 64.3,
+        "zoom": 1.08
+      },
+      "degree": "MA",
+      "affiliation": "고려대학교 컴퓨터학과 박사과정생",
+      "bio": "",
+      "detail": [
+        "#관심분야",
+        "Knowledge Tracing, AI in education"
+      ],
+      "links": [],
+      "id": "person-mue66891djv"
     },
     {
       "name": "이다혜",
@@ -527,26 +547,6 @@
       ],
       "links": [],
       "id": "person-mue6sv64kpi"
-    },
-    {
-      "name": "이지현",
-      "photo": "images/people/이지현-mue7lgfv.jpg",
-      "photoCrop": {
-        "x": 46.1,
-        "y": 47.1,
-        "zoom": 1
-      },
-      "degree": "MA",
-      "affiliation": "한국생산성본부 전문위원",
-      "bio": "",
-      "detail": [
-        "#소개",
-        "한국생산성본부에서 재직자 리더십 교육 개발 및 운영을 담당하고 있다",
-        "#관심분야",
-        "협력학습, 팀프로젝트기반학습"
-      ],
-      "links": [],
-      "id": "person-mue7lhz08aj"
     }
   ]
 }
