@@ -69,6 +69,22 @@
         "zoom": 1.05
       },
       "links": []
+    },
+    {
+      "name": "전효정",
+      "photo": "images/people/전효정-mue0b2sc.jpg",
+      "photoCrop": {
+        "x": 55.8,
+        "y": 14.8,
+        "zoom": 1.77
+      },
+      "degree": "MA",
+      "bio": "",
+      "detail": [
+        "효정샘 쓰고 싶은거 쓰면돼요"
+      ],
+      "links": [],
+      "id": "person-mue0b4yqslt"
     }
   ],
   "alumni": [
