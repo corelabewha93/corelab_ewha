@@ -56,6 +56,20 @@
       "id": "person-mue0b4yqslt"
     },
     {
+      "name": "김주람",
+      "photo": "images/people/김주람-mue0p2v6.png",
+      "photoCrop": {
+        "x": 52.5,
+        "y": 34.4,
+        "zoom": 1
+      },
+      "degree": "MA",
+      "bio": "",
+      "detail": [],
+      "links": [],
+      "id": "person-mue0p5ffjac"
+    },
+    {
       "name": "카잉(Khine Myat Noe Lwin)",
       "photo": "images/people/카잉khine-myat-noe-lwin-mue0kbcs.jpg",
       "photoCrop": {
@@ -133,20 +147,6 @@
       ],
       "links": [],
       "id": "person-mue0fxe71xi"
-    },
-    {
-      "name": "김주람",
-      "photo": "images/people/김주람-mue0p2v6.png",
-      "photoCrop": {
-        "x": 52.5,
-        "y": 34.4,
-        "zoom": 1
-      },
-      "degree": "MA",
-      "bio": "",
-      "detail": [],
-      "links": [],
-      "id": "person-mue0p5ffjac"
     }
   ],
   "alumni": [
