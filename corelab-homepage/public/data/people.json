@@ -484,6 +484,25 @@
       ],
       "links": [],
       "id": "person-mue7boc1zes"
+    },
+    {
+      "name": "이다혜",
+      "photo": "images/people/이다혜-mue7figa.jpg",
+      "photoCrop": {
+        "x": 53.6,
+        "y": 4.9,
+        "zoom": 1.56
+      },
+      "degree": "MA",
+      "affiliation": "펜실베니아 주립대학교 LDT 프로그램 박사과정",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "경기도교육청 소속 중등 영어교사로 근무한 후, 이화여자대학교에서 교육공학 석사과정을 마쳤다",
+        "현재 미국에서 박사과정을 밟고 있으며, 학습자들이 협력학습에서 공동의 이해와 의미를 구성하는 과정에 관심을 가지고 연구하고 있다"
+      ],
+      "links": [],
+      "id": "person-mue7fnvzf88"
     }
   ]
 }
