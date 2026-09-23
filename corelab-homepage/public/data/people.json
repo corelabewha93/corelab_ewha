@@ -4,6 +4,7 @@
       "id": "lim-gyuyeon",
       "name": "임규연",
       "photo": "images/people/lim-gyuyeon.jpg",
+      "photoPosition": "top",
       "position": "교수",
       "affiliation": "이화여자대학교 교육공학과",
       "bio": "협력학습과 학습분석을 연구합니다.",
