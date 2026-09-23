@@ -60,6 +60,22 @@
         "y": 17.6,
         "zoom": 1
       }
+    },
+    {
+      "name": "이주원",
+      "photo": "images/people/이주원-mudvippp.jpg",
+      "photoCrop": {
+        "x": 50.8,
+        "y": 16.8,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "이화여자대학교 교육공학과",
+      "bio": "이력 쓸 예정",
+      "detail": [
+        "어쩌구저쩌구 이력 쓸 예정"
+      ],
+      "id": "person-mudvis75eaw"
     }
   ],
   "alumni": [
