@@ -5,6 +5,44 @@ import { saveData } from '../admin/dataStore'
 import { siteIntroFields } from '../admin/schemas'
 import EditModal from '../components/admin/EditModal'
 import { EditButton } from '../components/admin/AdminControls'
+import SafeImage from '../components/SafeImage'
+import Link from '../router/Link'
+
+function formatDate(dateStr) {
+  if (!dateStr) return ''
+  const d = new Date(dateStr)
+  if (Number.isNaN(d.getTime())) return dateStr
+  return d.toLocaleDateString('ko-KR', { year: 'numeric', month: 'long', day: 'numeric' })
+}
+
+function NewsPreview() {
+  const { data } = useData('news.json')
+  const items = [...(data ?? [])].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3)
+
+  if (items.length === 0) return null
+
+  return (
+    <section className="section news-preview">
+      <div className="news-preview-head">
+        <h2 className="section-title">Latest News</h2>
+        <Link to="/news" className="news-preview-more">
+          News 더보기 →
+        </Link>
+      </div>
+      <div className="news-preview-grid">
+        {items.map((item) => (
+          <Link key={item.id} to="/news" className="news-preview-card">
+            <div className="news-preview-thumb">
+              <SafeImage src={item.thumbnail} alt="" fallback={<span />} />
+            </div>
+            <div className="date">{formatDate(item.date)}</div>
+            <h3 className="title">{item.title}</h3>
+          </Link>
+        ))}
+      </div>
+    </section>
+  )
+}
 
 export default function About() {
   const { data, error, loading } = useData('site.json')
@@ -14,7 +52,7 @@ export default function About() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { labName, labTagline, university, overview = [], researchAreas = [] } = data ?? {}
+  const { heroImage, labName, labTagline, university, overview = [], researchAreas = [] } = data ?? {}
 
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
@@ -24,12 +62,23 @@ export default function About() {
       <div className="admin-item">
         <EditButton onClick={() => setEditing(true)} label="소개 내용 수정" />
 
-        <section className="section hero">
-          {university && <p className="hero-eyebrow">{university}</p>}
-          {labName && <h1 className="hero-title">{labName}</h1>}
-          {labTagline && <p className="hero-subtitle">{labTagline}</p>}
-          <div className="hero-rule" />
-        </section>
+        {heroImage ? (
+          <section className="hero hero-photo">
+            <SafeImage src={heroImage} alt="" className="hero-photo-img" fallback={<span />} />
+            <div className="hero-photo-overlay">
+              {university && <p className="hero-eyebrow">{university}</p>}
+              {labName && <h1 className="hero-title">{labName}</h1>}
+              {labTagline && <p className="hero-subtitle">{labTagline}</p>}
+            </div>
+          </section>
+        ) : (
+          <section className="section hero">
+            {university && <p className="hero-eyebrow">{university}</p>}
+            {labName && <h1 className="hero-title">{labName}</h1>}
+            {labTagline && <p className="hero-subtitle">{labTagline}</p>}
+            <div className="hero-rule" />
+          </section>
+        )}
 
         <section className="section">
           <h2 className="section-title">Lab Overview</h2>
@@ -48,6 +97,8 @@ export default function About() {
           )}
         </section>
       </div>
+
+      <NewsPreview />
 
       {editing && (
         <EditModal

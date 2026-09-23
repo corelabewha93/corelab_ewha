@@ -1255,3 +1255,110 @@ button {
 .news-list > .admin-item:has(> .admin-edit-btn) .news-row-body {
   padding-right: 2.6rem;
 }
+
+/* ---------- About: photo hero ---------- */
+.hero-photo {
+  position: relative;
+  border-radius: calc(var(--radius) * 2);
+  overflow: hidden;
+  aspect-ratio: 16 / 7;
+  min-height: 260px;
+  background: var(--color-primary);
+}
+
+.hero-photo-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.hero-photo-overlay {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: var(--space-4);
+  background: linear-gradient(180deg, rgba(0, 70, 42, 0) 40%, rgba(0, 35, 21, 0.82) 100%);
+}
+
+.hero-photo .hero-eyebrow {
+  color: rgba(255, 253, 241, 0.85);
+}
+
+.hero-photo .hero-title,
+.hero-photo .hero-subtitle {
+  color: var(--color-on-primary);
+}
+
+.hero-photo .hero-title {
+  margin-bottom: 0.3rem;
+}
+
+@media (max-width: 560px) {
+  .hero-photo {
+    aspect-ratio: 4 / 5;
+  }
+}
+
+/* ---------- About: news preview ---------- */
+.news-preview-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-2);
+}
+
+.news-preview-more {
+  font-size: 0.85rem;
+  white-space: nowrap;
+}
+
+.news-preview-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+  gap: var(--space-3);
+}
+
+.news-preview-card {
+  display: block;
+  color: inherit;
+}
+
+.news-preview-card:hover {
+  text-decoration: none;
+}
+
+.news-preview-card:hover .title {
+  color: var(--color-accent);
+}
+
+.news-preview-thumb {
+  aspect-ratio: 16 / 10;
+  background: #f2f0e4;
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin-bottom: 0.5rem;
+}
+
+.news-preview-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.news-preview-card .date {
+  color: var(--color-text-muted);
+  font-size: 0.78rem;
+  margin-bottom: 0.2rem;
+}
+
+.news-preview-card .title {
+  font-weight: 600;
+  font-size: 0.95rem;
+  margin: 0;
+  color: var(--color-text);
+  line-height: 1.4;
+}

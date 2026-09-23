@@ -141,9 +141,16 @@ export const toolFields = [
 ]
 
 export const siteIntroFields = [
+  {
+    name: 'heroImage',
+    label: '메인 화면 사진',
+    type: 'image',
+    folder: 'site',
+    hint: '랩 단체사진 등 가로로 넓은 사진을 추천해요. 비워두면 사진 없이 지금처럼 텍스트만 나옵니다.',
+  },
   { name: 'university', label: '상단 작은 글씨', type: 'text' },
   { name: 'labName', label: '연구실 이름', type: 'text', required: true },
-  { name: 'labTagline', label: '부제', type: 'text' },
+  { name: 'labTagline', label: '부제 (사진 위 태그라인으로도 쓰입니다)', type: 'text' },
   { name: 'overview', label: '소개글', type: 'paragraphs', rows: 8, hint: '문단 사이는 빈 줄 하나로 구분하세요.' },
   { name: 'researchAreas', label: '연구 분야 태그', type: 'lines', hint: '한 줄에 하나씩' },
 ]
