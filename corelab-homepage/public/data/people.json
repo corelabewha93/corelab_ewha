@@ -376,6 +376,27 @@
       "id": "person-mue7j0qztyo"
     },
     {
+      "name": "김영주",
+      "photo": "images/people/김영주-mue7oyuc.jpg",
+      "photoCrop": {
+        "x": 68.5,
+        "y": 8.5,
+        "zoom": 1.6
+      },
+      "degree": "PhD",
+      "affiliation": "이화여자대학교 아시아여성학센터 특임교수",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "프로젝트기반학습에서 동료피드백 시스템을 개발하는 연구로 박사학위를 받았다",
+        "현재는 이화여대 아시아여성학센터에서 아시아여성학협동과정 전담 교원으로 교육 업무를 총괄하며 '캄보디아 대학 수요조사를 통한 젠더 고등교육 모델 개발', '국제개발협력 성주류화 가이드라인 개발 연구' 등 아시아여성학협동과정과 연계한 프로젝트와 연구를 기획 및 수행하고 있다",
+        "#관심분야",
+        "협력학습, 동료피드백, 학습 시스템의 개발 및 활용, 교육 프로그램 개발"
+      ],
+      "links": [],
+      "id": "person-mue7p0h32jp"
+    },
+    {
       "name": "임지영",
       "photo": "images/people/임지영-mue0nd54.jpg",
       "photoCrop": {
@@ -395,24 +416,6 @@
       ],
       "links": [],
       "id": "person-mue0nja9m7m"
-    },
-    {
-      "name": "진명화",
-      "photo": "",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "이화여자대학교 강사",
-      "bio": "",
-      "detail": [
-        "#관심분야",
-        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
-      ],
-      "links": [],
-      "id": "person-mue71g7y55e"
     },
     {
       "name": "이지현",
@@ -454,6 +457,24 @@
       "links": []
     },
     {
+      "name": "진명화",
+      "photo": "",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "이화여자대학교 강사",
+      "bio": "",
+      "detail": [
+        "#관심분야",
+        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
+      ],
+      "links": [],
+      "id": "person-mue71g7y55e"
+    },
+    {
       "name": "김혜준",
       "photo": "images/people/김혜준-mue646h2.jpg",
       "photoCrop": {
@@ -470,25 +491,6 @@
       ],
       "links": [],
       "id": "person-mue648lk2gx"
-    },
-    {
-      "name": "정유진",
-      "photo": "images/people/정유진-mue7bmv3.jpg",
-      "photoCrop": {
-        "x": 45.6,
-        "y": 49.6,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
-      "bio": "",
-      "detail": [
-        "#소개",
-        "교수학습센터에서 교수지원 업무를 담당하고 있다",
-        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
-      ],
-      "links": [],
-      "id": "person-mue7boc1zes"
     },
     {
       "name": "박하은",
@@ -549,25 +551,23 @@
       "id": "person-mue6sv64kpi"
     },
     {
-      "name": "김영주",
-      "photo": "images/people/김영주-mue7oyuc.jpg",
+      "name": "정유진",
+      "photo": "images/people/정유진-mue7bmv3.jpg",
       "photoCrop": {
-        "x": 68.5,
-        "y": 8.5,
-        "zoom": 1.6
+        "x": 45.6,
+        "y": 49.6,
+        "zoom": 1
       },
       "degree": "PhD",
-      "affiliation": "이화여자대학교 아시아여성학센터 특임교수",
+      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
       "bio": "",
       "detail": [
         "#소개",
-        "프로젝트기반학습에서 동료피드백 시스템을 개발하는 연구로 박사학위를 받았다",
-        "현재는 이화여대 아시아여성학센터에서 아시아여성학협동과정 전담 교원으로 교육 업무를 총괄하며 '캄보디아 대학 수요조사를 통한 젠더 고등교육 모델 개발', '국제개발협력 성주류화 가이드라인 개발 연구' 등 아시아여성학협동과정과 연계한 프로젝트와 연구를 기획 및 수행하고 있다",
-        "#관심분야",
-        "협력학습, 동료피드백, 학습 시스템의 개발 및 활용, 교육 프로그램 개발"
+        "교수학습센터에서 교수지원 업무를 담당하고 있다",
+        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
       ],
       "links": [],
-      "id": "person-mue7p0h32jp"
+      "id": "person-mue7boc1zes"
     }
   ]
 }
