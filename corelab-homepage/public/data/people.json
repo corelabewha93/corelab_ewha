@@ -271,11 +271,11 @@
     },
     {
       "name": "정윤주",
-      "photo": "",
+      "photo": "images/people/정윤주-mue1jf6i.jpg",
       "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
+        "x": 64.3,
+        "y": 52,
+        "zoom": 1.49
       },
       "degree": "PhD",
       "bio": "공백을 다시 읽고, 함께 내딛는 한 걸음을 탐구합니다",
