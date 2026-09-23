@@ -16,23 +16,6 @@
   ],
   "students": [
     {
-      "id": "hwang-hyejeong",
-      "name": "황혜정",
-      "photo": "images/people/황혜정-mudva0te.jpg",
-      "degree": "MA",
-      "bio": "예시 소개 문구입니다.",
-      "affiliation": "이화여자대학교 교육공학과",
-      "detail": [
-        "예시 상세 이력 항목입니다.",
-        "필요 없으면 이 필드를 통째로 지워도 됩니다."
-      ],
-      "photoCrop": {
-        "x": 45.6,
-        "y": 17.6,
-        "zoom": 1
-      }
-    },
-    {
       "name": "전효정",
       "photo": "images/people/전효정-mudvavj2.jpg",
       "photoCrop": {
@@ -48,6 +31,23 @@
         "암튼 효정샘 최고임"
       ],
       "id": "person-mudvay1x56k"
+    },
+    {
+      "id": "hwang-hyejeong",
+      "name": "황혜정",
+      "photo": "images/people/황혜정-mudva0te.jpg",
+      "degree": "MA",
+      "bio": "예시 소개 문구입니다.",
+      "affiliation": "이화여자대학교 교육공학과",
+      "detail": [
+        "예시 상세 이력 항목입니다.",
+        "필요 없으면 이 필드를 통째로 지워도 됩니다."
+      ],
+      "photoCrop": {
+        "x": 45.6,
+        "y": 17.6,
+        "zoom": 1
+      }
     }
   ],
   "alumni": [
