@@ -19,19 +19,33 @@
   ],
   "students": [
     {
-      "id": "hwang-hyejeong",
+      "id": "Hwang-HyeJung",
       "name": "황혜정",
-      "photo": "",
+      "photo": "황혜정.jpg",
       "degree": "MA",
       "admission": "2026",
       "bio": "예시 소개 문구입니다.",
       "affiliation": "",
-      "email": "",
+      "email": "hwang.et@ewha.ac.kr",
       "detail": [
         "예시 상세 이력 항목입니다.",
         "필요 없으면 이 필드를 통째로 지워도 됩니다."
       ]
-    }
+    },
+    {
+  "id": "전효정-mudre8b2",
+  "name": "전효정",
+  "photo": "images/people/전효정-mudre8b2.jpg",
+  "degree": "MA",
+  "admission": "2025",
+  "affiliation": "",
+  "bio": "CSCL, 블라블라, 예시 아무거나 생각 중",
+  "detail": [
+    "블라블라",
+    "효정샘의 위대한 이력",
+    "나열 예정."
+  ]
+}
   ],
   "alumni": [
     {
