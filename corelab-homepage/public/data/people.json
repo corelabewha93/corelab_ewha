@@ -186,6 +186,32 @@
       "id": "person-mue0fxe71xi"
     },
     {
+      "name": "김재현",
+      "photo": "images/people/김재현-mue1c25m.jpg",
+      "photoCrop": {
+        "x": 55.4,
+        "y": 51.5,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "bio": "",
+      "detail": [
+        "#학력",
+        "이화여자대학교 교육공학과 박사과정| 2024~현재)",
+        "이화여자대학교 교육대학원 교육공학과 석사",
+        "가톨릭대학교 국어국문학과 학사",
+        "#경력",
+        "EBS 중학프리미엄 CP | 2018~2024",
+        "대교 공부와락 콘텐츠기획 | 2009~2018",
+        "#관심분야",
+        "테크놀로지기반학습, 인간-AI 협력, 학습분석학",
+        "#Contact",
+        "jaehyun33@ewha.ac.kr"
+      ],
+      "links": [],
+      "id": "person-mue1c44wa7b"
+    },
+    {
       "name": "이주원",
       "photo": "images/people/이주원-mue149va.jpg",
       "photoCrop": {
@@ -242,32 +268,6 @@
       "detail": [],
       "links": [],
       "id": "person-mue19fwyhmb"
-    },
-    {
-      "name": "김재현",
-      "photo": "images/people/김재현-mue1c25m.jpg",
-      "photoCrop": {
-        "x": 55.4,
-        "y": 51.5,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "bio": "",
-      "detail": [
-        "#학력",
-        "이화여자대학교 교육공학과 박사과정| 2024~현재)",
-        "이화여자대학교 교육대학원 교육공학과 석사",
-        "가톨릭대학교 국어국문학과 학사",
-        "#경력",
-        "EBS 중학프리미엄 CP | 2018~2024",
-        "대교 공부와락 콘텐츠기획 | 2009~2018",
-        "#관심분야",
-        "테크놀로지기반학습, 인간-AI 협력, 학습분석학",
-        "#Contact",
-        "jaehyun33@ewha.ac.kr"
-      ],
-      "links": [],
-      "id": "person-mue1c44wa7b"
     }
   ],
   "alumni": [
