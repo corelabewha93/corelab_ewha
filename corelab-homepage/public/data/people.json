@@ -31,6 +31,23 @@
         "y": 17.6,
         "zoom": 1
       }
+    },
+    {
+      "name": "전효정",
+      "photo": "images/people/전효정-mudvavj2.jpg",
+      "photoCrop": {
+        "x": 54.4,
+        "y": 22,
+        "zoom": 1
+      },
+      "degree": "MA",
+      "affiliation": "이화여자대학교 교육공학과",
+      "bio": "최강 귀요미",
+      "detail": [
+        "블라블라",
+        "암튼 효정샘 최고임"
+      ],
+      "id": "person-mudvay1x56k"
     }
   ],
   "alumni": [
