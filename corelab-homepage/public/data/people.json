@@ -42,16 +42,17 @@
     {
       "id": "hwang-hyejeong",
       "name": "황혜정",
-      "photo": "",
+      "photo": "images/people/황혜정-mudz1cqf.jpg",
       "degree": "MA",
-      "admission": "2026",
-      "bio": "예시 소개 문구입니다.",
-      "affiliation": "",
-      "email": "",
-      "detail": [
-        "예시 상세 이력 항목입니다.",
-        "필요 없으면 이 필드를 통째로 지워도 됩니다."
-      ]
+      "bio": "사각지대를 '두리번'거립니다",
+      "affiliation": "교육공학과",
+      "detail": [],
+      "photoCrop": {
+        "x": 32.7,
+        "y": 67.4,
+        "zoom": 1.05
+      },
+      "links": []
     }
   ],
   "alumni": [
