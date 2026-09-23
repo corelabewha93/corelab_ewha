@@ -14,8 +14,11 @@ body {
   background: var(--color-bg);
   color: var(--color-text);
   font-family: var(--font-sans);
-  line-height: 1.6;
+  line-height: 1.65;
+  letter-spacing: -0.005em;
+  word-break: keep-all;
   -webkit-font-smoothing: antialiased;
+  overflow-x: clip; /* 풀블리드 히어로 때문에 가로 스크롤이 생기지 않도록 */
 }
 
 a {
@@ -48,17 +51,47 @@ button {
   min-height: 60vh;
 }
 
+/* 제목 위 짧은 그린 선: 전체 페이지에 통일된 포인트 */
 .section-title {
-  font-size: 1.6rem;
+  font-size: 1.7rem;
   font-weight: 700;
-  margin: 0 0 var(--space-3);
-  color: var(--color-primary);
+  letter-spacing: -0.02em;
+  margin: 0 0 var(--space-4);
+  color: var(--color-text);
 }
 
-/* ---------- Hero (About page title) ---------- */
-.hero {
-  padding-top: var(--space-2);
+.section-title::before {
+  content: '';
+  display: block;
+  width: 28px;
+  height: 2px;
+  background: var(--color-primary);
+  margin-bottom: 0.9rem;
+}
+
+h1.section-title {
+  font-size: 2.1rem;
+}
+
+@media (max-width: 560px) {
+  h1.section-title {
+    font-size: 1.7rem;
+  }
+  .page {
+    padding-top: var(--space-4);
+  }
+}
+
+/* ---------- Hero (About page title) — 이화그린이 지배적인 풀블리드 섹션 ---------- */
+.hero-green {
+  background: var(--color-primary);
+  color: var(--color-on-primary);
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  padding: var(--space-5) var(--space-3) var(--space-6);
   margin-bottom: var(--space-6);
+  text-align: center;
 }
 
 .hero-eyebrow {
@@ -66,35 +99,73 @@ button {
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.12em;
-  color: var(--color-accent);
+  color: rgba(255, 255, 255, 0.72);
   margin: 0 0 0.9rem;
 }
 
 .hero-title {
   font-size: 3rem;
   font-weight: 800;
-  color: var(--color-primary);
+  color: var(--color-on-primary);
   margin: 0 0 0.5rem;
   letter-spacing: -0.02em;
   line-height: 1.05;
 }
 
 .hero-subtitle {
-  color: var(--color-text-muted);
+  color: rgba(255, 255, 255, 0.82);
   font-size: 1.1rem;
   margin: 0 0 var(--space-3);
 }
 
 .hero-rule {
   width: 48px;
-  height: 3px;
-  background: var(--color-accent);
-  border-radius: 2px;
+  height: 1px;
+  background: rgba(255, 255, 255, 0.55);
+  margin: 0 auto var(--space-4);
+}
+
+.hero-photo-frame {
+  max-width: 920px;
+  margin: 0 auto;
+  aspect-ratio: 21 / 8;
+  border: 1px solid rgba(255, 255, 255, 0.55);
+  border-radius: calc(var(--radius) * 1.5);
+  padding: 7px;
+  overflow: hidden;
+}
+
+.hero-photo-frame > div,
+.hero-photo-frame img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+  border-radius: var(--radius);
+}
+
+.hero-photo-frame.empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-style: dashed;
+}
+
+.hero-photo-frame.empty span {
+  color: rgba(255, 255, 255, 0.62);
+  font-size: 0.85rem;
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 560px) {
   .hero-title {
     font-size: 2.1rem;
+  }
+  .hero-green {
+    padding: var(--space-4) var(--space-2) var(--space-5);
+  }
+  .hero-photo-frame {
+    aspect-ratio: 4 / 3;
   }
 }
 
@@ -103,23 +174,27 @@ button {
 }
 
 /* ---------- Header ---------- */
+/* sticky + z-index: 모바일 드롭다운 메뉴가 페이지 내용 "위"에 뜨도록 (예전엔 아래에 깔려서 안 눌렸음) */
 .site-header {
+  position: sticky;
+  top: 0;
+  z-index: 100;
   background: var(--color-primary);
   color: var(--color-on-primary);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
 .site-header .container {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding-top: var(--space-2);
-  padding-bottom: var(--space-2);
+  min-height: var(--header-h);
 }
 
 .brand {
   display: flex;
   flex-direction: column;
-  gap: 0.1rem;
+  gap: 0.15rem;
   color: var(--color-on-primary);
   line-height: 1.2;
 }
@@ -130,16 +205,16 @@ button {
 }
 
 .brand-dept {
-  font-size: 0.68rem;
+  font-size: 0.66rem;
   font-weight: 400;
-  letter-spacing: 0.01em;
-  color: rgba(255, 253, 241, 0.75);
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.66);
 }
 
 .brand-name {
   font-size: 1.15rem;
   font-weight: 700;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.005em;
 }
 
 @media (max-width: 480px) {
@@ -150,15 +225,31 @@ button {
 
 .nav {
   display: flex;
-  gap: var(--space-3);
+  gap: 2rem;
 }
 
 .nav a {
+  position: relative;
   color: var(--color-on-primary);
-  opacity: 0.85;
-  font-size: 0.95rem;
-  padding: 0.25rem 0;
-  border-bottom: 2px solid transparent;
+  opacity: 0.78;
+  font-size: 0.9rem;
+  font-weight: 500;
+  letter-spacing: 0.02em;
+  padding: 0.3rem 0;
+  transition: opacity 0.15s ease;
+}
+
+.nav a::after {
+  content: '';
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: -2px;
+  height: 1px;
+  background: currentColor;
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform 0.2s ease;
 }
 
 .nav a:hover {
@@ -166,22 +257,50 @@ button {
   text-decoration: none;
 }
 
+.nav a:hover::after,
+.nav a.active::after {
+  transform: scaleX(1);
+}
+
 .nav a.active {
   opacity: 1;
-  border-bottom-color: var(--color-accent);
 }
 
+/* 햄버거 버튼 (세 줄 → X) */
 .nav-toggle {
   display: none;
+  position: relative;
+  width: 40px;
+  height: 40px;
+  margin-right: -8px;
   background: none;
-  border: 1px solid rgba(255, 255, 255, 0.4);
-  color: var(--color-on-primary);
-  border-radius: var(--radius);
-  padding: 0.35rem 0.6rem;
+  border: none;
   cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
 }
 
+.nav-toggle span {
+  position: absolute;
+  left: 11px;
+  right: 11px;
+  height: 1.5px;
+  background: var(--color-on-primary);
+  border-radius: 1px;
+  transition: transform 0.2s ease, opacity 0.2s ease;
+}
+
+.nav-toggle span:nth-child(1) { top: 14px; }
+.nav-toggle span:nth-child(2) { top: 19.5px; }
+.nav-toggle span:nth-child(3) { top: 25px; }
+
+.nav-toggle.open span:nth-child(1) { transform: translateY(5.5px) rotate(45deg); }
+.nav-toggle.open span:nth-child(2) { opacity: 0; }
+.nav-toggle.open span:nth-child(3) { transform: translateY(-5.5px) rotate(-45deg); }
+
 @media (max-width: 720px) {
+  :root {
+    --header-h: 56px;
+  }
   .nav-toggle {
     display: block;
   }
@@ -195,25 +314,36 @@ button {
     gap: 0;
     max-height: 0;
     overflow: hidden;
-    transition: max-height 0.2s ease;
+    visibility: hidden;
+    transition: max-height 0.25s ease, visibility 0.25s;
+    box-shadow: 0 12px 24px rgba(0, 0, 0, 0.15);
   }
   .nav.open {
-    max-height: 320px;
+    max-height: 360px;
+    visibility: visible;
   }
   .nav a {
-    padding: var(--space-2) var(--space-3);
-    border-bottom: 1px solid rgba(255, 255, 255, 0.12);
+    padding: 0.95rem var(--space-3);
+    font-size: 1rem;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
+    opacity: 0.85;
   }
-  .site-header {
-    position: relative;
+  .nav a::after {
+    display: none;
+  }
+  .nav a.active {
+    opacity: 1;
+    font-weight: 700;
+    background: rgba(255, 255, 255, 0.06);
   }
 }
 
 /* ---------- Footer ---------- */
 .site-footer {
+  background: var(--color-subtle);
   border-top: 1px solid var(--color-border);
   color: var(--color-text-muted);
-  padding: var(--space-3) 0;
+  padding: var(--space-5) 0 var(--space-3);
   margin-top: var(--space-6);
 }
 
@@ -225,16 +355,21 @@ button {
 }
 
 .footer-emblem {
-  height: 38px;
+  height: 36px;
   width: auto;
-  margin-bottom: var(--space-2);
-  opacity: 0.9;
+  margin-bottom: var(--space-3);
+  opacity: 0.85;
 }
 
 .footer-contact,
 .footer-copyright {
-  font-size: 0.75rem;
-  margin: 0.15rem 0;
+  font-size: 0.78rem;
+  margin: 0.2rem 0;
+}
+
+.footer-copyright {
+  color: #9a9e9b;
+  font-size: 0.72rem;
 }
 
 /* ---------- Buttons ---------- */
@@ -293,9 +428,9 @@ button {
 }
 
 .tab-btn.active {
-  color: var(--color-accent);
-  border-left-color: var(--color-accent);
-  background: rgba(69, 162, 188, 0.08);
+  color: var(--color-primary);
+  border-left-color: var(--color-primary);
+  background: var(--color-primary-soft);
   font-weight: 600;
 }
 
@@ -319,12 +454,13 @@ button {
     border-left: none;
     border-bottom: 2px solid transparent;
     border-radius: 0;
-    padding: 0.3rem 0.1rem;
+    padding: 0.5rem 0.1rem;
     background: none;
+    margin-bottom: -0.45rem;
   }
 
   .tab-btn.active {
-    border-bottom-color: var(--color-accent);
+    border-bottom-color: var(--color-primary);
     background: none;
   }
 }
@@ -360,7 +496,7 @@ button {
 .news-row-thumb {
   flex: 0 0 140px;
   aspect-ratio: 16 / 10;
-  background: #f2f0e4;
+  background: var(--color-placeholder);
   border-radius: var(--radius);
   overflow: hidden;
 }
@@ -394,7 +530,7 @@ button {
 }
 
 .news-row .title a:hover {
-  color: var(--color-accent);
+  color: var(--color-primary);
 }
 
 .news-row .summary {
@@ -456,18 +592,29 @@ button {
 }
 
 .person-photo {
-  width: 176px;
-  height: 176px;
-  border-radius: 50%;
+  width: 148px;
+  aspect-ratio: 3 / 4;
+  border-radius: var(--radius);
   overflow: hidden;
-  margin: 0 auto var(--space-2);
+  margin: 0 auto 0.9rem;
   background: var(--color-primary);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
   color: var(--color-on-primary);
-  font-size: 2.2rem;
+  font-size: 2rem;
   font-weight: 700;
+  transition: box-shadow 0.15s ease;
+}
+
+.person-photo {
+  transition: box-shadow 0.2s ease, transform 0.2s ease;
+}
+
+.person-card:hover .person-photo {
+  box-shadow: 0 10px 24px rgba(0, 0, 0, 0.12);
+  transform: translateY(-2px);
 }
 
 .person-photo img {
@@ -524,6 +671,7 @@ button {
 
 .person-name {
   font-weight: 600;
+  font-size: 1.02rem;
   margin: 0;
 }
 
@@ -575,13 +723,21 @@ button {
 }
 
 .people-group-title {
-  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  font-size: 0.85rem;
   font-weight: 700;
   color: var(--color-primary);
-  margin: 0 0 var(--space-3);
-  padding-bottom: 0.5rem;
-  border-bottom: 1px solid var(--color-border);
-  letter-spacing: 0.03em;
+  margin: 0 0 var(--space-4);
+  letter-spacing: 0.08em;
+}
+
+.people-group-title::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--color-border);
 }
 
 /* ---------- Research lists ---------- */
@@ -590,7 +746,7 @@ button {
 }
 
 .pub-year-title {
-  color: var(--color-accent);
+  color: var(--color-primary);
   font-size: 1.1rem;
   font-weight: 700;
   margin: 0 0 var(--space-2);
@@ -674,7 +830,7 @@ button {
 
 .tool-card .tool-image {
   aspect-ratio: 16/10;
-  background: #f2f0e4;
+  background: var(--color-placeholder);
   border-radius: var(--radius);
   overflow: hidden;
   margin-bottom: var(--space-2);
@@ -688,13 +844,14 @@ button {
 
 .tag {
   display: inline-block;
-  font-size: 0.72rem;
-  color: var(--color-accent);
-  border: 1px solid var(--color-accent);
+  font-size: 0.75rem;
+  font-weight: 500;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
   border-radius: 999px;
-  padding: 0.05rem 0.5rem;
-  margin-right: 0.3rem;
-  margin-top: 0.3rem;
+  padding: 0.2rem 0.7rem;
+  margin-right: 0.35rem;
+  margin-top: 0.35rem;
 }
 
 /* ---------- Lab Life gallery ---------- */
@@ -720,7 +877,7 @@ button {
   aspect-ratio: 4 / 3;
   overflow: hidden;
   border-radius: var(--radius);
-  background: #f2f0e4;
+  background: var(--color-placeholder);
   cursor: pointer;
   border: none;
   padding: 0;
@@ -803,20 +960,26 @@ button {
 }
 
 /* ---------- Admin: footer link, floating register button, modals ---------- */
+/* 관리자 로그인: 방문자 눈에 거의 안 띄게 흐리게, 마우스를 올리면 살짝 보임 */
 .footer-admin-link {
   background: none;
   border: none;
-  padding: 0;
-  margin-top: var(--space-2);
-  font-size: 0.7rem;
+  padding: 0.2rem;
+  margin-top: var(--space-3);
+  font-size: 0.66rem;
   color: var(--color-text-muted);
+  opacity: 0.28;
   cursor: pointer;
-  text-decoration: underline;
-  text-underline-offset: 2px;
+  transition: opacity 0.2s ease;
 }
 
-.footer-admin-link:hover {
-  color: var(--color-accent);
+.footer-admin-link:hover,
+.footer-admin-link:focus-visible {
+  opacity: 0.8;
+}
+
+.admin-only-date {
+  color: var(--color-accent) !important;
 }
 
 .admin-fab {
@@ -1256,57 +1419,10 @@ button {
   padding-right: 2.6rem;
 }
 
-/* ---------- About: photo hero ---------- */
-.hero-photo {
-  position: relative;
-  border-radius: calc(var(--radius) * 2);
-  overflow: hidden;
-  aspect-ratio: 16 / 7;
-  min-height: 260px;
-  background: var(--color-primary);
-}
-
-.hero-photo-img {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-}
-
-.hero-photo-overlay {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-end;
-  padding: var(--space-4);
-  background: linear-gradient(180deg, rgba(0, 70, 42, 0) 40%, rgba(0, 35, 21, 0.82) 100%);
-}
-
-.hero-photo .hero-eyebrow {
-  color: rgba(255, 253, 241, 0.85);
-}
-
-.hero-photo .hero-title,
-.hero-photo .hero-subtitle {
-  color: var(--color-on-primary);
-}
-
-.hero-photo .hero-title {
-  margin-bottom: 0.3rem;
-}
-
-@media (max-width: 560px) {
-  .hero-photo {
-    aspect-ratio: 4 / 5;
-  }
-}
-
 /* ---------- About: news preview ---------- */
 .news-preview-head {
   display: flex;
-  align-items: baseline;
+  align-items: flex-end;
   justify-content: space-between;
   gap: var(--space-2);
 }
@@ -1332,12 +1448,20 @@ button {
 }
 
 .news-preview-card:hover .title {
-  color: var(--color-accent);
+  color: var(--color-primary);
+}
+
+.news-preview-card .news-preview-thumb img {
+  transition: transform 0.25s ease;
+}
+
+.news-preview-card:hover .news-preview-thumb img {
+  transform: scale(1.03);
 }
 
 .news-preview-thumb {
   aspect-ratio: 16 / 10;
-  background: #f2f0e4;
+  background: var(--color-placeholder);
   border-radius: var(--radius);
   overflow: hidden;
   margin-bottom: 0.5rem;
@@ -1377,14 +1501,17 @@ button {
   padding: var(--space-4);
   background: var(--color-surface);
   border: 1px solid var(--color-border);
+  border-top: 3px solid var(--color-primary);
   border-radius: var(--radius);
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }
 
 .faculty-photo {
   flex: 0 0 200px;
   width: 200px;
-  height: 240px;
+  aspect-ratio: 3 / 4;
   border-radius: var(--radius);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   overflow: hidden;
   background: var(--color-primary);
   display: flex;
@@ -1416,7 +1543,7 @@ button {
 
 .faculty-position {
   margin: 0;
-  color: var(--color-accent);
+  color: var(--color-primary);
   font-weight: 600;
   font-size: 0.95rem;
 }
@@ -1493,7 +1620,6 @@ button {
   }
   .faculty-photo {
     width: 160px;
-    height: 190px;
   }
   .faculty-meta {
     flex-direction: column;
@@ -1507,4 +1633,42 @@ button {
     justify-content: center;
     flex-wrap: wrap;
   }
+}
+
+.news-preview-head {
+  margin-bottom: var(--space-4);
+}
+
+.news-preview-head .section-title {
+  margin-bottom: 0;
+}
+
+.news-preview-more {
+  color: var(--color-text-muted);
+  font-weight: 500;
+}
+
+.news-preview-more:hover {
+  color: var(--color-primary);
+  text-decoration: none;
+}
+
+/* 홈: 초록 히어로가 헤더 바로 아래 붙도록 */
+.page-home {
+  padding-top: 0;
+}
+
+/* 소식 미리보기: 최대 3칸, 카드가 과하게 커지지 않게 */
+.news-preview-grid {
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+}
+
+@media (max-width: 720px) {
+  .news-preview-grid {
+    grid-template-columns: 1fr;
+  }
+}
+
+.chevron {
+  color: var(--color-text-muted);
 }

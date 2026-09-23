@@ -19,12 +19,18 @@ const TABS = [
 ]
 const CATEGORIES = TABS.map((t) => t.key)
 
-// 재학생은 박사 → 석사 → 학부연구생 순. (예전 'Integrated'는 박사 과정으로 봅니다)
-const STUDENT_GROUPS = [
+// 박사 → 석사 → 학부연구생 순. (예전 'Integrated'는 박사 과정으로 봅니다)
+// Students, Alumni 탭 모두 이 기준으로 묶입니다.
+// Students는 "PhD Program", Alumni는 "PhD"처럼 과정명만 표시합니다.
+const DEGREE_GROUPS = [
   { key: 'PhD', label: 'PhD' },
   { key: 'MA', label: 'MA' },
   { key: 'BA', label: 'BA' },
 ]
+
+function groupLabel(group, tab) {
+  return tab === 'students' ? `${group.label} Program` : group.label
+}
 
 function studentGroup(person) {
   if (person.degree === 'PhD' || person.degree === 'Integrated') return 'PhD'
@@ -33,7 +39,7 @@ function studentGroup(person) {
 }
 
 function groupKeyFor(category) {
-  return category === 'students' ? studentGroup : () => 'all'
+  return category === 'students' || category === 'alumni' ? studentGroup : () => 'all'
 }
 
 /** 같은 그룹 안에서 한 칸 앞/뒤로 옮긴 새 목록 */
@@ -143,14 +149,14 @@ export default function People() {
       const label = { faculty: '교수진', students: '재학생', alumni: '졸업생' }[tab]
       return <p className="empty-state">등록된 {label}이 없습니다.</p>
     }
-    if (tab === 'students') {
-      return STUDENT_GROUPS.map((g) => {
+    if (tab === 'students' || tab === 'alumni') {
+      return DEGREE_GROUPS.map((g) => {
         const members = list.filter((p) => studentGroup(p) === g.key)
         if (members.length === 0) return null
         return (
           <section key={g.key} className="people-group">
-            <h3 className="people-group-title">{g.label}</h3>
-            {renderGrid(members, 'students')}
+            <h3 className="people-group-title">{groupLabel(g, tab)}</h3>
+            {renderGrid(members, tab)}
           </section>
         )
       })

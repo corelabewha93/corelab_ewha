@@ -37,7 +37,7 @@ export const personFields = [
     type: 'select',
     options: DEGREE_OPTIONS,
     default: 'MA',
-    showIf: (v) => v.category === 'students',
+    showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
   {
     name: 'affiliation',

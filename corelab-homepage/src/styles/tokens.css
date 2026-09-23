@@ -1,18 +1,22 @@
 :root {
-  /* Primary — 이화여대 상징 그린. 헤더/로고/메인 CTA에만 제한적으로 사용 */
+  /* Primary — 이화그린. 헤더, 메인 히어로, 제목 포인트 */
   --color-primary: #00462a;
   --color-primary-dark: #00331f;
+  --color-primary-soft: rgba(0, 70, 42, 0.06);
 
-  /* Accent — Ewha Blue. 링크, 활성 탭, 강조 텍스트 */
+  /* Accent — Ewha Blue. 링크 hover 등 보조 강조에만 */
   --color-accent: #45a2bc;
 
   /* Neutral */
-  --color-bg: #fffdf1;
+  --color-bg: #ffffff;
   --color-surface: #ffffff;
-  --color-border: #b9b9b9;
-  --color-text: #333333;
-  --color-text-muted: #6f6f6f;
-  --color-on-primary: #fffdf1;
+  --color-subtle: #f6f7f5;
+  --color-border: #e0e2de;
+  --color-border-strong: #c8cbc6;
+  --color-placeholder: #eff0ed;
+  --color-text: #222623;
+  --color-text-muted: #6c716d;
+  --color-on-primary: #ffffff;
 
   /* Spacing */
   --space-1: 0.5rem;
@@ -25,9 +29,10 @@
   /* Layout */
   --max-width: 1080px;
   --radius: 6px;
+  --header-h: 64px;
 
   /* Type */
   --font-sans:
-    -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Pretendard', 'Noto Sans KR', Roboto,
-    sans-serif;
+    'Pretendard Variable', Pretendard, -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Noto Sans KR',
+    Roboto, sans-serif;
 }

@@ -17,6 +17,7 @@ function formatDate(dateStr) {
 
 function NewsPreview() {
   const { data } = useData('news.json')
+  const { isAdmin } = useAdminAuth()
   const items = [...(data ?? [])].sort((a, b) => new Date(b.date) - new Date(a.date)).slice(0, 3)
 
   if (items.length === 0) return null
@@ -35,7 +36,7 @@ function NewsPreview() {
             <div className="news-preview-thumb">
               <SafeImage src={item.thumbnail} alt="" fallback={<span />} />
             </div>
-            <div className="date">{formatDate(item.date)}</div>
+            {isAdmin && item.date && <div className="date admin-only-date">{formatDate(item.date)}</div>}
             <h3 className="title">{item.title}</h3>
           </Link>
         ))}
@@ -58,27 +59,24 @@ export default function About() {
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
 
   return (
-    <div className="page container">
+    <div className="page page-home container">
       <div className="admin-item">
         <EditButton onClick={() => setEditing(true)} label="소개 내용 수정" />
 
-        {heroImage ? (
-          <section className="hero hero-photo">
-            <SafeImage src={heroImage} alt="" className="hero-photo-img" fallback={<span />} />
-            <div className="hero-photo-overlay">
-              {university && <p className="hero-eyebrow">{university}</p>}
-              {labName && <h1 className="hero-title">{labName}</h1>}
-              {labTagline && <p className="hero-subtitle">{labTagline}</p>}
-            </div>
-          </section>
-        ) : (
-          <section className="section hero">
-            {university && <p className="hero-eyebrow">{university}</p>}
-            {labName && <h1 className="hero-title">{labName}</h1>}
-            {labTagline && <p className="hero-subtitle">{labTagline}</p>}
-            <div className="hero-rule" />
-          </section>
-        )}
+        <section className="hero hero-green">
+          {university && <p className="hero-eyebrow">{university}</p>}
+          {labName && <h1 className="hero-title">{labName}</h1>}
+          {labTagline && <p className="hero-subtitle">{labTagline}</p>}
+          <div className="hero-rule" />
+
+          <div className={`hero-photo-frame${heroImage ? '' : ' empty'}`}>
+            {heroImage ? (
+              <SafeImage src={heroImage} alt="" fallback={<span />} />
+            ) : (
+              <span>단체사진이 이 자리에 들어갑니다</span>
+            )}
+          </div>
+        </section>
 
         <section className="section">
           <h2 className="section-title">Lab Overview</h2>
