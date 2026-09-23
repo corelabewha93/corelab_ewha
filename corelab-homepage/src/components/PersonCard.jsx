@@ -98,7 +98,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
                     const { label, date } = splitHistoryLine(line)
                     return (
                       <li key={i} className="faculty-history-row">
-                        <span>{label}</span>
+                        <span className="faculty-history-label">{label}</span>
                         {date && <span className="faculty-history-date">{date}</span>}
                       </li>
                     )
@@ -114,7 +114,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
                     const { label, date } = splitHistoryLine(line)
                     return (
                       <li key={i} className="faculty-history-row">
-                        <span>{label}</span>
+                        <span className="faculty-history-label">{label}</span>
                         {date && <span className="faculty-history-date">{date}</span>}
                       </li>
                     )

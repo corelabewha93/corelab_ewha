@@ -146,14 +146,27 @@ export const personFields = [
 
 export const newsFields = [
   { name: 'title', label: '제목', type: 'text', required: true },
+  { name: 'images', label: '사진 (여러 장 함께 선택 가능)', type: 'image', folder: 'news', multiple: true },
+  {
+    name: 'imageSize',
+    label: '대표 사진 크기',
+    type: 'select',
+    default: 'medium',
+    options: [
+      { value: 'small', label: '작게' },
+      { value: 'medium', label: '보통' },
+      { value: 'large', label: '크게' },
+      { value: 'full', label: '전체 너비' },
+    ],
+    hint: '맨 위에 나오는 첫 번째 사진의 크기입니다.',
+  },
   {
     name: 'body',
     label: '내용',
     type: 'paragraphs',
     rows: 10,
-    hint: '기사처럼 자유롭게 적으세요. 문단 사이는 빈 줄로 구분하면 됩니다.',
+    hint: '기사처럼 자유롭게 적으세요. 문단 사이는 빈 줄로 구분하면 됩니다. 사진을 본문 중간에 넣고 싶으면, 넣고 싶은 위치에 [사진2], [사진3]처럼 한 줄만 따로 적으세요 (숫자는 위에서 선택한 사진 순서, 첫 번째 사진은 이미 대표 사진으로 맨 위에 쓰이니 2번째부터 씁니다). 아무 표시도 안 하면 남은 사진은 글 맨 아래에 모아서 보여줍니다.',
   },
-  { name: 'images', label: '사진 (여러 장 함께 선택 가능)', type: 'image', folder: 'news', multiple: true },
   { name: 'link', label: '관련 링크 (선택)', type: 'text', placeholder: 'https://...' },
 ]
 

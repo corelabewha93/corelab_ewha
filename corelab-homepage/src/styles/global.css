@@ -511,11 +511,64 @@ h1.section-title {
   margin-bottom: 0;
 }
 
+/* 대표 사진: 제목 바로 아래, 실제 뉴스 기사처럼 원본 비율 그대로 보여줍니다. 크기는 관리자가 선택. */
+.news-article-hero {
+  margin: 0 0 var(--space-3);
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-placeholder);
+}
+
+.news-article-hero img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+.news-article-hero-small {
+  max-width: 300px;
+}
+
+.news-article-hero-medium {
+  max-width: 460px;
+}
+
+.news-article-hero-large {
+  max-width: 680px;
+}
+
+.news-article-hero-full {
+  max-width: 100%;
+}
+
+/* 본문 중간에 [사진2]처럼 표시해둔 자리에 들어가는 사진 */
+.news-article-inline-img {
+  margin: var(--space-3) auto;
+  max-width: 440px;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: var(--color-placeholder);
+}
+
+.news-article-inline-img img {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+
+@media (max-width: 560px) {
+  .news-article-hero,
+  .news-article-inline-img {
+    max-width: 100%;
+  }
+}
+
+/* 표시되지 않은 나머지 사진: 글 맨 아래에 모아서 작게 */
 .news-article-images {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
   gap: var(--space-2);
-  margin: var(--space-2) 0;
+  margin: var(--space-3) 0 0;
 }
 
 .news-article-images.single {
@@ -562,6 +615,11 @@ h1.section-title {
 .person-card {
   position: relative;
   text-align: center;
+  /* grid item은 기본적으로 내용 길이만큼 최소 너비를 갖습니다. 상세 이력을 펼쳤을 때
+     긴 텍스트 때문에 카드가 grid 트랙보다 커지면서 전체 배치가 흐트러지고
+     사진이 가운데로 튀는 문제가 있었는데, min-width:0으로 카드가 트랙 너비에 맞춰
+     줄어들 수 있게 해서 막습니다. */
+  min-width: 0;
 }
 
 .admin-edit-btn {
@@ -706,6 +764,8 @@ h1.section-title {
 .person-detail li {
   padding-left: 0.75rem;
   position: relative;
+  overflow-wrap: break-word;
+  word-break: break-word;
 }
 
 .person-detail li.person-detail-strong {
@@ -1625,9 +1685,10 @@ h1.section-title {
   padding: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3rem;
-  font-size: 0.85rem;
-  color: var(--color-text-muted);
+  gap: 0.4rem;
+  font-size: 0.98rem;
+  font-weight: 600;
+  color: var(--color-text);
   flex: 1;
   min-width: 160px;
 }
@@ -1700,16 +1761,28 @@ h1.section-title {
 
 .faculty-history-row {
   display: flex;
-  align-items: baseline;
+  align-items: center;
   justify-content: space-between;
+  flex-wrap: wrap;
+  row-gap: 0.3rem;
   gap: 0.6rem;
+}
+
+.faculty-history-label {
+  min-width: 0;
+  overflow-wrap: break-word;
 }
 
 .faculty-history-date {
   flex-shrink: 0;
-  font-size: 0.72rem;
-  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
-  color: var(--color-text-muted);
+  margin-left: auto;
+  font-size: 0.7rem;
+  font-weight: 500;
+  font-variant-numeric: tabular-nums;
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  padding: 0.15rem 0.55rem;
+  border-radius: 999px;
   white-space: nowrap;
 }
 
@@ -1729,9 +1802,14 @@ h1.section-title {
     flex-direction: column;
     align-items: center;
     text-align: center;
+    /* 부모(.page container)보다 넓어지지 않도록 */
+    min-width: 0;
+    max-width: 100%;
   }
   .faculty-info {
     text-align: center;
+    min-width: 0;
+    width: 100%;
   }
   .faculty-photo {
     width: 160px;
@@ -1747,6 +1825,17 @@ h1.section-title {
     display: flex;
     justify-content: center;
     flex-wrap: wrap;
+  }
+  /* 학력/수상/경력을 한 줄에 한 칸씩 세로로 쌓아서 화면 밖으로 넘치지 않게 */
+  .faculty-history-table {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+  .faculty-history-row {
+    justify-content: flex-start;
+  }
+  .faculty-history-date {
+    margin-left: 0;
   }
 }
 
