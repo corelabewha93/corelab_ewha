@@ -11,6 +11,15 @@ function alignClass(align) {
   return ALIGN_CLASS[align] || ALIGN_CLASS.center
 }
 
+// 예전 프리셋(작게/보통/크게/전체너비)으로 저장된 글도 그대로 보이도록 픽셀로 변환
+const LEGACY_SIZE_PX = { small: 300, medium: 460, large: 680, full: 1200 }
+
+function heroWidthPx(item) {
+  const n = Number(item.imageWidth)
+  if (Number.isFinite(n) && n > 0) return n
+  return LEGACY_SIZE_PX[item.imageSize] || 460
+}
+
 /**
  * 뉴스 기사 한 편을 클릭 없이 그대로 보여주는 카드.
  * 첫 번째 사진은 크기·정렬을 조절할 수 있는 "대표 사진"으로 제목 아래 나오고,
@@ -35,10 +44,12 @@ export default function NewsCard({ item }) {
   return (
     <article className="news-article">
       {item.title && <h3 className="news-article-title">{item.title}</h3>}
+      {item.subtitle && <p className="news-article-subtitle">{item.subtitle}</p>}
 
       {mainImage && (
         <div
-          className={`news-article-hero news-article-hero-${item.imageSize || 'medium'} news-article-hero-${alignClass(item.imageAlign)}`}
+          className={`news-article-hero news-article-hero-${alignClass(item.imageAlign)}`}
+          style={{ maxWidth: `min(${heroWidthPx(item)}px, 100%)` }}
         >
           <SafeImage src={mainImage} alt="" fallback={<span />} />
         </div>

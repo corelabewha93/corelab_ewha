@@ -146,19 +146,20 @@ export const personFields = [
 
 export const newsFields = [
   { name: 'title', label: '제목', type: 'text', required: true },
+  {
+    name: 'subtitle',
+    label: '소제목 (선택)',
+    type: 'text',
+    placeholder: '예: 2년간 연구비 지원받아',
+    hint: '제목 아래에 조금 작게 나오는 부제목입니다. 비워두면 표시되지 않습니다.',
+  },
   { name: 'images', label: '사진 (여러 장 함께 선택 가능)', type: 'image', folder: 'news', multiple: true },
   {
-    name: 'imageSize',
-    label: '대표 사진 크기',
-    type: 'select',
-    default: 'medium',
-    options: [
-      { value: 'small', label: '작게' },
-      { value: 'medium', label: '보통' },
-      { value: 'large', label: '크게' },
-      { value: 'full', label: '전체 너비' },
-    ],
-    hint: '맨 위에 나오는 첫 번째 사진의 크기입니다.',
+    name: 'imageWidth',
+    label: '대표 사진 크기 (가로 픽셀)',
+    type: 'number',
+    placeholder: '예: 460 (비워두면 기본 크기)',
+    hint: '숫자로 직접 크기를 정하세요. 더 작게 하려면 150~250, 기본은 460, 크게 하려면 600 이상, 화면 전체 너비로 하려면 900 이상을 입력하면 됩니다.',
   },
   {
     name: 'imageAlign',

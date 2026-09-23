@@ -499,6 +499,13 @@ h1.section-title {
   color: var(--color-text);
 }
 
+.news-article-subtitle {
+  font-weight: 500;
+  font-size: 0.92rem;
+  color: var(--color-text-muted);
+  margin: -0.3rem 0 0.9rem;
+}
+
 .news-article-p {
   font-size: 0.95rem;
   line-height: 1.75;
@@ -523,22 +530,6 @@ h1.section-title {
   width: 100%;
   height: auto;
   display: block;
-}
-
-.news-article-hero-small {
-  max-width: 300px;
-}
-
-.news-article-hero-medium {
-  max-width: 460px;
-}
-
-.news-article-hero-large {
-  max-width: 680px;
-}
-
-.news-article-hero-full {
-  max-width: 100%;
 }
 
 /* 본문 중간에 [사진2]처럼 표시해둔 자리에 들어가는 사진 */
@@ -630,6 +621,10 @@ h1.section-title {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
   gap: var(--space-4) var(--space-3);
+  /* 기본값(stretch)이면 카드 하나를 펼쳤을 때 같은 줄의 다른 카드들까지
+     키가 늘어나며 화면이 출렁이듯 움직여 보입니다. start로 바꿔서 펼친
+     카드만 커지고 나머지는 그 자리에 그대로 있게 합니다. */
+  align-items: start;
 }
 
 .person-card {
@@ -1706,9 +1701,11 @@ h1.section-title {
   display: flex;
   flex-direction: column;
   gap: 0.4rem;
-  font-size: 0.98rem;
-  font-weight: 600;
+  /* 교수님 소개(.faculty-bio)와 같은 색·굵기로 맞춤 — 이전엔 굵게+진하게 해서 너무 튀었음 */
+  font-size: 0.92rem;
+  font-weight: 400;
   color: var(--color-text);
+  line-height: 1.7;
   flex: 1;
   min-width: 160px;
 }
@@ -1796,13 +1793,10 @@ h1.section-title {
 .faculty-history-date {
   flex-shrink: 0;
   margin-left: auto;
-  font-size: 0.7rem;
-  font-weight: 500;
+  font-size: 0.78rem;
+  font-weight: 400;
   font-variant-numeric: tabular-nums;
-  color: var(--color-primary);
-  background: var(--color-primary-soft);
-  padding: 0.15rem 0.55rem;
-  border-radius: 999px;
+  color: var(--color-text-muted);
   white-space: nowrap;
 }
 
