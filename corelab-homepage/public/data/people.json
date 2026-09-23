@@ -465,6 +465,25 @@
       ],
       "links": [],
       "id": "person-mue648lk2gx"
+    },
+    {
+      "name": "정유진",
+      "photo": "images/people/정유진-mue7bmv3.jpg",
+      "photoCrop": {
+        "x": 45.6,
+        "y": 49.6,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "교수학습센터에서 교수지원 업무를 담당하고 있다",
+        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
+      ],
+      "links": [],
+      "id": "person-mue7boc1zes"
     }
   ]
 }
