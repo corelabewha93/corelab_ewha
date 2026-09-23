@@ -294,6 +294,26 @@
       "id": "person-mue1lzrlrf6"
     },
     {
+      "name": "김혜민",
+      "photo": "images/people/김혜민-mue1pqye.jpg",
+      "photoCrop": {
+        "x": 100,
+        "y": 11.3,
+        "zoom": 1.13
+      },
+      "degree": "PhD",
+      "bio": "",
+      "detail": [
+        "#경력",
+        "경기대학교 전공설계융합지원센터 | 2024~2026",
+        "성균관대학교 학생성공센터 | 2022~2024",
+        "#Contact",
+        "hyemnnie@ewha.ac.kr"
+      ],
+      "links": [],
+      "id": "person-mue1ptx20bl"
+    },
+    {
       "name": "정윤주",
       "photo": "images/people/정윤주-mue1jf6i.jpg",
       "photoCrop": {
@@ -328,26 +348,6 @@
       ],
       "links": [],
       "id": "person-mue1j34yv8k"
-    },
-    {
-      "name": "김혜민",
-      "photo": "images/people/김혜민-mue1pqye.jpg",
-      "photoCrop": {
-        "x": 100,
-        "y": 11.3,
-        "zoom": 1.13
-      },
-      "degree": "PhD",
-      "bio": "",
-      "detail": [
-        "#경력",
-        "경기대학교 전공설계융합지원센터 | 2024~2026",
-        "성균관대학교 학생성공센터 | 2022~2024",
-        "#Contact",
-        "hyemnnie@ewha.ac.kr"
-      ],
-      "links": [],
-      "id": "person-mue1ptx20bl"
     }
   ],
   "alumni": [
