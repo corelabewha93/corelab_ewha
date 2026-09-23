@@ -155,6 +155,21 @@ export default function People() {
         )
       })
     }
+    if (tab === 'faculty') {
+      return (
+        <div className="faculty-list">
+          {list.map((p) => (
+            <PersonCard
+              key={p.id}
+              person={p}
+              category="faculty"
+              onEdit={(person) => setEditing({ person, category: 'faculty' })}
+              reorder={reorderPropsFor(p)}
+            />
+          ))}
+        </div>
+      )
+    }
     return renderGrid(list, tab)
   }
 
