@@ -48,18 +48,23 @@ export default function LabLife() {
         <p className="empty-state">등록된 사진이 없습니다.</p>
       ) : (
         <div className="gallery-grid">
-          {items.map((item) => (
-            <div key={item.id} className="admin-item">
-              <EditButton onClick={() => setEditing({ item })} />
-              <button
-                className="gallery-item"
-                onClick={() => setSelected(item)}
-                aria-label={item.caption || '사진 크게 보기'}
-              >
-                <SafeImage src={imagesOf(item)[0]} alt={item.caption ?? ''} fallback={<span />} />
-              </button>
-            </div>
-          ))}
+          {items.map((item) => {
+            const photos = imagesOf(item)
+            return (
+              <div key={item.id} className="admin-item gallery-card">
+                <EditButton onClick={() => setEditing({ item })} />
+                <button
+                  className="gallery-item"
+                  onClick={() => setSelected(item)}
+                  aria-label={item.caption || '사진 크게 보기'}
+                >
+                  <SafeImage src={photos[0]} alt={item.caption ?? ''} fallback={<span />} />
+                  {photos.length > 1 && <span className="gallery-item-count">🖼 {photos.length}</span>}
+                </button>
+                {item.caption && <p className="gallery-item-caption">{item.caption}</p>}
+              </div>
+            )
+          })}
         </div>
       )}
 
