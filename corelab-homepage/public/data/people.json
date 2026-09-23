@@ -3,14 +3,26 @@
     {
       "id": "lim-gyuyeon",
       "name": "임규연",
-      "photo": "",
-      "position": "교수 / 지도교수",
+      "photo": "images/people/임규연-mudvgoag.jpg",
+      "position": "교수",
       "bio": "협력학습과 학습분석을 연구합니다.",
       "affiliation": "이화여자대학교 교육공학과",
       "detail": [
         "예시 상세 이력입니다. 이름/사진을 누르면 펼쳐집니다.",
         "학력, 경력, 주요 연구 관심사 등을 자유롭게 줄 단위로 넣으세요.",
         "detail 필드가 없으면 이 버튼 자체가 생기지 않습니다."
+      ],
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "email": "klim@ewha.ac.kr",
+      "phone": "",
+      "office": "",
+      "researchInterests": [
+        "CSCL",
+        "협력학습"
       ]
     }
   ],
