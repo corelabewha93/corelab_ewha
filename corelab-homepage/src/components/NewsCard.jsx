@@ -1,12 +1,20 @@
 import SafeImage from './SafeImage'
 
-// 본문 중간에 사진을 넣고 싶을 때 쓰는 표시: [사진2], [사진3] ... (첫 번째 사진은 대표 사진으로 이미 사용됨)
-const IMAGE_MARKER = /^\[\s*사진\s*(\d+)\s*\]$/
+// 본문 중간에 사진을 넣고 싶을 때 쓰는 표시: [사진2], [사진2:왼쪽], [사진2:오른쪽] ...
+// (첫 번째 사진은 대표 사진으로 이미 사용됨. 정렬을 안 쓰면 가운데)
+const IMAGE_MARKER = /^\[\s*사진\s*(\d+)(?:\s*:\s*(왼쪽|가운데|오른쪽))?\s*\]$/
+
+const ALIGN_KEY = { 왼쪽: 'left', 가운데: 'center', 오른쪽: 'right' }
+const ALIGN_CLASS = { left: 'align-left', center: 'align-center', right: 'align-right' }
+
+function alignClass(align) {
+  return ALIGN_CLASS[align] || ALIGN_CLASS.center
+}
 
 /**
  * 뉴스 기사 한 편을 클릭 없이 그대로 보여주는 카드.
- * 첫 번째 사진은 크기 조절이 가능한 "대표 사진"으로 제목 아래 크게 나오고,
- * 본문 중간에 [사진2]처럼 표시해두면 그 자리에 해당 사진이 삽입됩니다.
+ * 첫 번째 사진은 크기·정렬을 조절할 수 있는 "대표 사진"으로 제목 아래 나오고,
+ * 본문 중간에 [사진2], [사진2:왼쪽]처럼 표시해두면 그 자리에 해당 사진이 삽입됩니다.
  * 표시하지 않은 나머지 사진은 글 맨 아래에 모아서 보여줍니다.
  * 날짜는 어디에도 표시하지 않습니다 (정렬은 등록 순서로만 합니다).
  */
@@ -29,7 +37,9 @@ export default function NewsCard({ item }) {
       {item.title && <h3 className="news-article-title">{item.title}</h3>}
 
       {mainImage && (
-        <div className={`news-article-hero news-article-hero-${item.imageSize || 'medium'}`}>
+        <div
+          className={`news-article-hero news-article-hero-${item.imageSize || 'medium'} news-article-hero-${alignClass(item.imageAlign)}`}
+        >
           <SafeImage src={mainImage} alt="" fallback={<span />} />
         </div>
       )}
@@ -39,8 +49,9 @@ export default function NewsCard({ item }) {
         if (m) {
           const src = images[Number(m[1]) - 1]
           if (!src) return null
+          const align = ALIGN_KEY[m[2]] || 'center'
           return (
-            <div className="news-article-inline-img" key={i}>
+            <div className={`news-article-inline-img news-article-inline-img-${alignClass(align)}`} key={i}>
               <SafeImage src={src} alt="" fallback={<span />} />
             </div>
           )

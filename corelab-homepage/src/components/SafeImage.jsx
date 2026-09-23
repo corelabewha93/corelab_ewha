@@ -7,7 +7,7 @@ import { RAW_PUBLIC_URL } from '../admin/githubConfig'
  * 관리자 모드에서는 방금 올린 사진도 배포 전에 바로 보이도록 GitHub 원본 주소를 씁니다.
  */
 export function resolveImageSrc(src, isAdmin) {
-  if (!src) return null
+  if (!src || typeof src !== 'string') return null
   if (/^(https?:|blob:|data:)/.test(src)) return src
   const clean = src.replace(/^\//, '')
   if (isAdmin) return `${RAW_PUBLIC_URL}/${encodeURI(clean)}`

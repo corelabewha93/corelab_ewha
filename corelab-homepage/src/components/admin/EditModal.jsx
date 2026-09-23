@@ -204,7 +204,10 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
         )
       case 'image': {
         const picked = files[f.name] ?? []
-        const current = picked.length ? previewUrls[f.name] : resolveImageSrc(value, true)
+        // value는 사진 여러 장(multiple)일 땐 배열이라, resolveImageSrc(문자열 전용)에 그대로 넘기면
+        // "e.replace is not a function" 에러가 나면서 수정창 전체가 렌더링되지 못했습니다.
+        // 여러 장 선택 필드는 아래 existingMultiple에서 각 항목을 따로 처리하므로 여기선 건너뜁니다.
+        const current = f.multiple ? null : picked.length ? previewUrls[f.name] : resolveImageSrc(value, true)
         const existingMultiple = f.multiple && !picked.length && Array.isArray(value) ? value.filter(Boolean) : []
         return (
           <div className="image-field">

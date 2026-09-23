@@ -511,9 +511,9 @@ h1.section-title {
   margin-bottom: 0;
 }
 
-/* 대표 사진: 제목 바로 아래, 실제 뉴스 기사처럼 원본 비율 그대로 보여줍니다. 크기는 관리자가 선택. */
+/* 대표 사진: 제목 바로 아래, 실제 뉴스 기사처럼 원본 비율 그대로 보여줍니다. 크기·정렬은 관리자가 선택. */
 .news-article-hero {
-  margin: 0 0 var(--space-3);
+  margin-bottom: var(--space-3);
   border-radius: var(--radius);
   overflow: hidden;
   background: var(--color-placeholder);
@@ -543,7 +543,8 @@ h1.section-title {
 
 /* 본문 중간에 [사진2]처럼 표시해둔 자리에 들어가는 사진 */
 .news-article-inline-img {
-  margin: var(--space-3) auto;
+  margin-top: var(--space-3);
+  margin-bottom: var(--space-3);
   max-width: 440px;
   border-radius: var(--radius);
   overflow: hidden;
@@ -554,6 +555,25 @@ h1.section-title {
   width: 100%;
   height: auto;
   display: block;
+}
+
+/* 정렬: 왼쪽 / 가운데 / 오른쪽 */
+.news-article-hero-align-left,
+.news-article-inline-img-align-left {
+  margin-left: 0;
+  margin-right: auto;
+}
+
+.news-article-hero-align-center,
+.news-article-inline-img-align-center {
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.news-article-hero-align-right,
+.news-article-inline-img-align-right {
+  margin-left: auto;
+  margin-right: 0;
 }
 
 @media (max-width: 560px) {
