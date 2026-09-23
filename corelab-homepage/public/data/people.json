@@ -3,14 +3,38 @@
     {
       "id": "lim-gyuyeon",
       "name": "임규연",
-      "photo": "",
-      "position": "교수 / 지도교수",
-      "bio": "협력학습과 학습분석을 연구합니다.",
+      "photo": "images/people/임규연-mudyry6x.jpg",
+      "position": "교수",
+      "bio": "임규연 교수는 사범대학 교육공학과 교수로 테크놀로지기반 학습, 협력학습 및 자기조절학습, 학습경험설계(LXD) 분야에서 연구를 진행하고 있다. \n연구재단 인문사회분야 신진/중견/융합연구자지원과제, BK21플러스과제 등 다양한 연구과제를 책임 혹은 공동연구원으로 수행하였으며, 이공분야 중견과제로 온라인 학습을 위한 대시보드 설계(2017-2019), 개별화학습 설계(2020-2022) 연구를 수주한 바 있다. \n현재 교수자-AI 협력(2024-2026), 협력학습분석학(2023-2025) 관련 연구를 연구책임자로 수행 중이다. \n2014년 이화여자대학교 강의우수교수상, 2022년 교육대학원 강의우수상을 수상하였다.",
       "affiliation": "이화여자대학교 교육공학과",
-      "detail": [
-        "예시 상세 이력입니다. 이름/사진을 누르면 펼쳐집니다.",
-        "학력, 경력, 주요 연구 관심사 등을 자유롭게 줄 단위로 넣으세요.",
-        "detail 필드가 없으면 이 버튼 자체가 생기지 않습니다."
+      "photoCrop": {
+        "x": 50,
+        "y": 0,
+        "zoom": 1
+      },
+      "email": "klim@ewha.ac.kr",
+      "phone": "02-3277-2714",
+      "office": "교육관 B동 563호",
+      "researchInterests": [
+        "Technology-enhanced learning",
+        "Collaborative learning analytics",
+        "Learning experience design",
+        "Human-AI interaction"
+      ],
+      "scholarLink": "https://scholar.google.com/citations?user=TyXm6PcAAAAJ&hl=ko&oi=ao",
+      "education": [
+        "The Pennsylvania State University Ph.D.(Instructional System)"
+      ],
+      "career": [
+        "교무처부처장(교육) 2025-02-01 ~ 2027-01-31",
+        "교육혁신센터장 2025-02-01 ~ 2027-01-31",
+        "교직부장 2020-02-01 ~ 2020-07-31",
+        "교육혁신센터장 2020-08-01 ~ 2022-07-31",
+        "교육공학과장 2014-02-01 ~ 2018-01-31",
+        "멀티미디어학연계전공주임교수 2014-02-01 ~ 2018-01-31"
+      ],
+      "awards": [
+        "강의우수 2014-03-01"
       ]
     }
   ],
