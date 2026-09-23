@@ -1,54 +1,55 @@
 import { createContext, useCallback, useContext, useState } from 'react'
-import { ADMIN_PASSWORD_HASH, sha256Hex } from './adminConfig'
+import { verifyToken } from './githubApi'
 
-const FLAG_KEY = 'corelab_admin'
+const TOKEN_KEY = 'corelab_admin_token'
 const AdminAuthContext = createContext(null)
 
-function readStoredFlag() {
+function readStoredToken() {
   try {
-    return localStorage.getItem(FLAG_KEY) === '1'
+    return localStorage.getItem(TOKEN_KEY) || ''
   } catch {
-    return false
+    return ''
   }
 }
 
 export function AdminAuthProvider({ children }) {
-  const [isAdmin, setIsAdmin] = useState(readStoredFlag)
+  const [token, setToken] = useState(readStoredToken)
   const [checking, setChecking] = useState(false)
   const [error, setError] = useState(null)
 
-  const login = useCallback(async (password) => {
+  const login = useCallback(async (newToken) => {
     setChecking(true)
     setError(null)
     try {
-      const hash = await sha256Hex(password)
-      if (hash !== ADMIN_PASSWORD_HASH) {
-        setError('비밀번호가 올바르지 않습니다.')
-        return false
-      }
-      setIsAdmin(true)
+      await verifyToken(newToken)
+      setToken(newToken)
       try {
-        localStorage.setItem(FLAG_KEY, '1')
+        localStorage.setItem(TOKEN_KEY, newToken)
       } catch {
         /* 저장이 안 돼도 이번 세션 동안은 로그인 상태가 유지됩니다. */
       }
       return true
+    } catch (err) {
+      setError(err.message || '로그인에 실패했습니다.')
+      return false
     } finally {
       setChecking(false)
     }
   }, [])
 
   const logout = useCallback(() => {
-    setIsAdmin(false)
+    setToken('')
     try {
-      localStorage.removeItem(FLAG_KEY)
+      localStorage.removeItem(TOKEN_KEY)
     } catch {
       /* noop */
     }
   }, [])
 
   return (
-    <AdminAuthContext.Provider value={{ isAdmin, login, logout, checking, error }}>
+    <AdminAuthContext.Provider
+      value={{ isAdmin: Boolean(token), token, login, logout, checking, error }}
+    >
       {children}
     </AdminAuthContext.Provider>
   )

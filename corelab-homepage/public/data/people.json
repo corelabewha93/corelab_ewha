@@ -4,46 +4,32 @@
       "id": "lim-gyuyeon",
       "name": "임규연",
       "nameEn": "Kyu Yon Lim",
-      "photo": "images/people/임규연.jpg",
-      "position": "교수",
+      "photo": "",
+      "position": "교수 / 지도교수",
       "bio": "협력학습과 학습분석을 연구합니다.",
       "affiliation": "이화여자대학교 교육공학과",
       "email": "",
       "link": "",
       "detail": [
-        "위대한 교수님의 이력 추가 예정.",
-        "펜 어쩌구 그 막 호랑인지 뭔지 있는 학교.",
-        "추가추가 예정."
+        "예시 상세 이력입니다. 이름/사진을 누르면 펼쳐집니다.",
+        "학력, 경력, 주요 연구 관심사 등을 자유롭게 줄 단위로 넣으세요.",
+        "detail 필드가 없으면 이 버튼 자체가 생기지 않습니다."
       ]
     }
   ],
   "students": [
     {
-      "id": "Hwang-HyeJung",
+      "id": "hwang-hyejeong",
       "name": "황혜정",
-      "photo": "images/people/황혜정.jpg",
+      "photo": "",
       "degree": "MA",
       "admission": "2026",
       "bio": "예시 소개 문구입니다.",
       "affiliation": "",
-      "email": "hwang.et@ewha.ac.kr",
+      "email": "",
       "detail": [
-        "예시 작성 테스트 중",
-        "어쩌구저쩌구 최고의 야구기자 되시겠다."
-      ]
-    },
-    {
-      "id": "jeon-hyojeong",
-      "name": "전효정",
-      "photo": "images/people/전효정.jpg",
-      "degree": "MA",
-      "admission": "2025",
-      "affiliation": "",
-      "bio": "CSCL, 블라블라, 예시 아무거나 생각 중",
-      "detail": [
-        "블라블라",
-        "효정샘의 위대한 이력",
-        "나열 예정."
+        "예시 상세 이력 항목입니다.",
+        "필요 없으면 이 필드를 통째로 지워도 됩니다."
       ]
     }
   ],

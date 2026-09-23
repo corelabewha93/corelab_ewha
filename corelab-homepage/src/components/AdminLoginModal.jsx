@@ -16,13 +16,16 @@ export default function AdminLoginModal({ onClose }) {
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card" onClick={(e) => e.stopPropagation()}>
         <h2 className="modal-title">관리자 로그인</h2>
-        <p className="modal-hint">비밀번호를 입력하면 People 페이지에 등록 버튼이 나타납니다.</p>
+        <p className="modal-hint">
+          GitHub 개인 토큰(PAT)을 입력하면 People 페이지에서 바로 등록/수정이 가능해집니다.
+          토큰은 이 브라우저에만 저장되고 GitHub로만 전송됩니다.
+        </p>
 
         <form onSubmit={handleSubmit}>
           <input
             type="password"
             className="modal-input"
-            placeholder="비밀번호"
+            placeholder="GitHub 토큰 (ghp_...)"
             value={value}
             onChange={(e) => setValue(e.target.value)}
             autoFocus

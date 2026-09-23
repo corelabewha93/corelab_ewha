@@ -12,7 +12,7 @@ const TABS = [
   { key: 'alumni', label: 'Alumni' },
 ]
 
-function StudentsList({ items = [] }) {
+function StudentsList({ items = [], isAdmin, onEdit }) {
   const groups = useMemo(() => {
     const order = ['PhD', 'Integrated', 'MA']
     const byDegree = {}
@@ -33,7 +33,13 @@ function StudentsList({ items = [] }) {
           <h3 className="people-group-title">{degree}</h3>
           <div className="people-grid">
             {students.map((s) => (
-              <PersonCard key={s.id} person={s} positionLabel={s.admission ? `${s.admission}학번` : ''} />
+              <PersonCard
+                key={s.id}
+                person={s}
+                positionLabel={s.admission ? `${s.admission}학번` : ''}
+                isAdmin={isAdmin}
+                onEdit={() => onEdit(s, 'students')}
+              />
             ))}
           </div>
         </div>
@@ -47,11 +53,18 @@ export default function People() {
   const [tab, setTab] = useQueryTab('/people', TABS.map((t) => t.key), 'faculty')
   const { isAdmin } = useAdminAuth()
   const [showRegister, setShowRegister] = useState(false)
+  const [editTarget, setEditTarget] = useState(null) // { person, category } | null
 
   const alumniSorted = useMemo(() => {
     if (!data?.alumni) return []
     return [...data.alumni].sort((a, b) => (b.graduation ?? '').localeCompare(a.graduation ?? ''))
   }, [data])
+
+  const openEdit = (person, category) => setEditTarget({ person, category })
+  const closeModal = () => {
+    setShowRegister(false)
+    setEditTarget(null)
+  }
 
   return (
     <div className="page container">
@@ -72,13 +85,21 @@ export default function People() {
                     <p className="empty-state">등록된 교수진이 없습니다.</p>
                   ) : (
                     data.faculty.map((f) => (
-                      <PersonCard key={f.id} person={f} positionLabel={f.position} />
+                      <PersonCard
+                        key={f.id}
+                        person={f}
+                        positionLabel={f.position}
+                        isAdmin={isAdmin}
+                        onEdit={() => openEdit(f, 'faculty')}
+                      />
                     ))
                   )}
                 </div>
               )}
 
-              {tab === 'students' && <StudentsList items={data.students} />}
+              {tab === 'students' && (
+                <StudentsList items={data.students} isAdmin={isAdmin} onEdit={openEdit} />
+              )}
 
               {tab === 'alumni' && (
                 <div className="people-grid">
@@ -90,6 +111,8 @@ export default function People() {
                         key={a.id}
                         person={a}
                         positionLabel={a.graduation ? `${a.graduation} 졸업` : ''}
+                        isAdmin={isAdmin}
+                        onEdit={() => openEdit(a, 'alumni')}
                       />
                     ))
                   )}
@@ -106,8 +129,14 @@ export default function People() {
         </button>
       )}
 
-      {showRegister && (
-        <AdminRegisterModal initialCategory={tab} onClose={() => setShowRegister(false)} />
+      {showRegister && <AdminRegisterModal initialCategory={tab} onClose={closeModal} />}
+
+      {editTarget && (
+        <AdminRegisterModal
+          editPerson={editTarget.person}
+          editCategory={editTarget.category}
+          onClose={closeModal}
+        />
       )}
     </div>
   )

@@ -1,10 +1,9 @@
 import { useState } from 'react'
+import { useAdminAuth } from '../admin/AdminAuthContext'
+import { getTextFile, putTextFile, putBase64File } from '../admin/githubApi'
+import { PEOPLE_JSON_PATH, PEOPLE_IMAGES_PATH } from '../admin/githubConfig'
 
-const CATEGORY_LABELS = {
-  faculty: 'Faculty',
-  students: 'Students',
-  alumni: 'Alumni',
-}
+const CATEGORIES = ['faculty', 'students', 'alumni']
 
 function slugify(name) {
   const base = name
@@ -15,121 +14,129 @@ function slugify(name) {
   return (base || 'person') + '-' + Date.now().toString(36)
 }
 
-export default function AdminRegisterModal({ initialCategory = 'students', onClose }) {
-  const [category, setCategory] = useState(initialCategory)
-  const [name, setName] = useState('')
+function fileToDataUrl(file) {
+  return new Promise((resolve, reject) => {
+    const reader = new FileReader()
+    reader.onload = () => resolve(reader.result)
+    reader.onerror = reject
+    reader.readAsDataURL(file)
+  })
+}
+
+/**
+ * editPerson이 있으면 "수정 모드"(기존 사람을 그대로 불러와 채운 뒤 그 항목을 갱신),
+ * 없으면 "등록 모드"(새 사람을 배열에 추가)로 동작합니다.
+ * editCategory는 이 사람이 지금 들어있는 분류(수정 시 원래 위치를 찾기 위해 필요).
+ */
+export default function AdminRegisterModal({
+  initialCategory = 'students',
+  editPerson = null,
+  editCategory = null,
+  onClose,
+  onSaved,
+}) {
+  const isEdit = Boolean(editPerson)
+  const { token } = useAdminAuth()
+
+  const [category, setCategory] = useState(editCategory || initialCategory)
+  const [name, setName] = useState(editPerson?.name || '')
   const [photoFile, setPhotoFile] = useState(null)
-  const [position, setPosition] = useState('') // faculty
-  const [degree, setDegree] = useState('MA') // students / alumni
-  const [admission, setAdmission] = useState('') // students
-  const [graduation, setGraduation] = useState('') // alumni, YYYY-MM
-  const [affiliation, setAffiliation] = useState('')
-  const [bio, setBio] = useState('')
-  const [detailText, setDetailText] = useState('')
+  const [photoPosition, setPhotoPosition] = useState(editPerson?.photoPosition || 'center')
+  const [position, setPosition] = useState(editPerson?.position || '')
+  const [degree, setDegree] = useState(editPerson?.degree || 'MA')
+  const [admission, setAdmission] = useState(editPerson?.admission || '')
+  const [graduation, setGraduation] = useState(editPerson?.graduation || '')
+  const [affiliation, setAffiliation] = useState(editPerson?.affiliation || '')
+  const [bio, setBio] = useState(editPerson?.bio || '')
+  const [detailText, setDetailText] = useState((editPerson?.detail || []).join('\n'))
 
-  const [result, setResult] = useState(null) // { json, photoUrl, photoFileName }
-  const [copied, setCopied] = useState(false)
+  const [submitting, setSubmitting] = useState(false)
+  const [error, setError] = useState(null)
+  const [done, setDone] = useState(false)
 
-  const handleSubmit = (e) => {
+  const handleSubmit = async (e) => {
     e.preventDefault()
-    if (!name.trim()) return
+    if (!name.trim() || submitting) return
+    setSubmitting(true)
+    setError(null)
 
-    const id = slugify(name)
-    let photoPath = ''
-    let photoUrl = null
-    let photoFileName = ''
-
-    if (photoFile) {
-      const ext = (photoFile.name.split('.').pop() || 'jpg').toLowerCase()
-      photoFileName = `${id}.${ext}`
-      photoPath = `images/people/${photoFileName}`
-      photoUrl = URL.createObjectURL(photoFile)
-    }
-
-    const detail = detailText
-      .split('\n')
-      .map((line) => line.trim())
-      .filter(Boolean)
-
-    const person = { id, name: name.trim(), photo: photoPath }
-
-    if (category === 'faculty') {
-      person.position = position.trim()
-      person.affiliation = affiliation.trim()
-      person.bio = bio.trim()
-    } else if (category === 'students') {
-      person.degree = degree
-      person.admission = admission.trim()
-      person.affiliation = affiliation.trim()
-      person.bio = bio.trim()
-    } else {
-      person.degree = degree
-      person.graduation = graduation.trim()
-      person.affiliation = affiliation.trim()
-      person.bio = bio.trim()
-    }
-
-    if (detail.length > 0) person.detail = detail
-
-    setResult({ json: JSON.stringify(person, null, 2), photoUrl, photoFileName })
-    setCopied(false)
-  }
-
-  const handleCopy = async () => {
     try {
-      await navigator.clipboard.writeText(result.json)
-      setCopied(true)
-      setTimeout(() => setCopied(false), 2000)
-    } catch {
-      /* 클립보드 접근이 막힌 브라우저에서는 아래 텍스트 상자에서 직접 선택/복사하면 됩니다. */
+      const id = editPerson?.id || slugify(name)
+      let photoPath = editPerson?.photo || ''
+
+      if (photoFile) {
+        const ext = (photoFile.name.split('.').pop() || 'jpg').toLowerCase()
+        const fileName = `${id}.${ext}`
+        const dataUrl = await fileToDataUrl(photoFile)
+        await putBase64File(
+          token,
+          `${PEOPLE_IMAGES_PATH}/${fileName}`,
+          dataUrl,
+          `사진 업로드: ${name.trim()}`,
+        )
+        photoPath = `images/people/${fileName}`
+      }
+
+      const detail = detailText
+        .split('\n')
+        .map((line) => line.trim())
+        .filter(Boolean)
+
+      const person = { id, name: name.trim(), photo: photoPath }
+      if (photoPosition && photoPosition !== 'center') person.photoPosition = photoPosition
+
+      if (category === 'faculty') {
+        person.position = position.trim()
+        person.affiliation = affiliation.trim()
+        person.bio = bio.trim()
+      } else if (category === 'students') {
+        person.degree = degree
+        person.admission = admission.trim()
+        person.affiliation = affiliation.trim()
+        person.bio = bio.trim()
+      } else {
+        person.degree = degree
+        person.graduation = graduation.trim()
+        person.affiliation = affiliation.trim()
+        person.bio = bio.trim()
+      }
+
+      if (detail.length > 0) person.detail = detail
+
+      const { content, sha } = await getTextFile(token, PEOPLE_JSON_PATH)
+      const data = JSON.parse(content)
+      CATEGORIES.forEach((c) => {
+        if (!Array.isArray(data[c])) data[c] = []
+      })
+
+      if (isEdit) {
+        const fromCategory = editCategory || category
+        data[fromCategory] = data[fromCategory].filter((p) => p.id !== id)
+      }
+      data[category].push(person)
+
+      const message = isEdit ? `구성원 수정: ${name.trim()}` : `구성원 등록: ${name.trim()}`
+      await putTextFile(token, PEOPLE_JSON_PATH, JSON.stringify(data, null, 2) + '\n', message, sha)
+
+      setDone(true)
+      onSaved?.()
+    } catch (err) {
+      setError(err.message || '저장 중 문제가 발생했습니다.')
+    } finally {
+      setSubmitting(false)
     }
   }
 
-  if (result) {
+  if (done) {
     return (
       <div className="modal-overlay" onClick={onClose}>
-        <div className="modal-card modal-card-wide" onClick={(e) => e.stopPropagation()}>
-          <h2 className="modal-title">등록 준비 완료</h2>
-          <p className="modal-hint">아래 순서대로 GitHub에 반영해주세요.</p>
-
-          <ol className="modal-steps">
-            {result.photoUrl && (
-              <li>
-                사진을 다운로드해서{' '}
-                <code>public/images/people/</code> 폴더에 그대로 업로드하세요.
-                <div style={{ marginTop: '0.4rem' }}>
-                  <a
-                    href={result.photoUrl}
-                    download={result.photoFileName}
-                    className="btn-primary"
-                    style={{ display: 'inline-block', fontSize: '0.85rem', padding: '0.4rem 0.9rem' }}
-                  >
-                    사진 다운로드 ({result.photoFileName})
-                  </a>
-                </div>
-              </li>
-            )}
-            <li>
-              아래 내용을 복사해서 <code>people.json</code>의{' '}
-              <strong>{CATEGORY_LABELS[category]}</strong> 배열(<code>"{category}": [ ... ]</code>) 안,
-              다른 항목들 사이에 붙여넣으세요. (앞뒤로 쉼표 <code>,</code> 잘 맞춰주세요)
-            </li>
-            <li>GitHub에서 Commit changes를 눌러 저장하세요. 1~2분 뒤 사이트에 반영됩니다.</li>
-          </ol>
-
-          <textarea className="modal-input modal-textarea modal-json" readOnly rows={10} value={result.json} />
-
+        <div className="modal-card" onClick={(e) => e.stopPropagation()}>
+          <h2 className="modal-title">{isEdit ? '수정 완료' : '등록 완료'}</h2>
+          <p className="modal-hint">
+            GitHub에 저장되었습니다. 1~2분 뒤 자동으로 홈페이지에 반영됩니다.
+          </p>
           <div className="modal-actions">
-            <button type="button" className="modal-btn-secondary" onClick={() => setResult(null)}>
-              다시 입력
-            </button>
-            <button type="button" className="btn-primary" onClick={handleCopy}>
-              {copied ? '복사됨!' : 'JSON 복사'}
-            </button>
-          </div>
-
-          <div className="modal-actions" style={{ marginTop: '0.5rem' }}>
-            <button type="button" className="modal-btn-secondary" onClick={onClose}>
+            <button type="button" className="btn-primary" onClick={onClose}>
               닫기
             </button>
           </div>
@@ -141,7 +148,7 @@ export default function AdminRegisterModal({ initialCategory = 'students', onClo
   return (
     <div className="modal-overlay" onClick={onClose}>
       <div className="modal-card modal-card-wide" onClick={(e) => e.stopPropagation()}>
-        <h2 className="modal-title">새 구성원 등록</h2>
+        <h2 className="modal-title">{isEdit ? '구성원 정보 수정' : '새 구성원 등록'}</h2>
 
         <form onSubmit={handleSubmit}>
           <label className="modal-field">
@@ -159,13 +166,26 @@ export default function AdminRegisterModal({ initialCategory = 'students', onClo
           </label>
 
           <label className="modal-field">
-            <span>사진 (선택)</span>
+            <span>사진 {isEdit ? '(바꾸려면 새로 선택, 그대로 두면 기존 사진 유지)' : '(선택)'}</span>
             <input
               type="file"
               accept="image/*"
               className="modal-input"
               onChange={(e) => setPhotoFile(e.target.files?.[0] ?? null)}
             />
+          </label>
+
+          <label className="modal-field">
+            <span>사진 위치 (사진이 잘리는 위치 조정)</span>
+            <select
+              className="modal-input"
+              value={photoPosition}
+              onChange={(e) => setPhotoPosition(e.target.value)}
+            >
+              <option value="top">위쪽 (얼굴이 사진 위쪽에 있을 때)</option>
+              <option value="center">가운데 (기본)</option>
+              <option value="bottom">아래쪽 (얼굴이 사진 아래쪽에 있을 때)</option>
+            </select>
           </label>
 
           {category === 'faculty' && (
@@ -241,12 +261,15 @@ export default function AdminRegisterModal({ initialCategory = 'students', onClo
             />
           </label>
 
+          {error && <p className="modal-error">{error}</p>}
+          {submitting && <p className="modal-status">GitHub에 저장하는 중...</p>}
+
           <div className="modal-actions">
             <button type="button" className="modal-btn-secondary" onClick={onClose}>
               취소
             </button>
-            <button type="submit" className="btn-primary">
-              등록 내용 만들기
+            <button type="submit" className="btn-primary" disabled={submitting}>
+              {submitting ? '저장 중...' : isEdit ? '수정 저장' : '등록하기'}
             </button>
           </div>
         </form>
