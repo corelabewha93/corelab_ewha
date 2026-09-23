@@ -426,6 +426,27 @@
       ],
       "links": [],
       "id": "person-mue66891djv"
+    },
+    {
+      "name": "김다현",
+      "photo": "images/people/김다현-mue6stms.png",
+      "photoCrop": {
+        "x": 32.2,
+        "y": 43.8,
+        "zoom": 1
+      },
+      "degree": "MA",
+      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
+        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
+        "#관심분야",
+        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
+      ],
+      "links": [],
+      "id": "person-mue6sv64kpi"
     }
   ]
 }
