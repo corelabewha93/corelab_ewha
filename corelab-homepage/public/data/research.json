@@ -1,0 +1,57 @@
+{
+  "publications": [
+    {
+      "id": "pub-2026-sample",
+      "year": 2026,
+      "type": "journal",
+      "authors": ["Lim, K.", "Hwang, H."],
+      "title": "예시 논문 제목입니다",
+      "venue": "Computers & Education",
+      "details": "212, 105001",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-2025-sample",
+      "year": 2025,
+      "type": "conference",
+      "authors": ["Lim, K.", "Jeon, H."],
+      "title": "예시 학회 발표 제목입니다",
+      "venue": "AECT Annual Convention",
+      "details": "",
+      "doi": "",
+      "link": ""
+    }
+  ],
+  "projects": [
+    {
+      "id": "proj-sample",
+      "title": "예시 연구과제 제목",
+      "funder": "한국연구재단",
+      "start": "2024-03",
+      "end": "2027-02",
+      "description": "종료일이 비어있거나 미래 날짜면 '진행 중'으로 자동 표시됩니다."
+    }
+  ],
+  "patents": [
+    {
+      "id": "pat-sample",
+      "title": "예시 특허 제목",
+      "inventors": ["임규연"],
+      "number": "10-2025-0000000",
+      "status": "pending",
+      "date": "2025-06-01",
+      "country": "KR"
+    }
+  ],
+  "tools": [
+    {
+      "id": "tool-sample",
+      "name": "예시 도구/시스템 이름",
+      "description": "한 줄 설명을 여기에 적습니다.",
+      "image": "",
+      "link": "",
+      "tags": ["Learning Analytics"]
+    }
+  ]
+}

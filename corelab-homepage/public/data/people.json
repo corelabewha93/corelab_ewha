@@ -1,0 +1,38 @@
+{
+  "faculty": [
+    {
+      "id": "lim-gyuyeon",
+      "name": "임규연",
+      "nameEn": "Kyu Yon Lim",
+      "photo": "",
+      "position": "교수 / 지도교수",
+      "bio": "협력학습과 학습분석을 연구합니다.",
+      "affiliation": "이화여자대학교 교육공학과",
+      "email": "",
+      "link": ""
+    }
+  ],
+  "students": [
+    {
+      "id": "hwang-hyejeong",
+      "name": "황혜정",
+      "photo": "",
+      "degree": "MA",
+      "admission": "2026",
+      "bio": "예시 소개 문구입니다.",
+      "affiliation": "",
+      "email": ""
+    }
+  ],
+  "alumni": [
+    {
+      "id": "alumni-sample",
+      "name": "예시 졸업생",
+      "photo": "",
+      "degree": "MA",
+      "graduation": "2023-02",
+      "affiliation": "현재 근무지 / 직함",
+      "bio": ""
+    }
+  ]
+}
