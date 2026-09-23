@@ -40,6 +40,23 @@
   ],
   "students": [
     {
+      "name": "윤이슬",
+      "photo": "images/people/윤이슬-mue0s0r7.jpg",
+      "photoCrop": {
+        "x": 48.6,
+        "y": 37,
+        "zoom": 2.14
+      },
+      "degree": "MA",
+      "bio": "",
+      "detail": [
+        "#관심분야",
+        "HAC, CSCL"
+      ],
+      "links": [],
+      "id": "person-mue0s3a1gna"
+    },
+    {
       "name": "전효정",
       "photo": "images/people/전효정-mue0b2sc.jpg",
       "photoCrop": {
@@ -147,23 +164,6 @@
       ],
       "links": [],
       "id": "person-mue0fxe71xi"
-    },
-    {
-      "name": "윤이슬",
-      "photo": "images/people/윤이슬-mue0s0r7.jpg",
-      "photoCrop": {
-        "x": 48.6,
-        "y": 37,
-        "zoom": 2.14
-      },
-      "degree": "MA",
-      "bio": "",
-      "detail": [
-        "#관심분야",
-        "HAC, CSCL"
-      ],
-      "links": [],
-      "id": "person-mue0s3a1gna"
     }
   ],
   "alumni": [
