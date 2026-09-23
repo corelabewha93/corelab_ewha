@@ -2,7 +2,11 @@
   {
     "id": "lablife-sample",
     "image": "images/lablife/sample.jpg",
-    "caption": "예시 캡션: 랩 세미나 모습",
-    "date": "2026-07"
+    "caption": "2026-2학기 신입생들의",
+    "date": "2026-07",
+    "images": [
+      "images/lablife/lablife-2026-07-mue82y6t.jpg"
+    ],
+    "body": ""
   }
 ]
