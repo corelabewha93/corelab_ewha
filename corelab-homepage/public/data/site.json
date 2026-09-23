@@ -1,6 +1,6 @@
 {
   "labName": "CoRe Lab",
-  "labTagline": "Collaborative Learning Research",
+  "labTagline": "Collaborative Learning Research Lab",
   "university": "이화여자대학교 교육공학과 임규연 교수 연구실",
   "overview": [
     "CoRe Lab(Collaborative Learning Research)은 협력학습과 학습분석을 중심으로 연구하는 이화여자대학교 교육공학과 연구실입니다.",
@@ -17,5 +17,6 @@
     "email": "corelab@ewha.ac.kr",
     "phone": "",
     "mapUrl": ""
-  }
+  },
+  "heroImage": ""
 }
