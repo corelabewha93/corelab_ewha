@@ -8,6 +8,13 @@ function initials(name) {
   return name.trim().slice(0, 1)
 }
 
+/** "내용 | 날짜" 형태의 줄을 라벨/날짜로 나눕니다. "|"가 없으면 날짜 없이 라벨만 표시합니다. */
+function splitHistoryLine(line) {
+  const idx = line.indexOf('|')
+  if (idx === -1) return { label: line.trim(), date: '' }
+  return { label: line.slice(0, idx).trim(), date: line.slice(idx + 1).trim() }
+}
+
 /** 교수 프로필: 사진 + 이름 + 연락처 + 소개 + 연구관심분야를 한 화면에 바로 보여줍니다. */
 function FacultyProfile({ person, onEdit, reorder }) {
   const contactLines = [person.email, person.office, person.phone].filter(Boolean)
@@ -83,23 +90,35 @@ function FacultyProfile({ person, onEdit, reorder }) {
                 </ul>
               </div>
             )}
-            {career.length > 0 && (
-              <div className="faculty-history-col">
-                <h4>경력</h4>
-                <ul>
-                  {career.map((line, i) => (
-                    <li key={i}>{line}</li>
-                  ))}
-                </ul>
-              </div>
-            )}
             {awards.length > 0 && (
               <div className="faculty-history-col">
                 <h4>교내수상이력</h4>
                 <ul>
-                  {awards.map((line, i) => (
-                    <li key={i}>{line}</li>
-                  ))}
+                  {awards.map((line, i) => {
+                    const { label, date } = splitHistoryLine(line)
+                    return (
+                      <li key={i} className="faculty-history-row">
+                        <span>{label}</span>
+                        {date && <span className="faculty-history-date">{date}</span>}
+                      </li>
+                    )
+                  })}
+                </ul>
+              </div>
+            )}
+            {career.length > 0 && (
+              <div className="faculty-history-col">
+                <h4>경력</h4>
+                <ul>
+                  {career.map((line, i) => {
+                    const { label, date } = splitHistoryLine(line)
+                    return (
+                      <li key={i} className="faculty-history-row">
+                        <span>{label}</span>
+                        {date && <span className="faculty-history-date">{date}</span>}
+                      </li>
+                    )
+                  })}
                 </ul>
               </div>
             )}
@@ -123,9 +142,8 @@ function FacultyProfile({ person, onEdit, reorder }) {
 
 /**
  * category에 따라 보이는 정보가 달라집니다.
- * - faculty  : 사진·연락처·소개가 모두 펼쳐진 프로필 카드 (FacultyProfile)
- * - students : 소속, 한 줄 소개 / 펼치면 상세 이력
- * - alumni   : 이름만 / 펼치면 현재 직장·직함 + 상세 이력
+ * - faculty          : 사진·연락처·소개가 모두 펼쳐진 프로필 카드 (FacultyProfile)
+ * - students/alumni  : 평소엔 사진 · 이름만. 펼치면 한 줄 소개(굵게) → (Alumni만) 현재 직장 → #소제목으로 구분한 자유 이력
  */
 export default function PersonCard({ person, category, onEdit, reorder }) {
   const [open, setOpen] = useState(false)
@@ -138,10 +156,18 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
   const detail = Array.isArray(person.detail) ? person.detail : []
   const links = Array.isArray(person.links) ? person.links.filter((l) => l.url) : []
 
+  // 이름/사진을 눌러 펼치면: 한 줄 소개(굵게) → (Alumni만) 현재 직장 → #소제목으로 구분한 자유 이력
   const expandLines = []
-  if (isAlumni && person.affiliation) expandLines.push({ text: person.affiliation, strong: true })
-  if (isAlumni && person.bio) expandLines.push({ text: person.bio })
-  detail.forEach((text) => expandLines.push({ text }))
+  if (person.bio) expandLines.push({ text: person.bio, kind: 'intro' })
+  if (isAlumni && person.affiliation) expandLines.push({ text: person.affiliation, kind: 'strong' })
+  detail.forEach((line) => {
+    const trimmed = line.trim()
+    if (trimmed.startsWith('#')) {
+      expandLines.push({ text: trimmed.replace(/^#+\s*/, ''), kind: 'heading' })
+    } else {
+      expandLines.push({ text: line, kind: 'normal' })
+    }
+  })
 
   const expandable = expandLines.length > 0 || links.length > 0
   const toggle = () => expandable && setOpen((v) => !v)
@@ -172,13 +198,10 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
         {expandable && !reorder && <span className={`chevron${open ? ' open' : ''}`}>▾</span>}
       </button>
 
-      {!isAlumni && person.affiliation && <p className="person-affiliation">{person.affiliation}</p>}
-      {!isAlumni && person.bio && <p className="person-bio">{person.bio}</p>}
-
       {expandable && open && !reorder && (
         <ul className="person-detail">
           {expandLines.map((line, i) => (
-            <li key={i} className={line.strong ? 'strong' : undefined}>
+            <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
               {line.text}
             </li>
           ))}

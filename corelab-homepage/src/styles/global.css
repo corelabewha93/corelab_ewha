@@ -708,7 +708,7 @@ h1.section-title {
   position: relative;
 }
 
-.person-detail li.strong {
+.person-detail li.person-detail-strong {
   font-weight: 600;
   color: var(--color-primary);
 }
@@ -718,6 +718,30 @@ h1.section-title {
   position: absolute;
   left: 0;
   color: var(--color-accent);
+}
+
+.person-detail li.person-detail-intro {
+  padding-left: 0;
+  font-weight: 700;
+  font-size: 0.9rem;
+  color: var(--color-text);
+  line-height: 1.4;
+}
+
+.person-detail li.person-detail-intro::before {
+  content: none;
+}
+
+.person-detail li.person-detail-heading {
+  padding-left: 0;
+  margin-top: 0.5rem;
+  font-weight: 700;
+  color: var(--color-primary);
+  font-size: 0.78rem;
+}
+
+.person-detail li.person-detail-heading::before {
+  content: none;
 }
 
 .people-group + .people-group {
@@ -1672,6 +1696,21 @@ h1.section-title {
   font-size: 0.82rem;
   color: var(--color-text);
   line-height: 1.5;
+}
+
+.faculty-history-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 0.6rem;
+}
+
+.faculty-history-date {
+  flex-shrink: 0;
+  font-size: 0.72rem;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  color: var(--color-text-muted);
+  white-space: nowrap;
 }
 
 .person-detail-link {
