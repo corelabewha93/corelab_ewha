@@ -1,9 +1,11 @@
+import { EditButton } from '../../components/admin/AdminControls'
+
 const STATUS_LABELS = {
   registered: '등록',
   pending: '출원',
 }
 
-export default function Patents({ items = [] }) {
+export default function Patents({ items = [], onEdit }) {
   if (items.length === 0) return <p className="empty-state">등록된 특허가 없습니다.</p>
 
   const sorted = [...items].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
@@ -11,7 +13,8 @@ export default function Patents({ items = [] }) {
   return (
     <div>
       {sorted.map((pat) => (
-        <div key={pat.id} className="patent-item">
+        <div key={pat.id} className="patent-item admin-item">
+          <EditButton onClick={() => onEdit(pat)} />
           <div className="pub-title" style={{ fontWeight: 600 }}>
             {pat.title}
             <span className={`badge${pat.status === 'registered' ? ' ongoing' : ''}`}>

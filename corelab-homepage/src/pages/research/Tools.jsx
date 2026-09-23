@@ -1,12 +1,14 @@
 import SafeImage from '../../components/SafeImage'
+import { EditButton } from '../../components/admin/AdminControls'
 
-export default function Tools({ items = [] }) {
+export default function Tools({ items = [], onEdit }) {
   if (items.length === 0) return <p className="empty-state">등록된 시스템/도구가 없습니다.</p>
 
   return (
     <div className="tools-grid">
       {items.map((tool) => (
-        <div key={tool.id} className="card tool-card">
+        <div key={tool.id} className="card tool-card admin-item">
+          <EditButton onClick={() => onEdit(tool)} />
           <div className="tool-image">
             <SafeImage src={tool.image} alt="" fallback={<span />} />
           </div>

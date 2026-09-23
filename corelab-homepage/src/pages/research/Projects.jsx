@@ -1,3 +1,5 @@
+import { EditButton } from '../../components/admin/AdminControls'
+
 function isOngoing(end) {
   if (!end) return true
   const endDate = new Date(`${end}-01`)
@@ -10,7 +12,7 @@ function formatMonth(ym) {
   return `${y}.${m}`
 }
 
-export default function Projects({ items = [] }) {
+export default function Projects({ items = [], onEdit }) {
   if (items.length === 0) return <p className="empty-state">등록된 연구과제가 없습니다.</p>
 
   const sorted = [...items].sort((a, b) => (b.start ?? '').localeCompare(a.start ?? ''))
@@ -20,7 +22,8 @@ export default function Projects({ items = [] }) {
       {sorted.map((proj) => {
         const ongoing = isOngoing(proj.end)
         return (
-          <div key={proj.id} className="project-item">
+          <div key={proj.id} className="project-item admin-item">
+            <EditButton onClick={() => onEdit(proj)} />
             <div className="pub-title" style={{ fontWeight: 600 }}>
               {proj.title}
               <span className={`badge${ongoing ? ' ongoing' : ''}`}>

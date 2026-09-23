@@ -1,4 +1,5 @@
 import { useMemo, useState } from 'react'
+import { EditButton } from '../../components/admin/AdminControls'
 
 const TYPE_LABELS = {
   journal: 'Journal',
@@ -7,7 +8,7 @@ const TYPE_LABELS = {
   other: 'Other',
 }
 
-export default function Publications({ items = [] }) {
+export default function Publications({ items = [], onEdit }) {
   const [filter, setFilter] = useState('all')
 
   const types = useMemo(() => {
@@ -55,7 +56,8 @@ export default function Publications({ items = [] }) {
         <div key={year} className="pub-year-group">
           <h3 className="pub-year-title">{year}</h3>
           {pubs.map((pub) => (
-            <div key={pub.id} className="pub-item">
+            <div key={pub.id} className="pub-item admin-item">
+              <EditButton onClick={() => onEdit(pub)} />
               <div className="pub-authors">
                 {(pub.authors ?? []).join(', ')}
                 {pub.type && <span className="badge">{TYPE_LABELS[pub.type] ?? pub.type}</span>}

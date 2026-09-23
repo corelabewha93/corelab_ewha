@@ -55,7 +55,7 @@ export async function verifyToken(token) {
 export async function getTextFile(token, path) {
   const res = await fetch(
     `${API_BASE}/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,
-    { headers: authHeaders(token) },
+    { headers: authHeaders(token), cache: 'no-store' },
   )
   if (!res.ok) {
     throw new Error(`파일을 불러오지 못했습니다: ${path} (${res.status})`)
@@ -97,7 +97,7 @@ export async function putTextFile(token, path, text, message, sha) {
 async function getFileShaIfExists(token, path) {
   const res = await fetch(
     `${API_BASE}/repos/${OWNER}/${REPO}/contents/${path}?ref=${BRANCH}`,
-    { headers: authHeaders(token) },
+    { headers: authHeaders(token), cache: 'no-store' },
   )
   if (res.status === 404) return null
   if (!res.ok) {

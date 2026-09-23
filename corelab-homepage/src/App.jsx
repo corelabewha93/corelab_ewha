@@ -7,6 +7,7 @@ import News from './pages/News'
 import Research from './pages/research/Research'
 import People from './pages/People'
 import LabLife from './pages/LabLife'
+import { Toaster } from './components/admin/AdminControls'
 
 const ROUTES = {
   '/': About,
@@ -38,6 +39,7 @@ export default function App() {
         <Page />
       </main>
       <Footer />
+      <Toaster />
     </AdminAuthProvider>
   )
 }
