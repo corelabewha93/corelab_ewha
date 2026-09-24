@@ -76,6 +76,15 @@ export const personFields = [
     showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
   {
+    name: 'pubNames',
+    label: '논문에 적힌 다른 이름 (선택)',
+    type: 'lines',
+    rows: 2,
+    placeholder: '예: Kim, H. J.',
+    hint: '"OOO의 논문 보기"는 한글 이름이 저자에 들어간 논문을 자동으로 모읍니다. 영어 논문처럼 다른 표기(예: Kim, H. J.)로 실린 논문도 함께 모으려면 한 줄에 하나씩 적어주세요. 쉼표·점·띄어쓰기 차이는 상관없어요.',
+    showIf: (v) => v.category === 'students' || v.category === 'alumni',
+  },
+  {
     name: 'email',
     label: '이메일',
     type: 'text',
