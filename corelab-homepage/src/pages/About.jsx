@@ -54,7 +54,7 @@ export default function About() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { heroImage, labName, labTagline, university, mottoKr, mottoEn, overview = [], researchAreas = [] } = data ?? {}
+  const { labName, mottoKr, mottoEn, overview = [], researchAreas = [] } = data ?? {}
 
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
@@ -64,35 +64,28 @@ export default function About() {
       <div className="admin-item">
         <EditButton onClick={() => setEditing(true)} label="소개 내용 수정" />
 
-        <section className="hero-keywords">
-          <div className="hero-keywords-head">
-            {university && <p className="hero-eyebrow">{university}</p>}
-            {labName && <h1 className="hero-title">{labName}</h1>}
-            {labTagline && <p className="hero-subtitle">{labTagline}</p>}
-          </div>
-
-          {(researchAreas.length > 0 || mottoEn) && (
-            <ul className="hero-keyword-list">
+        <section className="hero-sequence">
+          {researchAreas.length > 0 && (
+            <ul className="hero-kw-fall" aria-hidden="true">
               {researchAreas.map((kw, i) => (
-                <li key={kw} className="hero-keyword-item" style={{ '--i': i }}>
-                  <span className="hero-keyword-text">{heroKeyword(kw)}</span>
+                <li key={kw} className="hero-kw-fall-item" style={{ '--i': i }}>
+                  <span className="hero-kw-fall-text">{heroKeyword(kw)}</span>
                 </li>
               ))}
-              {mottoEn && (
-                <li className="hero-keyword-item hero-keyword-motto" style={{ '--i': researchAreas.length }}>
-                  <span className="hero-keyword-text">{mottoEn}</span>
-                </li>
-              )}
             </ul>
           )}
-        </section>
 
-        <section className="hero-photo-band">
-          {heroImage ? (
-            <SafeImage src={heroImage} alt="" fallback={<span />} />
-          ) : (
-            <span className="hero-photo-band-empty">단체사진이 이 자리에 들어갑니다</span>
-          )}
+          <div className="hero-sequence-content">
+            {mottoEn && <p className="hero-motto-reveal">{mottoEn}</p>}
+
+            <div className="hero-affiliation">
+              <p>Ewha Womans University</p>
+              <p>prof. K.Y.LIM</p>
+              <p>Collaborative Learning Research Lab</p>
+            </div>
+
+            {labName && <h1 className="hero-final-logo">{labName}</h1>}
+          </div>
         </section>
 
         <section className="section">
