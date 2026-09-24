@@ -8,6 +8,13 @@ import { EditButton } from '../components/admin/AdminControls'
 import SafeImage from '../components/SafeImage'
 import Link from '../router/Link'
 
+/** 연구 분야 태그가 "Computer-Supported Collaborative Learning (CSCL)"처럼 길면,
+ *  히어로 키워드 목록에서는 괄호 속 약어만 크게 보여줍니다. */
+function heroKeyword(area) {
+  const m = area.match(/\(([^)]+)\)\s*$/)
+  return m ? m[1] : area
+}
+
 function NewsPreview() {
   const { data } = useData('news.json')
   const items = (data ?? []).slice(0, 3)
@@ -57,21 +64,35 @@ export default function About() {
       <div className="admin-item">
         <EditButton onClick={() => setEditing(true)} label="소개 내용 수정" />
 
-        <section className="hero-magazine">
-          <div className="hero-magazine-photo">
-            {heroImage ? (
-              <SafeImage src={heroImage} alt="" fallback={<span />} />
-            ) : (
-              <span className="hero-magazine-empty">단체사진이 이 자리에 들어갑니다</span>
-            )}
-          </div>
-
-          <div className="hero-magazine-text">
+        <section className="hero-keywords">
+          <div className="hero-keywords-head">
             {university && <p className="hero-eyebrow">{university}</p>}
             {labName && <h1 className="hero-title">{labName}</h1>}
-            <div className="hero-rule" />
             {labTagline && <p className="hero-subtitle">{labTagline}</p>}
           </div>
+
+          {(researchAreas.length > 0 || mottoEn) && (
+            <ul className="hero-keyword-list">
+              {researchAreas.map((kw, i) => (
+                <li key={kw} className="hero-keyword-item" style={{ '--i': i }}>
+                  <span className="hero-keyword-text">{heroKeyword(kw)}</span>
+                </li>
+              ))}
+              {mottoEn && (
+                <li className="hero-keyword-item hero-keyword-motto" style={{ '--i': researchAreas.length }}>
+                  <span className="hero-keyword-text">{mottoEn}</span>
+                </li>
+              )}
+            </ul>
+          )}
+        </section>
+
+        <section className="hero-photo-band">
+          {heroImage ? (
+            <SafeImage src={heroImage} alt="" fallback={<span />} />
+          ) : (
+            <span className="hero-photo-band-empty">단체사진이 이 자리에 들어갑니다</span>
+          )}
         </section>
 
         <section className="section">
