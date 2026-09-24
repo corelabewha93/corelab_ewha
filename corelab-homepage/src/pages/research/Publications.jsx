@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react'
+import { useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
 import { getIndexes } from './journalIndex'
 
@@ -16,9 +16,70 @@ function splitThesis(title = '') {
   return { title: title.slice(0, m.index), thesis: `${m[1]}학위논문` }
 }
 
-function Authors({ authors = [] }) {
+/** 검색어를 공백으로 나눠 단어 목록으로 (모든 단어가 들어간 논문만 남깁니다). */
+function toTerms(query) {
+  return query.trim().toLowerCase().split(/\s+/).filter(Boolean)
+}
+
+const escapeRe = (t) => t.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')
+
+/** 검색어와 일치하는 부분만 은은하게 표시합니다. */
+function Highlight({ text = '', terms }) {
+  if (!terms.length || !text) return text
+  const re = new RegExp(`(${terms.map(escapeRe).join('|')})`, 'gi')
+  return text.split(re).map((part, i) =>
+    i % 2 === 1 ? (
+      <mark key={i} className="pub-hl">
+        {part}
+      </mark>
+    ) : (
+      part
+    ),
+  )
+}
+
+function Authors({ authors = [], terms }) {
   if (!authors.length) return null
-  return <p className="pub-authors">{authors.join(', ')}</p>
+  return (
+    <p className="pub-authors">
+      <Highlight text={authors.join(', ')} terms={terms} />
+    </p>
+  )
+}
+
+function SearchBox({ value, onChange }) {
+  const inputRef = useRef(null)
+  return (
+    <div className={`pub-search${value ? ' has-value' : ''}`} role="search">
+      <svg className="pub-search-icon" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
+        <circle cx="8.5" cy="8.5" r="5.75" fill="none" stroke="currentColor" strokeWidth="1.6" />
+        <path d="M13 13l4.25 4.25" stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" />
+      </svg>
+      <input
+        ref={inputRef}
+        type="search"
+        className="pub-search-input"
+        placeholder="제목, 저자, 학술지 검색"
+        aria-label="논문 검색"
+        value={value}
+        onChange={(e) => onChange(e.target.value)}
+        onKeyDown={(e) => e.key === 'Escape' && onChange('')}
+      />
+      {value && (
+        <button
+          type="button"
+          className="pub-search-clear"
+          aria-label="검색어 지우기"
+          onClick={() => {
+            onChange('')
+            inputRef.current?.focus()
+          }}
+        >
+          ×
+        </button>
+      )}
+    </div>
+  )
 }
 
 function IndexBadges({ indexes }) {
@@ -34,7 +95,7 @@ function IndexBadges({ indexes }) {
   )
 }
 
-function PubItem({ pub, onEdit }) {
+function PubItem({ pub, onEdit, terms }) {
   const indexes = getIndexes(pub)
   const { title, thesis } = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
   const typeTag =
@@ -46,17 +107,17 @@ function PubItem({ pub, onEdit }) {
       <p className="pub-title">
         {pub.link ? (
           <a href={pub.link} target="_blank" rel="noreferrer">
-            {title}
+            <Highlight text={title} terms={terms} />
           </a>
         ) : (
-          title
+          <Highlight text={title} terms={terms} />
         )}
       </p>
-      <Authors authors={pub.authors} />
+      <Authors authors={pub.authors} terms={terms} />
       <div className="pub-meta">
         {pub.venue && (
           <span className="pub-venue">
-            {pub.venue}
+            <Highlight text={pub.venue} terms={terms} />
             {pub.details ? <span className="pub-details">, {pub.details}</span> : null}
           </span>
         )}
@@ -74,6 +135,8 @@ function PubItem({ pub, onEdit }) {
 
 export default function Publications({ items = [], onEdit }) {
   const [filter, setFilter] = useState('all')
+  const [query, setQuery] = useState('')
+  const terms = useMemo(() => toTerms(query), [query])
 
   // 저역서(book)는 Books 탭에서 따로 보여줍니다.
   const pubs = useMemo(() => items.filter((p) => p.type !== 'book'), [items])
@@ -93,8 +156,13 @@ export default function Publications({ items = [], onEdit }) {
 
   const filtered = useMemo(
     () =>
-      pubs.filter((p) => filter === 'all' || p.type === filter),
-    [pubs, filter],
+      pubs.filter((p) => {
+        if (filter !== 'all' && p.type !== filter) return false
+        if (!terms.length) return true
+        const hay = [p.title, (p.authors ?? []).join(' '), p.venue, p.year].join(' ').toLowerCase()
+        return terms.every((t) => hay.includes(t))
+      }),
+    [pubs, filter, terms],
   )
 
   const byYear = useMemo(() => {
@@ -153,9 +221,20 @@ export default function Publications({ items = [], onEdit }) {
             </button>
           ))}
         </div>
+        <SearchBox value={query} onChange={setQuery} />
       </div>
 
-      {byYear.length === 0 && <p className="empty-state">해당하는 논문이 없습니다.</p>}
+      {terms.length > 0 && (
+        <p className="pub-search-summary" aria-live="polite">
+          <strong>‘{query.trim()}’</strong> 검색 결과 {filtered.length}편
+        </p>
+      )}
+
+      {byYear.length === 0 && (
+        <p className="empty-state">
+          {terms.length ? '검색어와 일치하는 논문이 없습니다.' : '해당하는 논문이 없습니다.'}
+        </p>
+      )}
 
       {byYear.map(([year, list]) => (
         <section key={year} className="pub-year-group">
@@ -165,7 +244,7 @@ export default function Publications({ items = [], onEdit }) {
           </h3>
           <ul className="pub-list">
             {list.map((pub) => (
-              <PubItem key={pub.id} pub={pub} onEdit={onEdit} />
+              <PubItem key={pub.id} pub={pub} onEdit={onEdit} terms={terms} />
             ))}
           </ul>
         </section>
