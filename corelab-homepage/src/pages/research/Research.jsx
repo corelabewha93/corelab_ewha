@@ -1,6 +1,6 @@
-import { useState } from 'react'
+import { useMemo, useState } from 'react'
 import { useData } from '../../hooks/useData'
-import { useQueryTab } from '../../router/useHashRoute'
+import { useHashRoute, useQueryTab } from '../../router/useHashRoute'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../../admin/collection'
 import { makeId } from '../../admin/dataStore'
@@ -41,6 +41,20 @@ const EDITORS = {
 export default function Research() {
   const { data, error, loading } = useData('research.json')
   const [tab, setTab] = useQueryTab('/research', TABS.map((t) => t.key), 'publications')
+  const { query: routeQuery } = useHashRoute()
+  const searchQuery = routeQuery.q ?? ''
+
+  // People 페이지의 "OOO의 논문 보기" 링크(#/research?tab=publications&author=이름)로 들어오면
+  // 그 사람이 저자로 들어간 논문만 모아 보여줍니다. people.json에 적어둔 영문 표기(pubNames)도 함께 찾습니다.
+  const { data: people } = useData('people.json')
+  const authorName = routeQuery.author ?? ''
+  const authorFilter = useMemo(() => {
+    if (!authorName) return null
+    const everyone = ['faculty', 'students', 'alumni'].flatMap((k) => people?.[k] ?? [])
+    const person = everyone.find((p) => p.name === authorName)
+    const extra = Array.isArray(person?.pubNames) ? person.pubNames : []
+    return { name: authorName, aliases: [authorName, ...extra] }
+  }, [authorName, people])
   const { token } = useAdminAuth()
   const [editing, setEditing] = useState(null) // { key, item|null }
 
@@ -77,7 +91,16 @@ export default function Research() {
 
           {data && (
             <>
-              {tab === 'publications' && <Publications items={data.publications} onEdit={onEdit('publications')} />}
+              {tab === 'publications' && (
+                <Publications
+                  key={`${authorName}|${searchQuery}`}
+                  items={data.publications}
+                  onEdit={onEdit('publications')}
+                  initialQuery={searchQuery}
+                  authorFilter={authorFilter}
+                  onClearAuthor={() => setTab('publications')}
+                />
+              )}
               {tab === 'books' && <Books items={data.publications} onEdit={onEdit('books')} />}
               {tab === 'projects' && <Projects items={data.projects} onEdit={onEdit('projects')} />}
               {tab === 'patents' && <Patents items={data.patents} onEdit={onEdit('patents')} />}
