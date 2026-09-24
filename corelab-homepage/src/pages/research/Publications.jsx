@@ -87,6 +87,7 @@ export default function Publications({ items = [], onEdit }) {
       scopus: has('Scopus'),
       kci: has('KCI'),
       conferences: pubs.filter((p) => p.type === 'conference').length,
+      theses: pubs.filter((p) => p.type === 'other').length,
     }
   }, [pubs])
 
@@ -132,6 +133,10 @@ export default function Publications({ items = [], onEdit }) {
         <div>
           <dt>Conferences</dt>
           <dd>{stats.conferences}</dd>
+        </div>
+        <div>
+          <dt>Theses</dt>
+          <dd>{stats.theses}</dd>
         </div>
       </dl>
 
