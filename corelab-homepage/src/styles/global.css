@@ -297,6 +297,10 @@ h1.section-title {
 }
 
 @media (min-width: 720px) {
+  .hero-kw-fall {
+    justify-content: center;
+    column-gap: clamp(1.6rem, 5vw, 4.5rem);
+  }
   .hero-kw-fall-text {
     font-size: clamp(2.4rem, 6vw, 5rem);
   }
