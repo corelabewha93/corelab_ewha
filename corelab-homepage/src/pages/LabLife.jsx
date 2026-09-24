@@ -59,7 +59,15 @@ export default function LabLife() {
                   aria-label={item.caption || '사진 크게 보기'}
                 >
                   <SafeImage src={photos[0]} alt={item.caption ?? ''} fallback={<span />} />
-                  {photos.length > 1 && <span className="gallery-item-count">🖼 {photos.length}</span>}
+                  {photos.length > 1 && (
+                    <span className="gallery-item-count">
+                      <svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true">
+                        <rect x="7.5" y="4.5" width="13" height="13" rx="2.2" fill="currentColor" opacity="0.45" />
+                        <rect x="3.5" y="8.5" width="13" height="13" rx="2.2" fill="currentColor" />
+                      </svg>
+                      {photos.length}
+                    </span>
+                  )}
                 </button>
                 {item.caption && <p className="gallery-item-caption">{item.caption}</p>}
               </div>

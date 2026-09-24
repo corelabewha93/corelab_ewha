@@ -1005,18 +1005,20 @@ h1.section-title {
 /* 사진이 여러 장인 게시물 표시 */
 .gallery-item-count {
   position: absolute;
-  right: 0.4rem;
-  bottom: 0.4rem;
-  background: rgba(0, 0, 0, 0.6);
+  right: 0.45rem;
+  bottom: 0.45rem;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(2px);
   color: #fff;
-  font-size: 0.72rem;
+  font-size: 0.7rem;
   font-weight: 600;
+  font-variant-numeric: tabular-nums;
   line-height: 1;
-  padding: 0.3rem 0.5rem;
+  padding: 0.32rem 0.5rem;
   border-radius: 999px;
   display: flex;
   align-items: center;
-  gap: 0.2rem;
+  gap: 0.28rem;
 }
 
 /* 사진 밑 제목 */
@@ -1815,21 +1817,20 @@ h1.section-title {
 
 .faculty-history-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
-  flex-wrap: wrap;
-  row-gap: 0.3rem;
+  /* 라벨이 길어서 둘째 줄로 넘어가도, 날짜가 아래로 떨어지지 않고 첫 줄
+     오른쪽에 그대로 붙어 있도록 wrap 대신 라벨 자체가 줄바꿈하게 둡니다. */
+  align-items: flex-start;
   gap: 0.6rem;
 }
 
 .faculty-history-label {
+  flex: 1 1 auto;
   min-width: 0;
   overflow-wrap: break-word;
 }
 
 .faculty-history-date {
-  flex-shrink: 0;
-  margin-left: auto;
+  flex: 0 0 auto;
   font-size: 0.78rem;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
@@ -1881,12 +1882,6 @@ h1.section-title {
   .faculty-history-table {
     grid-template-columns: 1fr;
     gap: var(--space-3);
-  }
-  .faculty-history-row {
-    justify-content: flex-start;
-  }
-  .faculty-history-date {
-    margin-left: 0;
   }
 }
 
