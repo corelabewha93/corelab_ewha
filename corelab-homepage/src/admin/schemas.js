@@ -20,6 +20,14 @@ export const personFields = [
     ],
   },
   { name: 'name', label: '이름', type: 'text', required: true },
+  {
+    name: 'nameEn',
+    label: '영어 이름',
+    type: 'text',
+    placeholder: '예: Hyejung Hwang',
+    hint: '이름을 누르면 펼쳐지는 팝업에서 한글 이름 아래 작은 글씨로 표시됩니다. 해외 학회 등에 보여줄 때 유용해요.',
+    showIf: (v) => v.category === 'students' || v.category === 'alumni',
+  },
   { name: 'photo', label: '사진', type: 'image', folder: 'people' },
   { name: 'photoCrop', label: '사진 위치 · 확대', type: 'crop', imageField: 'photo' },
   {
@@ -130,17 +138,9 @@ export const personFields = [
     name: 'detail',
     label: '상세 이력',
     type: 'lines',
-    hint: '자유롭게 이력서처럼 작성하세요. 소제목으로 쓰고 싶은 줄은 맨 앞에 #을 붙이세요 (예: #학력). # 없이 쓴 줄은 그 소제목 아래 내용으로 보여집니다.',
+    hint: '자유롭게 이력서처럼 작성하세요. 소제목으로 쓰고 싶은 줄은 맨 앞에 #을 붙이세요 (예: #학력). # 없이 쓴 줄은 그 소제목 아래 내용으로 보여집니다. 링크를 걸고 싶으면 "표시할 글자 | https://..." 형태로 쓰세요 (예: #개인 홈페이지 다음 줄에 Google Scholar | https://scholar.google.com/citations?...) — 그러면 "Google Scholar"라는 글자가 클릭 가능한 링크로 표시됩니다.',
     rows: 8,
     showIf: (v) => v.category !== 'faculty',
-  },
-  {
-    name: 'links',
-    label: '포트폴리오 · 관련 링크 (선택)',
-    type: 'linklines',
-    hint: '한 줄에 하나씩, "표시할 글자 | 링크" 순서로 적으세요. 예: Google Scholar | https://scholar.google.com/citations?...',
-    rows: 3,
-    showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
 ]
 
