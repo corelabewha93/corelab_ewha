@@ -3,6 +3,11 @@ import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 
+/** Research > Publications 탭에서 이 이름으로 바로 검색되는 링크. */
+function publicationsLinkFor(name) {
+  return `#/research?tab=publications&q=${encodeURIComponent(name)}`
+}
+
 function initials(name) {
   if (!name) return '?'
   return name.trim().slice(0, 1)
@@ -70,11 +75,18 @@ function FacultyProfile({ person, onEdit, reorder }) {
           </div>
         )}
 
-        {person.scholarLink && (
+        {(person.scholarLink || person.name) && (
           <p className="faculty-scholar">
-            <a href={person.scholarLink} target="_blank" rel="noreferrer">
-              Google Scholar →
-            </a>
+            {person.scholarLink && (
+              <a href={person.scholarLink} target="_blank" rel="noreferrer">
+                Google Scholar →
+              </a>
+            )}
+            {person.name && (
+              <a href={publicationsLinkFor(person.name)} className="faculty-pub-link">
+                {person.name}의 논문 보기 →
+              </a>
+            )}
           </p>
         )}
 
@@ -168,30 +180,33 @@ function PersonModal({ person, expandLines, links, onClose }) {
           <h2 className="person-modal-name">{person.name}</h2>
           {person.nameEn && <p className="person-modal-name-en">{person.nameEn}</p>}
 
-          {(expandLines.length > 0 || links.length > 0) && (
-            <ul className="person-detail">
-              {expandLines.map((line, i) =>
-                line.kind === 'link' ? (
-                  <li key={i}>
-                    <a href={line.url} target="_blank" rel="noreferrer" className="person-detail-link">
-                      {line.text}
-                    </a>
-                  </li>
-                ) : (
-                  <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
+          <ul className="person-detail">
+            {expandLines.map((line, i) =>
+              line.kind === 'link' ? (
+                <li key={i}>
+                  <a href={line.url} target="_blank" rel="noreferrer" className="person-detail-link">
                     {line.text}
-                  </li>
-                )
-              )}
-              {links.map((l, i) => (
-                <li key={`link-${i}`}>
-                  <a href={l.url} target="_blank" rel="noreferrer" className="person-detail-link">
-                    {l.label || l.url}
                   </a>
                 </li>
-              ))}
-            </ul>
-          )}
+              ) : (
+                <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
+                  {line.text}
+                </li>
+              )
+            )}
+            {links.map((l, i) => (
+              <li key={`link-${i}`}>
+                <a href={l.url} target="_blank" rel="noreferrer" className="person-detail-link">
+                  {l.label || l.url}
+                </a>
+              </li>
+            ))}
+            <li className="person-detail-pub">
+              <a href={publicationsLinkFor(person.name)} className="person-detail-link">
+                {person.name}의 논문 보기 →
+              </a>
+            </li>
+          </ul>
         </div>
       </div>
     </div>
@@ -232,7 +247,8 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
     }
   })
 
-  const expandable = expandLines.length > 0 || links.length > 0
+  // "OOO의 논문 보기" 링크가 항상 있으므로 팝업은 언제나 열립니다.
+  const expandable = true
   const openModal = () => expandable && setOpen(true)
 
   return (
