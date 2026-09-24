@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../admin/collection'
@@ -25,19 +25,6 @@ export default function LabLife() {
     setPhotoIdx(0)
   }
   const closeLightbox = () => setSelected(null)
-
-  const touchStartX = useRef(null)
-  const handleTouchStart = (e) => {
-    touchStartX.current = e.touches[0].clientX
-  }
-  const handleTouchEnd = (e, count) => {
-    if (touchStartX.current == null || count < 2) return
-    const dx = e.changedTouches[0].clientX - touchStartX.current
-    touchStartX.current = null
-    if (Math.abs(dx) < 40) return
-    if (dx < 0) setPhotoIdx((i) => (i + 1) % count)
-    else setPhotoIdx((i) => (i - 1 + count) % count)
-  }
 
   useEffect(() => {
     if (!selected) return
@@ -119,11 +106,7 @@ export default function LabLife() {
                   ×
                 </button>
 
-                <div
-                  className="lightbox-photo-frame"
-                  onTouchStart={multi ? handleTouchStart : undefined}
-                  onTouchEnd={multi ? (e) => handleTouchEnd(e, photos.length) : undefined}
-                >
+                <div className="lightbox-photo-frame">
                   <SafeImage src={photos[photoIdx]} alt={selected.caption ?? ''} fallback={<span />} />
                   {multi && (
                     <>
@@ -133,7 +116,7 @@ export default function LabLife() {
                         onClick={() => setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)}
                         aria-label="이전 사진"
                       >
-                        ‹
+                        <span className="lightbox-nav-icon">‹</span>
                       </button>
                       <button
                         type="button"
@@ -141,7 +124,7 @@ export default function LabLife() {
                         onClick={() => setPhotoIdx((i) => (i + 1) % photos.length)}
                         aria-label="다음 사진"
                       >
-                        ›
+                        <span className="lightbox-nav-icon">›</span>
                       </button>
                       <span className="lightbox-counter">
                         {photoIdx + 1} / {photos.length}
