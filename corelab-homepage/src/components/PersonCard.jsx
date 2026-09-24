@@ -3,9 +3,9 @@ import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 
-/** Research > Publications 탭에서 이 사람이 저자로 들어간 논문만 모아 보여주는 링크. */
-function publicationsLinkFor(name) {
-  return `#/research?tab=publications&author=${encodeURIComponent(name)}`
+/** Research 페이지에서 이 사람 이름이 올라간 논문·저역서·특허를 모아 보여주는 링크. */
+function researchLinkFor(name) {
+  return `#/research?author=${encodeURIComponent(name)}`
 }
 
 function initials(name) {
@@ -195,8 +195,8 @@ function PersonModal({ person, expandLines, links, onClose }) {
               </li>
             ))}
             <li className="person-detail-pub">
-              <a href={publicationsLinkFor(person.name)} className="person-detail-link">
-                {person.name}의 논문 보기 →
+              <a href={researchLinkFor(person.name)} className="person-detail-link">
+                {person.name}의 연구 실적 보기 →
               </a>
             </li>
           </ul>
@@ -240,7 +240,7 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
     }
   })
 
-  // "OOO의 논문 보기" 링크가 항상 있으므로 팝업은 언제나 열립니다.
+  // "OOO의 연구 실적 보기" 링크가 항상 있으므로 팝업은 언제나 열립니다.
   const expandable = true
   const openModal = () => expandable && setOpen(true)
 
