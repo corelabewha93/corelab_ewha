@@ -1092,6 +1092,21 @@ h1.section-title {
   content: none;
 }
 
+.person-detail li.person-detail-pub {
+  padding-left: 0;
+  margin-top: 0.6rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--color-border);
+}
+
+.person-detail li.person-detail-pub::before {
+  content: none;
+}
+
+.person-detail li.person-detail-pub a {
+  font-weight: 600;
+}
+
 .people-group + .people-group {
   margin-top: var(--space-5);
 }
@@ -1384,6 +1399,20 @@ mark.pub-hl {
   border: 1px solid var(--color-border);
   border-radius: 3px;
   padding: 0.05rem 0.4rem;
+}
+
+/* 박사학위논문 — 연한 금색 */
+.pub-type-tag-phd {
+  color: #92721c;
+  background: #faf2dc;
+  border-color: #e6d49f;
+}
+
+/* 석사학위논문 — 연한 은색 */
+.pub-type-tag-ma {
+  color: #667080;
+  background: #eef0f3;
+  border-color: #d7dce2;
 }
 
 .pub-doi {
@@ -2757,6 +2786,10 @@ mark.pub-hl {
 }
 
 .faculty-scholar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 1.1rem;
   margin: 0.5rem 0 0;
 }
 
