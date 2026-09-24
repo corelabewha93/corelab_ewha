@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../admin/collection'
@@ -17,7 +17,26 @@ export default function LabLife() {
   const { data, error, loading } = useData('lablife.json')
   const { token } = useAdminAuth()
   const [selected, setSelected] = useState(null)
+  const [photoIdx, setPhotoIdx] = useState(0)
   const [editing, setEditing] = useState(null) // { item|null }
+
+  const openLightbox = (item) => {
+    setSelected(item)
+    setPhotoIdx(0)
+  }
+  const closeLightbox = () => setSelected(null)
+
+  useEffect(() => {
+    if (!selected) return
+    const photos = imagesOf(selected)
+    const onKey = (e) => {
+      if (e.key === 'Escape') closeLightbox()
+      if (photos.length > 1 && e.key === 'ArrowLeft') setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)
+      if (photos.length > 1 && e.key === 'ArrowRight') setPhotoIdx((i) => (i + 1) % photos.length)
+    }
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [selected])
 
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
@@ -55,7 +74,7 @@ export default function LabLife() {
                 <EditButton onClick={() => setEditing({ item })} />
                 <button
                   className="gallery-item"
-                  onClick={() => setSelected(item)}
+                  onClick={() => openLightbox(item)}
                   aria-label={item.caption || '사진 크게 보기'}
                 >
                   <SafeImage src={photos[0]} alt={item.caption ?? ''} fallback={<span />} />
@@ -76,19 +95,68 @@ export default function LabLife() {
         </div>
       )}
 
-      {selected && (
-        <div className="lightbox-overlay" onClick={() => setSelected(null)}>
-          <div className="lightbox-content" onClick={(e) => e.stopPropagation()}>
-            <div className="lightbox-images">
-              {imagesOf(selected).map((src, i) => (
-                <SafeImage key={i} src={src} alt={selected.caption ?? ''} fallback={<span />} />
-              ))}
+      {selected &&
+        (() => {
+          const photos = imagesOf(selected)
+          const multi = photos.length > 1
+          return (
+            <div className="lightbox-overlay" onClick={closeLightbox}>
+              <div className="lightbox-card" onClick={(e) => e.stopPropagation()}>
+                <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label="닫기">
+                  ×
+                </button>
+
+                <div className="lightbox-photo-frame">
+                  <SafeImage src={photos[photoIdx]} alt={selected.caption ?? ''} fallback={<span />} />
+                  {multi && (
+                    <>
+                      <button
+                        type="button"
+                        className="lightbox-nav lightbox-nav-prev"
+                        onClick={() => setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)}
+                        aria-label="이전 사진"
+                      >
+                        ‹
+                      </button>
+                      <button
+                        type="button"
+                        className="lightbox-nav lightbox-nav-next"
+                        onClick={() => setPhotoIdx((i) => (i + 1) % photos.length)}
+                        aria-label="다음 사진"
+                      >
+                        ›
+                      </button>
+                      <span className="lightbox-counter">
+                        {photoIdx + 1} / {photos.length}
+                      </span>
+                    </>
+                  )}
+                </div>
+
+                {multi && (
+                  <div className="lightbox-dots">
+                    {photos.map((_, i) => (
+                      <button
+                        key={i}
+                        type="button"
+                        className={`lightbox-dot${i === photoIdx ? ' active' : ''}`}
+                        onClick={() => setPhotoIdx(i)}
+                        aria-label={`${i + 1}번째 사진`}
+                      />
+                    ))}
+                  </div>
+                )}
+
+                {(selected.caption || selected.body) && (
+                  <div className="lightbox-text">
+                    {selected.caption && <p className="lightbox-caption">{selected.caption}</p>}
+                    {selected.body && <p className="lightbox-body">{selected.body}</p>}
+                  </div>
+                )}
+              </div>
             </div>
-            {selected.caption && <p className="lightbox-caption">{selected.caption}</p>}
-            {selected.body && <p className="lightbox-body">{selected.body}</p>}
-          </div>
-        </div>
-      )}
+          )
+        })()}
 
       <AdminFab>
         <button type="button" className="admin-fab-btn" onClick={() => setEditing({ item: null })}>
