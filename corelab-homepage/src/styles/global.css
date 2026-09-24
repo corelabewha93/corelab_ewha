@@ -1426,6 +1426,12 @@ h1.section-title {
   color: #5d666e;
 }
 
+.book-role-badge.book-role-custom {
+  background: var(--color-subtle);
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+}
+
 .book-authors {
   margin: 0.2rem 0 0;
   font-size: 0.86rem;
