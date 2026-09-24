@@ -374,7 +374,7 @@
   "alumni": [
     {
       "name": "Anita Emefa Hato",
-      "photo": "images/people/anita-emefa-hato-mue7ivmt.jpeg",
+      "photo": "images/people/anita-emefa-hato-mufhsvgr.jpeg",
       "photoCrop": {
         "x": 37.2,
         "y": 32,
@@ -394,7 +394,8 @@
           "url": "https://pibuchingu.com/"
         }
       ],
-      "id": "person-mue7j0qztyo"
+      "id": "person-mue7j0qztyo",
+      "nameEn": ""
     },
     {
       "name": "김영주",
