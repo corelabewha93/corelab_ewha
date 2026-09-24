@@ -233,10 +233,10 @@
     },
     {
       "name": "이주원",
-      "photo": "images/people/이주원-mue149va.jpg",
+      "photo": "images/people/이주원-mufhwa4d.jpg",
       "photoCrop": {
-        "x": 50,
-        "y": 50,
+        "x": 5,
+        "y": 55.8,
         "zoom": 1
       },
       "degree": "PhD",
