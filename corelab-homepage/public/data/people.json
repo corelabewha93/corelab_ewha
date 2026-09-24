@@ -43,9 +43,9 @@
       "name": "윤이슬",
       "photo": "images/people/윤이슬-mue0s0r7.jpg",
       "photoCrop": {
-        "x": 48.6,
-        "y": 37,
-        "zoom": 2.14
+        "x": 47.6,
+        "y": 30.8,
+        "zoom": 2.22
       },
       "degree": "MA",
       "bio": "",
@@ -54,7 +54,8 @@
         "HAC, CSCL"
       ],
       "links": [],
-      "id": "person-mue0s3a1gna"
+      "id": "person-mue0s3a1gna",
+      "nameEn": "I Seul Yun"
     },
     {
       "name": "전효정",
