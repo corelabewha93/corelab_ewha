@@ -1111,7 +1111,8 @@ h1.section-title {
   margin-top: var(--space-5);
 }
 
-.people-group-title {
+.people-group-title,
+.author-section-title {
   display: flex;
   align-items: center;
   gap: 0.9rem;
@@ -1122,7 +1123,8 @@ h1.section-title {
   letter-spacing: 0.08em;
 }
 
-.people-group-title::after {
+.people-group-title::after,
+.author-section-title::after {
   content: '';
   flex: 1;
   height: 1px;
@@ -1319,6 +1321,22 @@ h1.section-title {
 .pub-author-clear:hover {
   border-color: var(--color-primary);
   color: var(--color-primary);
+}
+
+/* 연구 실적 모아보기 — 종류별 소제목(People의 "MA Program" 줄과 같은 모양) */
+.author-section + .author-section {
+  margin-top: var(--space-5);
+}
+
+.author-section-count {
+  order: 2;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  letter-spacing: 0;
+}
+
+.author-section-title::after {
+  order: 3;
 }
 
 /* 모아보기 중인 사람의 이름은 저자 목록에서 초록색으로만 살짝 구분 (굵게 하지 않음) */
