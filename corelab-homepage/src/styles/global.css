@@ -1167,6 +1167,88 @@ h1.section-title {
   margin-bottom: 0;
 }
 
+/* 논문 검색 — 필터 칩 오른쪽에 조용히 놓이는 밑줄형 입력칸 */
+.pub-search {
+  position: relative;
+  display: flex;
+  align-items: center;
+  width: 13.5rem;
+  border-bottom: 1px solid var(--color-border);
+  color: var(--color-text-muted);
+  transition:
+    border-color 0.2s,
+    width 0.25s ease,
+    color 0.2s;
+}
+
+.pub-search:focus-within,
+.pub-search.has-value {
+  width: 17rem;
+  border-bottom-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pub-search-icon {
+  flex: none;
+  margin-right: 0.45rem;
+}
+
+.pub-search-input {
+  flex: 1;
+  min-width: 0;
+  border: none;
+  outline: none;
+  background: none;
+  padding: 0.4rem 0;
+  font: inherit;
+  font-size: 0.86rem;
+  color: var(--color-text);
+}
+
+.pub-search-input::placeholder {
+  color: var(--color-text-muted);
+  opacity: 0.75;
+}
+
+/* 브라우저 기본 × 버튼은 숨기고 직접 만든 버튼을 씁니다 */
+.pub-search-input::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+  appearance: none;
+}
+
+.pub-search-clear {
+  flex: none;
+  border: none;
+  background: none;
+  padding: 0 0.1rem 0 0.4rem;
+  font-size: 1.1rem;
+  line-height: 1;
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.pub-search-clear:hover {
+  color: var(--color-text);
+}
+
+.pub-search-summary {
+  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+  font-size: 0.84rem;
+  color: var(--color-text-muted);
+}
+
+.pub-search-summary strong {
+  color: var(--color-text);
+  font-weight: 600;
+}
+
+mark.pub-hl {
+  background: rgba(69, 162, 188, 0.18);
+  color: inherit;
+  border-radius: 2px;
+  padding: 0 1px;
+}
+
 .filter-row {
   display: flex;
   gap: 0.4rem;
@@ -1473,6 +1555,17 @@ h1.section-title {
 
   .pub-stats dd {
     font-size: 1.35rem;
+  }
+
+  .pub-search,
+  .pub-search:focus-within,
+  .pub-search.has-value {
+    width: 100%;
+  }
+
+  /* iOS는 16px보다 작은 입력칸을 누르면 화면을 확대해버려서 16px로 맞춥니다 */
+  .pub-search-input {
+    font-size: 1rem;
   }
 
   .pub-year-group {
