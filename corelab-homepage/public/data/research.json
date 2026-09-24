@@ -2835,17 +2835,19 @@
       "year": 2026,
       "type": "book",
       "authors": [
-        "John Chi-Kin Lee"
+        "Insook Han",
+        "Young Hoan Cho",
+        "Kyu Yon Lim",
+        "Il-Hyun Jo",
+        "Heisawn Jeong"
       ],
-      "title": "Handbook of Asian Educational Innovation towards the Futures of Education",
-      "venue": "Springer",
-      "details": "1,415 pp.",
+      "title": "Emergence of the Learning Sciences in South Korea: Current Landscape and Future Directions",
+      "venue": "Handbook of Asian Educational Innovation towards the Futures of Education (Springer Nature Singapore) 수록",
+      "details": "pp. 1-18",
       "doi": "",
       "link": "",
-      "translators": [
-        "임규연"
-      ],
-      "indexes": ""
+      "translators": [],
+      "bookRole": "챕터 집필"
     },
     {
       "id": "book-2",
@@ -2883,8 +2885,7 @@
       "details": "2판 · 422쪽",
       "doi": "",
       "link": "",
-      "translators": [],
-      "indexes": ""
+      "translators": []
     },
     {
       "id": "book-4",
@@ -3090,14 +3091,17 @@
         "M. David Merrill"
       ],
       "translators": [
-        "임규연, 김영수, 김광수, 이현우, 정재삼"
+        "임규연",
+        "김영수",
+        "김광수",
+        "이현우",
+        "정재삼"
       ],
       "title": "교수의 으뜸원리 - 효과적, 효율적, 매력적 교수설계",
       "venue": "학지사",
       "details": "",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "book-6",
@@ -3164,10 +3168,9 @@
       ],
       "title": "교육공학 - 통합적 접근과 학제적 관점",
       "venue": "교육과학사",
-      "details": "",
+      "details": "절판",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "book-9",
@@ -3185,10 +3188,9 @@
       "translators": [],
       "title": "교육방법 및 교육공학 - 3판",
       "venue": "교육과학사",
-      "details": "",
+      "details": "품절",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     }
   ],
   "projects": [],
