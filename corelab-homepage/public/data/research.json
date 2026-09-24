@@ -2380,10 +2380,9 @@
       ],
       "title": "스포츠중계 모형을 활용한 문제해결학습에서스캐폴딩 유형이 문제해결력과 성취도에 미치는 영향",
       "venue": "한국교육공학회 학술대회 발표자료집",
-      "details": "",
+      "details": "(개최지 미상)",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "pub-160",
@@ -2563,10 +2562,9 @@
       ],
       "title": "포스터 : 최신 스마트 기술에 기반한 스마트 교실 구축에 관한 고찰",
       "venue": "한국컴퓨터교육학회 학술발표대회논문집",
-      "details": "",
+      "details": "(개최지 미상)",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "pub-172",
@@ -2581,10 +2579,9 @@
       ],
       "title": "스마트교육에 대한 교사의 인식 조사: 전남 지역을 중심으로",
       "venue": "한국컴퓨터교육학회 학술발표대회논문집",
-      "details": "",
+      "details": "(개최지 미상)",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "pub-173",
@@ -2597,10 +2594,9 @@
       ],
       "title": "학습자의 학습관리시스템 이용과 성과에 영향을 미치는 요인에 관한 연구-학습자 자기조절 학습능력과 과제의 실제성 역할을 중심으로",
       "venue": "한국경영정보학회 학술대회",
-      "details": "",
+      "details": "(개최지 미상)",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "pub-174",
@@ -2614,10 +2610,9 @@
       ],
       "title": "The effects of self-determination on learning outcomes in a blended learning",
       "venue": "International Conference e-Learning 2013",
-      "details": "",
+      "details": "(개최지 미상)",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "pub-175",
@@ -2632,10 +2627,9 @@
       ],
       "title": "Factors affecting teenager cyber delinquency",
       "venue": "International Conference e-Learning 2013",
-      "details": "",
+      "details": "(개최지 미상)",
       "doi": "",
-      "link": "",
-      "indexes": ""
+      "link": ""
     },
     {
       "id": "pub-176",
@@ -2845,40 +2839,65 @@
       "venue": "Springer",
       "details": "1,415 pp.",
       "doi": "",
-      "link": ""
+      "link": "",
+      "translators": []
     },
     {
       "id": "book-2",
       "year": 2022,
       "type": "book",
-      "authors": [],
+      "authors": [
+        "Kjell Erik Rudestam",
+        "Rae R. Newton"
+      ],
       "title": "알기쉬운 학위논문 작성법",
       "venue": "학지사",
       "details": "372쪽",
       "doi": "",
-      "link": ""
+      "link": "",
+      "translators": [
+        "이재영",
+        "임지영",
+        "임규연"
+      ]
     },
     {
       "id": "book-3",
-      "year": 2021,
+      "year": 2023,
       "type": "book",
-      "authors": [],
+      "authors": [
+        "이화여자대학교 교육공학과",
+        "소효정",
+        "이재영",
+        "이정민",
+        "임규연",
+        "정재삼"
+      ],
       "title": "미래사회를 위한 교육의 방법과 테크놀로지",
       "venue": "교육과학사",
-      "details": "422쪽",
+      "details": "2판 · 422쪽",
       "doi": "",
-      "link": ""
+      "link": "",
+      "translators": []
     },
     {
       "id": "book-4",
       "year": 2020,
       "type": "book",
-      "authors": [],
+      "authors": [
+        "Rita C. Richey"
+      ],
       "title": "교육공학 용어해설",
       "venue": "학지사",
-      "details": "450쪽",
+      "details": "456쪽",
       "doi": "",
-      "link": ""
+      "link": "",
+      "translators": [
+        "이현우",
+        "임규연",
+        "정재삼",
+        "허희옥"
+      ]
     },
     {
       "id": "pub-190",
@@ -3056,6 +3075,111 @@
       "doi": "",
       "link": "",
       "indexes": "Scopus"
+    },
+    {
+      "id": "book-5",
+      "year": 2014,
+      "type": "book",
+      "authors": [
+        "M. David Merrill"
+      ],
+      "translators": [
+        "임규연"
+      ],
+      "title": "교수의 으뜸원리 - 효과적, 효율적, 매력적 교수설계",
+      "venue": "학지사",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "book-6",
+      "year": 2012,
+      "type": "book",
+      "authors": [
+        "Rita C. Richey",
+        "James D. Klein",
+        "Monica W. Tracey"
+      ],
+      "translators": [
+        "정재삼",
+        "임규연",
+        "김영수",
+        "이현우"
+      ],
+      "title": "교수설계 지식기반",
+      "venue": "학지사",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "book-7",
+      "year": 2022,
+      "type": "book",
+      "authors": [
+        "정재삼",
+        "금혜진",
+        "김두규",
+        "김은지",
+        "김진희",
+        "두민영",
+        "박경연",
+        "박선영",
+        "박수홍",
+        "오현아",
+        "이성흠",
+        "이영민",
+        "이진구",
+        "임규연",
+        "장환영",
+        "하영자"
+      ],
+      "translators": [],
+      "title": "모두를 위한 인재개발 Exploring HRD 1",
+      "venue": "교육과학사",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "book-8",
+      "year": 2013,
+      "type": "book",
+      "authors": [
+        "J. Michael Spector"
+      ],
+      "translators": [
+        "김영수",
+        "이현우",
+        "정재삼",
+        "임규연"
+      ],
+      "title": "교육공학 - 통합적 접근과 학제적 관점",
+      "venue": "교육과학사",
+      "details": "절판",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "book-9",
+      "year": 2017,
+      "type": "book",
+      "authors": [
+        "정재삼",
+        "임규연",
+        "조일현",
+        "강명희",
+        "이정민",
+        "소효정",
+        "이화여자대학교 교육공학과(엮음)"
+      ],
+      "translators": [],
+      "title": "교육방법 및 교육공학 - 3판",
+      "venue": "교육과학사",
+      "details": "품절",
+      "doi": "",
+      "link": ""
     }
   ],
   "projects": [],
