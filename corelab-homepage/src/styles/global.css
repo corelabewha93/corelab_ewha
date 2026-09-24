@@ -120,102 +120,140 @@ h1.section-title {
   }
 }
 
-/* ---------- Hero (About page title) — 영어 키워드가 위에서부터 순서대로 나타나는 풀블리드 섹션 ---------- */
-.hero-keywords {
+/* ---------- Hero (About page) — 커다란 세로 키워드가 화면 가득 쏟아졌다 연해지고,
+   그 위로 모토 → 소속 → CoRe Lab 로고가 순서대로 등장하는 풀블리드 인트로 시퀀스 ---------- */
+.hero-sequence {
+  position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-6);
   background: var(--color-primary);
   color: var(--color-on-primary);
-  padding: var(--space-6) var(--space-3);
+  min-height: 100vh;
+  overflow: hidden;
   display: flex;
-  flex-direction: column;
   align-items: center;
   justify-content: center;
-  text-align: center;
-  min-height: 82vh;
-  gap: var(--space-4);
+  padding: var(--space-6) var(--space-3);
 }
 
-.hero-keywords-head {
-  max-width: 640px;
-}
-
-.hero-eyebrow {
-  text-transform: uppercase;
-  font-size: 0.72rem;
-  font-weight: 600;
-  letter-spacing: 0.12em;
-  color: rgba(255, 255, 255, 0.72);
-  margin: 0 0 0.7rem;
-}
-
-.hero-title {
-  font-size: clamp(2rem, 5vw, 2.8rem);
-  font-weight: 800;
-  color: var(--color-on-primary);
-  margin: 0 0 0.4rem;
-  letter-spacing: -0.02em;
-  line-height: 1.1;
-}
-
-.hero-subtitle {
-  color: rgba(255, 255, 255, 0.78);
-  font-size: 1rem;
-  margin: 0;
-}
-
-/* 영문 키워드가 시계반대방향(-90deg)으로 돌아가 세로로 읽히며,
-   왼쪽부터 순서대로 위에서 아래로 툭 떨어지듯 나타납니다(한 번만, 무한반복 아님). */
-.hero-keyword-list {
-  list-style: none;
-  margin: 0;
-  padding: 0;
+/* 배경 레이어: 연구 분야 키워드가 세로(반시계방향)로 크게 떨어졌다가 아주 옅게 가라앉습니다. */
+.hero-kw-fall {
+  position: absolute;
+  inset: 0;
   display: flex;
   flex-direction: row;
-  flex-wrap: nowrap;
-  align-items: flex-end;
-  justify-content: center;
-  column-gap: clamp(0.9rem, 4vw, 2.4rem);
-  width: 100%;
-  max-width: 100%;
+  align-items: center;
+  justify-content: space-evenly;
+  list-style: none;
+  margin: 0;
+  padding: 0 4vw;
+  pointer-events: none;
 }
 
-.hero-keyword-item {
-  flex: none;
-  display: flex;
-  align-items: flex-end;
+.hero-kw-fall-item {
   opacity: 0;
-  transform: translateY(-48px);
-  animation: hero-keyword-drop 0.75s cubic-bezier(0.2, 0.75, 0.25, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 0.16s + 0.15s);
+  transform: translateY(-42vh);
+  animation: hero-kw-fall-seq 2.4s cubic-bezier(0.16, 0.7, 0.2, 1) forwards;
+  animation-delay: calc(var(--i, 0) * 0.22s + 0.1s);
 }
 
 /* writing-mode이 레이아웃 박스 자체를 세로로 계산해주므로(rotate 트랜스폼과 달리
    가로 폭을 그대로 차지하지 않음), vertical-rl + 180deg 회전으로 시계반대방향처럼
    보이는 세로 텍스트를 만듭니다. */
-.hero-keyword-text {
+.hero-kw-fall-text {
   writing-mode: vertical-rl;
   text-orientation: mixed;
   transform: rotate(180deg);
   white-space: nowrap;
-  font-size: clamp(1rem, 4vw, 1.5rem);
-  font-weight: 800;
+  display: block;
+  font-weight: 900;
   letter-spacing: 0.02em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.94);
   line-height: 1;
+  color: #fff;
+  font-size: clamp(1.9rem, 10vw, 3.2rem);
 }
 
-.hero-keyword-motto .hero-keyword-text {
-  color: var(--color-accent);
+@keyframes hero-kw-fall-seq {
+  0% {
+    opacity: 0;
+    transform: translateY(-42vh);
+  }
+  30% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  58% {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  100% {
+    opacity: 0.14;
+    transform: translateY(0);
+  }
 }
 
-@keyframes hero-keyword-drop {
+/* 전경 레이어: 모토 → 소속 → CoRe Lab 로고 순서로 쌓입니다. */
+.hero-sequence-content {
+  position: relative;
+  z-index: 2;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: var(--space-4);
+  max-width: 960px;
+}
+
+.hero-motto-reveal {
+  opacity: 0;
+  margin: 0;
+  font-size: clamp(1.5rem, 7vw, 3.6rem);
+  font-weight: 800;
+  letter-spacing: -0.01em;
+  line-height: 1.15;
+  color: var(--color-on-primary);
+  animation: hero-fade-up 0.9s ease forwards;
+  animation-delay: 2.55s;
+}
+
+.hero-affiliation {
+  opacity: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3em;
+  margin: 0;
+  animation: hero-fade-up 0.9s ease forwards;
+  animation-delay: 3.35s;
+}
+
+.hero-affiliation p {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.72);
+}
+
+.hero-final-logo {
+  opacity: 0;
+  margin: 0;
+  font-size: clamp(2.4rem, 9vw, 4.6rem);
+  font-weight: 900;
+  letter-spacing: -0.02em;
+  line-height: 1.05;
+  color: var(--color-on-primary);
+  animation: hero-fade-up 1s ease forwards;
+  animation-delay: 4.15s;
+}
+
+@keyframes hero-fade-up {
   from {
     opacity: 0;
-    transform: translateY(-48px);
+    transform: translateY(16px);
   }
   to {
     opacity: 1;
@@ -224,7 +262,14 @@ h1.section-title {
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-keyword-item {
+  .hero-kw-fall-item {
+    animation: none;
+    opacity: 0.14;
+    transform: none;
+  }
+  .hero-motto-reveal,
+  .hero-affiliation,
+  .hero-final-logo {
     animation: none;
     opacity: 1;
     transform: none;
@@ -232,56 +277,11 @@ h1.section-title {
 }
 
 @media (min-width: 720px) {
-  .hero-keyword-text {
-    font-size: clamp(1.4rem, 2.4vw, 2rem);
+  .hero-kw-fall-text {
+    font-size: clamp(2.4rem, 6vw, 5rem);
   }
-}
-
-@media (min-width: 720px) {
-  .hero-title {
-    font-size: clamp(2.2rem, 4vw, 3.4rem);
-  }
-  .hero-subtitle {
-    font-size: 1.1rem;
-  }
-}
-
-/* 키워드 히어로 바로 아래, 단체사진을 크게 한 번 더 보여줍니다. */
-.hero-photo-band {
-  position: relative;
-  width: 100vw;
-  margin-left: calc(50% - 50vw);
-  margin-right: calc(50% - 50vw);
-  margin-bottom: var(--space-6);
-  height: 42vh;
-  min-height: 260px;
-  max-height: 520px;
-  overflow: hidden;
-  background: var(--color-placeholder);
-}
-
-.hero-photo-band > div,
-.hero-photo-band img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-.hero-photo-band-empty {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: var(--color-text-muted);
-  font-size: 0.9rem;
-  letter-spacing: 0.02em;
-}
-
-@media (min-width: 720px) {
-  .hero-photo-band {
-    height: 56vh;
+  .hero-affiliation p {
+    font-size: 0.88rem;
   }
 }
 
