@@ -49,7 +49,7 @@ export default function News() {
   // 게시글 하나를 클릭해서 들어온 화면: 그 글만 크게 보여줍니다.
   if (openItem) {
     return (
-      <div className="page container">
+      <div className="page container news-detail-page">
         <button type="button" className="news-back-link" onClick={() => navigate('/news')}>
           ← News 목록으로
         </button>
