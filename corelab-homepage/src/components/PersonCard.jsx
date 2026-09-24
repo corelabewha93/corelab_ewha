@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
@@ -140,10 +140,59 @@ function FacultyProfile({ person, onEdit, reorder }) {
   )
 }
 
+/** 사진 + 이름을 누르면 뜨는 팝업. 사진과 함께 전체 이력을 한 화면에 보여줍니다. */
+function PersonModal({ person, expandLines, links, onClose }) {
+  useEffect(() => {
+    const onKey = (e) => e.key === 'Escape' && onClose()
+    window.addEventListener('keydown', onKey)
+    return () => window.removeEventListener('keydown', onKey)
+  }, [onClose])
+
+  return (
+    <div className="person-modal-overlay" onClick={onClose}>
+      <div className="person-modal-card" onClick={(e) => e.stopPropagation()}>
+        <button type="button" className="person-modal-close" onClick={onClose} aria-label="닫기">
+          ×
+        </button>
+
+        <div className="person-modal-photo">
+          <SafeImage
+            src={person.photo}
+            alt={person.name}
+            fallback={<span>{initials(person.name)}</span>}
+            imgStyle={cropToStyle(normalizeCrop(person))}
+          />
+        </div>
+
+        <div className="person-modal-info">
+          <h2 className="person-modal-name">{person.name}</h2>
+
+          {(expandLines.length > 0 || links.length > 0) && (
+            <ul className="person-detail">
+              {expandLines.map((line, i) => (
+                <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
+                  {line.text}
+                </li>
+              ))}
+              {links.map((l, i) => (
+                <li key={`link-${i}`}>
+                  <a href={l.url} target="_blank" rel="noreferrer" className="person-detail-link">
+                    {l.label || l.url}
+                  </a>
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
+      </div>
+    </div>
+  )
+}
+
 /**
  * category에 따라 보이는 정보가 달라집니다.
  * - faculty          : 사진·연락처·소개가 모두 펼쳐진 프로필 카드 (FacultyProfile)
- * - students/alumni  : 평소엔 사진 · 이름만. 펼치면 한 줄 소개(굵게) → (Alumni만) 현재 직장 → #소제목으로 구분한 자유 이력
+ * - students/alumni  : 평소엔 사진 · 이름만. 누르면 팝업으로 사진과 함께 전체 이력이 뜹니다.
  */
 export default function PersonCard({ person, category, onEdit, reorder }) {
   const [open, setOpen] = useState(false)
@@ -156,7 +205,7 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
   const detail = Array.isArray(person.detail) ? person.detail : []
   const links = Array.isArray(person.links) ? person.links.filter((l) => l.url) : []
 
-  // 이름/사진을 눌러 펼치면: 한 줄 소개(굵게) → (Alumni만) 현재 직장 → #소제목으로 구분한 자유 이력
+  // 팝업에 순서대로 표시: 한 줄 소개(굵게) → (Alumni만) 현재 직장 → #소제목으로 구분한 자유 이력
   const expandLines = []
   if (person.bio) expandLines.push({ text: person.bio, kind: 'intro' })
   if (isAlumni && person.affiliation) expandLines.push({ text: person.affiliation, kind: 'strong' })
@@ -170,18 +219,17 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
   })
 
   const expandable = expandLines.length > 0 || links.length > 0
-  const toggle = () => expandable && setOpen((v) => !v)
+  const openModal = () => expandable && setOpen(true)
 
   return (
-    <div className={`person-card${reorder ? ' reordering' : ''}${open && !reorder ? ' open' : ''}`}>
+    <div className={`person-card${reorder ? ' reordering' : ''}`}>
       {!reorder && <EditButton onClick={() => onEdit?.(person)} label={`${person.name} 정보 수정`} />}
 
       <button
         type="button"
         className="person-photo-btn"
-        onClick={toggle}
+        onClick={openModal}
         disabled={!expandable || Boolean(reorder)}
-        aria-expanded={expandable ? open : undefined}
       >
         <div className="person-photo">
           <SafeImage
@@ -193,26 +241,12 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
         </div>
       </button>
 
-      <button type="button" className="person-name-btn" onClick={toggle} disabled={!expandable || Boolean(reorder)}>
+      <button type="button" className="person-name-btn" onClick={openModal} disabled={!expandable || Boolean(reorder)}>
         <span className="person-name">{person.name}</span>
-        {expandable && !reorder && <span className={`chevron${open ? ' open' : ''}`}>▾</span>}
       </button>
 
       {expandable && open && !reorder && (
-        <ul className="person-detail">
-          {expandLines.map((line, i) => (
-            <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
-              {line.text}
-            </li>
-          ))}
-          {links.map((l, i) => (
-            <li key={`link-${i}`}>
-              <a href={l.url} target="_blank" rel="noreferrer" className="person-detail-link">
-                {l.label || l.url}
-              </a>
-            </li>
-          ))}
-        </ul>
+        <PersonModal person={person} expandLines={expandLines} links={links} onClose={() => setOpen(false)} />
       )}
 
       {reorder && (
