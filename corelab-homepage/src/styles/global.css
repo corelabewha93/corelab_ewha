@@ -1194,11 +1194,6 @@ h1.section-title {
   font-weight: 600;
 }
 
-.filter-chip-intl.active {
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
-}
-
 /* 연도 묶음: 데스크톱은 왼쪽에 연도, 오른쪽에 목록 */
 .pub-year-group {
   display: grid;
@@ -1275,11 +1270,6 @@ h1.section-title {
   font-size: 0.86rem;
   color: var(--color-text-muted);
   line-height: 1.5;
-}
-
-.pub-authors strong {
-  color: var(--color-text);
-  font-weight: 600;
 }
 
 .pub-meta {
@@ -1456,51 +1446,67 @@ h1.section-title {
 }
 
 @media (max-width: 700px) {
-  .tabs-layout {
-    flex-direction: column;
-    align-items: stretch;
-    gap: var(--space-3);
+  /* 모바일: 1줄 = 논문 수 / 학회 발표, 2줄 = SSCI·SCIE / Scopus / KCI */
+  .pub-stats {
+    grid-template-columns: repeat(6, 1fr);
   }
 
-  .tabs-nav {
-    /* 데스크톱용 flex-basis(150px)가 세로 방향에선 "높이 150px"가 되어
-       탭 위아래로 큰 빈 공간이 생겼습니다. */
-    flex: none;
-    position: static;
-    flex-direction: row;
-    flex-wrap: nowrap;
-    width: 100%;
-    overflow-x: auto;
-    border-bottom: 1px solid var(--color-border);
-    padding-bottom: 0;
-    gap: 1.25rem;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    /* 탭이 화면보다 길면(Research) 오른쪽 끝을 흐리게 해서 "옆으로 밀 수 있음"을 알려줍니다.
-       마지막 탭이 흐린 영역에 가리지 않도록 오른쪽 여백을 둡니다. */
-    padding-right: 2rem;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  .pub-stats > div {
+    grid-column: span 2;
+    order: 2;
+    padding: 0.7rem 0.75rem;
+    border-top: 1px solid var(--color-border);
   }
 
-  .tabs-nav::-webkit-scrollbar {
-    display: none;
+  .pub-stats > div:first-child,
+  .pub-stats > div:last-child {
+    grid-column: span 3;
+    order: 1;
+    border-top: none;
   }
 
-  .tab-btn {
-    flex: 0 0 auto;
+  .pub-stats > div:first-child,
+  .pub-stats > div:nth-child(2) {
     border-left: none;
-    border-bottom: 2px solid transparent;
-    border-radius: 0;
-    padding: 0.6rem 0;
-    background: none;
-    margin-bottom: -1px;
-    font-size: 0.92rem;
+    padding-left: 0;
   }
 
-  .tab-btn.active {
-    border-bottom-color: var(--color-primary);
-    background: none;
+  .pub-stats dd {
+    font-size: 1.35rem;
+  }
+
+  .pub-year-group {
+    display: block;
+    padding-top: var(--space-3);
+  }
+
+  .pub-year-title {
+    position: static;
+    padding-top: 0;
+    display: flex;
+    align-items: baseline;
+    gap: 0.5rem;
+    margin-bottom: 0.25rem;
+  }
+
+  .pub-year-count {
+    display: inline;
+    margin: 0;
+  }
+
+  .book-row {
+    display: block;
+    padding: 1rem 0;
+  }
+
+  .book-row-year {
+    display: block;
+    font-size: 0.95rem;
+    margin-bottom: 0.15rem;
+  }
+
+  .book-role-label {
+    min-width: 3rem;
   }
 }
 
