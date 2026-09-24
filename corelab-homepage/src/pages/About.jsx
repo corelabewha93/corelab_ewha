@@ -47,7 +47,7 @@ export default function About() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { heroImage, labName, labTagline, university, overview = [], researchAreas = [] } = data ?? {}
+  const { heroImage, labName, labTagline, university, mottoKr, mottoEn, overview = [], researchAreas = [] } = data ?? {}
 
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
@@ -57,23 +57,33 @@ export default function About() {
       <div className="admin-item">
         <EditButton onClick={() => setEditing(true)} label="소개 내용 수정" />
 
-        <section className="hero hero-green">
-          {university && <p className="hero-eyebrow">{university}</p>}
-          {labName && <h1 className="hero-title">{labName}</h1>}
-          {labTagline && <p className="hero-subtitle">{labTagline}</p>}
-          <div className="hero-rule" />
-
-          <div className={`hero-photo-frame${heroImage ? '' : ' empty'}`}>
+        <section className="hero-magazine">
+          <div className="hero-magazine-photo">
             {heroImage ? (
               <SafeImage src={heroImage} alt="" fallback={<span />} />
             ) : (
-              <span>단체사진이 이 자리에 들어갑니다</span>
+              <span className="hero-magazine-empty">단체사진이 이 자리에 들어갑니다</span>
             )}
+          </div>
+
+          <div className="hero-magazine-text">
+            {university && <p className="hero-eyebrow">{university}</p>}
+            {labName && <h1 className="hero-title">{labName}</h1>}
+            <div className="hero-rule" />
+            {labTagline && <p className="hero-subtitle">{labTagline}</p>}
           </div>
         </section>
 
         <section className="section">
           <h2 className="section-title">Lab Overview</h2>
+
+          {(mottoKr || mottoEn) && (
+            <div className="lab-motto">
+              {mottoKr && <p className="lab-motto-kr">{mottoKr}</p>}
+              {mottoEn && <p className="lab-motto-en">{mottoEn}</p>}
+            </div>
+          )}
+
           {overview.map((paragraph, i) => (
             <p key={i}>{paragraph}</p>
           ))}
