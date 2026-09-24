@@ -100,7 +100,7 @@
       "id": "person-mue0p5ffjac"
     },
     {
-      "name": "카잉(Khine Myat Noe Lwin)",
+      "name": "카잉",
       "photo": "images/people/카잉khine-myat-noe-lwin-mue0kbcs.jpg",
       "photoCrop": {
         "x": 52,
@@ -123,7 +123,8 @@
         "khinemyatnoe27@ewha.ac.kr"
       ],
       "links": [],
-      "id": "person-mue0kdsk1o4"
+      "id": "person-mue0kdsk1o4",
+      "nameEn": "Khine Myat Noe Lwin"
     },
     {
       "name": "이유정",
