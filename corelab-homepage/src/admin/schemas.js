@@ -219,10 +219,17 @@ export const publicationFields = [
   },
   {
     name: 'authors',
-    label: '저자',
+    label: '저자 (저역서는 "지은이")',
     type: 'lines',
     rows: 3,
-    hint: '한 줄에 한 명씩 (예: Lim, K. Y.). 저역서는 비워둬도 됩니다.',
+    hint: '한 줄에 한 명씩 (예: Lim, K. Y.). 저역서 중 번역서는 원저자를 여기에 적어주세요.',
+  },
+  {
+    name: 'translators',
+    label: '옮긴이 (저역서 · 번역서만 해당)',
+    type: 'lines',
+    rows: 2,
+    hint: '이 책이 번역서일 때만 채워주세요. 채우면 목록에 "번역서" 표시가 붙습니다. 저서(직접 집필)는 비워두세요.',
   },
   { name: 'title', label: '제목', type: 'text', required: true },
   {
