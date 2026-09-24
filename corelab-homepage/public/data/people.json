@@ -504,22 +504,25 @@
       "id": "person-mue648lk2gx"
     },
     {
-      "name": "박하은",
-      "photo": "images/people/박하은-mue6665g.jpg",
+      "name": "차수민",
+      "photo": "images/people/차수민-muf2g5li.jpg",
       "photoCrop": {
-        "x": 53.1,
-        "y": 64.3,
-        "zoom": 1.08
+        "x": 53.7,
+        "y": 43.5,
+        "zoom": 1.06
       },
       "degree": "MA",
-      "affiliation": "고려대학교 컴퓨터학과 박사과정",
+      "affiliation": "교원그룹 인재개발팀 매니저",
       "bio": "",
       "detail": [
+        "#소개",
+        "기업에서 임직원 교육을 담당하고 있다",
+        "향후 교육 뿐만 아니라 채용, 평가/보상 등으로 경험을 넓혀 HR Generalist로 성장하는 것을 목표로 하고 있다",
         "#관심분야",
-        "Knowledge Tracing, AI in education"
+        "학습경험설계(LXD), 리더십개발, 조직개발(OD)"
       ],
       "links": [],
-      "id": "person-mue66891djv"
+      "id": "person-muf2g7fen4u"
     },
     {
       "name": "이다혜",
@@ -541,25 +544,22 @@
       "id": "person-mue7fnvzf88"
     },
     {
-      "name": "김다현",
-      "photo": "images/people/김다현-mue70e8z.jpg",
+      "name": "박하은",
+      "photo": "images/people/박하은-mue6665g.jpg",
       "photoCrop": {
-        "x": 45.5,
-        "y": 43,
-        "zoom": 1
+        "x": 53.1,
+        "y": 64.3,
+        "zoom": 1.08
       },
       "degree": "MA",
-      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
+      "affiliation": "고려대학교 컴퓨터학과 박사과정",
       "bio": "",
       "detail": [
-        "#소개",
-        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
-        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
         "#관심분야",
-        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
+        "Knowledge Tracing, AI in education"
       ],
       "links": [],
-      "id": "person-mue6sv64kpi"
+      "id": "person-mue66891djv"
     },
     {
       "name": "정유진",
@@ -581,25 +581,25 @@
       "id": "person-mue7boc1zes"
     },
     {
-      "name": "차수민",
-      "photo": "images/people/차수민-muf2g5li.jpg",
+      "name": "김다현",
+      "photo": "images/people/김다현-mue70e8z.jpg",
       "photoCrop": {
-        "x": 53.7,
-        "y": 43.5,
-        "zoom": 1.06
+        "x": 45.5,
+        "y": 43,
+        "zoom": 1
       },
       "degree": "MA",
-      "affiliation": "교원그룹 인재개발팀 매니저",
+      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
       "bio": "",
       "detail": [
         "#소개",
-        "기업에서 임직원 교육을 담당하고 있다",
-        "향후 교육 뿐만 아니라 채용, 평가/보상 등으로 경험을 넓혀 HR Generalist로 성장하는 것을 목표로 하고 있다",
+        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
+        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
         "#관심분야",
-        "학습경험설계(LXD), 리더십개발, 조직개발(OD)"
+        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
       ],
       "links": [],
-      "id": "person-muf2g7fen4u"
+      "id": "person-mue6sv64kpi"
     }
   ]
 }
