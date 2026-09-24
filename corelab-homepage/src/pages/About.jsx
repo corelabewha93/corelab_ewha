@@ -54,7 +54,7 @@ export default function About() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { labName, mottoKr, mottoEn, overview = [], researchAreas = [] } = data ?? {}
+  const { labName, mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } = data ?? {}
 
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
@@ -78,11 +78,13 @@ export default function About() {
           <div className="hero-sequence-content">
             {mottoEn && <p className="hero-motto-reveal">{mottoEn}</p>}
 
-            <div className="hero-affiliation">
-              <p>Ewha Womans University</p>
-              <p>prof. K.Y.LIM</p>
-              <p>Collaborative Learning Research Lab</p>
-            </div>
+            {heroAffiliation.length > 0 && (
+              <div className="hero-affiliation">
+                {heroAffiliation.map((line, i) => (
+                  <p key={i}>{line}</p>
+                ))}
+              </div>
+            )}
 
             {labName && <h1 className="hero-final-logo">{labName}</h1>}
           </div>
