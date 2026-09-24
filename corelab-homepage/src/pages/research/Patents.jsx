@@ -1,11 +1,12 @@
 import { EditButton } from '../../components/admin/AdminControls'
+import FocusNames from './FocusNames'
 
 const STATUS_LABELS = {
   registered: '등록',
   pending: '출원',
 }
 
-export default function Patents({ items = [], onEdit }) {
+export default function Patents({ items = [], onEdit, focus = null }) {
   if (items.length === 0) return <p className="empty-state">등록된 특허가 없습니다.</p>
 
   const sorted = [...items].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
@@ -22,7 +23,7 @@ export default function Patents({ items = [], onEdit }) {
             </span>
           </div>
           <div className="pub-venue">
-            {(pat.inventors ?? []).join(', ')}
+            <FocusNames names={pat.inventors ?? []} focus={focus} />
             {pat.number ? ` · ${pat.number}` : ''}
             {pat.country ? ` (${pat.country})` : ''}
           </div>

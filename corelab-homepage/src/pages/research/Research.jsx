@@ -13,6 +13,7 @@ import Projects from './Projects'
 import Patents from './Patents'
 import Tools from './Tools'
 import Books from './Books'
+import AuthorResearch from './AuthorResearch'
 
 const TABS = [
   { key: 'publications', label: 'Publications' },
@@ -44,8 +45,9 @@ export default function Research() {
   const { query: routeQuery } = useHashRoute()
   const searchQuery = routeQuery.q ?? ''
 
-  // People 페이지의 "OOO의 논문 보기" 링크(#/research?tab=publications&author=이름)로 들어오면
-  // 그 사람이 저자로 들어간 논문만 모아 보여줍니다. people.json에 적어둔 영문 표기(pubNames)도 함께 찾습니다.
+  // People 페이지의 "OOO의 연구 실적" 링크(#/research?author=이름)로 들어오면
+  // 그 사람 이름이 올라간 논문·저역서·특허를 한 화면에 모아 보여줍니다(AuthorResearch).
+  // people.json에 적어둔 영문 표기(pubNames)도 같은 사람으로 봅니다.
   const { data: people } = useData('people.json')
   const authorName = routeQuery.author ?? ''
   const authorFilter = useMemo(() => {
@@ -83,22 +85,35 @@ export default function Research() {
       <h1 className="section-title">Research</h1>
 
       <div className="tabs-layout">
-        <Tabs tabs={TABS} current={tab} onChange={setTab} />
+        {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
+        <Tabs tabs={TABS} current={authorFilter ? '' : tab} onChange={setTab} />
 
         <div className="tabs-content">
           {loading && !data && <div>불러오는 중...</div>}
           {error && <div className="error-state">{error}</div>}
 
-          {data && (
+          {data && authorFilter && (
+            <AuthorResearch
+              key={authorName}
+              data={data}
+              author={authorFilter}
+              onClear={() => setTab('publications')}
+              onEdit={{
+                publications: onEdit('publications'),
+                books: onEdit('books'),
+                patents: onEdit('patents'),
+              }}
+            />
+          )}
+
+          {data && !authorFilter && (
             <>
               {tab === 'publications' && (
                 <Publications
-                  key={`${authorName}|${searchQuery}`}
+                  key={searchQuery}
                   items={data.publications}
                   onEdit={onEdit('publications')}
                   initialQuery={searchQuery}
-                  authorFilter={authorFilter}
-                  onClearAuthor={() => setTab('publications')}
                 />
               )}
               {tab === 'books' && <Books items={data.publications} onEdit={onEdit('books')} />}

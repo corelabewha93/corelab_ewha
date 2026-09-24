@@ -1,6 +1,7 @@
 import { useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
 import { getIndexes } from './journalIndex'
+import { normalizeName } from './authorMatch'
 
 const FILTERS = [
   { key: 'all', label: 'All' },
@@ -36,11 +37,6 @@ function Highlight({ text = '', terms }) {
       part
     ),
   )
-}
-
-/** "Kim, H. J." / "Kim H.J." / "kim h j" 를 같은 이름으로 보도록 쉼표·점·공백을 지우고 소문자로 맞춥니다. */
-function normalizeName(name = '') {
-  return name.toLowerCase().replace(/[\s.,·]/g, '')
 }
 
 function Authors({ authors = [], terms, focus }) {
@@ -149,41 +145,33 @@ function PubItem({ pub, onEdit, terms, focus }) {
   )
 }
 
-const TYPE_LABELS = { journal: 'Journal', conference: 'Conference', other: 'Thesis' }
-
-export default function Publications({ items = [], onEdit, initialQuery = '', authorFilter = null, onClearAuthor }) {
+/**
+ * embedded: "OOO의 연구 실적" 화면 안에 들어갈 때 — 상단 연구실 전체 통계를 숨깁니다.
+ * focus: 모아보기 중인 사람 이름(비교용 Set). 저자 목록에서 그 이름만 초록색으로 표시합니다.
+ */
+export default function Publications({ items = [], onEdit, initialQuery = '', embedded = false, focus = null }) {
   const [filter, setFilter] = useState('all')
   const [query, setQuery] = useState(initialQuery)
   const terms = useMemo(() => toTerms(query), [query])
 
-  // 검색어·저자가 주소에서 바뀌면 Research.jsx가 key를 바꿔 이 컴포넌트를 새로 그리므로
+  // 검색어가 주소에서 바뀌면 Research.jsx가 key를 바꿔 이 컴포넌트를 새로 그리므로
   // 필터와 검색칸은 자연스럽게 처음 상태로 돌아갑니다.
 
   // 저역서(book)는 Books 탭에서 따로 보여줍니다.
-  const allPubs = useMemo(() => items.filter((p) => p.type !== 'book'), [items])
-
-  // "OOO의 논문 보기": 저자 목록에 그 사람 이름(또는 적어둔 영문 표기)이 정확히 들어간 논문만.
-  const focus = useMemo(
-    () => (authorFilter ? new Set(authorFilter.aliases.map(normalizeName).filter(Boolean)) : null),
-    [authorFilter],
-  )
-  const pubs = useMemo(
-    () => (focus ? allPubs.filter((p) => (p.authors ?? []).some((a) => focus.has(normalizeName(a)))) : allPubs),
-    [allPubs, focus],
-  )
+  const pubs = useMemo(() => items.filter((p) => p.type !== 'book'), [items])
 
   const stats = useMemo(() => {
-    const journals = allPubs.filter((p) => p.type === 'journal')
+    const journals = pubs.filter((p) => p.type === 'journal')
     const has = (ix) => journals.filter((p) => getIndexes(p).includes(ix)).length
     return {
       journals: journals.length,
       ssci: journals.filter((p) => getIndexes(p).some((i) => i === 'SSCI' || i === 'SCIE')).length,
       scopus: has('Scopus'),
       kci: has('KCI'),
-      conferences: allPubs.filter((p) => p.type === 'conference').length,
-      theses: allPubs.filter((p) => p.type === 'other').length,
+      conferences: pubs.filter((p) => p.type === 'conference').length,
+      theses: pubs.filter((p) => p.type === 'other').length,
     }
-  }, [allPubs])
+  }, [pubs])
 
   const filtered = useMemo(
     () =>
@@ -206,33 +194,12 @@ export default function Publications({ items = [], onEdit, initialQuery = '', au
     return Object.entries(groups).sort((a, b) => Number(b[0]) - Number(a[0]))
   }, [filtered])
 
-  if (allPubs.length === 0) return <p className="empty-state">등록된 논문이 없습니다.</p>
+  if (pubs.length === 0) return <p className="empty-state">등록된 논문이 없습니다.</p>
 
   const presentTypes = new Set(pubs.map((p) => p.type))
-  // 저자 보기 상단의 "Journal 12 · Conference 10" 요약 (0편인 종류는 표시하지 않습니다)
-  const breakdown = ['journal', 'conference', 'other']
-    .map((t) => [TYPE_LABELS[t], pubs.filter((p) => p.type === t).length])
-    .filter(([, n]) => n > 0)
-
   return (
     <div className="pubs">
-      {authorFilter ? (
-        <div className="pub-author-head">
-          <div>
-            <p className="pub-author-eyebrow">Publications by</p>
-            <h2 className="pub-author-name">
-              {authorFilter.name}
-              <span className="pub-author-count">{pubs.length}편</span>
-            </h2>
-            {breakdown.length > 0 && (
-              <p className="pub-author-breakdown">{breakdown.map(([l, n]) => `${l} ${n}`).join(' · ')}</p>
-            )}
-          </div>
-          <button type="button" className="pub-author-clear" onClick={onClearAuthor}>
-            전체 논문 보기
-          </button>
-        </div>
-      ) : (
+      {!embedded && (
         <dl className="pub-stats">
           <div>
             <dt>Journal Articles</dt>
@@ -287,11 +254,7 @@ export default function Publications({ items = [], onEdit, initialQuery = '', au
 
       {byYear.length === 0 && (
         <p className="empty-state">
-          {authorFilter && pubs.length === 0
-            ? '아직 등록된 논문이 없습니다.'
-            : terms.length
-              ? '검색어와 일치하는 논문이 없습니다.'
-              : '해당하는 논문이 없습니다.'}
+          {terms.length ? '검색어와 일치하는 논문이 없습니다.' : '해당하는 논문이 없습니다.'}
         </p>
       )}
 

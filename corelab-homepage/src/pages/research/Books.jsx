@@ -1,4 +1,5 @@
 import { EditButton } from '../../components/admin/AdminControls'
+import FocusNames from './FocusNames'
 
 /**
  * 저역서 — research.json의 publications 중 type이 'book'인 항목.
@@ -9,7 +10,7 @@ import { EditButton } from '../../components/admin/AdminControls'
  * 여러 저자가 나눠 쓴 편저의 한 챕터만 집필한 경우).
  * 표지 이미지 없이 텍스트만으로 표시합니다.
  */
-export default function Books({ items = [], onEdit }) {
+export default function Books({ items = [], onEdit, focus = null }) {
   const books = items
     .filter((p) => p.type === 'book')
     .sort((a, b) => (Number(b.year) || 0) - (Number(a.year) || 0))
@@ -44,13 +45,13 @@ export default function Books({ items = [], onEdit }) {
               {book.authors?.length > 0 && (
                 <p className="book-authors">
                   <span className="book-role-label">지은이</span>
-                  {book.authors.join(', ')}
+                  <FocusNames names={book.authors} focus={focus} />
                 </p>
               )}
               {isTranslation && (
                 <p className="book-authors">
                   <span className="book-role-label">옮긴이</span>
-                  {book.translators.join(', ')}
+                  <FocusNames names={book.translators} focus={focus} />
                 </p>
               )}
               <p className="book-meta">{[book.venue, book.details].filter(Boolean).join(' · ')}</p>
