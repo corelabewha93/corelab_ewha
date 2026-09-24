@@ -587,23 +587,13 @@ h1.section-title {
     flex: none;
     position: static;
     flex-direction: row;
-    flex-wrap: nowrap;
+    flex-wrap: wrap;
     width: 100%;
-    overflow-x: auto;
+    overflow-x: visible;
     border-bottom: 1px solid var(--color-border);
     padding-bottom: 0;
-    gap: 1.25rem;
-    scrollbar-width: none;
-    -webkit-overflow-scrolling: touch;
-    /* 탭이 화면보다 길면(Research) 오른쪽 끝을 흐리게 해서 "옆으로 밀 수 있음"을 알려줍니다.
-       마지막 탭이 흐린 영역에 가리지 않도록 오른쪽 여백을 둡니다. */
-    padding-right: 2rem;
-    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
-    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
-  }
-
-  .tabs-nav::-webkit-scrollbar {
-    display: none;
+    row-gap: 0.2rem;
+    column-gap: 1rem;
   }
 
   .tab-btn {
@@ -611,15 +601,27 @@ h1.section-title {
     border-left: none;
     border-bottom: 2px solid transparent;
     border-radius: 0;
-    padding: 0.6rem 0;
+    padding: 0.5rem 0;
     background: none;
     margin-bottom: -1px;
-    font-size: 0.92rem;
+    font-size: 0.86rem;
+    white-space: nowrap;
   }
 
   .tab-btn.active {
     border-bottom-color: var(--color-primary);
     background: none;
+  }
+}
+
+/* 아주 좁은 화면에서는 탭 글자를 한 번 더 줄여서 5개가 두 줄 안에 여유있게 들어가게 합니다. */
+@media (max-width: 380px) {
+  .tabs-nav {
+    column-gap: 0.7rem;
+  }
+
+  .tab-btn {
+    font-size: 0.8rem;
   }
 }
 
