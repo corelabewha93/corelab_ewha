@@ -1109,21 +1109,141 @@ h1.section-title {
 }
 
 /* ---------- Research lists ---------- */
-.pub-year-group {
+
+/* 상단 요약 숫자 (Journal Articles / SSCI·SCIE / Scopus / KCI / Conferences) */
+.pub-stats {
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  margin: 0 0 var(--space-4);
+  border-top: 2px solid var(--color-primary);
+  border-bottom: 1px solid var(--color-border);
+}
+
+.pub-stats > div {
+  padding: 0.9rem 0.9rem 0.85rem;
+  border-left: 1px solid var(--color-border);
+}
+
+.pub-stats > div:first-child {
+  border-left: none;
+  padding-left: 0;
+}
+
+.pub-stats dt {
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--color-text-muted);
+  white-space: nowrap;
+}
+
+.pub-stats dd {
+  margin: 0.2rem 0 0;
+  font-size: 1.6rem;
+  font-weight: 700;
+  line-height: 1.1;
+  color: var(--color-primary);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 필터 줄 */
+.pub-toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  flex-wrap: wrap;
   margin-bottom: var(--space-4);
 }
 
-.pub-year-title {
+.pub-toolbar .filter-row {
+  margin-bottom: 0;
+}
+
+.filter-row {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  margin-bottom: var(--space-3);
+}
+
+.filter-chip {
+  background: none;
+  border: 1px solid var(--color-border);
+  border-radius: 999px;
+  padding: 0.3rem 0.85rem;
+  font-size: 0.84rem;
+  cursor: pointer;
+  color: var(--color-text-muted);
+  transition:
+    background 0.15s,
+    color 0.15s,
+    border-color 0.15s;
+}
+
+.filter-chip:hover {
+  border-color: var(--color-border-strong);
+  color: var(--color-text);
+}
+
+.filter-chip.active {
+  background: var(--color-primary);
+  border-color: var(--color-primary);
+  color: var(--color-on-primary);
+  font-weight: 600;
+}
+
+.filter-chip-intl.active {
+  background: var(--color-primary-soft);
   color: var(--color-primary);
-  font-size: 1.1rem;
+}
+
+/* 연도 묶음: 데스크톱은 왼쪽에 연도, 오른쪽에 목록 */
+.pub-year-group {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0 var(--space-3);
+  padding: var(--space-2) 0;
+  border-top: 1px solid var(--color-border);
+}
+
+.pub-year-group:first-of-type {
+  border-top: none;
+  padding-top: 0;
+}
+
+.pub-year-title {
+  position: sticky;
+  top: calc(var(--header-h) + 1rem);
+  align-self: start;
+  margin: 0;
+  padding-top: 0.85rem;
+  color: var(--color-primary);
+  font-size: 1.15rem;
   font-weight: 700;
-  margin: 0 0 var(--space-2);
+  font-variant-numeric: tabular-nums;
+  line-height: 1.2;
+}
+
+.pub-year-count {
+  display: block;
+  margin-top: 0.2rem;
+  font-size: 0.72rem;
+  font-weight: 500;
+  color: var(--color-text-muted);
+}
+
+.pub-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
 }
 
 .pub-item,
 .project-item,
 .patent-item {
-  padding: var(--space-2) 0;
+  padding: 0.85rem 0;
   border-bottom: 1px solid var(--color-border);
 }
 
@@ -1133,20 +1253,101 @@ h1.section-title {
   border-bottom: none;
 }
 
+.pub-title {
+  margin: 0;
+  font-size: 0.98rem;
+  font-weight: 600;
+  line-height: 1.5;
+  color: var(--color-text);
+  word-break: keep-all;
+}
+
+.pub-title a {
+  color: inherit;
+}
+
+.pub-title a:hover {
+  color: var(--color-primary);
+}
+
 .pub-authors {
+  margin: 0.2rem 0 0;
+  font-size: 0.86rem;
+  color: var(--color-text-muted);
+  line-height: 1.5;
+}
+
+.pub-authors strong {
+  color: var(--color-text);
   font-weight: 600;
 }
 
-.pub-title {
-  margin: 0.15rem 0;
+.pub-meta {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.3rem 0.5rem;
+  margin-top: 0.35rem;
 }
 
 .pub-venue {
-  color: var(--color-text-muted);
-  font-style: italic;
-  font-size: 0.92rem;
+  color: #4d534f;
+  font-size: 0.86rem;
 }
 
+.pub-details {
+  color: var(--color-text-muted);
+}
+
+.pub-type-tag {
+  font-size: 0.7rem;
+  font-weight: 600;
+  color: var(--color-text-muted);
+  border: 1px solid var(--color-border);
+  border-radius: 3px;
+  padding: 0.05rem 0.4rem;
+}
+
+.pub-doi {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: var(--color-accent);
+}
+
+/* 등재 등급 배지: SSCI·SCIE(진한 초록) > Scopus(연초록) > KCI(회색) */
+.pub-index-badges {
+  display: inline-flex;
+  gap: 0.25rem;
+}
+
+.pub-index {
+  display: inline-block;
+  font-size: 0.66rem;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  line-height: 1;
+  padding: 0.28rem 0.45rem;
+  border-radius: 3px;
+  white-space: nowrap;
+}
+
+.pub-index-ssci,
+.pub-index-scie {
+  background: var(--color-primary);
+  color: #fff;
+}
+
+.pub-index-scopus {
+  background: #e3f1ea;
+  color: var(--color-primary);
+}
+
+.pub-index-kci {
+  background: #eef0f2;
+  color: #5d666e;
+}
+
+/* Patents / Projects 공용 */
 .badge {
   display: inline-block;
   font-size: 0.72rem;
@@ -1156,6 +1357,7 @@ h1.section-title {
   border: 1px solid var(--color-border);
   color: var(--color-text-muted);
   margin-left: var(--space-1);
+  vertical-align: 0.1em;
 }
 
 .badge.ongoing {
@@ -1163,27 +1365,112 @@ h1.section-title {
   border-color: var(--color-accent);
 }
 
-.filter-row {
-  display: flex;
-  gap: 0.5rem;
-  flex-wrap: wrap;
-  margin-bottom: var(--space-3);
+.project-item .pub-venue,
+.patent-item .pub-venue {
+  display: block;
+  margin-top: 0.25rem;
+  font-style: normal;
 }
 
-.filter-chip {
-  background: none;
-  border: 1px solid var(--color-border);
-  border-radius: 999px;
-  padding: 0.25rem 0.8rem;
-  font-size: 0.85rem;
-  cursor: pointer;
+/* ---------- Books (저역서) ---------- */
+.book-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+.book-row {
+  display: grid;
+  grid-template-columns: 4.5rem 1fr;
+  gap: 0 var(--space-3);
+  padding: 0.9rem 0;
+  border-bottom: 1px solid var(--color-border);
+}
+
+.book-row:last-child {
+  border-bottom: none;
+}
+
+.book-row-year {
+  color: var(--color-primary);
+  font-size: 1.1rem;
+  font-weight: 700;
+  font-variant-numeric: tabular-nums;
+  line-height: 1.5;
+}
+
+.book-title {
+  margin: 0;
+  font-size: 1rem;
+  font-weight: 700;
+  line-height: 1.5;
+  color: var(--color-text);
+  word-break: keep-all;
+}
+
+.book-authors {
+  margin: 0.2rem 0 0;
+  font-size: 0.86rem;
   color: var(--color-text-muted);
 }
 
-.filter-chip.active {
-  border-color: var(--color-accent);
-  color: var(--color-accent);
-  font-weight: 600;
+.book-meta {
+  margin: 0.35rem 0 0;
+  font-size: 0.86rem;
+  color: #4d534f;
+}
+
+.book-row:has(> .admin-edit-btn) {
+  padding-right: 2.6rem;
+}
+
+@media (max-width: 700px) {
+  .tabs-layout {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .tabs-nav {
+    /* 데스크톱용 flex-basis(150px)가 세로 방향에선 "높이 150px"가 되어
+       탭 위아래로 큰 빈 공간이 생겼습니다. */
+    flex: none;
+    position: static;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    width: 100%;
+    overflow-x: auto;
+    border-bottom: 1px solid var(--color-border);
+    padding-bottom: 0;
+    gap: 1.25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    /* 탭이 화면보다 길면(Research) 오른쪽 끝을 흐리게 해서 "옆으로 밀 수 있음"을 알려줍니다.
+       마지막 탭이 흐린 영역에 가리지 않도록 오른쪽 여백을 둡니다. */
+    padding-right: 2rem;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  }
+
+  .tabs-nav::-webkit-scrollbar {
+    display: none;
+  }
+
+  .tab-btn {
+    flex: 0 0 auto;
+    border-left: none;
+    border-bottom: 2px solid transparent;
+    border-radius: 0;
+    padding: 0.6rem 0;
+    background: none;
+    margin-bottom: -1px;
+    font-size: 0.92rem;
+  }
+
+  .tab-btn.active {
+    border-bottom-color: var(--color-primary);
+    background: none;
+  }
 }
 
 .tools-grid {
