@@ -172,8 +172,22 @@ h1.section-title {
   letter-spacing: 0.02em;
   text-transform: uppercase;
   line-height: 1;
-  color: #fff;
+  color: #a9e0c4;
   font-size: clamp(1.9rem, 10vw, 3.2rem);
+}
+
+/* 녹색 계열 안에서 서로 구분되는, 인식 가능한 톤으로 순서대로 내려옵니다. */
+.hero-kw-fall-item:nth-child(4n + 1) .hero-kw-fall-text {
+  color: #a9e0c4; /* 페일 민트 */
+}
+.hero-kw-fall-item:nth-child(4n + 2) .hero-kw-fall-text {
+  color: #7fc9d9; /* 이화 블루 계열 */
+}
+.hero-kw-fall-item:nth-child(4n + 3) .hero-kw-fall-text {
+  color: #d9c97a; /* 소프트 골드 */
+}
+.hero-kw-fall-item:nth-child(4n + 4) .hero-kw-fall-text {
+  color: #6fc7a0; /* 진한 민트 */
 }
 
 @keyframes hero-kw-fall-seq {
@@ -190,7 +204,7 @@ h1.section-title {
     transform: translateY(0);
   }
   100% {
-    opacity: 0.14;
+    opacity: 0.1;
     transform: translateY(0);
   }
 }
@@ -219,11 +233,17 @@ h1.section-title {
   animation-delay: 2.55s;
 }
 
+/* Invisible → Visible로 바뀌는 느낌을, "Invisible" 속 visible과 뒤이은 "Visible"을
+   같은 강조색으로 이어 붙여 표현합니다. */
+.hero-motto-accent {
+  color: var(--color-accent);
+}
+
 .hero-affiliation {
   opacity: 0;
   display: flex;
   flex-direction: column;
-  gap: 0.3em;
+  gap: 0.35em;
   margin: 0;
   animation: hero-fade-up 0.9s ease forwards;
   animation-delay: 3.35s;
@@ -231,11 +251,11 @@ h1.section-title {
 
 .hero-affiliation p {
   margin: 0;
-  font-size: 0.78rem;
+  font-size: clamp(0.92rem, 3.4vw, 1.05rem);
   font-weight: 600;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.08em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.72);
+  color: rgba(255, 255, 255, 0.78);
 }
 
 .hero-final-logo {
@@ -264,7 +284,7 @@ h1.section-title {
 @media (prefers-reduced-motion: reduce) {
   .hero-kw-fall-item {
     animation: none;
-    opacity: 0.14;
+    opacity: 0.1;
     transform: none;
   }
   .hero-motto-reveal,
@@ -281,7 +301,7 @@ h1.section-title {
     font-size: clamp(2.4rem, 6vw, 5rem);
   }
   .hero-affiliation p {
-    font-size: 0.88rem;
+    font-size: 1.2rem;
   }
 }
 
