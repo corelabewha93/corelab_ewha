@@ -420,10 +420,10 @@
     },
     {
       "name": "임지영",
-      "photo": "images/people/임지영-mue0nd54.jpg",
+      "photo": "images/people/임지영-mufhtxda.jpg",
       "photoCrop": {
-        "x": 47.4,
-        "y": 29.5,
+        "x": 48.3,
+        "y": 30.2,
         "zoom": 1.87
       },
       "degree": "PhD",
@@ -437,7 +437,8 @@
         "테크놀로지 기반 교수설계, AI·디지털 활용 교육, 협력학습"
       ],
       "links": [],
-      "id": "person-mue0nja9m7m"
+      "id": "person-mue0nja9m7m",
+      "nameEn": ""
     },
     {
       "name": "이지현",
