@@ -10,6 +10,14 @@ body {
   padding: 0;
 }
 
+html {
+  /* 페이지마다 내용 높이가 달라서 스크롤바가 생겼다 사라졌다 하면, 그때마다
+     전체 화면이 스크롤바 폭만큼 좌우로 살짝 움직여 보입니다(특히 헤더/헤드라인).
+     스크롤바 자리를 항상 미리 확보해서 탭을 옮겨도 화면이 흔들리지 않게 합니다. */
+  scrollbar-gutter: stable;
+  overflow-y: scroll; /* scrollbar-gutter 미지원 브라우저를 위한 대체 처리 */
+}
+
 body {
   background: var(--color-bg);
   color: var(--color-text);
@@ -1219,41 +1227,56 @@ h1.section-title {
   width: 100%;
   height: 100%;
   object-fit: cover;
-  touch-action: pan-y;
 }
 
-/* 화살표는 PC에서만, 아주 연하게 보여줍니다. 모바일은 손가락으로 밀어서 넘겨요. */
+/* 사진의 좌/우 넓은 영역을 눌러도(모바일 터치 포함) 바로 다음/이전 사진으로 넘어갑니다.
+   화살표 아이콘 자체는 작고 흐리게, 탭하기 쉽도록 영역만 넓게 잡았습니다. */
 .lightbox-nav {
-  display: none;
   position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 1.9rem;
-  height: 1.9rem;
-  border-radius: 50%;
+  top: 0;
+  bottom: 0;
+  width: 38%;
+  max-width: 110px;
   border: none;
+  background: transparent;
+  padding: 0;
+  margin: 0;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+}
+
+.lightbox-nav-prev {
+  left: 0;
+  justify-content: flex-start;
+}
+
+.lightbox-nav-next {
+  right: 0;
+  justify-content: flex-end;
+}
+
+.lightbox-nav-icon {
+  width: 1.8rem;
+  height: 1.8rem;
+  margin: 0 0.4rem;
+  border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
   color: var(--color-text-muted);
-  font-size: 1.15rem;
+  font-size: 1.1rem;
   line-height: 1;
+  display: flex;
   align-items: center;
   justify-content: center;
-  cursor: pointer;
   opacity: 0.55;
   transition: opacity 0.15s ease, background 0.15s ease;
 }
 
-.lightbox-nav:hover {
+.lightbox-nav:hover .lightbox-nav-icon,
+.lightbox-nav:active .lightbox-nav-icon {
   opacity: 1;
   background: rgba(255, 255, 255, 0.9);
   color: var(--color-text);
-}
-
-.lightbox-nav-prev { left: 0.45rem; }
-.lightbox-nav-next { right: 0.45rem; }
-
-@media (min-width: 720px) {
-  .lightbox-nav { display: flex; }
 }
 
 .lightbox-counter {
@@ -1269,6 +1292,7 @@ h1.section-title {
   line-height: 1;
   padding: 0.3rem 0.55rem;
   border-radius: 999px;
+  pointer-events: none; /* 우측 하단 탭 영역이 카운터 배지에 가로막히지 않도록 */
 }
 
 .lightbox-dots {
