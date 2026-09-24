@@ -3,9 +3,9 @@ import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 
-/** Research > Publications 탭에서 이 이름으로 바로 검색되는 링크. */
+/** Research > Publications 탭에서 이 사람이 저자로 들어간 논문만 모아 보여주는 링크. */
 function publicationsLinkFor(name) {
-  return `#/research?tab=publications&q=${encodeURIComponent(name)}`
+  return `#/research?tab=publications&author=${encodeURIComponent(name)}`
 }
 
 function initials(name) {
@@ -75,18 +75,11 @@ function FacultyProfile({ person, onEdit, reorder }) {
           </div>
         )}
 
-        {(person.scholarLink || person.name) && (
+        {person.scholarLink && (
           <p className="faculty-scholar">
-            {person.scholarLink && (
-              <a href={person.scholarLink} target="_blank" rel="noreferrer">
-                Google Scholar →
-              </a>
-            )}
-            {person.name && (
-              <a href={publicationsLinkFor(person.name)} className="faculty-pub-link">
-                {person.name}의 논문 보기 →
-              </a>
-            )}
+            <a href={person.scholarLink} target="_blank" rel="noreferrer">
+              Google Scholar →
+            </a>
           </p>
         )}
 
