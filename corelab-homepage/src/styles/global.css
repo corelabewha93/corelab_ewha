@@ -611,6 +611,10 @@ h1.section-title {
   .tab-btn.active {
     border-bottom-color: var(--color-primary);
     background: none;
+    /* 데스크톱과 달리 모바일은 탭이 가로로 줄바꿈되므로, active일 때 font-weight가
+       바뀌면 글자 폭이 늘어나 탭 전체가 움직여 보입니다(줄바꿈 위치까지 바뀔 수 있음).
+       굵기 대신 색상 + 밑줄만으로 활성 탭을 표시해 폭을 고정합니다. */
+    font-weight: 400;
   }
 }
 
