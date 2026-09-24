@@ -260,14 +260,7 @@ export const toolFields = [
 ]
 
 export const siteIntroFields = [
-  {
-    name: 'heroImage',
-    label: '메인 화면 사진',
-    type: 'image',
-    folder: 'site',
-    hint: '랩 단체사진 등 가로로 넓은 사진을 추천해요. 비워두면 사진 없이 지금처럼 텍스트만 나옵니다.',
-  },
-  { name: 'university', label: '상단 작은 글씨', type: 'text' },
+  { name: 'university', label: '상단 작은 글씨 (현재 미사용)', type: 'text' },
   { name: 'labName', label: '연구실 이름', type: 'text', required: true },
   { name: 'labTagline', label: '부제 (사진 위 태그라인으로도 쓰입니다)', type: 'text' },
   {
