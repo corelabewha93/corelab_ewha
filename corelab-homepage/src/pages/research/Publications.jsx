@@ -1,9 +1,6 @@
 import { useMemo, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
-import { getIndexes, INTERNATIONAL } from './journalIndex'
-
-/** 임규연 교수님 이름(한글/영문 여러 표기)을 굵게 표시하기 위한 패턴 */
-const PI_PATTERN = /^\s*(임규연|lim[\s,.]*k[\s.]*(y\.?)?)\s*\.?\s*$/i
+import { getIndexes } from './journalIndex'
 
 const FILTERS = [
   { key: 'all', label: 'All' },
@@ -21,16 +18,7 @@ function splitThesis(title = '') {
 
 function Authors({ authors = [] }) {
   if (!authors.length) return null
-  return (
-    <p className="pub-authors">
-      {authors.map((name, i) => (
-        <span key={i}>
-          {i > 0 && ', '}
-          {PI_PATTERN.test(name) ? <strong>{name}</strong> : name}
-        </span>
-      ))}
-    </p>
-  )
+  return <p className="pub-authors">{authors.join(', ')}</p>
 }
 
 function IndexBadges({ indexes }) {
@@ -86,7 +74,6 @@ function PubItem({ pub, onEdit }) {
 
 export default function Publications({ items = [], onEdit }) {
   const [filter, setFilter] = useState('all')
-  const [intlOnly, setIntlOnly] = useState(false)
 
   // 저역서(book)는 Books 탭에서 따로 보여줍니다.
   const pubs = useMemo(() => items.filter((p) => p.type !== 'book'), [items])
@@ -105,12 +92,8 @@ export default function Publications({ items = [], onEdit }) {
 
   const filtered = useMemo(
     () =>
-      pubs.filter(
-        (p) =>
-          (filter === 'all' || p.type === filter) &&
-          (!intlOnly || getIndexes(p).some((i) => INTERNATIONAL.has(i))),
-      ),
-    [pubs, filter, intlOnly],
+      pubs.filter((p) => filter === 'all' || p.type === filter),
+    [pubs, filter],
   )
 
   const byYear = useMemo(() => {
@@ -165,14 +148,6 @@ export default function Publications({ items = [], onEdit }) {
             </button>
           ))}
         </div>
-        <button
-          type="button"
-          className={`filter-chip filter-chip-intl${intlOnly ? ' active' : ''}`}
-          aria-pressed={intlOnly}
-          onClick={() => setIntlOnly((v) => !v)}
-        >
-          SSCI · SCIE · Scopus만 보기
-        </button>
       </div>
 
       {byYear.length === 0 && <p className="empty-state">해당하는 논문이 없습니다.</p>}
