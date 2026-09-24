@@ -17,6 +17,9 @@ body {
   line-height: 1.65;
   letter-spacing: -0.005em;
   word-break: keep-all;
+  /* keep-all은 한국어 단어를 통째로 유지해서, 칸보다 긴 단어(예: 박사과정생연구장려금지원사업)가
+     카드 밖으로 삐져나왔습니다. 칸을 넘칠 때만 단어 중간에서 줄바꿈하도록 허용합니다. */
+  overflow-wrap: break-word;
   -webkit-font-smoothing: antialiased;
   overflow-x: clip; /* 풀블리드 히어로 때문에 가로 스크롤이 생기지 않도록 */
 }
@@ -79,6 +82,8 @@ h1.section-title {
   }
   .page {
     padding-top: var(--space-4);
+    padding-bottom: var(--space-4);
+    min-height: 50vh;
   }
 }
 
@@ -437,26 +442,44 @@ h1.section-title {
 @media (max-width: 700px) {
   .tabs-layout {
     flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
   }
 
   .tabs-nav {
+    /* 데스크톱용 flex-basis(150px)가 세로 방향에선 "높이 150px"가 되어
+       탭 위아래로 큰 빈 공간이 생겼습니다. */
+    flex: none;
     position: static;
     flex-direction: row;
     flex-wrap: nowrap;
     width: 100%;
     overflow-x: auto;
     border-bottom: 1px solid var(--color-border);
-    padding-bottom: 0.4rem;
-    gap: var(--space-2);
+    padding-bottom: 0;
+    gap: 1.25rem;
+    scrollbar-width: none;
+    -webkit-overflow-scrolling: touch;
+    /* 탭이 화면보다 길면(Research) 오른쪽 끝을 흐리게 해서 "옆으로 밀 수 있음"을 알려줍니다.
+       마지막 탭이 흐린 영역에 가리지 않도록 오른쪽 여백을 둡니다. */
+    padding-right: 2rem;
+    -webkit-mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+    mask-image: linear-gradient(to right, #000 calc(100% - 2.5rem), transparent);
+  }
+
+  .tabs-nav::-webkit-scrollbar {
+    display: none;
   }
 
   .tab-btn {
+    flex: 0 0 auto;
     border-left: none;
     border-bottom: 2px solid transparent;
     border-radius: 0;
-    padding: 0.5rem 0.1rem;
+    padding: 0.6rem 0;
     background: none;
-    margin-bottom: -0.45rem;
+    margin-bottom: -1px;
+    font-size: 0.92rem;
   }
 
   .tab-btn.active {
@@ -1869,7 +1892,8 @@ h1.section-title {
 
 .faculty-bio {
   margin: 0 0 var(--space-2);
-  line-height: 1.7;
+  font-size: 0.93rem;
+  line-height: 1.75;
   color: var(--color-text);
 }
 
@@ -1942,6 +1966,11 @@ h1.section-title {
   text-align: left;
 }
 
+/* 학력·수상 두 칸 아래에 오는 경력은 줄 전체 너비를 써서, 긴 직함도 한 줄에 날짜와 나란히 들어가게 */
+.faculty-history-table > .faculty-history-col:nth-child(3) {
+  grid-column: 1 / -1;
+}
+
 .faculty-history-col h4 {
   margin: 0 0 0.6rem;
   font-size: 0.8rem;
@@ -1968,7 +1997,7 @@ h1.section-title {
   /* 라벨이 길어서 둘째 줄로 넘어가도, 날짜가 아래로 떨어지지 않고 첫 줄
      오른쪽에 그대로 붙어 있도록 wrap 대신 라벨 자체가 줄바꿈하게 둡니다. */
   align-items: flex-start;
-  gap: 0.6rem;
+  gap: 0.5rem;
 }
 
 .faculty-history-label {
@@ -1979,7 +2008,8 @@ h1.section-title {
 
 .faculty-history-date {
   flex: 0 0 auto;
-  font-size: 0.78rem;
+  font-size: 0.75rem;
+  letter-spacing: -0.01em;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
   color: var(--color-text-muted);
@@ -2001,30 +2031,53 @@ h1.section-title {
   .faculty-profile {
     flex-direction: column;
     align-items: center;
-    text-align: center;
+    gap: var(--space-3);
+    padding: var(--space-3) var(--space-2);
     /* 부모(.page container)보다 넓어지지 않도록 */
     min-width: 0;
     max-width: 100%;
   }
+  /* 사진·이름·직책만 가운데, 소개글·연락처·이력은 읽기 편하게 왼쪽 정렬 */
   .faculty-info {
-    text-align: center;
+    text-align: left;
     min-width: 0;
     width: 100%;
   }
+  .faculty-name,
+  .faculty-position,
+  .faculty-affiliation {
+    text-align: center;
+  }
+  .faculty-name {
+    font-size: 1.35rem;
+  }
   .faculty-photo {
-    width: 160px;
+    flex: 0 0 auto;
+    width: 140px;
+  }
+  .faculty-bio {
+    font-size: 0.9rem;
+    line-height: 1.75;
   }
   .faculty-meta {
     flex-direction: column;
     gap: var(--space-2);
   }
   .faculty-contact {
-    align-items: center;
+    align-items: flex-start;
+    font-size: 0.9rem;
+    min-width: 0;
+  }
+  .faculty-interests {
+    min-width: 0;
   }
   .faculty-interests > div {
     display: flex;
-    justify-content: center;
     flex-wrap: wrap;
+    gap: 0.35rem;
+  }
+  .faculty-interests .tag {
+    margin: 0;
   }
   /* 학력/수상/경력을 한 줄에 한 칸씩 세로로 쌓아서 화면 밖으로 넘치지 않게 */
   .faculty-history-table {
@@ -2069,4 +2122,129 @@ h1.section-title {
 
 .chevron {
   color: var(--color-text-muted);
+}
+
+/* =====================================================================
+   모바일 다듬기 (휴대폰 화면 전용)
+   ===================================================================== */
+@media (max-width: 720px) {
+  .site-footer {
+    margin-top: var(--space-5);
+    padding-top: var(--space-4);
+  }
+
+  /* 홈 Latest News: 큰 세로 카드 대신 News 목록처럼 사진 왼쪽 + 제목 오른쪽 */
+  .news-preview-grid {
+    gap: var(--space-2);
+  }
+  .news-preview-card {
+    display: flex;
+    align-items: center;
+    gap: var(--space-2);
+  }
+  .news-preview-card .news-preview-thumb {
+    flex: 0 0 96px;
+    width: 96px;
+    margin-bottom: 0;
+  }
+  .news-preview-card .title {
+    font-size: 0.92rem;
+    min-width: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .news-preview-head {
+    align-items: flex-end;
+  }
+  .news-preview-more {
+    font-size: 0.85rem;
+    padding-bottom: 0.3rem;
+    white-space: nowrap;
+  }
+
+  /* News 목록 카드 */
+  .news-list-card {
+    gap: var(--space-2);
+    padding: 0.85rem;
+  }
+  .news-list-title {
+    font-size: 0.95rem;
+    line-height: 1.45;
+  }
+  .news-list-subtitle,
+  .news-list-excerpt {
+    font-size: 0.8rem;
+  }
+
+  /* News 본문 */
+  .news-article-title {
+    font-size: 1.1rem;
+    line-height: 1.45;
+  }
+  .news-article-p {
+    font-size: 0.92rem;
+  }
+
+  /* Students / Alumni: 휴대폰에서는 큰 카드 대신 "사진 왼쪽 + 이름 오른쪽" 목록형.
+     펼치면 상세 이력이 그 줄 아래로 전체 너비로 열려서, 사진이 튀거나
+     화면이 크게 출렁이지 않습니다. */
+  .people-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+  }
+  .person-card {
+    display: grid;
+    grid-template-columns: 72px minmax(0, 1fr);
+    column-gap: var(--space-2);
+    align-items: center;
+    text-align: left;
+    padding: 0.85rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  .person-card:first-child {
+    padding-top: 0;
+  }
+  .person-photo-btn {
+    margin: 0;
+  }
+  .person-photo {
+    width: 72px;
+    margin: 0;
+    font-size: 1.4rem;
+  }
+  .person-name-btn {
+    justify-content: flex-start;
+    width: auto;
+    margin: 0;
+    padding: 0.4rem 0;
+  }
+  .person-detail {
+    grid-column: 1 / -1;
+    margin-top: 0.85rem;
+    font-size: 0.85rem;
+    max-height: none;
+    overflow: visible;
+  }
+  .people-group-title {
+    margin-bottom: var(--space-2);
+  }
+  .people-group + .people-group {
+    margin-top: var(--space-4);
+  }
+
+  /* Lab Life */
+  .gallery-grid {
+    gap: var(--space-2) 0.75rem;
+  }
+  .gallery-item-caption {
+    font-size: 0.82rem;
+  }
+
+  /* Research 목록 */
+  .pub-item,
+  .project-item,
+  .patent-item {
+    font-size: 0.92rem;
+  }
 }

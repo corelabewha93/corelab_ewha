@@ -26,7 +26,7 @@ function NewsPreview() {
         {items.map((item) => {
           const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
           return (
-            <Link key={item.id} to="/news" className="news-preview-card">
+            <Link key={item.id} to={`/news?id=${item.id}`} className="news-preview-card">
               <div className="news-preview-thumb">
                 <SafeImage src={thumb} alt="" fallback={<span />} />
               </div>

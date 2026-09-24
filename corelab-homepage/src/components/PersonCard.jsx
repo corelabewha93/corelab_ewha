@@ -173,7 +173,7 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
   const toggle = () => expandable && setOpen((v) => !v)
 
   return (
-    <div className={`person-card${reorder ? ' reordering' : ''}`}>
+    <div className={`person-card${reorder ? ' reordering' : ''}${open && !reorder ? ' open' : ''}`}>
       {!reorder && <EditButton onClick={() => onEdit?.(person)} label={`${person.name} 정보 수정`} />}
 
       <button
