@@ -579,6 +579,27 @@
       ],
       "links": [],
       "id": "person-mue7boc1zes"
+    },
+    {
+      "name": "차수민",
+      "photo": "images/people/차수민-muf2g5li.jpg",
+      "photoCrop": {
+        "x": 53.7,
+        "y": 43.5,
+        "zoom": 1.06
+      },
+      "degree": "MA",
+      "affiliation": "교원그룹 인재개발팀 매니저",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "기업에서 임직원 교육을 담당하고 있다",
+        "향후 교육 뿐만 아니라 채용, 평가/보상 등으로 경험을 넓혀 HR Generalist로 성장하는 것을 목표로 하고 있다",
+        "#관심분야",
+        "학습경험설계(LXD), 리더십개발, 조직개발(OD)"
+      ],
+      "links": [],
+      "id": "person-muf2g7fen4u"
     }
   ]
 }
