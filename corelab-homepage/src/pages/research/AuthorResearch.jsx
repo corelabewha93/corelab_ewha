@@ -25,11 +25,21 @@ export default function AuthorResearch({ data, author, onClear, onEdit }) {
 
   // 0건인 종류는 요약·목록 모두에서 뺍니다.
   const sections = [
-    { key: 'publications', label: '논문', title: 'Publications', count: pubs.length },
-    { key: 'books', label: '저역서', title: 'Books', count: books.length },
-    { key: 'patents', label: '특허', title: 'Patents', count: patents.length },
+    { key: 'publications', title: 'Publications', count: pubs.length },
+    { key: 'books', title: 'Books', count: books.length },
+    { key: 'patents', title: 'Patents', count: patents.length },
   ].filter((s) => s.count > 0)
   const total = pubs.length + books.length + patents.length
+
+  // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 학위논문을 나눠서 셉니다.
+  const countType = (t) => pubs.filter((p) => p.type === t).length
+  const summary = [
+    ['학술지 논문', countType('journal')],
+    ['학회 발표', countType('conference')],
+    ['학위논문', countType('other')],
+    ['저역서', books.length],
+    ['특허', patents.length],
+  ].filter(([, n]) => n > 0)
 
   return (
     <div className="author-research">
@@ -40,8 +50,8 @@ export default function AuthorResearch({ data, author, onClear, onEdit }) {
             {author.name}
             <span className="pub-author-count">{total}건</span>
           </h2>
-          {sections.length > 0 && (
-            <p className="pub-author-breakdown">{sections.map((s) => `${s.label} ${s.count}`).join(' · ')}</p>
+          {summary.length > 0 && (
+            <p className="pub-author-breakdown">{summary.map(([l, n]) => `${l} ${n}`).join(' · ')}</p>
           )}
         </div>
         <button type="button" className="pub-author-clear" onClick={onClear}>
