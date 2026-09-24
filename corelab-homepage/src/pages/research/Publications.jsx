@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
 import { getIndexes } from './journalIndex'
 
@@ -100,6 +100,8 @@ function PubItem({ pub, onEdit, terms }) {
   const { title, thesis } = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
   const typeTag =
     pub.type === 'conference' ? 'Conference' : pub.type === 'other' ? thesis ?? 'Other' : null
+  const typeTagClass =
+    thesis === '박사학위논문' ? ' pub-type-tag-phd' : thesis === '석사학위논문' ? ' pub-type-tag-ma' : ''
 
   return (
     <li className="pub-item admin-item">
@@ -121,7 +123,7 @@ function PubItem({ pub, onEdit, terms }) {
             {pub.details ? <span className="pub-details">, {pub.details}</span> : null}
           </span>
         )}
-        {typeTag && <span className="pub-type-tag">{typeTag}</span>}
+        {typeTag && <span className={`pub-type-tag${typeTagClass}`}>{typeTag}</span>}
         <IndexBadges indexes={indexes} />
         {pub.doi && (
           <a className="pub-doi" href={`https://doi.org/${pub.doi}`} target="_blank" rel="noreferrer">
@@ -133,10 +135,16 @@ function PubItem({ pub, onEdit, terms }) {
   )
 }
 
-export default function Publications({ items = [], onEdit }) {
+export default function Publications({ items = [], onEdit, initialQuery = '' }) {
   const [filter, setFilter] = useState('all')
-  const [query, setQuery] = useState('')
+  const [query, setQuery] = useState(initialQuery)
   const terms = useMemo(() => toTerms(query), [query])
+
+  // People 페이지의 "이 사람 논문 보기" 링크(#/research?tab=publications&q=이름)로 들어왔을 때,
+  // 검색어를 새로 반영합니다.
+  useEffect(() => {
+    setQuery(initialQuery)
+  }, [initialQuery])
 
   // 저역서(book)는 Books 탭에서 따로 보여줍니다.
   const pubs = useMemo(() => items.filter((p) => p.type !== 'book'), [items])
