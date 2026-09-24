@@ -2835,14 +2835,16 @@
       "year": 2026,
       "type": "book",
       "authors": [
-        "지은이 | John Chi-Kin Lee"
+        "\"John Chi-Kin Lee\""
       ],
       "title": "Handbook of Asian Educational Innovation towards the Futures of Education",
       "venue": "Springer",
       "details": "1,415 pp.",
       "doi": "",
       "link": "",
-      "translators": [],
+      "translators": [
+        "임규연"
+      ],
       "indexes": ""
     },
     {
