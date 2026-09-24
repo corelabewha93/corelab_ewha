@@ -15,6 +15,21 @@ function heroKeyword(area) {
   return m ? m[1] : area
 }
 
+/** 모토 문구 속 "visible" 부분(Invisible의 뒷부분 + Visible)만 강조색으로 표시해,
+ *  "Invisible → Visible"로 바뀌는 느낌을 색 변화로 보여줍니다. */
+function renderMotto(text) {
+  if (!text) return null
+  return text.split(/(visible)/gi).map((part, i) =>
+    /^visible$/i.test(part) ? (
+      <span key={i} className="hero-motto-accent">
+        {part}
+      </span>
+    ) : (
+      part
+    )
+  )
+}
+
 function NewsPreview() {
   const { data } = useData('news.json')
   const items = (data ?? []).slice(0, 3)
@@ -76,7 +91,7 @@ export default function About() {
           )}
 
           <div className="hero-sequence-content">
-            {mottoEn && <p className="hero-motto-reveal">{mottoEn}</p>}
+            {mottoEn && <p className="hero-motto-reveal">{renderMotto(mottoEn)}</p>}
 
             {heroAffiliation.length > 0 && (
               <div className="hero-affiliation">
