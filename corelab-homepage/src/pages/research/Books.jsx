@@ -3,6 +3,8 @@ import { EditButton } from '../../components/admin/AdminControls'
 /**
  * 저역서 — research.json의 publications 중 type이 'book'인 항목.
  * (관리자 화면에서 "종류: Book (저역서)"로 추가하면 여기에 나타납니다.)
+ *
+ * translators(옮긴이)가 있으면 "번역서"로, 없으면 "저서"로 표시합니다.
  * 표지 이미지 없이 텍스트만으로 표시합니다.
  */
 export default function Books({ items = [], onEdit }) {
@@ -14,25 +16,42 @@ export default function Books({ items = [], onEdit }) {
 
   return (
     <ul className="book-list">
-      {books.map((book) => (
-        <li key={book.id} className="book-row admin-item">
-          <EditButton onClick={() => onEdit(book)} />
-          <span className="book-row-year">{book.year}</span>
-          <div className="book-row-body">
-            <p className="book-title">
-              {book.link ? (
-                <a href={book.link} target="_blank" rel="noreferrer">
-                  {book.title}
-                </a>
-              ) : (
-                book.title
+      {books.map((book) => {
+        const isTranslation = (book.translators?.length ?? 0) > 0
+        return (
+          <li key={book.id} className="book-row admin-item">
+            <EditButton onClick={() => onEdit(book)} />
+            <span className="book-row-year">{book.year}</span>
+            <div className="book-row-body">
+              <p className="book-title">
+                {book.link ? (
+                  <a href={book.link} target="_blank" rel="noreferrer">
+                    {book.title}
+                  </a>
+                ) : (
+                  book.title
+                )}
+                <span className={`book-role-badge${isTranslation ? ' book-role-translation' : ''}`}>
+                  {isTranslation ? '번역서' : '저서'}
+                </span>
+              </p>
+              {book.authors?.length > 0 && (
+                <p className="book-authors">
+                  <span className="book-role-label">지은이</span>
+                  {book.authors.join(', ')}
+                </p>
               )}
-            </p>
-            {book.authors?.length > 0 && <p className="book-authors">{book.authors.join(', ')}</p>}
-            <p className="book-meta">{[book.venue, book.details].filter(Boolean).join(' · ')}</p>
-          </div>
-        </li>
-      ))}
+              {isTranslation && (
+                <p className="book-authors">
+                  <span className="book-role-label">옮긴이</span>
+                  {book.translators.join(', ')}
+                </p>
+              )}
+              <p className="book-meta">{[book.venue, book.details].filter(Boolean).join(' · ')}</p>
+            </div>
+          </li>
+        )
+      })}
     </ul>
   )
 }
