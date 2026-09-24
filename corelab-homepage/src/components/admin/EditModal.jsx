@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 import { uploadImage } from '../../admin/dataStore'
 import { normalizeCrop } from '../../admin/photoCrop'
@@ -87,12 +87,51 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
     })
     return v
   })
-  const [files, setFiles] = useState({}) // image 필드 이름 -> File[]
+  const [files, setFiles] = useState({}) // image(단일) 필드 이름 -> File[]
+  // 사진 여러 장(multiple) 필드: 기존 사진과 새로 고른 사진을 한 줄로 합쳐서 순서를 바꾸거나 뺄 수 있게 관리합니다.
+  // entry: { id, kind: 'existing', src } | { id, kind: 'new', file, previewUrl }
+  const [multiEntries, setMultiEntries] = useState(() => {
+    const m = {}
+    fields.forEach((f) => {
+      if (f.type === 'image' && f.multiple) {
+        const arr = Array.isArray(initial[f.name]) ? initial[f.name].filter(Boolean) : []
+        m[f.name] = arr.map((src, i) => ({ id: `existing-${i}-${src}`, kind: 'existing', src }))
+      }
+    })
+    return m
+  })
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
+  const objectUrlsRef = useRef([])
 
   const set = (name, value) => setValues((prev) => ({ ...prev, [name]: value }))
+
+  const addMultiFiles = (name, fileList) => {
+    const added = Array.from(fileList ?? []).map((file, i) => {
+      const previewUrl = URL.createObjectURL(file)
+      objectUrlsRef.current.push(previewUrl)
+      return { id: `new-${Date.now()}-${i}-${file.name}`, kind: 'new', file, previewUrl }
+    })
+    if (!added.length) return
+    setMultiEntries((prev) => ({ ...prev, [name]: [...(prev[name] ?? []), ...added] }))
+  }
+
+  const removeMultiEntry = (name, id) => {
+    setMultiEntries((prev) => ({ ...prev, [name]: (prev[name] ?? []).filter((en) => en.id !== id) }))
+  }
+
+  const moveMultiEntry = (name, index, dir) => {
+    setMultiEntries((prev) => {
+      const list = [...(prev[name] ?? [])]
+      const target = index + dir
+      if (target < 0 || target >= list.length) return prev
+      ;[list[index], list[target]] = [list[target], list[index]]
+      return { ...prev, [name]: list }
+    })
+  }
+
+  useEffect(() => () => objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u)), [])
 
   // crop 미리보기를 위한 임시 주소 (새로 고른 사진이 있으면 그걸, 없으면 기존 사진)
   const previewUrls = useMemo(() => {
@@ -118,7 +157,14 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
     if (saving) return
     for (const f of visibleFields) {
       if (!f.required) continue
-      const empty = f.type === 'image' ? !values[f.name] && !files[f.name]?.length : !String(values[f.name] ?? '').trim()
+      let empty
+      if (f.type === 'image' && f.multiple) {
+        empty = !(multiEntries[f.name]?.length)
+      } else if (f.type === 'image') {
+        empty = !values[f.name] && !files[f.name]?.length
+      } else {
+        empty = !String(values[f.name] ?? '').trim()
+      }
       if (empty) {
         setError(`"${f.label}" 항목을 입력해주세요.`)
         return
@@ -130,13 +176,16 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
     try {
       const out = {}
       for (const f of visibleFields) {
-        if (f.type === 'image' && files[f.name]?.length) {
+        if (f.type === 'image' && f.multiple) {
           const base = uploadName?.(values) || f.folder
           const paths = []
-          for (const file of files[f.name]) {
-            paths.push(await uploadImage(token, file, f.folder, base))
+          for (const entry of multiEntries[f.name] ?? []) {
+            paths.push(entry.kind === 'existing' ? entry.src : await uploadImage(token, entry.file, f.folder, base))
           }
-          out[f.name] = f.multiple ? paths : paths[0]
+          out[f.name] = paths
+        } else if (f.type === 'image' && files[f.name]?.length) {
+          const base = uploadName?.(values) || f.folder
+          out[f.name] = await uploadImage(token, files[f.name][0], f.folder, base)
         } else {
           out[f.name] = fromForm(f, values[f.name])
         }
@@ -203,37 +252,82 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
           </select>
         )
       case 'image': {
+        if (f.multiple) {
+          const entries = multiEntries[f.name] ?? []
+          return (
+            <div className="image-field image-field-multi">
+              {entries.length > 0 && (
+                <div className="image-field-thumbs">
+                  {entries.map((entry, i) => {
+                    const src = entry.kind === 'existing' ? resolveImageSrc(entry.src, true) : entry.previewUrl
+                    return (
+                      <div className="image-field-thumb image-field-thumb-sortable" key={entry.id}>
+                        <img src={src} alt="" />
+                        <div className="image-field-thumb-controls">
+                          <button
+                            type="button"
+                            onClick={() => moveMultiEntry(f.name, i, -1)}
+                            disabled={i === 0}
+                            aria-label="앞으로 이동"
+                          >
+                            ◀
+                          </button>
+                          <button
+                            type="button"
+                            className="image-field-thumb-remove"
+                            onClick={() => removeMultiEntry(f.name, entry.id)}
+                            aria-label="사진 빼기"
+                          >
+                            ×
+                          </button>
+                          <button
+                            type="button"
+                            onClick={() => moveMultiEntry(f.name, i, 1)}
+                            disabled={i === entries.length - 1}
+                            aria-label="뒤로 이동"
+                          >
+                            ▶
+                          </button>
+                        </div>
+                      </div>
+                    )
+                  })}
+                </div>
+              )}
+              <div className="image-field-actions">
+                <input
+                  type="file"
+                  accept="image/*"
+                  multiple
+                  onChange={(e) => {
+                    addMultiFiles(f.name, e.target.files)
+                    e.target.value = ''
+                  }}
+                />
+                <p className="field-hint">
+                  사진을 고르면 뒤에 추가됩니다 (기존 사진은 그대로 남아요). ◀▶로 순서를 바꾸고, ×로 뺄 수 있어요.
+                </p>
+              </div>
+            </div>
+          )
+        }
+
         const picked = files[f.name] ?? []
-        // value는 사진 여러 장(multiple)일 땐 배열이라, resolveImageSrc(문자열 전용)에 그대로 넘기면
-        // "e.replace is not a function" 에러가 나면서 수정창 전체가 렌더링되지 못했습니다.
-        // 여러 장 선택 필드는 아래 existingMultiple에서 각 항목을 따로 처리하므로 여기선 건너뜁니다.
-        const current = f.multiple ? null : picked.length ? previewUrls[f.name] : resolveImageSrc(value, true)
-        const existingMultiple = f.multiple && !picked.length && Array.isArray(value) ? value.filter(Boolean) : []
+        const current = picked.length ? previewUrls[f.name] : resolveImageSrc(value, true)
         return (
           <div className="image-field">
-            {current && !f.multiple && (
+            {current && (
               <div className="image-field-thumb">
                 <img src={current} alt="" />
-              </div>
-            )}
-            {existingMultiple.length > 0 && (
-              <div className="image-field-thumbs">
-                {existingMultiple.map((src, i) => (
-                  <div className="image-field-thumb" key={i}>
-                    <img src={resolveImageSrc(src, true)} alt="" />
-                  </div>
-                ))}
               </div>
             )}
             <div className="image-field-actions">
               <input
                 type="file"
                 accept="image/*"
-                multiple={Boolean(f.multiple)}
                 onChange={(e) => setFiles((prev) => ({ ...prev, [f.name]: Array.from(e.target.files ?? []) }))}
               />
-              {picked.length > 1 && <p className="field-hint">{picked.length}장 선택됨</p>}
-              {!f.multiple && (value || picked.length > 0) && (
+              {(value || picked.length > 0) && (
                 <button
                   type="button"
                   className="link-btn"
