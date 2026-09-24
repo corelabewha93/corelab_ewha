@@ -1119,7 +1119,7 @@ h1.section-title {
 /* 상단 요약 숫자 (Journal Articles / SSCI·SCIE / Scopus / KCI / Conferences) */
 .pub-stats {
   display: grid;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   margin: 0 0 var(--space-4);
   border-top: 2px solid var(--color-primary);
   border-bottom: 1px solid var(--color-border);
@@ -1452,27 +1452,21 @@ h1.section-title {
 }
 
 @media (max-width: 700px) {
-  /* 모바일: 1줄 = 논문 수 / 학회 발표, 2줄 = SSCI·SCIE / Scopus / KCI */
+  /* 모바일: 3열 x 2줄 (1줄 = Journal Articles / SSCI·SCIE / Scopus, 2줄 = KCI / Conferences / Theses) */
   .pub-stats {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(3, 1fr);
   }
 
   .pub-stats > div {
-    grid-column: span 2;
-    order: 2;
     padding: 0.7rem 0.75rem;
     border-top: 1px solid var(--color-border);
   }
 
-  .pub-stats > div:first-child,
-  .pub-stats > div:last-child {
-    grid-column: span 3;
-    order: 1;
+  .pub-stats > div:nth-child(-n + 3) {
     border-top: none;
   }
 
-  .pub-stats > div:first-child,
-  .pub-stats > div:nth-child(2) {
+  .pub-stats > div:nth-child(3n + 1) {
     border-left: none;
     padding-left: 0;
   }
