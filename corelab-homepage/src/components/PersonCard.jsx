@@ -166,14 +166,23 @@ function PersonModal({ person, expandLines, links, onClose }) {
 
         <div className="person-modal-info">
           <h2 className="person-modal-name">{person.name}</h2>
+          {person.nameEn && <p className="person-modal-name-en">{person.nameEn}</p>}
 
           {(expandLines.length > 0 || links.length > 0) && (
             <ul className="person-detail">
-              {expandLines.map((line, i) => (
-                <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
-                  {line.text}
-                </li>
-              ))}
+              {expandLines.map((line, i) =>
+                line.kind === 'link' ? (
+                  <li key={i}>
+                    <a href={line.url} target="_blank" rel="noreferrer" className="person-detail-link">
+                      {line.text}
+                    </a>
+                  </li>
+                ) : (
+                  <li key={i} className={line.kind !== 'normal' ? `person-detail-${line.kind}` : undefined}>
+                    {line.text}
+                  </li>
+                )
+              )}
               {links.map((l, i) => (
                 <li key={`link-${i}`}>
                   <a href={l.url} target="_blank" rel="noreferrer" className="person-detail-link">
@@ -213,6 +222,11 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
     const trimmed = line.trim()
     if (trimmed.startsWith('#')) {
       expandLines.push({ text: trimmed.replace(/^#+\s*/, ''), kind: 'heading' })
+      return
+    }
+    const { label, date: url } = splitHistoryLine(trimmed)
+    if (url && /^https?:\/\//i.test(url)) {
+      expandLines.push({ text: label || url, url, kind: 'link' })
     } else {
       expandLines.push({ text: line, kind: 'normal' })
     }
