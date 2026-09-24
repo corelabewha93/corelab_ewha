@@ -109,27 +109,9 @@ export default function LabLife() {
                 <div className="lightbox-photo-frame">
                   <SafeImage src={photos[photoIdx]} alt={selected.caption ?? ''} fallback={<span />} />
                   {multi && (
-                    <>
-                      <button
-                        type="button"
-                        className="lightbox-nav lightbox-nav-prev"
-                        onClick={() => setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)}
-                        aria-label="이전 사진"
-                      >
-                        ‹
-                      </button>
-                      <button
-                        type="button"
-                        className="lightbox-nav lightbox-nav-next"
-                        onClick={() => setPhotoIdx((i) => (i + 1) % photos.length)}
-                        aria-label="다음 사진"
-                      >
-                        ›
-                      </button>
-                      <span className="lightbox-counter">
-                        {photoIdx + 1} / {photos.length}
-                      </span>
-                    </>
+                    <span className="lightbox-counter">
+                      {photoIdx + 1} / {photos.length}
+                    </span>
                   )}
                 </div>
 
