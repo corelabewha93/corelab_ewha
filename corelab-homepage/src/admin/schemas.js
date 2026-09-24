@@ -216,6 +216,7 @@ export const publicationFields = [
       { value: 'book', label: 'Book (저역서) — Books 탭에 표시' },
       { value: 'other', label: 'Thesis / Other (학위논문·기타)' },
     ],
+    hint: '학위논문은 "Thesis / Other"를 선택하세요. Journal Articles가 아니라 상단 통계의 Theses 칸에 집계됩니다.',
   },
   {
     name: 'authors',
@@ -231,7 +232,13 @@ export const publicationFields = [
     rows: 2,
     hint: '이 책이 번역서일 때만 채워주세요. 채우면 목록에 "번역서" 표시가 붙습니다. 저서(직접 집필)는 비워두세요.',
   },
-  { name: 'title', label: '제목', type: 'text', required: true },
+  {
+    name: 'title',
+    label: '제목',
+    type: 'text',
+    required: true,
+    hint: '학위논문은 제목 맨 끝에 (석사학위논문) 또는 (박사학위논문)을 붙여주세요. 목록에서 제목과 분리되어 별도 배지로 표시됩니다. 예: "협력학습에서의 조절 전략 연구 (박사학위논문)"',
+  },
   {
     name: 'venue',
     label: '학술지 / 학회명 / 출판사',
