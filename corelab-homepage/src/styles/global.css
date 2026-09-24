@@ -724,6 +724,14 @@ h1.section-title {
   border-bottom: none;
 }
 
+/* 뉴스 상세 글은 목록보다 좁게 잡아서 PC에서 너무 옆으로 퍼지지 않고,
+   기사처럼 읽기 좋은 폭(양쪽 여백이 더 넓게)으로 보이게 합니다. */
+@media (min-width: 760px) {
+  .news-detail-page {
+    max-width: 760px;
+  }
+}
+
 .news-back-link {
   display: inline-block;
   background: none;
