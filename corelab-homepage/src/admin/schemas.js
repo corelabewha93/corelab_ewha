@@ -270,6 +270,20 @@ export const siteIntroFields = [
   { name: 'university', label: '상단 작은 글씨', type: 'text' },
   { name: 'labName', label: '연구실 이름', type: 'text', required: true },
   { name: 'labTagline', label: '부제 (사진 위 태그라인으로도 쓰입니다)', type: 'text' },
+  {
+    name: 'mottoKr',
+    label: '랩 모토 (한글)',
+    type: 'text',
+    placeholder: '예: 보이지 않는 것을, 보이게',
+    hint: 'Lab Overview 위에 큰 글씨로 강조되어 표시됩니다.',
+  },
+  {
+    name: 'mottoEn',
+    label: '랩 모토 (영문)',
+    type: 'text',
+    placeholder: '예: Make the Invisible Visible',
+    hint: '한글 모토 아래 작게 함께 표시됩니다.',
+  },
   { name: 'overview', label: '소개글', type: 'paragraphs', rows: 8, hint: '문단 사이는 빈 줄 하나로 구분하세요.' },
   { name: 'researchAreas', label: '연구 분야 태그', type: 'lines', hint: '한 줄에 하나씩' },
 ]
