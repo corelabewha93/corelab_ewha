@@ -1408,10 +1408,35 @@ h1.section-title {
   word-break: keep-all;
 }
 
+.book-role-badge {
+  display: inline-block;
+  margin-left: 0.5rem;
+  vertical-align: 0.1em;
+  font-size: 0.68rem;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 0.15rem 0.45rem;
+  border-radius: 3px;
+  background: var(--color-primary-soft);
+  color: var(--color-primary);
+}
+
+.book-role-badge.book-role-translation {
+  background: #eef0f2;
+  color: #5d666e;
+}
+
 .book-authors {
   margin: 0.2rem 0 0;
   font-size: 0.86rem;
   color: var(--color-text-muted);
+}
+
+.book-role-label {
+  display: inline-block;
+  min-width: 3.4rem;
+  color: var(--color-text-muted);
+  opacity: 0.75;
 }
 
 .book-meta {
