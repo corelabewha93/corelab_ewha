@@ -87,7 +87,7 @@
     },
     {
       "name": "김주람",
-      "photo": "images/people/김주람-mue0p2v6.png",
+      "photo": "images/people/김주람-mufi6ea3.png",
       "photoCrop": {
         "x": 52.5,
         "y": 34.4,
@@ -97,7 +97,8 @@
       "bio": "",
       "detail": [],
       "links": [],
-      "id": "person-mue0p5ffjac"
+      "id": "person-mue0p5ffjac",
+      "nameEn": ""
     },
     {
       "name": "카잉",
