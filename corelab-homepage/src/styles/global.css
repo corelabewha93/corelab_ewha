@@ -1221,34 +1221,6 @@ h1.section-title {
   object-fit: cover;
 }
 
-.lightbox-nav {
-  position: absolute;
-  top: 50%;
-  transform: translateY(-50%);
-  width: 2.1rem;
-  height: 2.1rem;
-  border-radius: 50%;
-  border: none;
-  background: rgba(255, 255, 255, 0.85);
-  color: var(--color-text);
-  font-size: 1.3rem;
-  line-height: 1;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  cursor: pointer;
-  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.18);
-  transition: background 0.15s ease, transform 0.15s ease;
-}
-
-.lightbox-nav:hover {
-  background: #fff;
-  transform: translateY(-50%) scale(1.06);
-}
-
-.lightbox-nav-prev { left: 0.5rem; }
-.lightbox-nav-next { right: 0.5rem; }
-
 .lightbox-counter {
   position: absolute;
   right: 0.55rem;
@@ -1312,6 +1284,20 @@ h1.section-title {
 
 @media (max-width: 480px) {
   .lightbox-card { padding: var(--space-2); border-radius: 18px; }
+}
+
+/* PC 화면에서는 사진이 훨씬 잘 보이도록 카드를 크게 키웁니다. */
+@media (min-width: 720px) {
+  .lightbox-card {
+    max-width: min(74vw, 760px);
+    padding: var(--space-4);
+  }
+  .lightbox-caption {
+    font-size: 1.05rem;
+  }
+  .lightbox-body {
+    font-size: 0.92rem;
+  }
 }
 
 /* ---------- Contact ---------- */
