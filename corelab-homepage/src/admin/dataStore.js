@@ -118,14 +118,66 @@ function fileToDataUrl(file) {
   })
 }
 
+function loadImageElement(src) {
+  return new Promise((resolve, reject) => {
+    const img = new Image()
+    img.onload = () => resolve(img)
+    img.onerror = reject
+    img.src = src
+  })
+}
+
+/**
+ * 휴대폰으로 찍은 원본 사진은 보통 5~10MB가 넘어서, 그대로 올리면 사이트가 느려집니다.
+ * 업로드 전에 브라우저에서 가로/세로를 적당히 줄이고 다시 압축해서 용량을 크게 낮춥니다.
+ * - SVG나 이미 충분히 가벼운 파일(300KB 미만)은 그대로 둡니다.
+ * - 투명 배경이 필요할 수 있는 PNG(로고 등)는 형식을 유지한 채 크기만 줄입니다.
+ * - 사진(JPEG)은 최대 1600px, 품질 85%로 다시 인코딩합니다.
+ * - 혹시라도 압축 결과가 원본보다 크면 원본을 그대로 사용합니다.
+ */
+async function compressImage(file, { maxDimension = 1600, quality = 0.85 } = {}) {
+  if (file.type === 'image/svg+xml' || file.size < 300 * 1024) {
+    return fileToDataUrl(file)
+  }
+
+  const original = await fileToDataUrl(file)
+
+  try {
+    const img = await loadImageElement(original)
+    const scale = Math.min(1, maxDimension / Math.max(img.width, img.height))
+    const isJpeg = file.type === 'image/jpeg' || file.type === 'image/jpg'
+
+    if (scale === 1 && !isJpeg) {
+      return original
+    }
+
+    const canvas = document.createElement('canvas')
+    canvas.width = Math.max(1, Math.round(img.width * scale))
+    canvas.height = Math.max(1, Math.round(img.height * scale))
+    const ctx = canvas.getContext('2d')
+    ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+
+    const outType = file.type === 'image/png' ? 'image/png' : 'image/jpeg'
+    const compressed = canvas.toDataURL(outType, outType === 'image/jpeg' ? quality : undefined)
+
+    return compressed.length < original.length ? compressed : original
+  } catch {
+    // 압축 중 문제가 생기면(예: 브라우저 제약) 원본을 그대로 올립니다.
+    return original
+  }
+}
+
 /**
  * 이미지를 public/images/<folder>/ 에 올리고, JSON에 적을 경로(images/<folder>/파일명)를 돌려줍니다.
  * 파일명 끝에 시간값을 붙여서 매번 새 파일로 올리므로, 예전 사진이 캐시로 남아 보이는 문제가 없습니다.
+ * 업로드 전에 자동으로 용량을 줄이므로(위 compressImage), 확장자가 jpg/jpeg가 아니어도
+ * 실제 저장되는 파일이 JPEG로 바뀔 수 있어 파일명의 확장자도 그에 맞춥니다.
  */
 export async function uploadImage(token, file, folder, baseName) {
-  const ext = (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
+  const dataUrl = await compressImage(file)
+  const outExt = dataUrl.startsWith('data:image/png') ? 'png' : dataUrl.startsWith('data:image/jpeg') ? 'jpg' : null
+  const ext = outExt || (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
   const fileName = `${safeName(baseName)}-${Date.now().toString(36)}.${ext}`
-  const dataUrl = await fileToDataUrl(file)
   await putBase64File(token, `${PUBLIC_PATH}/images/${folder}/${fileName}`, dataUrl, `사진 업로드: ${fileName}`)
   return `images/${folder}/${fileName}`
 }
