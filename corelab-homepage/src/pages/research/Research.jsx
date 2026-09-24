@@ -12,9 +12,11 @@ import Publications from './Publications'
 import Projects from './Projects'
 import Patents from './Patents'
 import Tools from './Tools'
+import Books from './Books'
 
 const TABS = [
   { key: 'publications', label: 'Publications' },
+  { key: 'books', label: 'Books' },
   { key: 'projects', label: 'Projects' },
   { key: 'patents', label: 'Patents' },
   { key: 'tools', label: 'Systems & Tools' },
@@ -22,6 +24,15 @@ const TABS = [
 
 const EDITORS = {
   publications: { fields: publicationFields, label: '논문', prefix: 'pub', titleOf: (i) => i.title },
+  // 저역서는 논문 목록(publications)에 type: 'book'으로 함께 저장됩니다.
+  books: {
+    fields: publicationFields,
+    label: '저역서',
+    prefix: 'pub',
+    titleOf: (i) => i.title,
+    dataKey: 'publications',
+    defaults: () => ({ type: 'book', year: new Date().getFullYear() }),
+  },
   projects: { fields: projectFields, label: '연구과제', prefix: 'proj', titleOf: (i) => i.title },
   patents: { fields: patentFields, label: '특허', prefix: 'pat', titleOf: (i) => i.title },
   tools: { fields: toolFields, label: '시스템/도구', prefix: 'tool', titleOf: (i) => i.name },
@@ -38,15 +49,20 @@ export default function Research() {
 
   const handleSave = async (values) => {
     const { key, item: original } = editing
-    const item = { ...values, id: original?.id ?? makeId(EDITORS[key].prefix) }
+    const ed = EDITORS[key]
+    const item = { ...values, id: original?.id ?? makeId(ed.prefix) }
     const verb = original ? '수정' : '추가'
-    await upsertItem(token, 'research.json', key, item, `${EDITORS[key].label} ${verb}: ${EDITORS[key].titleOf(item)}`)
+    await upsertItem(token, 'research.json', ed.dataKey ?? key, item, `${ed.label} ${verb}: ${ed.titleOf(item)}`)
   }
 
   const handleDelete = async () => {
     const { key, item } = editing
-    await deleteItem(token, 'research.json', key, item.id, `${EDITORS[key].label} 삭제: ${EDITORS[key].titleOf(item)}`)
+    const ed = EDITORS[key]
+    await deleteItem(token, 'research.json', ed.dataKey ?? key, item.id, `${ed.label} 삭제: ${ed.titleOf(item)}`)
   }
+
+  const initialFor = (key) =>
+    EDITORS[key].defaults?.() ?? (key === 'publications' ? { year: new Date().getFullYear() } : {})
 
   return (
     <div className="page container">
@@ -62,6 +78,7 @@ export default function Research() {
           {data && (
             <>
               {tab === 'publications' && <Publications items={data.publications} onEdit={onEdit('publications')} />}
+              {tab === 'books' && <Books items={data.publications} onEdit={onEdit('books')} />}
               {tab === 'projects' && <Projects items={data.projects} onEdit={onEdit('projects')} />}
               {tab === 'patents' && <Patents items={data.patents} onEdit={onEdit('patents')} />}
               {tab === 'tools' && <Tools items={data.tools} onEdit={onEdit('tools')} />}
@@ -80,7 +97,7 @@ export default function Research() {
         <EditModal
           title={editing.item ? `${editor.label} 수정` : `새 ${editor.label} 추가`}
           fields={editor.fields}
-          initial={editing.item ?? (editing.key === 'publications' ? { year: new Date().getFullYear() } : {})}
+          initial={editing.item ?? initialFor(editing.key)}
           uploadName={(v) => v.name || editor.prefix}
           onSave={handleSave}
           onDelete={editing.item ? handleDelete : undefined}

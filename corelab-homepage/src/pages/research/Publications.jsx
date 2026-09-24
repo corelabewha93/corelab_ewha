@@ -1,22 +1,117 @@
 import { useMemo, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
+import { getIndexes, INTERNATIONAL } from './journalIndex'
 
-const TYPE_LABELS = {
-  journal: 'Journal',
-  conference: 'Conference',
-  book: 'Book',
-  other: 'Other',
+/** 임규연 교수님 이름(한글/영문 여러 표기)을 굵게 표시하기 위한 패턴 */
+const PI_PATTERN = /^\s*(임규연|lim[\s,.]*k[\s.]*(y\.?)?)\s*\.?\s*$/i
+
+const FILTERS = [
+  { key: 'all', label: 'All' },
+  { key: 'journal', label: 'Journal' },
+  { key: 'conference', label: 'Conference' },
+  { key: 'other', label: 'Thesis' },
+]
+
+/** 제목 끝의 "(석사학위논문)" 같은 꼬리표를 떼어 배지로 보여줍니다. */
+function splitThesis(title = '') {
+  const m = title.match(/\s*\((석사|박사)학위\s*논문\)\s*$/)
+  if (!m) return { title, thesis: null }
+  return { title: title.slice(0, m.index), thesis: `${m[1]}학위논문` }
+}
+
+function Authors({ authors = [] }) {
+  if (!authors.length) return null
+  return (
+    <p className="pub-authors">
+      {authors.map((name, i) => (
+        <span key={i}>
+          {i > 0 && ', '}
+          {PI_PATTERN.test(name) ? <strong>{name}</strong> : name}
+        </span>
+      ))}
+    </p>
+  )
+}
+
+function IndexBadges({ indexes }) {
+  if (!indexes.length) return null
+  return (
+    <span className="pub-index-badges">
+      {indexes.map((ix) => (
+        <span key={ix} className={`pub-index pub-index-${ix.toLowerCase()}`}>
+          {ix}
+        </span>
+      ))}
+    </span>
+  )
+}
+
+function PubItem({ pub, onEdit }) {
+  const indexes = getIndexes(pub)
+  const { title, thesis } = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
+  const typeTag =
+    pub.type === 'conference' ? 'Conference' : pub.type === 'other' ? thesis ?? 'Other' : null
+
+  return (
+    <li className="pub-item admin-item">
+      <EditButton onClick={() => onEdit(pub)} />
+      <p className="pub-title">
+        {pub.link ? (
+          <a href={pub.link} target="_blank" rel="noreferrer">
+            {title}
+          </a>
+        ) : (
+          title
+        )}
+      </p>
+      <Authors authors={pub.authors} />
+      <div className="pub-meta">
+        {pub.venue && (
+          <span className="pub-venue">
+            {pub.venue}
+            {pub.details ? <span className="pub-details">, {pub.details}</span> : null}
+          </span>
+        )}
+        {typeTag && <span className="pub-type-tag">{typeTag}</span>}
+        <IndexBadges indexes={indexes} />
+        {pub.doi && (
+          <a className="pub-doi" href={`https://doi.org/${pub.doi}`} target="_blank" rel="noreferrer">
+            DOI
+          </a>
+        )}
+      </div>
+    </li>
+  )
 }
 
 export default function Publications({ items = [], onEdit }) {
   const [filter, setFilter] = useState('all')
+  const [intlOnly, setIntlOnly] = useState(false)
 
-  const types = useMemo(() => {
-    const present = new Set(items.map((p) => p.type))
-    return Object.keys(TYPE_LABELS).filter((t) => present.has(t))
-  }, [items])
+  // 저역서(book)는 Books 탭에서 따로 보여줍니다.
+  const pubs = useMemo(() => items.filter((p) => p.type !== 'book'), [items])
 
-  const filtered = filter === 'all' ? items : items.filter((p) => p.type === filter)
+  const stats = useMemo(() => {
+    const journals = pubs.filter((p) => p.type === 'journal')
+    const has = (ix) => journals.filter((p) => getIndexes(p).includes(ix)).length
+    return {
+      journals: journals.length,
+      ssci: journals.filter((p) => getIndexes(p).some((i) => i === 'SSCI' || i === 'SCIE')).length,
+      scopus: has('Scopus'),
+      kci: has('KCI'),
+      conferences: pubs.filter((p) => p.type === 'conference').length,
+    }
+  }, [pubs])
+
+  const filtered = useMemo(
+    () =>
+      pubs.filter(
+        (p) =>
+          (filter === 'all' || p.type === filter) &&
+          (!intlOnly || getIndexes(p).some((i) => INTERNATIONAL.has(i))),
+      ),
+    [pubs, filter, intlOnly],
+  )
 
   const byYear = useMemo(() => {
     const groups = {}
@@ -28,66 +123,72 @@ export default function Publications({ items = [], onEdit }) {
     return Object.entries(groups).sort((a, b) => Number(b[0]) - Number(a[0]))
   }, [filtered])
 
-  if (items.length === 0) return <p className="empty-state">등록된 논문이 없습니다.</p>
+  if (pubs.length === 0) return <p className="empty-state">등록된 논문이 없습니다.</p>
+
+  const presentTypes = new Set(pubs.map((p) => p.type))
 
   return (
-    <div>
-      {types.length > 1 && (
+    <div className="pubs">
+      <dl className="pub-stats">
+        <div>
+          <dt>Journal Articles</dt>
+          <dd>{stats.journals}</dd>
+        </div>
+        <div>
+          <dt>SSCI · SCIE</dt>
+          <dd>{stats.ssci}</dd>
+        </div>
+        <div>
+          <dt>Scopus</dt>
+          <dd>{stats.scopus}</dd>
+        </div>
+        <div>
+          <dt>KCI</dt>
+          <dd>{stats.kci}</dd>
+        </div>
+        <div>
+          <dt>Conferences</dt>
+          <dd>{stats.conferences}</dd>
+        </div>
+      </dl>
+
+      <div className="pub-toolbar">
         <div className="filter-row">
-          <button
-            className={`filter-chip${filter === 'all' ? ' active' : ''}`}
-            onClick={() => setFilter('all')}
-          >
-            All
-          </button>
-          {types.map((t) => (
+          {FILTERS.filter((f) => f.key === 'all' || presentTypes.has(f.key)).map((f) => (
             <button
-              key={t}
-              className={`filter-chip${filter === t ? ' active' : ''}`}
-              onClick={() => setFilter(t)}
+              key={f.key}
+              type="button"
+              className={`filter-chip${filter === f.key ? ' active' : ''}`}
+              onClick={() => setFilter(f.key)}
             >
-              {TYPE_LABELS[t]}
+              {f.label}
             </button>
           ))}
         </div>
-      )}
+        <button
+          type="button"
+          className={`filter-chip filter-chip-intl${intlOnly ? ' active' : ''}`}
+          aria-pressed={intlOnly}
+          onClick={() => setIntlOnly((v) => !v)}
+        >
+          SSCI · SCIE · Scopus만 보기
+        </button>
+      </div>
 
-      {byYear.map(([year, pubs]) => (
-        <div key={year} className="pub-year-group">
-          <h3 className="pub-year-title">{year}</h3>
-          {pubs.map((pub) => (
-            <div key={pub.id} className="pub-item admin-item">
-              <EditButton onClick={() => onEdit(pub)} />
-              <div className="pub-authors">
-                {(pub.authors ?? []).join(', ')}
-                {pub.type && <span className="badge">{TYPE_LABELS[pub.type] ?? pub.type}</span>}
-              </div>
-              <p className="pub-title">
-                {pub.link ? (
-                  <a href={pub.link} target="_blank" rel="noreferrer">
-                    {pub.title}
-                  </a>
-                ) : (
-                  pub.title
-                )}
-              </p>
-              <div className="pub-venue">
-                {pub.venue}
-                {pub.details ? `, ${pub.details}` : ''}
-              </div>
-              {pub.doi && (
-                <a
-                  href={`https://doi.org/${pub.doi}`}
-                  target="_blank"
-                  rel="noreferrer"
-                  style={{ fontSize: '0.82rem' }}
-                >
-                  doi:{pub.doi}
-                </a>
-              )}
-            </div>
-          ))}
-        </div>
+      {byYear.length === 0 && <p className="empty-state">해당하는 논문이 없습니다.</p>}
+
+      {byYear.map(([year, list]) => (
+        <section key={year} className="pub-year-group">
+          <h3 className="pub-year-title">
+            {year}
+            <span className="pub-year-count">{list.length}편</span>
+          </h3>
+          <ul className="pub-list">
+            {list.map((pub) => (
+              <PubItem key={pub.id} pub={pub} onEdit={onEdit} />
+            ))}
+          </ul>
+        </section>
       ))}
     </div>
   )
