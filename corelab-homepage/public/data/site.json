@@ -1,6 +1,6 @@
 {
   "labName": "CoRe Lab",
-  "labTagline": "Collaborative Learning Research",
+  "labTagline": "Collaborative Learning Research Lab",
   "university": "이화여자대학교 교육공학과 임규연 교수 연구실",
   "mottoKr": "보이지 않는 것을, 보이게",
   "mottoEn": "Make the Invisible Visible",
@@ -16,10 +16,10 @@
   ],
   "researchAreas": [
     "Computer-Supported Collaborative Learning (CSCL)",
+    "Co-Regulation",
     "Learning Analytics",
-    "Learning Experience Design",
-    "Collaborative Problem Solving",
-    "Educational Technology"
+    "Educational Technology",
+    "Learning Experience Design"
   ],
   "contact": {
     "address": "03760 서울특별시 서대문구 이화여대길 52 교육관 B동 563호",
