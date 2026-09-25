@@ -15,25 +15,30 @@ export function resolveImageSrc(src, isAdmin) {
 }
 
 /**
- * src가 비어있거나 로드에 실패하면 fallback을 보여주는 이미지.
+ * src가 비어있거나 로드에 실패하면 fallbackSrc(기본 사진)를, 그것도 없으면 fallback을 보여주는 이미지.
  * JSON에 이미지 경로가 비어 있거나 오타가 나도 레이아웃이 깨지지 않게 합니다.
+ * (기본 사진에는 사람별 자르기 값 imgStyle을 적용하지 않습니다.)
  */
-export default function SafeImage({ src, alt, fallback, className, imgStyle }) {
+export default function SafeImage({ src, alt, fallback, fallbackSrc, className, imgStyle }) {
   const { isAdmin } = useAdminAuth()
   const resolvedSrc = resolveImageSrc(src, isAdmin)
-  const [failedSrc, setFailedSrc] = useState(null)
+  const resolvedFallbackSrc = resolveImageSrc(fallbackSrc, isAdmin)
+  const [failed, setFailed] = useState([])
 
-  if (!resolvedSrc || failedSrc === resolvedSrc) {
+  const current = [resolvedSrc, resolvedFallbackSrc].find((s) => s && !failed.includes(s))
+  if (!current) {
     return <div className={className}>{fallback}</div>
   }
+  const isFallback = current !== resolvedSrc
 
   return (
     <img
-      src={resolvedSrc}
+      key={current}
+      src={current}
       alt={alt}
       className={className}
-      style={imgStyle}
-      onError={() => setFailedSrc(resolvedSrc)}
+      style={isFallback ? undefined : imgStyle}
+      onError={() => setFailed((f) => [...f, current])}
       loading="lazy"
       draggable={false}
     />

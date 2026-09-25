@@ -3,6 +3,9 @@ import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 
+/** 사진을 넣지 않은(또는 사진을 못 불러온) 사람에게 자동으로 보여줄 이화 심벌 기본 사진 */
+const DEFAULT_PHOTO = 'images/people/default-ewha.jpg'
+
 /** Research 페이지에서 이 사람 이름이 올라간 논문·저역서·특허를 모아 보여주는 링크. */
 function researchLinkFor(name) {
   return `#/research?author=${encodeURIComponent(name)}`
@@ -37,7 +40,8 @@ function FacultyProfile({ person, onEdit, reorder }) {
         <SafeImage
           src={person.photo}
           alt={person.name}
-          fallback={<span>{initials(person.name)}</span>}
+          fallbackSrc={DEFAULT_PHOTO}
+            fallback={<span>{initials(person.name)}</span>}
           imgStyle={cropToStyle(normalizeCrop(person))}
         />
       </div>
@@ -164,6 +168,7 @@ function PersonModal({ person, expandLines, links, onClose }) {
           <SafeImage
             src={person.photo}
             alt={person.name}
+            fallbackSrc={DEFAULT_PHOTO}
             fallback={<span>{initials(person.name)}</span>}
             imgStyle={cropToStyle(normalizeCrop(person))}
           />
@@ -258,6 +263,7 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
           <SafeImage
             src={person.photo}
             alt={person.name}
+            fallbackSrc={DEFAULT_PHOTO}
             fallback={<span>{initials(person.name)}</span>}
             imgStyle={cropToStyle(normalizeCrop(person))}
           />
