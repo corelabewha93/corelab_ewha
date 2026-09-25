@@ -1,0 +1,86 @@
+/* ============================================================
+   [임시] 테스트 홈 화면 (#/logo-preview) 전용 스타일
+   나머지 모양은 기존 홈 화면 스타일(global.css)을 그대로 씁니다.
+   확정 후 이 파일을 지워도 됩니다.
+   ============================================================ */
+
+.lp-badge {
+  position: absolute;
+  top: 14px;
+  left: 16px;
+  z-index: 3;
+  margin: 0;
+  font-size: 0.72rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.7);
+  padding: 0.18rem 0.55rem;
+  border: 1px solid rgba(255, 255, 255, 0.28);
+  border-radius: 999px;
+}
+
+/* ---------- 상단 헤더의 "CoRe(로고) Lab" ---------- */
+.brand-name-logo {
+  display: inline-flex;
+  align-items: flex-end;
+  gap: 0.22em;
+  font-size: 1.15rem;
+  font-weight: 700;
+}
+
+.brand-logo-mark {
+  display: block;
+  height: 1.5em;
+  width: auto;
+  overflow: visible;
+}
+
+/* "CoRe(로고) Lab" 한 줄 */
+.lp-final-logo {
+  display: inline-flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 0.28em;
+}
+
+.lp-final-mark {
+  display: block;
+  height: 1.7em;
+  width: auto;
+  overflow: visible;
+}
+
+.lp-final-rest {
+  line-height: 1;
+  /* 로고 글자 바닥선과 "Lab" 바닥선을 맞춥니다 */
+  margin-bottom: -0.02em;
+}
+
+/* ---------- 로고 속 두 학습자 등장 ---------- */
+.core-logo-animated .core-logo-learner {
+  opacity: 0;
+  transform-box: fill-box;
+  transform-origin: center;
+}
+.core-logo-animated .core-logo-learner-a {
+  animation: core-logo-drop-a 0.9s cubic-bezier(0.3, 1.35, 0.5, 1) calc(var(--logo-delay, 0s) + 0.45s) forwards;
+}
+.core-logo-animated .core-logo-learner-b {
+  animation: core-logo-drop-b 0.9s cubic-bezier(0.3, 1.35, 0.5, 1) calc(var(--logo-delay, 0s) + 0.7s) forwards;
+}
+
+@keyframes core-logo-drop-a {
+  from { opacity: 0; transform: translate(-60px, -100px) scale(0.5); }
+  to { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+@keyframes core-logo-drop-b {
+  from { opacity: 0; transform: translate(70px, -110px) scale(0.5); }
+  to { opacity: 1; transform: translate(0, 0) scale(1); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .core-logo-animated .core-logo-learner {
+    animation: none;
+    opacity: 1;
+    transform: none;
+  }
+}
