@@ -173,7 +173,11 @@ h1.section-title {
   text-transform: uppercase;
   line-height: 1;
   color: #a9e0c4;
-  font-size: clamp(1.9rem, 10vw, 3.2rem);
+  /* 세로로 세운 글자는 높이가 (글자 수 × 글자 크기)라서, 화면 높이보다 길어지면 위아래가 잘립니다.
+     가장 긴 키워드(--kw-chars, About.jsx에서 계산)가 화면 높이의 84% 안에 들어오도록 크기를 제한합니다.
+     0.74 = 대문자 한 글자가 차지하는 평균 폭(em). */
+  --kw-fit: calc(84vh / (var(--kw-chars, 22) * 0.74));
+  font-size: min(clamp(1.9rem, 10vw, 3.2rem), var(--kw-fit));
 }
 
 /* 녹색 계열 안에서 서로 구분되는, 인식 가능한 톤으로 순서대로 내려옵니다. */
@@ -236,7 +240,20 @@ h1.section-title {
 /* Invisible → Visible로 바뀌는 느낌을, "Invisible" 속 visible과 뒤이은 "Visible"을
    같은 강조색으로 이어 붙여 표현합니다. */
 .hero-motto-accent {
-  color: var(--color-accent);
+  /* 처음엔 나머지 글자와 같은 흰색으로 함께 나타났다가, 잠시 뒤 강조색으로 물듭니다.
+     (Invisible이 Visible로 "보이게 되는" 순간을 색 변화로 표현) */
+  color: var(--color-on-primary);
+  animation: hero-motto-tint 0.9s ease forwards;
+  animation-delay: 3.6s;
+}
+
+@keyframes hero-motto-tint {
+  from {
+    color: var(--color-on-primary);
+  }
+  to {
+    color: var(--color-accent);
+  }
 }
 
 .hero-affiliation {
@@ -270,6 +287,11 @@ h1.section-title {
   animation-delay: 4.15s;
 }
 
+/* "CoRe Lab"에서 CoRe만 소프트 골드로 강조 (히어로 키워드 팔레트의 골드와 같은 색) */
+.hero-final-core {
+  color: #d9c97a;
+}
+
 @keyframes hero-fade-up {
   from {
     opacity: 0;
@@ -294,6 +316,10 @@ h1.section-title {
     opacity: 1;
     transform: none;
   }
+  .hero-motto-accent {
+    animation: none;
+    color: var(--color-accent);
+  }
 }
 
 @media (min-width: 720px) {
@@ -302,7 +328,7 @@ h1.section-title {
     column-gap: clamp(1.6rem, 5vw, 4.5rem);
   }
   .hero-kw-fall-text {
-    font-size: clamp(2.4rem, 6vw, 5rem);
+    font-size: min(clamp(2.4rem, 6vw, 5rem), var(--kw-fit));
   }
   .hero-affiliation p {
     font-size: 1.2rem;
