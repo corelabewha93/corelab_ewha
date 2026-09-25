@@ -127,15 +127,23 @@ function loadImageElement(src) {
   })
 }
 
+/** data URL(base64)의 대략적인 바이트 수 (헤더 제외한 실제 이미지 데이터 길이 기준) */
+function dataUrlBytes(dataUrl) {
+  const comma = dataUrl.indexOf(',')
+  return comma === -1 ? dataUrl.length : Math.round(((dataUrl.length - comma - 1) * 3) / 4)
+}
+
 /**
  * 휴대폰으로 찍은 원본 사진은 보통 5~10MB가 넘어서, 그대로 올리면 사이트가 느려집니다.
  * 업로드 전에 브라우저에서 가로/세로를 적당히 줄이고 다시 압축해서 용량을 크게 낮춥니다.
  * - SVG나 이미 충분히 가벼운 파일(300KB 미만)은 그대로 둡니다.
- * - 투명 배경이 필요할 수 있는 PNG(로고 등)는 형식을 유지한 채 크기만 줄입니다.
- * - 사진(JPEG)은 최대 1600px, 품질 85%로 다시 인코딩합니다.
+ * - 투명 배경이 필요할 수 있는 PNG(로고 등)는 형식을 유지한 채 크기만 줄입니다. (forceJpeg가 true면
+ *   People 사진처럼 투명 배경이 필요 없는 경우 PNG도 JPEG로 바꿔서 용량을 더 줄입니다.)
+ * - 사진은 maxDimension까지, 품질 85%로 다시 인코딩합니다.
+ * - 그래도 hardCapBytes보다 크면 품질을 단계적으로 낮춰(70% → 55%) 다시 시도합니다.
  * - 혹시라도 압축 결과가 원본보다 크면 원본을 그대로 사용합니다.
  */
-async function compressImage(file, { maxDimension = 1600, quality = 0.85 } = {}) {
+async function compressImage(file, { maxDimension = 1600, quality = 0.85, forceJpeg = false, hardCapBytes } = {}) {
   if (file.type === 'image/svg+xml' || file.size < 300 * 1024) {
     return fileToDataUrl(file)
   }
@@ -147,7 +155,7 @@ async function compressImage(file, { maxDimension = 1600, quality = 0.85 } = {})
     const scale = Math.min(1, maxDimension / Math.max(img.width, img.height))
     const isJpeg = file.type === 'image/jpeg' || file.type === 'image/jpg'
 
-    if (scale === 1 && !isJpeg) {
+    if (scale === 1 && !isJpeg && !(forceJpeg && file.type === 'image/png')) {
       return original
     }
 
@@ -157,8 +165,16 @@ async function compressImage(file, { maxDimension = 1600, quality = 0.85 } = {})
     const ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
 
-    const outType = file.type === 'image/png' ? 'image/png' : 'image/jpeg'
-    const compressed = canvas.toDataURL(outType, outType === 'image/jpeg' ? quality : undefined)
+    const outType = file.type === 'image/png' && !forceJpeg ? 'image/png' : 'image/jpeg'
+    let compressed = canvas.toDataURL(outType, outType === 'image/jpeg' ? quality : undefined)
+
+    // PNG는 품질 단계가 없어서(항상 무손실) 재시도해도 용량이 줄지 않으므로 JPEG일 때만 재시도합니다.
+    if (outType === 'image/jpeg' && hardCapBytes) {
+      for (const q of [0.7, 0.55]) {
+        if (dataUrlBytes(compressed) <= hardCapBytes) break
+        compressed = canvas.toDataURL(outType, q)
+      }
+    }
 
     return compressed.length < original.length ? compressed : original
   } catch {
@@ -168,13 +184,27 @@ async function compressImage(file, { maxDimension = 1600, quality = 0.85 } = {})
 }
 
 /**
+ * 폴더별로 실제 화면에 보이는 크기가 다릅니다 (People 사진은 최대 200px, Lab Life는 훨씬 크게 보여줌).
+ * 화면에 필요한 것보다 훨씬 큰 원본을 그대로 압축하면 여전히 용량이 크게 남으므로,
+ * 폴더에 맞춰 최대 가로/세로 픽셀과 용량 상한을 다르게 둡니다.
+ */
+const FOLDER_IMAGE_OPTIONS = {
+  // 프로필 사진: 가장 크게 쓰이는 곳(교수 프로필 200px)의 3배(레티나 고려)면 충분히 선명합니다.
+  people: { maxDimension: 640, quality: 0.85, forceJpeg: true, hardCapBytes: 220 * 1024 },
+  tools: { maxDimension: 1000, quality: 0.85, hardCapBytes: 400 * 1024 },
+  news: { maxDimension: 1600, quality: 0.85, hardCapBytes: 700 * 1024 },
+  // Lab Life: 크게 펼쳐 보는 사진이라 1600px(레티나 화면에서도 선명)까지 두되, 한 장 350KB를 넘지 않게.
+  lablife: { maxDimension: 1600, quality: 0.85, forceJpeg: true, hardCapBytes: 350 * 1024 },
+}
+
+/**
  * 이미지를 public/images/<folder>/ 에 올리고, JSON에 적을 경로(images/<folder>/파일명)를 돌려줍니다.
  * 파일명 끝에 시간값을 붙여서 매번 새 파일로 올리므로, 예전 사진이 캐시로 남아 보이는 문제가 없습니다.
  * 업로드 전에 자동으로 용량을 줄이므로(위 compressImage), 확장자가 jpg/jpeg가 아니어도
  * 실제 저장되는 파일이 JPEG로 바뀔 수 있어 파일명의 확장자도 그에 맞춥니다.
  */
 export async function uploadImage(token, file, folder, baseName) {
-  const dataUrl = await compressImage(file)
+  const dataUrl = await compressImage(file, FOLDER_IMAGE_OPTIONS[folder])
   const outExt = dataUrl.startsWith('data:image/png') ? 'png' : dataUrl.startsWith('data:image/jpeg') ? 'jpg' : null
   const ext = outExt || (file.name.split('.').pop() || 'jpg').toLowerCase().replace(/[^a-z0-9]/g, '') || 'jpg'
   const fileName = `${safeName(baseName)}-${Date.now().toString(36)}.${ext}`
