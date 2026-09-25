@@ -15,6 +15,18 @@ function heroKeyword(area) {
   return m ? m[1] : area
 }
 
+/** "CoRe Lab"에서 "CoRe" 부분만 강조색으로 표시합니다. (랩 이름이 CoRe로 시작하지 않으면 그대로) */
+function renderLabName(name) {
+  const m = name.match(/^(\s*CoRe)(.*)$/i)
+  if (!m) return name
+  return (
+    <>
+      <span className="hero-final-core">{m[1]}</span>
+      {m[2]}
+    </>
+  )
+}
+
 /** 모토 문구 속 "visible" 부분(Invisible의 뒷부분 + Visible)만 강조색으로 표시해,
  *  "Invisible → Visible"로 바뀌는 느낌을 색 변화로 보여줍니다. */
 function renderMotto(text) {
@@ -81,7 +93,12 @@ export default function About() {
 
         <section className="hero-sequence">
           {researchAreas.length > 0 && (
-            <ul className="hero-kw-fall" aria-hidden="true">
+            <ul
+              className="hero-kw-fall"
+              aria-hidden="true"
+              /* 가장 긴 키워드 글자 수 → CSS에서 화면 높이에 맞춰 글자 크기를 제한하는 데 씁니다 (양 끝 키워드 잘림 방지) */
+              style={{ '--kw-chars': Math.max(...researchAreas.map((kw) => heroKeyword(kw).length)) }}
+            >
               {researchAreas.map((kw, i) => (
                 <li key={kw} className="hero-kw-fall-item" style={{ '--i': i }}>
                   <span className="hero-kw-fall-text">{heroKeyword(kw)}</span>
@@ -101,7 +118,7 @@ export default function About() {
               </div>
             )}
 
-            {labName && <h1 className="hero-final-logo">{labName}</h1>}
+            {labName && <h1 className="hero-final-logo">{renderLabName(labName)}</h1>}
           </div>
         </section>
 
