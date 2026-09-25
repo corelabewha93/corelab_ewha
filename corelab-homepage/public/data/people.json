@@ -414,11 +414,11 @@
     },
     {
       "name": "김영주",
-      "photo": "images/people/김영주-mugpwjod.jpg",
+      "photo": "images/people/김영주-mugpx7xl.jpg",
       "photoCrop": {
-        "x": 47.8,
-        "y": 55.6,
-        "zoom": 1.55
+        "x": 50,
+        "y": 50,
+        "zoom": 1
       },
       "degree": "PhD",
       "affiliation": "이화여자대학교 아시아여성학센터 특임교수",
