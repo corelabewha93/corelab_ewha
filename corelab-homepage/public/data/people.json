@@ -88,7 +88,7 @@
     },
     {
       "name": "김주람",
-      "photo": "images/people/김주람-mufi6ea3.png",
+      "photo": "images/people/김주람-mufi6ea3.jpg",
       "photoCrop": {
         "x": 52.5,
         "y": 34.4,
@@ -277,7 +277,7 @@
     },
     {
       "name": "박주은",
-      "photo": "images/people/박주은-mue19dq0.png",
+      "photo": "images/people/박주은-mue19dq0.jpg",
       "photoCrop": {
         "x": 59.2,
         "y": 10.7,
@@ -380,7 +380,7 @@
   "alumni": [
     {
       "name": "Anita Emefa Hato",
-      "photo": "images/people/anita-emefa-hato-mufhsvgr.jpeg",
+      "photo": "images/people/anita-emefa-hato-mufhsvgr.jpg",
       "photoCrop": {
         "x": 37.2,
         "y": 32,
