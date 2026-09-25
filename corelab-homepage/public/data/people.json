@@ -277,7 +277,7 @@
     },
     {
       "name": "박주은",
-      "photo": "images/people/박주은-mue19dq0.jpg",
+      "photo": "images/people/박주은-mugf8rej.png",
       "photoCrop": {
         "x": 59.2,
         "y": 10.7,
@@ -288,7 +288,8 @@
       "detail": [],
       "links": [],
       "id": "person-mue19fwyhmb",
-      "nameEn": "Joo Eun Park"
+      "nameEn": "Joo Eun Park",
+      "pubNames": []
     },
     {
       "name": "김선영",
