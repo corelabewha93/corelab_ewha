@@ -5,11 +5,20 @@ import FocusNames from './FocusNames'
  * 저역서 — research.json의 publications 중 type이 'book'인 항목.
  * (관리자 화면에서 "종류: Book (저역서)"로 추가하면 여기에 나타납니다.)
  *
- * translators(옮긴이)가 있으면 "번역서"로, 없으면 "저서"로 표시합니다.
- * bookRole을 적어두면 그 문구로 대체됩니다 (예: "챕터 집필" — 책 전체가 아니라
- * 여러 저자가 나눠 쓴 편저의 한 챕터만 집필한 경우).
+ * translators(옮긴이)가 있으면 "번역서"로, 없으면 "저서"로 자동 표시합니다.
+ * (예전의 직접 입력 배지 문구 "챕터 집필" 등은 더 이상 쓰지 않습니다.)
+ * 절판·품절 같은 판매 상태 문구는 표시하지 않습니다.
  * 표지 이미지 없이 텍스트만으로 표시합니다.
  */
+/** 쪽수 등 세부 정보에 "절판"·"품절" 같은 판매 상태가 섞여 있으면 빼고 보여줍니다. */
+function stripSaleStatus(text = '') {
+  return text
+    .split('·')
+    .map((part) => part.replace(/\(?\s*(절판|품절)\s*\)?/g, '').trim())
+    .filter(Boolean)
+    .join(' · ')
+}
+
 export default function Books({ items = [], onEdit, focus = null }) {
   const books = items
     .filter((p) => p.type === 'book')
@@ -21,8 +30,8 @@ export default function Books({ items = [], onEdit, focus = null }) {
     <ul className="book-list">
       {books.map((book) => {
         const isTranslation = (book.translators?.length ?? 0) > 0
-        const roleLabel = book.bookRole?.trim() || (isTranslation ? '번역서' : '저서')
-        const roleIsDefault = !book.bookRole?.trim()
+        const roleLabel = isTranslation ? '번역서' : '저서'
+        const meta = [book.venue, stripSaleStatus(book.details)].filter(Boolean).join(' · ')
         return (
           <li key={book.id} className="book-row admin-item">
             <EditButton onClick={() => onEdit(book)} />
@@ -37,7 +46,7 @@ export default function Books({ items = [], onEdit, focus = null }) {
                   book.title
                 )}
                 <span
-                  className={`book-role-badge${roleIsDefault && isTranslation ? ' book-role-translation' : ''}${!roleIsDefault ? ' book-role-custom' : ''}`}
+                  className={`book-role-badge${isTranslation ? ' book-role-translation' : ''}`}
                 >
                   {roleLabel}
                 </span>
@@ -54,7 +63,7 @@ export default function Books({ items = [], onEdit, focus = null }) {
                   <FocusNames names={book.translators} focus={focus} />
                 </p>
               )}
-              <p className="book-meta">{[book.venue, book.details].filter(Boolean).join(' · ')}</p>
+              {meta && <p className="book-meta">{meta}</p>}
             </div>
           </li>
         )
