@@ -127,6 +127,25 @@ function loadImageElement(src) {
   })
 }
 
+/**
+ * 사진 파일을 화면에 그릴 수 있는 형태로 읽어옵니다.
+ * 휴대폰(특히 아이폰 Safari)에서는 용량이 큰 사진을 base64 문자열로 바꿔 <img>로 읽으면
+ * 간혹 조용히 실패해서(에러도 없이) 압축이 전혀 안 된 원본이 그대로 올라가는 문제가 있었습니다.
+ * createImageBitmap은 파일을 문자열로 바꾸지 않고 바로 읽어서 이런 문제가 훨씬 적으므로 우선 사용하고,
+ * 지원하지 않는 브라우저에서만 예전 방식(<img>)으로 되돌아갑니다.
+ */
+async function decodeImage(file) {
+  if (typeof createImageBitmap === 'function') {
+    try {
+      return await createImageBitmap(file)
+    } catch {
+      // 일부 파일에서 createImageBitmap이 실패하면 <img> 방식으로 한 번 더 시도합니다.
+    }
+  }
+  const dataUrl = await fileToDataUrl(file)
+  return loadImageElement(dataUrl)
+}
+
 /** data URL(base64)의 대략적인 바이트 수 (헤더 제외한 실제 이미지 데이터 길이 기준) */
 function dataUrlBytes(dataUrl) {
   const comma = dataUrl.indexOf(',')
@@ -140,46 +159,72 @@ function dataUrlBytes(dataUrl) {
  * - 투명 배경이 필요할 수 있는 PNG(로고 등)는 형식을 유지한 채 크기만 줄입니다. (forceJpeg가 true면
  *   People 사진처럼 투명 배경이 필요 없는 경우 PNG도 JPEG로 바꿔서 용량을 더 줄입니다.)
  * - 사진은 maxDimension까지, 품질 85%로 다시 인코딩합니다.
- * - 그래도 hardCapBytes보다 크면 품질을 단계적으로 낮춰(70% → 55%) 다시 시도합니다.
- * - 혹시라도 압축 결과가 원본보다 크면 원본을 그대로 사용합니다.
+ * - 그래도 hardCapBytes보다 크면 품질을 단계적으로 낮추고(70% → 55%), 그래도 크면 가로/세로 자체를
+ *   한 번 더 줄여서(60%) 다시 시도합니다.
+ * - 그렇게 해도 여전히 너무 크거나 사진을 읽는 데 아예 실패하면, 원본을 그대로 올리는 대신
+ *   에러를 알려서 다른 사진으로 다시 시도하도록 합니다. (예전에는 조용히 원본이 올라가서
+ *   압축이 안 된 사진이 눈에 띄지 않게 남아있는 문제가 있었습니다.)
  */
 async function compressImage(file, { maxDimension = 1600, quality = 0.85, forceJpeg = false, hardCapBytes } = {}) {
   if (file.type === 'image/svg+xml' || file.size < 300 * 1024) {
     return fileToDataUrl(file)
   }
 
-  const original = await fileToDataUrl(file)
-
+  let img
   try {
-    const img = await loadImageElement(original)
-    const scale = Math.min(1, maxDimension / Math.max(img.width, img.height))
-    const isJpeg = file.type === 'image/jpeg' || file.type === 'image/jpg'
+    img = await decodeImage(file)
+  } catch {
+    throw new Error('사진을 읽지 못했습니다. 다른 사진 파일로 다시 시도해주세요.')
+  }
 
-    if (scale === 1 && !isJpeg && !(forceJpeg && file.type === 'image/png')) {
-      return original
-    }
+  const isJpeg = file.type === 'image/jpeg' || file.type === 'image/jpg'
+  const outType = file.type === 'image/png' && !forceJpeg ? 'image/png' : 'image/jpeg'
+  const naturalW = img.width
+  const naturalH = img.height
 
+  const encodeAt = (dim, q) => {
+    const s = Math.min(1, dim / Math.max(naturalW, naturalH))
     const canvas = document.createElement('canvas')
-    canvas.width = Math.max(1, Math.round(img.width * scale))
-    canvas.height = Math.max(1, Math.round(img.height * scale))
+    canvas.width = Math.max(1, Math.round(naturalW * s))
+    canvas.height = Math.max(1, Math.round(naturalH * s))
     const ctx = canvas.getContext('2d')
     ctx.drawImage(img, 0, 0, canvas.width, canvas.height)
+    return canvas.toDataURL(outType, outType === 'image/jpeg' ? q : undefined)
+  }
 
-    const outType = file.type === 'image/png' && !forceJpeg ? 'image/png' : 'image/jpeg'
-    let compressed = canvas.toDataURL(outType, outType === 'image/jpeg' ? quality : undefined)
+  const scale = Math.min(1, maxDimension / Math.max(naturalW, naturalH))
+  if (scale === 1 && !isJpeg && !(forceJpeg && file.type === 'image/png')) {
+    return fileToDataUrl(file)
+  }
+
+  try {
+    let compressed = encodeAt(maxDimension, quality)
 
     // PNG는 품질 단계가 없어서(항상 무손실) 재시도해도 용량이 줄지 않으므로 JPEG일 때만 재시도합니다.
     if (outType === 'image/jpeg' && hardCapBytes) {
       for (const q of [0.7, 0.55]) {
         if (dataUrlBytes(compressed) <= hardCapBytes) break
-        compressed = canvas.toDataURL(outType, q)
+        compressed = encodeAt(maxDimension, q)
+      }
+      // 품질을 낮춰도 여전히 크다면(고해상도 원본) 크기 자체를 한 번 더 줄여봅니다.
+      if (dataUrlBytes(compressed) > hardCapBytes) {
+        compressed = encodeAt(Math.round(maxDimension * 0.6), 0.6)
+      }
+      // 그래도 기준의 3배 넘게 크면 뭔가 잘못된 것이므로, 조용히 넘어가지 않고 알립니다.
+      if (dataUrlBytes(compressed) > hardCapBytes * 3) {
+        throw new Error('사진 용량을 충분히 줄이지 못했습니다. 다른 사진으로 다시 시도해주세요.')
       }
     }
 
-    return compressed.length < original.length ? compressed : original
-  } catch {
-    // 압축 중 문제가 생기면(예: 브라우저 제약) 원본을 그대로 올립니다.
-    return original
+    return dataUrlBytes(compressed) < file.size ? compressed : await fileToDataUrl(file)
+  } catch (e) {
+    if (e instanceof Error && e.message.startsWith('사진')) throw e
+    // 캔버스 처리 중 예상치 못한 문제가 생긴 경우: 원본이 이미 작으면 그대로 올리고,
+    // 크면(압축이 꼭 필요했던 경우) 조용히 큰 파일을 올리는 대신 에러로 알립니다.
+    if (file.size > (hardCapBytes ?? 500 * 1024) * 3) {
+      throw new Error('사진을 압축하지 못했습니다. 다른 사진으로 다시 시도해주세요.')
+    }
+    return fileToDataUrl(file)
   }
 }
 
