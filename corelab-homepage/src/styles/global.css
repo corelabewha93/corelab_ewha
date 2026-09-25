@@ -1509,7 +1509,7 @@ mark.pub-hl {
   color: var(--color-accent);
 }
 
-/* 등재 등급 배지: SSCI·SCIE(진한 초록) > Scopus(연초록) > KCI(회색) */
+/* 등재 등급 배지: SSCI(진한 초록) · SCIE(청록빛 초록, 구분용) > Scopus(연초록) > KCI(회색) */
 .pub-index-badges {
   display: inline-flex;
   gap: 0.25rem;
@@ -1526,9 +1526,14 @@ mark.pub-hl {
   white-space: nowrap;
 }
 
-.pub-index-ssci,
-.pub-index-scie {
+.pub-index-ssci {
   background: var(--color-primary);
+  color: #fff;
+}
+
+.pub-index-scie {
+  /* 같은 초록 계열이되 청록에 가깝게 틀어서 SSCI와 구분되도록 합니다 */
+  background: #1f6b4f;
   color: #fff;
 }
 
