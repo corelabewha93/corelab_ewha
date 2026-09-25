@@ -2714,6 +2714,21 @@
       "link": ""
     },
     {
+      "id": "pub-add2",
+      "year": 2011,
+      "type": "journal",
+      "authors": [
+        "Joo, Y. J.",
+        "Lim, K. Y.",
+        "Kim, E. K."
+      ],
+      "title": "Online university students' satisfaction and persistence: Examining perceived level of presence, usefulness and ease of use as predictors in a structural model",
+      "venue": "Computers & Education",
+      "details": "57(2), 1654-1664",
+      "doi": "10.1016/j.compedu.2011.02.008",
+      "link": ""
+    },
+    {
       "id": "pub-183",
       "year": 2010,
       "type": "journal",
@@ -2726,6 +2741,21 @@
       "venue": "敎員敎育",
       "details": "26(1), 37-52",
       "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-add3",
+      "year": 2010,
+      "type": "journal",
+      "authors": [
+        "Heo, H.",
+        "Lim, K. Y.",
+        "Kim, Y."
+      ],
+      "title": "Exploratory study on the patterns of online interaction and knowledge co-construction in project-based learning",
+      "venue": "Computers & Education",
+      "details": "55(3), 1383-1392",
+      "doi": "10.1016/j.compedu.2010.06.012",
       "link": ""
     },
     {
@@ -2851,7 +2881,8 @@
         "이재영",
         "임지영",
         "임규연"
-      ]
+      ],
+      "bookRole": ""
     },
     {
       "id": "book-3",
@@ -2870,7 +2901,8 @@
       "details": "2판 · 422쪽",
       "doi": "",
       "link": "",
-      "translators": []
+      "translators": [],
+      "bookRole": ""
     },
     {
       "id": "book-4",
@@ -2889,7 +2921,8 @@
         "임규연",
         "정재삼",
         "허희옥"
-      ]
+      ],
+      "bookRole": ""
     },
     {
       "id": "pub-190",
@@ -3020,6 +3053,57 @@
       "link": ""
     },
     {
+      "id": "pub-add5",
+      "year": 2020,
+      "type": "conference",
+      "authors": [
+        "Nguyen, H.",
+        "Wu, L. L.",
+        "Washington, G. N.",
+        "Lim, K. Y.",
+        "Fischer, C."
+      ],
+      "title": "Collaboration patterns and design practices in first-year project-based engineering",
+      "venue": "2020 ASEE Virtual Annual Conference",
+      "details": "Virtual Online",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-add6",
+      "year": 2020,
+      "type": "conference",
+      "authors": [
+        "Nguyen, H.",
+        "Wu, L. L.",
+        "Washington, G. N.",
+        "Lim, K. Y.",
+        "Fischer, C."
+      ],
+      "title": "Collaboration and design practices in first-year project-based engineering",
+      "venue": "ASEE Annual Conference and Exposition, Conference Proceedings 2020",
+      "details": "",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-add7",
+      "year": 2020,
+      "type": "conference",
+      "authors": [
+        "Nguyen, H.",
+        "Lim, K. Y.",
+        "Wu, L.",
+        "Fischer, C.",
+        "Warschauer, M."
+      ],
+      "title": "\"I thought we said\": Perceived peer support, discourse cohesion, and regulation in engineering design",
+      "venue": "the International Conference of the Learning Sciences 2020 (ISLS)",
+      "details": "Nashville, TN",
+      "doi": "",
+      "link": ""
+    },
+    {
       "id": "pub-198",
       "year": 2021,
       "type": "journal",
@@ -3036,6 +3120,22 @@
       "doi": "",
       "link": "",
       "indexes": "SSCI, Scopus"
+    },
+    {
+      "id": "pub-add4",
+      "year": 2021,
+      "type": "conference",
+      "authors": [
+        "Nguyen, H.",
+        "Lim, K. Y.",
+        "Wu, L. L.",
+        "Fischer, C."
+      ],
+      "title": "A dynamic social network approach to capturing shared regulation interactions in collaborative learning",
+      "venue": "the 15th International Conference of the Learning Sciences-ICLS 2021",
+      "details": "Bochum, Germany",
+      "doi": "",
+      "link": ""
     },
     {
       "id": "pub-199",
@@ -3086,7 +3186,8 @@
       "venue": "학지사",
       "details": "",
       "doi": "",
-      "link": ""
+      "link": "",
+      "bookRole": ""
     },
     {
       "id": "book-6",
@@ -3107,7 +3208,8 @@
       "venue": "학지사",
       "details": "",
       "doi": "",
-      "link": ""
+      "link": "",
+      "bookRole": ""
     },
     {
       "id": "book-7",
@@ -3136,7 +3238,8 @@
       "venue": "교육과학사",
       "details": "",
       "doi": "",
-      "link": ""
+      "link": "",
+      "bookRole": ""
     },
     {
       "id": "book-8",
@@ -3180,6 +3283,38 @@
       "link": "",
       "indexes": "",
       "bookRole": ""
+    },
+    {
+      "id": "pub-add8",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "Smith, B. K.",
+        "Borge, M.",
+        "Mercier, E.",
+        "Lim, K. Y."
+      ],
+      "title": "Making a difference: Prioritizing equity and access in CSCL, Volume 1",
+      "venue": "12th International Conference on Computer Supported Collaborative Learning (CSCL) 2017",
+      "details": "Philadelphia, PA · Proceedings (Eds.)",
+      "doi": "",
+      "link": ""
+    },
+    {
+      "id": "pub-add9",
+      "year": 2017,
+      "type": "conference",
+      "authors": [
+        "Smith, B. K.",
+        "Borge, M.",
+        "Mercier, E.",
+        "Lim, K. Y."
+      ],
+      "title": "Making a difference: Prioritizing equity and access in CSCL, Volume 2",
+      "venue": "12th International Conference on Computer Supported Collaborative Learning (CSCL) 2017",
+      "details": "Philadelphia, PA · Proceedings (Eds.)",
+      "doi": "",
+      "link": ""
     },
     {
       "year": 2026,
