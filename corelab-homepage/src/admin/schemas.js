@@ -268,13 +268,6 @@ export const publicationFields = [
     placeholder: '예: SSCI, Scopus',
     hint: '비워두면 학술지 이름으로 자동 표시됩니다. 자동 표시가 틀렸을 때만 직접 적으세요 (SSCI / SCIE / Scopus / KCI, 쉼표로 구분). 배지를 없애려면 - 만 입력.',
   },
-  {
-    name: 'bookRole',
-    label: '저역서 배지 문구 (저역서만, 보통은 비워두세요)',
-    type: 'text',
-    placeholder: '예: 챕터 집필, 편저',
-    hint: '비워두면 옮긴이 입력 여부로 "저서"/"번역서"가 자동 표시됩니다. 이 책 전체가 아니라 한 챕터만 쓰신 경우 등, 자동 표시가 안 맞을 때만 직접 적으세요.',
-  },
   { name: 'doi', label: 'DOI (선택)', type: 'text', placeholder: '10.xxxx/xxxxx' },
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
 ]
