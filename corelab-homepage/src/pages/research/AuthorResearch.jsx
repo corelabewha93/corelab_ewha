@@ -1,4 +1,4 @@
-import { useMemo } from 'react'
+import { useEffect, useMemo } from 'react'
 import Publications from './Publications'
 import Books from './Books'
 import Patents from './Patents'
@@ -11,6 +11,12 @@ import { makeFocus, includesFocus } from './authorMatch'
  */
 export default function AuthorResearch({ data, author, onClear, onEdit }) {
   const focus = useMemo(() => makeFocus(author.aliases), [author])
+
+  // 모아보기 화면이 열리면 이름이 먼저 보이도록 맨 위로 올립니다.
+  // (People 페이지 아래쪽에서 눌러 들어와도 중간부터 보이지 않게)
+  useEffect(() => {
+    window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+  }, [])
 
   const { pubs, books, patents } = useMemo(() => {
     const all = data.publications ?? []
