@@ -466,12 +466,7 @@
     },
     {
       "name": "이지현",
-      "photo": "images/people/이지현-mue7lgfv.jpg",
-      "photoCrop": {
-        "x": 46.1,
-        "y": 47.1,
-        "zoom": 1
-      },
+      "photo": "",
       "degree": "MA",
       "affiliation": "한국생산성본부 전문위원",
       "bio": "",
@@ -623,12 +618,7 @@
     },
     {
       "name": "정유진",
-      "photo": "images/people/정유진-mue7bmv3.jpg",
-      "photoCrop": {
-        "x": 45.6,
-        "y": 49.6,
-        "zoom": 1
-      },
+      "photo": "",
       "degree": "PhD",
       "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
       "bio": "",
@@ -646,12 +636,7 @@
     },
     {
       "name": "김다현",
-      "photo": "images/people/김다현-mue70e8z.jpg",
-      "photoCrop": {
-        "x": 45.5,
-        "y": 43,
-        "zoom": 1
-      },
+      "photo": "",
       "degree": "MA",
       "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
       "bio": "",
