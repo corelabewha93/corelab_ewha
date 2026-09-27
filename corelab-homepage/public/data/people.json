@@ -574,6 +574,27 @@
       "id": "person-mue66891djv"
     },
     {
+      "name": "박은주",
+      "nameEn": "",
+      "photo": "images/people/박은주-mukebrk6.jpg",
+      "photoCrop": {
+        "x": 58,
+        "y": 50.3,
+        "zoom": 1.06
+      },
+      "degree": "MA",
+      "affiliation": "(주)천재교과서 디지털사업부문 콘텐츠전략팀 팀장",
+      "bio": "",
+      "pubNames": [],
+      "detail": [
+        "#소개",
+        "AI 기반 교육 서비스의 기획 및 운영을 담당하고 있다",
+        "#관심분야",
+        "학습경험설계, 멀티모달 학습분석, 컴퓨터기반협력학습(CSCL)"
+      ],
+      "id": "person-mukebu3qo1i"
+    },
+    {
       "name": "차수민",
       "photo": "images/people/차수민-muf2g5li.jpg",
       "photoCrop": {
@@ -593,6 +614,28 @@
       ],
       "links": [],
       "id": "person-muf2g7fen4u"
+    },
+    {
+      "name": "김혜준",
+      "photo": "images/people/김혜준-mue646h2.jpg",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "이화여자대학교 강사",
+      "bio": "",
+      "detail": [
+        "#관심분야",
+        "인간-AI 협력, 문제해결, CSCL"
+      ],
+      "links": [],
+      "id": "person-mue648lk2gx",
+      "nameEn": "",
+      "pubNames": [
+        "Kim, H. J."
+      ]
     },
     {
       "name": "이다혜",
@@ -619,44 +662,6 @@
       ]
     },
     {
-      "name": "김혜준",
-      "photo": "images/people/김혜준-mue646h2.jpg",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "이화여자대학교 강사",
-      "bio": "",
-      "detail": [
-        "#관심분야",
-        "인간-AI 협력, 문제해결, CSCL"
-      ],
-      "links": [],
-      "id": "person-mue648lk2gx",
-      "nameEn": "",
-      "pubNames": [
-        "Kim, H. J."
-      ]
-    },
-    {
-      "name": "김다현",
-      "photo": "",
-      "degree": "MA",
-      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
-      "bio": "",
-      "detail": [
-        "#소개",
-        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
-        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
-        "#관심분야",
-        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
-      ],
-      "links": [],
-      "id": "person-mue6sv64kpi"
-    },
-    {
       "name": "정유진",
       "photo": "",
       "degree": "PhD",
@@ -675,25 +680,20 @@
       ]
     },
     {
-      "name": "박은주",
-      "nameEn": "",
-      "photo": "images/people/박은주-mukebrk6.jpg",
-      "photoCrop": {
-        "x": 58,
-        "y": 50.3,
-        "zoom": 1.06
-      },
+      "name": "김다현",
+      "photo": "",
       "degree": "MA",
-      "affiliation": "(주)천재교과서 디지털사업부문 콘텐츠전략팀 팀장",
+      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
       "bio": "",
-      "pubNames": [],
       "detail": [
         "#소개",
-        "AI 기반 교육 서비스의 기획 및 운영을 담당하고 있다",
+        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
+        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
         "#관심분야",
-        "학습경험설계, 멀티모달 학습분석, 컴퓨터기반협력학습(CSCL)"
+        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
       ],
-      "id": "person-mukebu3qo1i"
+      "links": [],
+      "id": "person-mue6sv64kpi"
     }
   ]
 }
