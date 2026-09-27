@@ -4,13 +4,23 @@ import { useAdminAuth } from '../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../admin/collection'
 import { makeId } from '../admin/dataStore'
 import { lablifeFields } from '../admin/schemas'
+import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
 
+// 사진 배열과, 각 사진에 저장된 위치·확대(imageCrops)를 짝지어 돌려줍니다.
+// (imageCrops가 없거나 개수가 안 맞아도 기본값으로 채워지므로 안전합니다.)
+function photosOf(item) {
+  const images = Array.isArray(item.images) ? item.images : item.image ? [item.image] : []
+  const crops = Array.isArray(item.imageCrops) ? item.imageCrops : []
+  return images
+    .map((src, i) => ({ src, crop: crops[i] }))
+    .filter((p) => p.src)
+}
+
 function imagesOf(item) {
-  if (Array.isArray(item.images)) return item.images.filter(Boolean)
-  return item.image ? [item.image] : []
+  return photosOf(item).map((p) => p.src)
 }
 
 export default function LabLife() {
@@ -68,7 +78,7 @@ export default function LabLife() {
       ) : (
         <div className="gallery-grid">
           {items.map((item) => {
-            const photos = imagesOf(item)
+            const photos = photosOf(item)
             return (
               <div key={item.id} className="admin-item gallery-card">
                 <EditButton onClick={() => setEditing({ item })} />
@@ -77,7 +87,12 @@ export default function LabLife() {
                   onClick={() => openLightbox(item)}
                   aria-label={item.caption || '사진 크게 보기'}
                 >
-                  <SafeImage src={photos[0]} alt={item.caption ?? ''} fallback={<span />} />
+                  <SafeImage
+                    src={photos[0]?.src}
+                    alt={item.caption ?? ''}
+                    fallback={<span />}
+                    imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[0]?.crop }))}
+                  />
                   {photos.length > 1 && (
                     <span className="gallery-item-count">
                       <svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true">
@@ -97,7 +112,7 @@ export default function LabLife() {
 
       {selected &&
         (() => {
-          const photos = imagesOf(selected)
+          const photos = photosOf(selected)
           const multi = photos.length > 1
           return (
             <div className="lightbox-overlay" onClick={closeLightbox}>
@@ -107,7 +122,12 @@ export default function LabLife() {
                 </button>
 
                 <div className="lightbox-photo-frame">
-                  <SafeImage src={photos[photoIdx]} alt={selected.caption ?? ''} fallback={<span />} />
+                  <SafeImage
+                    src={photos[photoIdx]?.src}
+                    alt={selected.caption ?? ''}
+                    fallback={<span />}
+                    imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
+                  />
                   {multi && (
                     <>
                       <button
