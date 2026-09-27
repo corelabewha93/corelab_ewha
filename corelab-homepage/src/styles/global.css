@@ -655,6 +655,32 @@ h1.section-title {
   }
 }
 
+/* Research 탭(5개: Publications/Books/Projects/Patents/Systems & Tools)은
+   "Systems & Tools"만 다음 줄로 혼자 떨어져 보기 어수선해지기 쉬워서,
+   모바일에서는 글자를 조금 더 줄여 한 줄 안에 모두 들어오게 합니다. */
+@media (max-width: 700px) {
+  .tabs-layout-research .tabs-nav {
+    flex-wrap: nowrap;
+    column-gap: 0.55rem;
+  }
+
+  .tabs-layout-research .tab-btn {
+    font-size: 0.72rem;
+  }
+}
+
+/* 그래도 폭이 아주 좁으면(예전 소형 화면) 한 줄을 억지로 유지하는 대신
+   다시 줄바꿈을 허용해 글자가 너무 작아지지 않게 합니다. */
+@media (max-width: 360px) {
+  .tabs-layout-research .tabs-nav {
+    flex-wrap: wrap;
+  }
+
+  .tabs-layout-research .tab-btn {
+    font-size: 0.8rem;
+  }
+}
+
 /* ---------- Cards / grids ---------- */
 .card {
   background: var(--color-surface);
