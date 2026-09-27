@@ -122,12 +122,9 @@ export default function LabLife() {
                 </button>
 
                 <div className="lightbox-photo-frame">
-                  <SafeImage
-                    src={photos[photoIdx]?.src}
-                    alt={selected.caption ?? ''}
-                    fallback={<span />}
-                    imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
-                  />
+                  {/* 자세히 보기는 사진을 자르지 않고 원래 비율 그대로 보여주므로,
+                      위치·확대(crop) 값은 그리드 썸네일에만 적용합니다. */}
+                  <SafeImage src={photos[photoIdx]?.src} alt={selected.caption ?? ''} fallback={<span />} />
                   {multi && (
                     <>
                       <button
