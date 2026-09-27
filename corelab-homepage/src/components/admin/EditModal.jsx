@@ -1,7 +1,7 @@
 import { useEffect, useMemo, useRef, useState } from 'react'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 import { uploadImage } from '../../admin/dataStore'
-import { normalizeCrop } from '../../admin/photoCrop'
+import { DEFAULT_CROP, cropToStyle, normalizeCrop } from '../../admin/photoCrop'
 import { showToast } from '../../admin/toast'
 import { resolveImageSrc } from '../SafeImage'
 import CropEditor from './CropEditor'
@@ -16,7 +16,10 @@ import CropEditor from './CropEditor'
  *   - tags       : 배열 ↔ 쉼표로 구분
  *   - paragraphs : 배열 ↔ 빈 줄로 문단 구분
  *   - image      : 사진 파일 선택 → 저장할 때 GitHub에 자동 업로드 (folder: 'news' 등)
- *   - crop       : 사진 위치/확대 조정 (imageField: 어떤 사진 필드를 조정할지)
+ *   - crop       : 사진 위치/확대 조정 (imageField: 어떤 사진 필드를 조정할지) — 사진 한 장짜리 필드용
+ *   - image + multiple + crop: true : 사진 여러 장 각각의 위치/확대 조정.
+ *       cropField(예: 'imageCrops')에 사진 배열과 같은 순서로 crop 값이 저장됩니다.
+ *       cropAspect: [4, 3] 처럼 실제 화면 비율을 넘기면 그 비율로 미리보기가 보입니다(생략 시 3:4).
  *   - showIf(values) : 조건부로 보이는 필드
  */
 
@@ -89,17 +92,29 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
   })
   const [files, setFiles] = useState({}) // image(단일) 필드 이름 -> File[]
   // 사진 여러 장(multiple) 필드: 기존 사진과 새로 고른 사진을 한 줄로 합쳐서 순서를 바꾸거나 뺄 수 있게 관리합니다.
-  // entry: { id, kind: 'existing', src } | { id, kind: 'new', file, previewUrl }
+  // entry: { id, kind: 'existing', src, crop? } | { id, kind: 'new', file, previewUrl, crop? }
+  // (f.crop이 true인 필드는 사진마다 위치·확대(crop) 값을 함께 들고 다닙니다 — f.cropField에 배열로 저장됩니다.)
   const [multiEntries, setMultiEntries] = useState(() => {
     const m = {}
     fields.forEach((f) => {
       if (f.type === 'image' && f.multiple) {
-        const arr = Array.isArray(initial[f.name]) ? initial[f.name].filter(Boolean) : []
-        m[f.name] = arr.map((src, i) => ({ id: `existing-${i}-${src}`, kind: 'existing', src }))
+        const rawImages = Array.isArray(initial[f.name]) ? initial[f.name] : []
+        const rawCrops = f.crop && Array.isArray(initial[f.cropField]) ? initial[f.cropField] : []
+        m[f.name] = rawImages
+          .map((src, i) => ({ src, crop: rawCrops[i] }))
+          .filter((e) => e.src)
+          .map((e, i) => ({
+            id: `existing-${i}-${e.src}`,
+            kind: 'existing',
+            src: e.src,
+            crop: f.crop ? normalizeCrop({ photoCrop: e.crop }) : undefined,
+          }))
       }
     })
     return m
   })
+  // 여러 장 사진 중 지금 위치·확대를 조정 중인 항목: { field, id } | null
+  const [cropOpen, setCropOpen] = useState(null)
   const [saving, setSaving] = useState(false)
   const [error, setError] = useState(null)
   const [confirmDelete, setConfirmDelete] = useState(false)
@@ -107,11 +122,11 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
 
   const set = (name, value) => setValues((prev) => ({ ...prev, [name]: value }))
 
-  const addMultiFiles = (name, fileList) => {
+  const addMultiFiles = (name, fileList, withCrop) => {
     const added = Array.from(fileList ?? []).map((file, i) => {
       const previewUrl = URL.createObjectURL(file)
       objectUrlsRef.current.push(previewUrl)
-      return { id: `new-${Date.now()}-${i}-${file.name}`, kind: 'new', file, previewUrl }
+      return { id: `new-${Date.now()}-${i}-${file.name}`, kind: 'new', file, previewUrl, crop: withCrop ? { ...DEFAULT_CROP } : undefined }
     })
     if (!added.length) return
     setMultiEntries((prev) => ({ ...prev, [name]: [...(prev[name] ?? []), ...added] }))
@@ -119,6 +134,7 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
 
   const removeMultiEntry = (name, id) => {
     setMultiEntries((prev) => ({ ...prev, [name]: (prev[name] ?? []).filter((en) => en.id !== id) }))
+    setCropOpen((prev) => (prev?.field === name && prev?.id === id ? null : prev))
   }
 
   const moveMultiEntry = (name, index, dir) => {
@@ -129,6 +145,13 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
       ;[list[index], list[target]] = [list[target], list[index]]
       return { ...prev, [name]: list }
     })
+  }
+
+  const updateEntryCrop = (name, id, crop) => {
+    setMultiEntries((prev) => ({
+      ...prev,
+      [name]: (prev[name] ?? []).map((en) => (en.id === id ? { ...en, crop } : en)),
+    }))
   }
 
   useEffect(() => () => objectUrlsRef.current.forEach((u) => URL.revokeObjectURL(u)), [])
@@ -179,10 +202,13 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
         if (f.type === 'image' && f.multiple) {
           const base = uploadName?.(values) || f.folder
           const paths = []
+          const crops = []
           for (const entry of multiEntries[f.name] ?? []) {
             paths.push(entry.kind === 'existing' ? entry.src : await uploadImage(token, entry.file, f.folder, base))
+            if (f.crop) crops.push(entry.crop ?? DEFAULT_CROP)
           }
           out[f.name] = paths
+          if (f.crop && f.cropField) out[f.cropField] = crops
         } else if (f.type === 'image' && files[f.name]?.length) {
           const base = uploadName?.(values) || f.folder
           out[f.name] = await uploadImage(token, files[f.name][0], f.folder, base)
@@ -260,9 +286,23 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
                 <div className="image-field-thumbs">
                   {entries.map((entry, i) => {
                     const src = entry.kind === 'existing' ? resolveImageSrc(entry.src, true) : entry.previewUrl
+                    const isCropOpen = f.crop && cropOpen?.field === f.name && cropOpen?.id === entry.id
+                    const thumbImg = <img src={src} alt="" style={f.crop ? cropToStyle(entry.crop ?? DEFAULT_CROP) : undefined} />
                     return (
                       <div className="image-field-thumb image-field-thumb-sortable" key={entry.id}>
-                        <img src={src} alt="" />
+                        {f.crop ? (
+                          <button
+                            type="button"
+                            className={`image-field-thumb-open${isCropOpen ? ' active' : ''}`}
+                            onClick={() => setCropOpen(isCropOpen ? null : { field: f.name, id: entry.id })}
+                            aria-label="사진 위치 · 확대 조정"
+                            title="눌러서 사진 위치 · 확대 조정"
+                          >
+                            {thumbImg}
+                          </button>
+                        ) : (
+                          thumbImg
+                        )}
                         <div className="image-field-thumb-controls">
                           <button
                             type="button"
@@ -294,13 +334,38 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
                   })}
                 </div>
               )}
+
+              {f.crop &&
+                cropOpen?.field === f.name &&
+                (() => {
+                  const entry = entries.find((en) => en.id === cropOpen.id)
+                  if (!entry) return null
+                  const src = entry.kind === 'existing' ? resolveImageSrc(entry.src, true) : entry.previewUrl
+                  const [aw, ah] = f.cropAspect ?? [4, 3]
+                  const cropWidth = 200
+                  return (
+                    <div className="crop-editor-panel">
+                      <CropEditor
+                        src={src}
+                        value={entry.crop}
+                        onChange={(v) => updateEntryCrop(f.name, entry.id, v)}
+                        width={cropWidth}
+                        height={Math.round((cropWidth * ah) / aw)}
+                      />
+                      <button type="button" className="modal-btn-secondary crop-panel-done" onClick={() => setCropOpen(null)}>
+                        완료
+                      </button>
+                    </div>
+                  )
+                })()}
+
               <div className="image-field-actions">
                 <input
                   type="file"
                   accept="image/*"
                   multiple
                   onChange={(e) => {
-                    addMultiFiles(f.name, e.target.files)
+                    addMultiFiles(f.name, e.target.files, f.crop)
                     e.target.value = ''
                   }}
                 />
