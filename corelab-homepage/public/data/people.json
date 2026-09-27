@@ -518,7 +518,10 @@
       "degree": "PhD",
       "affiliation": "경기대학교 전공설계융합지원센터 연구교수",
       "bio": "",
-      "pubNames": [],
+      "pubNames": [
+        "Park, H.",
+        "Park H. N."
+      ],
       "detail": [
         "#소개",
         "교육공학을 기반으로 AI 시대의 학습과 사고 변화를 공부하고 연구하고 있다",
