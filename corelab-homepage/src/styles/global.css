@@ -655,32 +655,6 @@ h1.section-title {
   }
 }
 
-/* Research 탭(5개: Publications/Books/Projects/Patents/Systems & Tools)은
-   "Systems & Tools"만 다음 줄로 혼자 떨어져 보기 어수선해지기 쉬워서,
-   모바일에서는 글자를 조금 더 줄여 한 줄 안에 모두 들어오게 합니다. */
-@media (max-width: 700px) {
-  .tabs-layout-research .tabs-nav {
-    flex-wrap: nowrap;
-    column-gap: 0.55rem;
-  }
-
-  .tabs-layout-research .tab-btn {
-    font-size: 0.72rem;
-  }
-}
-
-/* 그래도 폭이 아주 좁으면(예전 소형 화면) 한 줄을 억지로 유지하는 대신
-   다시 줄바꿈을 허용해 글자가 너무 작아지지 않게 합니다. */
-@media (max-width: 360px) {
-  .tabs-layout-research .tabs-nav {
-    flex-wrap: wrap;
-  }
-
-  .tabs-layout-research .tab-btn {
-    font-size: 0.8rem;
-  }
-}
-
 /* ---------- Cards / grids ---------- */
 .card {
   background: var(--color-surface);
@@ -2636,6 +2610,42 @@ mark.pub-hl {
 .image-field-thumb-remove {
   font-size: 0.85rem !important;
   font-weight: 700;
+}
+
+/* 여러 장 사진 중 하나를 눌러서 위치·확대(crop)를 조정할 때 쓰는 썸네일 버튼 */
+.image-field-thumb-open {
+  display: block;
+  width: 100%;
+  height: 100%;
+  padding: 0;
+  border: none;
+  background: none;
+  cursor: pointer;
+  border-radius: inherit;
+  overflow: hidden;
+}
+
+.image-field-thumb-open img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.image-field-thumb-open.active {
+  outline: 2px solid var(--color-primary);
+  outline-offset: -2px;
+}
+
+.crop-editor-panel {
+  margin-top: 0.6rem;
+  padding: var(--space-3);
+  border: 1px solid var(--color-border);
+  border-radius: var(--radius);
+  background: var(--color-bg);
+}
+
+.crop-panel-done {
+  margin-top: 0.6rem;
 }
 
 .crop-editor {
