@@ -673,6 +673,27 @@
       "pubNames": [
         "Jung, Y"
       ]
+    },
+    {
+      "name": "박은주",
+      "nameEn": "",
+      "photo": "images/people/박은주-mukebrk6.jpg",
+      "photoCrop": {
+        "x": 58,
+        "y": 50.3,
+        "zoom": 1.06
+      },
+      "degree": "MA",
+      "affiliation": "(주)천재교과서 디지털사업부문 콘텐츠전략팀 팀장",
+      "bio": "",
+      "pubNames": [],
+      "detail": [
+        "#소개",
+        "AI 기반 교육 서비스의 기획 및 운영을 담당하고 있다",
+        "#관심분야",
+        "학습경험설계, 멀티모달 학습분석, 컴퓨터기반협력학습(CSCL)"
+      ],
+      "id": "person-mukebu3qo1i"
     }
   ]
 }
