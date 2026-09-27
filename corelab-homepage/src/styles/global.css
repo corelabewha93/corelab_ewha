@@ -1813,7 +1813,7 @@ mark.pub-hl {
 
 .gallery-item {
   position: relative;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 5 / 4;
   overflow: hidden;
   border-radius: var(--radius);
   background: var(--color-placeholder);
@@ -1916,7 +1916,7 @@ mark.pub-hl {
 .lightbox-photo-frame {
   position: relative;
   width: 100%;
-  aspect-ratio: 4 / 3;
+  aspect-ratio: 5 / 4;
   border-radius: 16px;
   overflow: hidden;
   background: var(--color-placeholder);
