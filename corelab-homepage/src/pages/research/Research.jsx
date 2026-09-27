@@ -84,7 +84,7 @@ export default function Research() {
     <div className="page container">
       <h1 className="section-title">Research</h1>
 
-      <div className="tabs-layout">
+      <div className="tabs-layout tabs-layout-research">
         {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
         <Tabs tabs={TABS} current={authorFilter ? '' : tab} onChange={setTab} />
 
