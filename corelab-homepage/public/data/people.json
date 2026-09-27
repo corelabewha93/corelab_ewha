@@ -507,6 +507,26 @@
       ]
     },
     {
+      "name": "박하나",
+      "nameEn": "",
+      "photo": "",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "경기대학교 전공설계융합지원센터 연구교수",
+      "bio": "",
+      "pubNames": [],
+      "detail": [
+        "#소개",
+        "교육공학을 기반으로 AI 시대의 학습과 사고 변화를 공부하고 연구하고 있다",
+        "#관심분야: 협력학습, 테크놀로지 기반 학습, AI 윤리 교육, 인지적 위임"
+      ],
+      "id": "person-mujmquwfy5k"
+    },
+    {
       "name": "진명화",
       "photo": "images/people/진명화-muf2lubm.jpg",
       "photoCrop": {
@@ -529,28 +549,6 @@
       "pubNames": [
         "Jin, M",
         "Jin M. H."
-      ]
-    },
-    {
-      "name": "김혜준",
-      "photo": "images/people/김혜준-mue646h2.jpg",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "이화여자대학교 강사",
-      "bio": "",
-      "detail": [
-        "#관심분야",
-        "인간-AI 협력, 문제해결, CSCL"
-      ],
-      "links": [],
-      "id": "person-mue648lk2gx",
-      "nameEn": "",
-      "pubNames": [
-        "Kim, H. J."
       ]
     },
     {
@@ -617,21 +615,25 @@
       ]
     },
     {
-      "name": "정유진",
-      "photo": "",
+      "name": "김혜준",
+      "photo": "images/people/김혜준-mue646h2.jpg",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
       "degree": "PhD",
-      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
+      "affiliation": "이화여자대학교 강사",
       "bio": "",
       "detail": [
-        "#소개",
-        "교수학습센터에서 교수지원 업무를 담당하고 있다",
-        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
+        "#관심분야",
+        "인간-AI 협력, 문제해결, CSCL"
       ],
       "links": [],
-      "id": "person-mue7boc1zes",
+      "id": "person-mue648lk2gx",
       "nameEn": "",
       "pubNames": [
-        "Jung, Y"
+        "Kim, H. J."
       ]
     },
     {
@@ -651,24 +653,22 @@
       "id": "person-mue6sv64kpi"
     },
     {
-      "name": "박하나",
-      "nameEn": "",
+      "name": "정유진",
       "photo": "",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
       "degree": "PhD",
-      "affiliation": "경기대학교 전공설계융합지원센터 연구교수",
+      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
       "bio": "",
-      "pubNames": [],
       "detail": [
         "#소개",
-        "교육공학을 기반으로 AI 시대의 학습과 사고 변화를 공부하고 연구하고 있다",
-        "#관심분야: 협력학습, 테크놀로지 기반 학습, AI 윤리 교육, 인지적 위임"
+        "교수학습센터에서 교수지원 업무를 담당하고 있다",
+        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
       ],
-      "id": "person-mujmquwfy5k"
+      "links": [],
+      "id": "person-mue7boc1zes",
+      "nameEn": "",
+      "pubNames": [
+        "Jung, Y"
+      ]
     }
   ]
 }
