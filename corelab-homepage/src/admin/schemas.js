@@ -202,7 +202,7 @@ export const lablifeFields = () => [
     multiple: true,
     crop: true,
     cropField: 'imageCrops',
-    cropAspect: [4, 3], // 실제 화면(갤러리 · 크게 보기)과 같은 4:3 비율
+    cropAspect: [5, 4], // 실제 화면(갤러리 · 크게 보기)과 같은 5:4 비율
     hint: '사진을 누르면 위치와 확대를 조정할 수 있어요.',
   },
   { name: 'caption', label: '제목 · 한 줄 설명', type: 'text', placeholder: '예: 2026 가을 랩 세미나' },
