@@ -2728,6 +2728,22 @@
       "link": ""
     },
     {
+      "id": "pub-add11",
+      "year": 2011,
+      "type": "conference",
+      "authors": [
+        "Choi, J.-I.",
+        "Heo, H.",
+        "Lim, K. Y.",
+        "Jo, I.-H."
+      ],
+      "title": "The development of an interactive digital textbook in middle school English",
+      "venue": "Lecture Notes in Computer Science (International Conference on Web-Based Learning)",
+      "details": "",
+      "doi": "10.1007/978-3-642-27142-7_47",
+      "link": ""
+    },
+    {
       "id": "pub-183",
       "year": 2010,
       "type": "journal",
@@ -3260,6 +3276,23 @@
       "link": "",
       "indexes": "",
       "bookRole": ""
+    },
+    {
+      "id": "pub-add10",
+      "year": 2013,
+      "type": "book",
+      "authors": [
+        "Heo, H.",
+        "Jo, I.-H.",
+        "Lim, K. Y.",
+        "Lee, H. W.",
+        "Suh, S."
+      ],
+      "title": "The convergence of informal learning and formal education in a ubiquitous environment",
+      "venue": "Handbook of Design in Educational Technology (Routledge) 수록",
+      "details": "",
+      "doi": "10.4324/9780203075227-37",
+      "link": ""
     },
     {
       "id": "book-9",
