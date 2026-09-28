@@ -2,13 +2,14 @@ import { useEffect, useState } from 'react'
 import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
+import { navigate, withBase } from '../router/useHashRoute'
 
 /** 사진을 넣지 않은(또는 사진을 못 불러온) 사람에게 자동으로 보여줄 이화 심벌 기본 사진 */
 const DEFAULT_PHOTO = 'images/people/default-ewha.jpg'
 
 /** Research 페이지에서 이 사람 이름이 올라간 논문·저역서·특허를 모아 보여주는 링크. */
 function researchLinkFor(name) {
-  return `#/research?author=${encodeURIComponent(name)}`
+  return `/research?author=${encodeURIComponent(name)}`
 }
 
 function initials(name) {
@@ -200,7 +201,15 @@ function PersonModal({ person, expandLines, links, onClose }) {
               </li>
             ))}
             <li className="person-detail-pub">
-              <a href={researchLinkFor(person.name)} className="person-detail-link">
+              <a
+                href={withBase(researchLinkFor(person.name))}
+                className="person-detail-link"
+                onClick={(e) => {
+                  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+                  e.preventDefault()
+                  navigate(researchLinkFor(person.name))
+                }}
+              >
                 {person.name}의 연구 실적 보기 →
               </a>
             </li>
