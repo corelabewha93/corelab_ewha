@@ -26,7 +26,11 @@ export function withBase(path) {
 }
 
 function parseLocation() {
-  const path = stripBase(window.location.pathname) || '/'
+  let path = stripBase(window.location.pathname) || '/'
+  // 뒤에 "/"가 붙어도(예: "/news/") 같은 페이지로 봅니다.
+  // (news/people/lablife는 업로드된 사진을 담는 폴더 이름과 같아서, GitHub Pages가
+  //  "/news"를 "/news/"로 한 번 바꿔 보내는 경우가 있었습니다.)
+  if (path.length > 1 && path.endsWith('/')) path = path.slice(0, -1)
   const query = Object.fromEntries(new URLSearchParams(window.location.search))
   return { path, query }
 }
