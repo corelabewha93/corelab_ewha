@@ -19,7 +19,7 @@ export function resolveImageSrc(src, isAdmin) {
  * JSON에 이미지 경로가 비어 있거나 오타가 나도 레이아웃이 깨지지 않게 합니다.
  * (기본 사진에는 사람별 자르기 값 imgStyle을 적용하지 않습니다.)
  */
-export default function SafeImage({ src, alt, fallback, fallbackSrc, className, imgStyle }) {
+export default function SafeImage({ src, alt, fallback, fallbackSrc, className, imgStyle, loading = 'lazy' }) {
   const { isAdmin } = useAdminAuth()
   const resolvedSrc = resolveImageSrc(src, isAdmin)
   const resolvedFallbackSrc = resolveImageSrc(fallbackSrc, isAdmin)
@@ -39,7 +39,8 @@ export default function SafeImage({ src, alt, fallback, fallbackSrc, className, 
       className={className}
       style={isFallback ? undefined : imgStyle}
       onError={() => setFailed((f) => [...f, current])}
-      loading="lazy"
+      loading={loading}
+      decoding="async"
       draggable={false}
     />
   )
