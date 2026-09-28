@@ -1918,6 +1918,7 @@ mark.pub-hl {
 .lightbox-photo-frame {
   position: relative;
   width: 100%;
+  flex: 0 0 auto; /* 카드 안 세로 공간이 부족해도 비율이 찌그러지지 않도록 고정합니다 */
   aspect-ratio: 5 / 4;
   border-radius: 16px;
   overflow: hidden;
