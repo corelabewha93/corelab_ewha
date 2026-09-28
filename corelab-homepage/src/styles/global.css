@@ -1914,11 +1914,14 @@ mark.pub-hl {
 }
 
 /* 목록 그리드(4:3)보다 세로로 조금 더 긴 5:4 비율로 고정합니다.
-   사진을 자르는 방식(object-fit: cover)이라, 관리자가 위치·확대로 맞춰둔 프레이밍이 그대로 반영됩니다. */
+   사진을 자르는 방식(object-fit: cover)이라, 관리자가 위치·확대로 맞춰둔 프레이밍이 그대로 반영됩니다.
+   사진 자체 크기는 화면 높이에 맞춰 줄어들어서(비율은 그대로), 제목·설명 글이 스크롤 없이 한눈에 보입니다. */
 .lightbox-photo-frame {
   position: relative;
-  width: 100%;
+  width: auto;
+  max-width: 100%;
   flex: 0 0 auto; /* 카드 안 세로 공간이 부족해도 비율이 찌그러지지 않도록 고정합니다 */
+  max-height: 38vh;
   aspect-ratio: 5 / 4;
   border-radius: 16px;
   overflow: hidden;
