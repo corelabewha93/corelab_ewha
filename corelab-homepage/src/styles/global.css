@@ -2055,6 +2055,17 @@ mark.pub-hl {
   .lightbox-card { --lb-pad: 12px; border-radius: 20px; }
 }
 
+/* PC 화면에서만 흰 박스(사진 포함)를 조금 더 크게. 비율(5:4)은 그대로, 모바일은 영향 없음. */
+@media (min-width: 720px) {
+  .lightbox-card {
+    --lb-pad: 20px;
+    --lb-photo-h: min(50vh, 500px);
+    border-radius: 26px;
+  }
+  .lightbox-caption { font-size: 1.08rem; }
+  .lightbox-body { font-size: 0.9rem; }
+}
+
 /* ---------- Contact ---------- */
 .contact-box {
   display: grid;
