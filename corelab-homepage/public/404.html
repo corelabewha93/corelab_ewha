@@ -1,0 +1,30 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <title>이동 중...</title>
+    <!--
+      GitHub Pages 전용 SPA 새로고침 대응 스크립트입니다.
+      "/news"처럼 깔끔한 주소로 직접 들어오거나 새로고침하면 GitHub Pages가 이 파일을 대신 보여주는데,
+      실제 주소를 물음표(쿼리) 안에 숨겨서 index.html로 돌려보내면, index.html의 스크립트가
+      주소창을 원래 주소로 복원해줍니다. (다른 사람이 만든 잘 알려진 방법:
+      https://github.com/rafgraph/spa-github-pages)
+    -->
+    <script>
+      var segmentCount = 0
+      var l = window.location
+      l.replace(
+        l.protocol +
+          '//' +
+          l.hostname +
+          (l.port ? ':' + l.port : '') +
+          l.pathname.split('/').slice(0, 1 + segmentCount).join('/') +
+          '/?/' +
+          l.pathname.slice(1).split('/').slice(segmentCount).join('/').replace(/&/g, '~and~') +
+          (l.search ? '&' + l.search.slice(1).replace(/&/g, '~and~') : '') +
+          l.hash,
+      )
+    </script>
+  </head>
+  <body></body>
+</html>
