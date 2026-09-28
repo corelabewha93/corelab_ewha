@@ -4,8 +4,7 @@ import react from '@vitejs/plugin-react'
 
 // GitHub Pages 배포 시: 저장소 이름이 "corelab-homepage"가 아니라면
 // 아래 REPO_NAME을 실제 저장소 이름으로 바꿔주세요.
-// 학교 커스텀 도메인(corelab.ewha.ac.kr) 연결 후에는 base를 '/'로 바꾸고
-// public/CNAME 파일을 추가하면 됩니다. (README 참고)
+// (public/CNAME 파일이 있으면 배포 워크플로가 base를 자동으로 '/'로 바꿔줍니다.)
 const REPO_NAME = 'corelab-homepage'
 
 /**
@@ -48,17 +47,16 @@ function siteUrlPlugin() {
 // 검색엔진에 노출할 실제 페이지 목록. 새 메뉴(페이지)가 생기면 여기에도 추가해주세요.
 // (App.jsx의 ROUTES와 맞춰둡니다. 관리자 전용/임시 페이지는 넣지 않습니다.)
 const SITEMAP_ROUTES = [
-  { hash: '', priority: '1.0' }, // 홈(About)
-  { hash: '#/news', priority: '0.8' },
-  { hash: '#/research', priority: '0.8' },
-  { hash: '#/people', priority: '0.8' },
-  { hash: '#/lablife', priority: '0.6' },
+  { path: '', priority: '1.0' }, // 홈(About)
+  { path: 'news', priority: '0.8' },
+  { path: 'research', priority: '0.8' },
+  { path: 'people', priority: '0.8' },
+  { path: 'lablife', priority: '0.6' },
 ]
 
 /**
  * 빌드 결과물에 robots.txt와 sitemap.xml을 만들어 넣습니다.
- * (해시(#/...) 기반 SPA라 검색엔진이 각 페이지를 별도 주소로 인식하지 못할 수 있지만,
- *  홈 주소는 확실히 알려주고, 하시 주소들도 참고용으로 함께 적어둡니다.)
+ * (주소가 해시(#/...)가 아니라 진짜 경로라서, 검색엔진이 각 페이지를 정확히 구분해서 색인할 수 있습니다.)
  */
 function seoFilesPlugin() {
   let base = '/'
@@ -72,8 +70,8 @@ function seoFilesPlugin() {
       const today = new Date().toISOString().slice(0, 10)
 
       const urls = SITEMAP_ROUTES.map(
-        ({ hash, priority }) => `  <url>
-    <loc>${siteUrl}${hash}</loc>
+        ({ path, priority }) => `  <url>
+    <loc>${siteUrl}${path}</loc>
     <lastmod>${today}</lastmod>
     <priority>${priority}</priority>
   </url>`,

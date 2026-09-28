@@ -2,6 +2,26 @@
 <html lang="ko">
   <head>
     <meta charset="UTF-8" />
+    <!--
+      GitHub Pages는 정적 호스팅이라 "/news"처럼 깔끔한 주소로 직접 들어오거나 새로고침하면
+      원래는 404가 떠야 하는데, public/404.html이 실제 주소를 숨겨서 이 페이지로 돌려보내면
+      아래 스크립트가 주소창을 원래 주소로 되돌려 놓습니다. (다른 사람이 만든 잘 알려진 방법:
+      https://github.com/rafgraph/spa-github-pages)
+    -->
+    <script>
+      ;(function (l) {
+        if (l.search[1] === '/') {
+          var decoded = l.search
+            .slice(1)
+            .split('&')
+            .map(function (s) {
+              return s.replace(/~and~/g, '&')
+            })
+            .join('?')
+          window.history.replaceState(null, null, l.pathname.slice(0, -1) + decoded + l.hash)
+        }
+      })(window.location)
+    </script>
     <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
