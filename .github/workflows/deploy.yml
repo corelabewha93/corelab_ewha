@@ -31,9 +31,21 @@ jobs:
           cache-dependency-path: corelab-homepage/package-lock.json
 
       - run: npm ci
+
+      # 학교 커스텀 도메인(public/CNAME 파일)이 있으면 사이트 주소를 "/"로,
+      # 없으면 지금까지처럼 "/저장소이름/"으로 빌드합니다. (자동 감지, 수동 수정 불필요)
+      - name: Determine base path
+        id: base
+        run: |
+          if [ -f public/CNAME ]; then
+            echo "value=/" >> "$GITHUB_OUTPUT"
+          else
+            echo "value=/${{ github.event.repository.name }}/" >> "$GITHUB_OUTPUT"
+          fi
+
       - run: npm run build
         env:
-          VITE_BASE: /${{ github.event.repository.name }}/
+          VITE_BASE: ${{ steps.base.outputs.value }}
 
       - uses: actions/upload-pages-artifact@v3
         with:
