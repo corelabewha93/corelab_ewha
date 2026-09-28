@@ -117,7 +117,19 @@
     "caption": "2026년 스승의 날",
     "body": "스승의 날을 맞이하여 교수님의 연구실에서 함께 사진 촬영을 하였다💐",
     "date": "2026-05",
-    "id": "lablife-mueenk4gytg"
+    "id": "lablife-mueenk4gytg",
+    "imageCrops": [
+      {
+        "x": 91.5,
+        "y": 31.9,
+        "zoom": 1
+      },
+      {
+        "x": 100,
+        "y": 8.7,
+        "zoom": 1
+      }
+    ]
   },
   {
     "images": [
