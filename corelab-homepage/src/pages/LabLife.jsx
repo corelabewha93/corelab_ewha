@@ -4,31 +4,24 @@ import { useAdminAuth } from '../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../admin/collection'
 import { makeId } from '../admin/dataStore'
 import { lablifeFields } from '../admin/schemas'
-import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
-import SafeImage, { resolveImageSrc } from '../components/SafeImage'
+import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
-
-// 사진 배열과, 각 사진에 저장된 위치·확대(imageCrops)를 짝지어 돌려줍니다.
-// (imageCrops가 없거나 개수가 안 맞아도 기본값으로 채워지므로 안전합니다.)
-function photosOf(item) {
-  const images = Array.isArray(item.images) ? item.images : item.image ? [item.image] : []
-  const crops = Array.isArray(item.imageCrops) ? item.imageCrops : []
-  return images
-    .map((src, i) => ({ src, crop: crops[i] }))
-    .filter((p) => p.src)
-}
+import { useDocumentMeta } from '../router/useDocumentMeta'
 
 function imagesOf(item) {
-  return photosOf(item).map((p) => p.src)
+  if (Array.isArray(item.images)) return item.images.filter(Boolean)
+  return item.image ? [item.image] : []
 }
 
 export default function LabLife() {
   const { data, error, loading } = useData('lablife.json')
-  const { token, isAdmin } = useAdminAuth()
+  const { token } = useAdminAuth()
   const [selected, setSelected] = useState(null)
   const [photoIdx, setPhotoIdx] = useState(0)
   const [editing, setEditing] = useState(null) // { item|null }
+
+  useDocumentMeta('Lab Life', 'CoRe Lab 구성원들의 일상과 활동 모습입니다.')
 
   const openLightbox = (item) => {
     setSelected(item)
@@ -47,19 +40,6 @@ export default function LabLife() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [selected])
-
-  // 자세히 보기를 열면 그 게시물의 사진을 미리 전부 받아둡니다.
-  // (다음 사진으로 넘길 때마다 새로 내려받느라 버벅이던 문제 해결)
-  useEffect(() => {
-    if (!selected) return
-    imagesOf(selected).forEach((src) => {
-      const url = resolveImageSrc(src, isAdmin)
-      if (!url) return
-      const img = new Image()
-      img.decoding = 'async'
-      img.src = url
-    })
-  }, [selected, isAdmin])
 
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
@@ -91,7 +71,7 @@ export default function LabLife() {
       ) : (
         <div className="gallery-grid">
           {items.map((item) => {
-            const photos = photosOf(item)
+            const photos = imagesOf(item)
             return (
               <div key={item.id} className="admin-item gallery-card">
                 <EditButton onClick={() => setEditing({ item })} />
@@ -100,12 +80,7 @@ export default function LabLife() {
                   onClick={() => openLightbox(item)}
                   aria-label={item.caption || '사진 크게 보기'}
                 >
-                  <SafeImage
-                    src={photos[0]?.src}
-                    alt={item.caption ?? ''}
-                    fallback={<span />}
-                    imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[0]?.crop }))}
-                  />
+                  <SafeImage src={photos[0]} alt={item.caption ?? ''} fallback={<span />} />
                   {photos.length > 1 && (
                     <span className="gallery-item-count">
                       <svg viewBox="0 0 24 24" width="12" height="12" fill="none" aria-hidden="true">
@@ -125,7 +100,7 @@ export default function LabLife() {
 
       {selected &&
         (() => {
-          const photos = photosOf(selected)
+          const photos = imagesOf(selected)
           const multi = photos.length > 1
           return (
             <div className="lightbox-overlay" onClick={closeLightbox}>
@@ -135,13 +110,7 @@ export default function LabLife() {
                 </button>
 
                 <div className="lightbox-photo-frame">
-                  <SafeImage
-                    src={photos[photoIdx]?.src}
-                    alt={selected.caption ?? ''}
-                    fallback={<span />}
-                    loading="eager"
-                    imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
-                  />
+                  <SafeImage src={photos[photoIdx]} alt={selected.caption ?? ''} fallback={<span />} />
                   {multi && (
                     <>
                       <button

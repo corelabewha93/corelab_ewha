@@ -9,6 +9,7 @@ import NewsCard from '../components/NewsCard'
 import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
+import { useDocumentMeta } from '../router/useDocumentMeta'
 
 // 본문 중간 사진 표시([사진2] 등)는 목록 미리보기 요약 글에서 제외합니다.
 const IMAGE_MARKER = /^\[\s*사진\s*(\d+)(?:\s*:\s*(왼쪽|가운데|오른쪽))?\s*\]$/
@@ -25,6 +26,8 @@ export default function News() {
   const { token } = useAdminAuth()
   const { query } = useHashRoute()
   const [editing, setEditing] = useState(null) // { item|null }
+
+  useDocumentMeta('News', '이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.')
 
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
