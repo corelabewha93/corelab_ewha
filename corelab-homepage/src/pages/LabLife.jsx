@@ -5,7 +5,7 @@ import { upsertItem, deleteItem } from '../admin/collection'
 import { makeId } from '../admin/dataStore'
 import { lablifeFields } from '../admin/schemas'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
-import SafeImage from '../components/SafeImage'
+import SafeImage, { resolveImageSrc } from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
 
@@ -25,7 +25,7 @@ function imagesOf(item) {
 
 export default function LabLife() {
   const { data, error, loading } = useData('lablife.json')
-  const { token } = useAdminAuth()
+  const { token, isAdmin } = useAdminAuth()
   const [selected, setSelected] = useState(null)
   const [photoIdx, setPhotoIdx] = useState(0)
   const [editing, setEditing] = useState(null) // { item|null }
@@ -47,6 +47,19 @@ export default function LabLife() {
     window.addEventListener('keydown', onKey)
     return () => window.removeEventListener('keydown', onKey)
   }, [selected])
+
+  // 자세히 보기를 열면 그 게시물의 사진을 미리 전부 받아둡니다.
+  // (다음 사진으로 넘길 때마다 새로 내려받느라 버벅이던 문제 해결)
+  useEffect(() => {
+    if (!selected) return
+    imagesOf(selected).forEach((src) => {
+      const url = resolveImageSrc(src, isAdmin)
+      if (!url) return
+      const img = new Image()
+      img.decoding = 'async'
+      img.src = url
+    })
+  }, [selected, isAdmin])
 
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
@@ -126,6 +139,7 @@ export default function LabLife() {
                     src={photos[photoIdx]?.src}
                     alt={selected.caption ?? ''}
                     fallback={<span />}
+                    loading="eager"
                     imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
                   />
                   {multi && (
