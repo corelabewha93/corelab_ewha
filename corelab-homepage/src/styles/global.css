@@ -1878,35 +1878,39 @@ mark.pub-hl {
 }
 
 .lightbox-card {
+  /* 사진 높이를 기준으로 카드 폭을 딱 맞춰서, 사진 양옆에 빈 여백이 생기지 않게 합니다. */
+  --lb-pad: 16px;
+  --lb-photo-h: min(44vh, 400px);
   position: relative;
   background: var(--color-surface);
-  border-radius: 22px;
+  border-radius: 24px;
   border-top: 3px solid var(--color-primary);
-  box-shadow: 0 20px 48px rgba(0, 0, 0, 0.25);
-  width: 100%;
-  max-width: 420px;
-  max-height: 88vh;
+  box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
+  width: min(92vw, calc(var(--lb-photo-h) * 1.25 + var(--lb-pad) * 2));
+  max-height: 90vh;
   overflow-y: auto;
-  padding: var(--space-3);
+  padding: var(--lb-pad);
   display: flex;
   flex-direction: column;
-  align-items: center;
+  align-items: stretch;
 }
 
 .lightbox-close {
+  /* 사진 오른쪽 위 모서리에 작고 동그랗게 얹힙니다. */
   position: absolute;
-  top: 0.6rem;
-  right: 0.6rem;
-  width: 1.9rem;
-  height: 1.9rem;
+  top: calc(var(--lb-pad) + 8px);
+  right: calc(var(--lb-pad) + 8px);
+  width: 1.75rem;
+  height: 1.75rem;
   border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
-  font-size: 1.1rem;
+  border: none;
+  background: rgba(255, 255, 255, 0.88);
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
+  color: var(--color-text);
+  font-size: 1rem;
   line-height: 1;
   cursor: pointer;
-  z-index: 2;
+  z-index: 3;
 }
 
 .lightbox-close:hover {
@@ -1918,15 +1922,12 @@ mark.pub-hl {
    사진 자체 크기는 화면 높이에 맞춰 줄어들어서(비율은 그대로), 제목·설명 글이 스크롤 없이 한눈에 보입니다. */
 .lightbox-photo-frame {
   position: relative;
-  width: auto;
-  max-width: 100%;
+  width: 100%;
   flex: 0 0 auto; /* 카드 안 세로 공간이 부족해도 비율이 찌그러지지 않도록 고정합니다 */
-  max-height: 38vh;
   aspect-ratio: 5 / 4;
   border-radius: 16px;
   overflow: hidden;
   background: var(--color-placeholder);
-  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
 }
 
 .lightbox-photo-frame img {
@@ -2004,8 +2005,8 @@ mark.pub-hl {
 .lightbox-dots {
   display: flex;
   justify-content: center;
-  gap: 0.4rem;
-  margin-top: 0.7rem;
+  gap: 0.35rem;
+  margin-top: 0.6rem;
 }
 
 .lightbox-dot {
@@ -2016,53 +2017,42 @@ mark.pub-hl {
   padding: 0;
   background: var(--color-border);
   cursor: pointer;
-  transition: background 0.15s ease, transform 0.15s ease;
+  transition: background 0.2s ease, width 0.2s ease;
 }
 
 .lightbox-dot.active {
   background: var(--color-primary);
-  transform: scale(1.25);
+  width: 1rem; /* 지금 보고 있는 사진은 길쭉한 알약 모양 */
+  border-radius: 999px;
 }
 
 .lightbox-text {
   width: 100%;
-  margin-top: 0.8rem;
-  padding-top: 0.7rem;
-  border-top: 1px solid var(--color-border);
+  margin-top: 0.6rem;
+  padding: 0.65rem 0.25rem 0.1rem;
+  border-top: 1px dashed var(--color-border);
   text-align: center;
 }
 
 .lightbox-caption {
   color: var(--color-primary);
   margin: 0;
-  font-size: 0.95rem;
+  font-size: 1rem;
   font-weight: 700;
+  letter-spacing: -0.01em;
 }
 
 .lightbox-body {
   color: var(--color-text-muted);
   margin: 0.35rem 0 0;
-  font-size: 0.85rem;
+  font-size: 0.84rem;
   line-height: 1.6;
+  word-break: keep-all;
   white-space: pre-wrap;
 }
 
 @media (max-width: 480px) {
-  .lightbox-card { padding: var(--space-2); border-radius: 18px; }
-}
-
-/* PC 화면에서는 사진이 훨씬 잘 보이도록 카드를 크게 키웁니다. */
-@media (min-width: 720px) {
-  .lightbox-card {
-    max-width: min(74vw, 760px);
-    padding: var(--space-4);
-  }
-  .lightbox-caption {
-    font-size: 1.05rem;
-  }
-  .lightbox-body {
-    font-size: 0.92rem;
-  }
+  .lightbox-card { --lb-pad: 12px; border-radius: 20px; }
 }
 
 /* ---------- Contact ---------- */
