@@ -301,15 +301,15 @@ export default function Publications({ items = [], onEdit, initialQuery = '', em
             <dd>{stats.journals}</dd>
           </div>
           <div>
+            <dt>KCI</dt>
+            <dd>{stats.kci}</dd>
+          </div>
+          <div>
             <dt>International</dt>
             <dd>
               {stats.international}
               {stats.ssci > 0 && <small className="pub-stats-sub">SSCI {stats.ssci}</small>}
             </dd>
-          </div>
-          <div>
-            <dt>KCI</dt>
-            <dd>{stats.kci}</dd>
           </div>
           <div>
             <dt>Conferences</dt>
