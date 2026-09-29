@@ -3,8 +3,8 @@ import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 
 /**
  * 메인 화면 인트로 — "CoRe"가 COllaborative REsearch에서 왔다는 걸 보여주는 모션.
  *
- *  1) intro     : 정식 이름 "Collaborative Research Learning Lab"이 한 줄로, 부드러운 빛이 왼쪽에서
- *                 오른쪽으로 지나가듯 깔끔하게 나타남 (글자가 흔들리지 않음)
+ *  1) intro     : 정식 이름 "Collaborative Research Learning Lab"이 단어별로 하나씩, 초점이 맞춰지듯
+ *                 (흐릿 → 또렷) 살짝 떠오르며 나타남 (글자 크기·간격은 그대로라 흔들리지 않음)
  *  2) highlight : Co · Re가 금빛으로 켜지고, 나머지 글자는 옅어짐
  *  3) fade      : 약자에 쓰이지 않는 글자가 조용히 사라짐
  *  4) merge     : 남은 Co · Re · Lab이 한 번의 부드러운 움직임으로 미끄러져 모이며 "CoRe Lab"으로 커짐
@@ -82,9 +82,9 @@ export function splitName(tagline = '', labName = '') {
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 // 단계가 바뀌는 시각(ms)
-const T_HIGHLIGHT = 1500
-const T_FADE = 2700
-const T_MERGE = 3150
+const T_HIGHLIGHT = 1700
+const T_FADE = 2900
+const T_MERGE = 3350
 const MERGE_MS = 1300
 const T_DONE = T_MERGE + 900
 
@@ -154,7 +154,11 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
               return (
                 <Fragment key={wi}>
                   {/* 단어 하나를 통째로 묶어, 좁은 화면에서도 단어 중간에서 줄이 바뀌지 않게 합니다. */}
-                  <span className={`hero-word${hasKeep ? '' : ' hero-word-drop'}`} aria-hidden="true">
+                  <span
+                    className={`hero-word${hasKeep ? '' : ' hero-word-drop'}`}
+                    style={{ '--i': wi }}
+                    aria-hidden="true"
+                  >
                     {w.pieces.map((p, pi) => {
                       let gap = false
                       if (p.keep) {
