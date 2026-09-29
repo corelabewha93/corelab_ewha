@@ -121,15 +121,13 @@ function IndexBadges({ indexes }) {
 
 /**
  * 수상 배지 — 상장 모양 아이콘 + 상 이름.
- * org(수여 기관)를 함께 적으면 상 이름 옆에 가는 선으로 구분해 기관이 붙고, 색으로도 구분됩니다.
- *   - 학회(이름에 "학회"가 들어감) : 남보라색
- *   - 그 밖의 기관(대학원 등)      : 청록색
+ * org(수여 기관)를 함께 적으면 상 이름 옆에 가는 선으로 구분해 기관이 붙고, 배지는 청록색이 됩니다.
  * org가 없으면 예전처럼 금색 배지 하나로 보입니다. (박사학위논문 태그의 금색과는 별개입니다.)
  */
 export function AwardBadge({ award, org = '' }) {
   if (!award) return null
   const orgText = (org ?? '').trim()
-  const kind = !orgText ? '' : orgText.includes('학회') ? ' pub-award-society' : ' pub-award-univ'
+  const kind = orgText ? ' pub-award-org-badge' : ''
   return (
     <span className={`pub-award${kind}`} title={orgText ? `${orgText} 수여` : '수상'}>
       <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
