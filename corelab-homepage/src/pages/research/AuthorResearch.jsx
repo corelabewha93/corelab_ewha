@@ -64,6 +64,12 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
         </button>
       </div>
 
+      {author.hidden && (
+        <p className="author-hidden-note">
+          이 모아보기는 방문자에게 숨겨져 있어요. 관리자에게만 보입니다. (People 팝업에서 “표시하기”로 다시 보이게 할 수 있어요.)
+        </p>
+      )}
+
       {total === 0 && <p className="empty-state">아직 등록된 연구 실적이 없습니다.</p>}
 
       {sections.map((s) => (

@@ -53,15 +53,17 @@ export default function Research() {
   // 그 사람 이름이 올라간 논문·저역서·특허를 한 화면에 모아 보여줍니다(AuthorResearch).
   // people.json에 적어둔 영문 표기(pubNames)도 같은 사람으로 봅니다.
   const { data: people } = useData('people.json')
+  const { token, isAdmin } = useAdminAuth()
   const authorName = routeQuery.author ?? ''
   const authorFilter = useMemo(() => {
     if (!authorName) return null
     const everyone = ['faculty', 'students', 'alumni'].flatMap((k) => people?.[k] ?? [])
     const person = everyone.find((p) => p.name === authorName)
+    // 본인이 원치 않아 모아보기를 숨긴 사람은, 주소로 직접 들어와도 방문자에게는 전체 목록을 보여줍니다.
+    if (person?.hideResearch && !isAdmin) return null
     const extra = Array.isArray(person?.pubNames) ? person.pubNames : []
-    return { name: authorName, aliases: [authorName, ...extra] }
-  }, [authorName, people])
-  const { token } = useAdminAuth()
+    return { name: authorName, aliases: [authorName, ...extra], hidden: Boolean(person?.hideResearch) }
+  }, [authorName, people, isAdmin])
   const [editing, setEditing] = useState(null) // { key, item|null }
 
   const onEdit = (key) => (item) => setEditing({ key, item })
