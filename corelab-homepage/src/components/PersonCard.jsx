@@ -3,6 +3,7 @@ import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 import { navigate, withBase } from '../router/useHashRoute'
+import { useAdminAuth } from '../admin/AdminAuthContext'
 
 /** 사진을 넣지 않은(또는 사진을 못 불러온) 사람에게 자동으로 보여줄 이화 심벌 기본 사진 */
 const DEFAULT_PHOTO = 'images/people/default-ewha.jpg'
@@ -150,8 +151,48 @@ function FacultyProfile({ person, onEdit, reorder }) {
   )
 }
 
+/**
+ * 팝업 맨 아래 "OOO의 연구 실적 보기" 줄.
+ * person.hideResearch가 'hidden'이면 방문자에게는 아예 보이지 않고,
+ * 관리자에게는 흐리게 보이면서 "표시하기" 버튼이 붙습니다.
+ */
+function ResearchLinkRow({ person, onToggleResearch }) {
+  const { isAdmin } = useAdminAuth()
+  const hidden = Boolean(person.hideResearch)
+  if (hidden && !isAdmin) return null
+
+  return (
+    <li className={`person-detail-pub${hidden ? ' is-hidden' : ''}`}>
+      <a
+        href={withBase(researchLinkFor(person.name))}
+        className="person-detail-link"
+        onClick={(e) => {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
+          e.preventDefault()
+          navigate(researchLinkFor(person.name))
+        }}
+      >
+        {person.name}의 연구 실적 보기 →
+      </a>
+      {isAdmin && onToggleResearch && (
+        <span className="person-pub-admin">
+          {hidden && <span className="person-pub-hidden-note">방문자에게 숨김</span>}
+          <button
+            type="button"
+            className={`person-pub-toggle${hidden ? ' is-hidden' : ''}`}
+            onClick={() => onToggleResearch(person)}
+            title={hidden ? '방문자에게 다시 보이게 합니다' : '이 사람의 연구 실적 모아보기를 방문자에게 숨깁니다'}
+          >
+            {hidden ? '표시하기' : '숨기기'}
+          </button>
+        </span>
+      )}
+    </li>
+  )
+}
+
 /** 사진 + 이름을 누르면 뜨는 팝업. 사진과 함께 전체 이력을 한 화면에 보여줍니다. */
-function PersonModal({ person, expandLines, links, onClose }) {
+function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) {
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
@@ -200,19 +241,7 @@ function PersonModal({ person, expandLines, links, onClose }) {
                 </a>
               </li>
             ))}
-            <li className="person-detail-pub">
-              <a
-                href={withBase(researchLinkFor(person.name))}
-                className="person-detail-link"
-                onClick={(e) => {
-                  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return
-                  e.preventDefault()
-                  navigate(researchLinkFor(person.name))
-                }}
-              >
-                {person.name}의 연구 실적 보기 →
-              </a>
-            </li>
+            <ResearchLinkRow person={person} onToggleResearch={onToggleResearch} />
           </ul>
         </div>
       </div>
@@ -225,8 +254,9 @@ function PersonModal({ person, expandLines, links, onClose }) {
  * - faculty          : 사진·연락처·소개가 모두 펼쳐진 프로필 카드 (FacultyProfile)
  * - students/alumni  : 평소엔 사진 · 이름만. 누르면 팝업으로 사진과 함께 전체 이력이 뜹니다.
  */
-export default function PersonCard({ person, category, onEdit, reorder }) {
+export default function PersonCard({ person, category, onEdit, onToggleResearch, reorder }) {
   const [open, setOpen] = useState(false)
+  const { isAdmin } = useAdminAuth()
 
   if (category === 'faculty') {
     return <FacultyProfile person={person} onEdit={onEdit} reorder={reorder} />
@@ -254,8 +284,10 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
     }
   })
 
-  // "OOO의 연구 실적 보기" 링크가 항상 있으므로 팝업은 언제나 열립니다.
-  const expandable = true
+  // 팝업에 보여줄 내용이 하나라도 있으면 열립니다.
+  // (연구 실적 링크를 숨긴 사람도 관리자에게는 링크 줄이 보이므로 항상 열립니다.)
+  const researchVisible = !person.hideResearch || isAdmin
+  const expandable = researchVisible || expandLines.length > 0 || links.length > 0
   const openModal = () => expandable && setOpen(true)
 
   return (
@@ -283,8 +315,20 @@ export default function PersonCard({ person, category, onEdit, reorder }) {
         <span className="person-name">{person.name}</span>
       </button>
 
+      {isAdmin && person.hideResearch && !reorder && (
+        <span className="person-card-flag" title="이 사람의 연구 실적 모아보기가 방문자에게 숨겨져 있어요">
+          실적 모아보기 숨김
+        </span>
+      )}
+
       {expandable && open && !reorder && (
-        <PersonModal person={person} expandLines={expandLines} links={links} onClose={() => setOpen(false)} />
+        <PersonModal
+          person={person}
+          expandLines={expandLines}
+          links={links}
+          onClose={() => setOpen(false)}
+          onToggleResearch={onToggleResearch}
+        />
       )}
 
       {reorder && (
