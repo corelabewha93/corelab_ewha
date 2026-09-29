@@ -1,21 +1,18 @@
 /**
- * 학술지 이름 → 등재 등급(SSCI / Scopus / KCI) 자동 표시표.
+ * 학술지 이름 → 등재 등급(SSCI / SCIE / Scopus / KCI) 자동 표시표.
  *
  * - 논문 데이터(research.json)는 건드리지 않고, 학술지 이름만 보고 배지를 붙입니다.
  * - 띄어쓰기·대소문자·기호(&, and, ·)가 조금 달라도 같은 학술지로 인식합니다.
  * - 여기 없는 학술지(학회 발표, 학위논문 등)에는 배지가 붙지 않습니다.
+ * - 한 논문이 여러 등급에 해당하면 해당하는 배지를 모두 나란히 붙입니다 (예: SSCI · SCIE · Scopus).
  * - 개별 논문에서 직접 바꾸고 싶으면 관리자 화면의 "등재 등급" 칸에 적으면
  *   이 표보다 우선합니다. (예: "SSCI, Scopus" / 배지를 없애려면 "-")
- * - SCIE는 따로 표시하지 않습니다(연구실 논문 중 SCIE 학술지는 모두 SSCI에도 등재되어 있어
- *   중복 표기만 됩니다). 직접 "SCIE"라고 적어도 SSCI로 봅니다.
- * - 화면에는 논문마다 가장 높은 등급 하나만 배지로 붙습니다 (SSCI > Scopus > KCI).
- *   SSCI 학술지는 사실상 모두 Scopus에도 들어가므로 둘 다 붙이면 실적이 부풀려 보이기 때문입니다.
  *
  * 기준: 이화여대 교수 연구실적 페이지 표기 + 각 학술지 공식 색인 정보.
  */
 const INDEX_TABLE = [
   // ---- International ----
-  { names: ['Computers & Education', 'Computers and Education'], indexes: ['SSCI', 'Scopus'] },
+  { names: ['Computers & Education', 'Computers and Education'], indexes: ['SSCI', 'SCIE', 'Scopus'] },
   { names: ['British Journal of Educational Technology'], indexes: ['SSCI', 'Scopus'] },
   { names: ['Learning and Instruction'], indexes: ['SSCI', 'Scopus'] },
   {
@@ -68,19 +65,15 @@ const LOOKUP = new Map()
 INDEX_TABLE.forEach(({ names, indexes }) => names.forEach((n) => LOOKUP.set(normalize(n), indexes)))
 
 /** 표시 순서 (높은 등급부터) */
-export const INDEX_ORDER = ['SSCI', 'Scopus', 'KCI']
-export const INTERNATIONAL = new Set(['SSCI', 'Scopus'])
+export const INDEX_ORDER = ['SSCI', 'SCIE', 'Scopus', 'KCI']
+export const INTERNATIONAL = new Set(['SSCI', 'SCIE', 'Scopus'])
 
 export function getIndexes(pub) {
   if (!pub) return []
   const manual = typeof pub.indexes === 'string' ? pub.indexes.trim() : ''
   if (manual === '-') return []
   if (manual) {
-    const wanted = manual
-      .split(/[,\s/]+/)
-      .map((s) => s.trim().toLowerCase())
-      .map((s) => (s === 'scie' ? 'ssci' : s)) // SCIE는 SSCI와 같은 칸으로 봅니다
-      .filter(Boolean)
+    const wanted = manual.split(/[,\s/]+/).map((s) => s.trim().toLowerCase()).filter(Boolean)
     return INDEX_ORDER.filter((idx) => wanted.includes(idx.toLowerCase()))
   }
   if (pub.type !== 'journal') return []
@@ -89,9 +82,4 @@ export function getIndexes(pub) {
 
 export function isInternational(pub) {
   return getIndexes(pub).some((i) => INTERNATIONAL.has(i))
-}
-
-/** 화면에 붙일 배지 하나 — 가장 높은 등급만 (없으면 null) */
-export function primaryIndex(pub) {
-  return getIndexes(pub)[0] ?? null
 }

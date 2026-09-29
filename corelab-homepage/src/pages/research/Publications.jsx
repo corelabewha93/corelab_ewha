@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
-import { getIndexes, primaryIndex } from './journalIndex'
+import { getIndexes, INTERNATIONAL } from './journalIndex'
 import { normalizeName } from './authorMatch'
 
 const FILTERS = [
@@ -105,11 +105,18 @@ export function SearchBox({ value, onChange, placeholder = '제목, 저자, 학�
   )
 }
 
-/** 등재 등급 배지 — 가장 높은 등급 하나만 (SSCI > Scopus > KCI) */
-function IndexBadge({ pub }) {
-  const ix = primaryIndex(pub)
-  if (!ix) return null
-  return <span className={`pub-index pub-index-${ix.toLowerCase()}`}>{ix}</span>
+/** 등재 등급 배지 — 해당하는 등급을 모두 나란히 (예: SSCI · SCIE · Scopus) */
+function IndexBadges({ indexes }) {
+  if (!indexes.length) return null
+  return (
+    <span className="pub-index-badges">
+      {indexes.map((ix) => (
+        <span key={ix} className={`pub-index pub-index-${ix.toLowerCase()}`}>
+          {ix}
+        </span>
+      ))}
+    </span>
+  )
 }
 
 /** 학회 수상 배지 — 상장 모양 아이콘 + 상 이름 */
@@ -164,7 +171,8 @@ export function PubItem({ pub, onEdit, terms = [], focus = null }) {
     typeTagClass = thesis === '박사학위논문' ? ' pub-type-tag-phd' : thesis === '석사학위논문' ? ' pub-type-tag-ma' : ''
   } else if (isBook) {
     typeTag = bookRoleOf(pub)
-    typeTagClass = ' pub-type-tag-book'
+    // 저서(초록) / 번역서(회색)를 색으로 구분합니다.
+    typeTagClass = (pub.translators?.length ?? 0) > 0 ? ' pub-type-tag-translation' : ' pub-type-tag-book'
   }
 
   const details = isBook ? stripSaleStatus(pub.details) : pub.details
@@ -190,7 +198,7 @@ export function PubItem({ pub, onEdit, terms = [], focus = null }) {
           </span>
         )}
         {typeTag && <span className={`pub-type-tag${typeTagClass}`}>{typeTag}</span>}
-        <IndexBadge pub={pub} />
+        <IndexBadges indexes={getIndexes(pub)} />
         <AwardBadge award={pub.award} />
         {pub.doi && (
           <a className="pub-doi" href={`https://doi.org/${pub.doi}`} target="_blank" rel="noreferrer">
@@ -256,12 +264,13 @@ export default function Publications({ items = [], onEdit, initialQuery = '', em
   // (SSCI 학술지는 Scopus에도 들어가므로 따로따로 세면 실적이 부풀려 보입니다.)
   const stats = useMemo(() => {
     const journals = pubs.filter((p) => p.type === 'journal')
-    const intl = journals.filter((p) => getIndexes(p).some((i) => i === 'SSCI' || i === 'Scopus'))
+    const isIntl = (p) => getIndexes(p).some((i) => INTERNATIONAL.has(i))
+    const intl = journals.filter(isIntl)
     return {
       journals: journals.length,
       international: intl.length,
       ssci: intl.filter((p) => getIndexes(p).includes('SSCI')).length,
-      kci: journals.filter((p) => !getIndexes(p).some((i) => i === 'SSCI' || i === 'Scopus')).length,
+      kci: journals.filter((p) => !isIntl(p)).length,
       conferences: pubs.filter((p) => p.type === 'conference').length,
       books: pubs.filter((p) => p.type === 'book').length,
     }
