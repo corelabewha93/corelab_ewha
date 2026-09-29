@@ -301,7 +301,7 @@ export const publicationFields = [
     label: '등재 등급 (보통은 비워두세요)',
     type: 'text',
     placeholder: '예: SSCI, Scopus',
-    hint: '비워두면 학술지 이름으로 자동 표시됩니다. 자동 표시가 틀렸을 때만 직접 적으세요 (SSCI / Scopus / KCI, 쉼표로 구분). 목록에는 가장 높은 등급 하나만 배지로 붙습니다. 배지를 없애려면 - 만 입력.',
+    hint: '비워두면 학술지 이름으로 자동 표시됩니다. 자동 표시가 틀렸을 때만 직접 적으세요 (SSCI / SCIE / Scopus / KCI, 쉼표로 구분). 적은 등급이 모두 나란히 배지로 붙습니다. 배지를 없애려면 - 만 입력.',
     showIf: (v) => v.type === 'journal',
   },
   {
@@ -388,7 +388,7 @@ export const siteIntroFields = [
     name: 'heroAffiliation',
     label: '히어로 하단 소속 문구 (영문)',
     type: 'lines',
-    hint: '메인 화면에서 "CoRe Lab"이 완성된 뒤, 정식 이름 아래에 작게 표시됩니다. 한 줄에 하나씩 입력하세요 (보통 2줄: 대학교 / 지도교수). 정식 이름은 위 칸에서 따로 보여주므로 여기엔 다시 적지 않아도 됩니다.',
+    hint: '메인 화면에서 "CoRe Lab"과 모토 아래에 순서대로 표시됩니다. 한 줄에 하나씩 입력하세요. 1번째 줄 = 대학교(작게), 2번째 줄 = 학과(가장 또렷하게 강조), 3번째 줄부터 = 지도교수 등(작게). 예: Ewha Womans University / Department of Educational Technology / Prof. Kyu Yon Lim',
   },
   { name: 'overview', label: '소개글', type: 'paragraphs', rows: 8, hint: '문단 사이는 빈 줄 하나로 구분하세요.' },
   { name: 'researchAreas', label: '연구 분야 태그', type: 'lines', hint: '한 줄에 하나씩' },
