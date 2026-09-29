@@ -226,10 +226,10 @@ export const publicationFields = [
     options: [
       { value: 'journal', label: 'Journal (학술지)' },
       { value: 'conference', label: 'Conference (학회 발표)' },
-      { value: 'book', label: 'Book (저역서) — Books 탭에 표시' },
-      { value: 'other', label: 'Thesis / Other (학위논문·기타)' },
+      { value: 'book', label: 'Book (저역서) — Publications에 연도별로 함께 표시' },
+      { value: 'other', label: 'Thesis (학위논문) — Theses 탭에 표시' },
     ],
-    hint: '학위논문은 "Thesis / Other"를 선택하세요. Journal Articles가 아니라 상단 통계의 Theses 칸에 집계됩니다.',
+    hint: '학위논문은 "Thesis"를 선택하세요. Publications가 아니라 Theses 탭에 따로 모입니다.',
   },
   {
     name: 'authors',
@@ -266,11 +266,27 @@ export const publicationFields = [
     hint: '저역서는 총 쪽수를 적어주세요 (예: 372쪽).',
   },
   {
+    name: 'bookRole',
+    label: '저역서 표시 문구 (선택)',
+    type: 'text',
+    placeholder: '예: 저서 (챕터 저술)',
+    hint: '비워두면 옮긴이가 있을 때 "번역서", 없을 때 "저서"로 자동 표시됩니다. 챕터만 집필한 책처럼 다르게 적고 싶을 때만 채우세요.',
+    showIf: (v) => v.type === 'book',
+  },
+  {
     name: 'indexes',
     label: '등재 등급 (보통은 비워두세요)',
     type: 'text',
     placeholder: '예: SSCI, Scopus',
-    hint: '비워두면 학술지 이름으로 자동 표시됩니다. 자동 표시가 틀렸을 때만 직접 적으세요 (SSCI / SCIE / Scopus / KCI, 쉼표로 구분). 배지를 없애려면 - 만 입력.',
+    hint: '비워두면 학술지 이름으로 자동 표시됩니다. 자동 표시가 틀렸을 때만 직접 적으세요 (SSCI / Scopus / KCI, 쉼표로 구분). 목록에는 가장 높은 등급 하나만 배지로 붙습니다. 배지를 없애려면 - 만 입력.',
+    showIf: (v) => v.type === 'journal',
+  },
+  {
+    name: 'award',
+    label: '수상 (선택)',
+    type: 'text',
+    placeholder: '예: 최우수논문상',
+    hint: '학회 등에서 상을 받은 논문이면 상 이름을 적으세요. 목록에 상장 모양 배지로 표시됩니다.',
   },
   { name: 'doi', label: 'DOI (선택)', type: 'text', placeholder: '10.xxxx/xxxxx' },
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
@@ -300,6 +316,17 @@ export const patentFields = [
   },
   { name: 'date', label: '날짜', type: 'date' },
   { name: 'country', label: '국가', type: 'text', placeholder: '예: KR' },
+  {
+    name: 'hidden',
+    label: '표시 여부',
+    type: 'select',
+    default: '',
+    options: [
+      { value: '', label: '표시 (방문자에게 보임)' },
+      { value: 'hidden', label: '숨김 (관리자에게만 보임)' },
+    ],
+    hint: '등록이 아직 확정되지 않은 특허는 "숨김"으로 두었다가, 등록되면 "표시"로 바꾸세요. 목록의 "숨기기/표시하기" 버튼으로도 바꿀 수 있습니다.',
+  },
 ]
 
 export const toolFields = [
@@ -313,7 +340,13 @@ export const toolFields = [
 export const siteIntroFields = [
   { name: 'university', label: '상단 작은 글씨 (현재 미사용)', type: 'text' },
   { name: 'labName', label: '연구실 이름', type: 'text', required: true },
-  { name: 'labTagline', label: '부제 (사진 위 태그라인으로도 쓰입니다)', type: 'text' },
+  {
+    name: 'labTagline',
+    label: '연구실 정식 이름 (영문)',
+    type: 'text',
+    placeholder: '예: Collaborative Research Learning Lab',
+    hint: '메인 화면 인트로에서 이 이름이 먼저 나타난 뒤, 약자(연구실 이름)에 쓰이지 않는 글자들이 사라지며 "CoRe Lab"이 완성됩니다. 약자의 글자가 이 이름의 단어 첫 부분(Co-llaborative, Re-search, Lab)에 있어야 모션이 됩니다.',
+  },
   {
     name: 'mottoKr',
     label: '랩 모토 (한글)',
@@ -326,13 +359,13 @@ export const siteIntroFields = [
     label: '랩 모토 (영문)',
     type: 'text',
     placeholder: '예: Make the Invisible Visible',
-    hint: '메인 화면 인트로 애니메이션에서 크게 강조되어 등장하고, Lab Overview에서는 한글 모토 아래 작게 함께 표시됩니다.',
+    hint: '메인 화면 인트로 맨 아래에 작게 표시되고, Lab Overview에서는 한글 모토 아래 함께 표시됩니다. 비워두면 메인 화면에서는 나오지 않습니다.',
   },
   {
     name: 'heroAffiliation',
     label: '히어로 하단 소속 문구 (영문)',
     type: 'lines',
-    hint: '메인 화면 인트로 애니메이션의 맨 마지막, 영문 모토 아래에 작게 순서대로 표시됩니다. 한 줄에 하나씩 입력하세요 (보통 3줄: 대학교 / 지도교수 / 연구실명).',
+    hint: '메인 화면에서 "CoRe Lab"이 완성된 뒤, 정식 이름 아래에 작게 표시됩니다. 한 줄에 하나씩 입력하세요 (보통 2줄: 대학교 / 지도교수). 정식 이름은 위 칸에서 따로 보여주므로 여기엔 다시 적지 않아도 됩니다.',
   },
   { name: 'overview', label: '소개글', type: 'paragraphs', rows: 8, hint: '문단 사이는 빈 줄 하나로 구분하세요.' },
   { name: 'researchAreas', label: '연구 분야 태그', type: 'lines', hint: '한 줄에 하나씩' },
