@@ -295,7 +295,9 @@
       "venue": "",
       "details": "",
       "doi": "",
-      "link": ""
+      "link": "",
+      "award": "우수학위논문상",
+      "awardOrg": "이화여대 대학원"
     },
     {
       "id": "pub-21",
@@ -374,7 +376,9 @@
       "venue": "",
       "details": "",
       "doi": "",
-      "link": ""
+      "link": "",
+      "award": "우수박사학위논문상",
+      "awardOrg": "한국교육공학회 2025"
     },
     {
       "id": "pub-26",
@@ -3369,7 +3373,9 @@
       "bookRole": "",
       "doi": "",
       "link": "",
-      "id": "pub-mufq02wzxqp"
+      "id": "pub-mufq02wzxqp",
+      "award": "우수학위논문상",
+      "awardOrg": "이화여대 대학원"
     },
     {
       "id": "pub-add12",
