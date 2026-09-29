@@ -1,7 +1,7 @@
 import { useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
-import { upsertItem, deleteItem } from '../admin/collection'
+import { upsertItem, deleteItem, reorderItems } from '../admin/collection'
 import { showToast } from '../admin/toast'
 import { makeId } from '../admin/dataStore'
 import { newsFields } from '../admin/schemas'
@@ -27,6 +27,8 @@ export default function News() {
   const { token, isAdmin } = useAdminAuth()
   const { query } = useHashRoute()
   const [editing, setEditing] = useState(null) // { item|null }
+  const [draft, setDraft] = useState(null) // 순서 바꾸기 중일 때: 소식 id 배열
+  const [savingOrder, setSavingOrder] = useState(false)
 
   useDocumentMeta('News', '이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.')
 
@@ -34,7 +36,16 @@ export default function News() {
   if (error) return <div className="page container error-state">{error}</div>
 
   // hidden: 'hidden'인 소식은 방문자에게 보이지 않습니다 (관리자에게는 흐리게 보임).
-  const items = (data ?? []).filter((i) => isAdmin || !i.hidden)
+  const visibleItems = (data ?? []).filter((i) => isAdmin || !i.hidden)
+  // 순서 바꾸기 중에는 임시 순서(draft)대로 보여줍니다.
+  const ordering = Boolean(draft) && isAdmin
+  const items = (() => {
+    if (!ordering) return visibleItems
+    const byId = new Map(visibleItems.map((i) => [i.id, i]))
+    const ordered = draft.map((id) => byId.get(id)).filter(Boolean)
+    visibleItems.forEach((i) => !draft.includes(i.id) && ordered.push(i))
+    return ordered
+  })()
   const openItem = query.id ? items.find((i) => i.id === query.id) : null
 
   // 소식 "숨기기 / 표시하기" 버튼
@@ -67,6 +78,28 @@ export default function News() {
         {item.hidden ? '표시하기' : '숨기기'}
       </button>
     ) : null
+
+  const moveItem = (id, dir) => {
+    const ids = items.map((i) => i.id)
+    const i = ids.indexOf(id)
+    const j = i + dir
+    if (i < 0 || j < 0 || j >= ids.length) return
+    ;[ids[i], ids[j]] = [ids[j], ids[i]]
+    setDraft(ids)
+  }
+
+  const saveOrder = async () => {
+    setSavingOrder(true)
+    try {
+      await reorderItems(token, 'news.json', null, draft, '소식 순서 변경')
+      setDraft(null)
+      showToast('순서를 저장했어요. 방문자 화면에는 1~2분 뒤 반영됩니다.')
+    } catch (err) {
+      showToast(`저장 실패: ${err.message}`, 6000)
+    } finally {
+      setSavingOrder(false)
+    }
+  }
 
   const handleSave = async (values) => {
     const original = editing.item
@@ -115,18 +148,26 @@ export default function News() {
   return (
     <div className="page container">
       <h1 className="section-title">News</h1>
+      {ordering && (
+        <p className="reorder-banner">◀ ▶ 버튼으로 순서를 바꾼 뒤, 오른쪽 아래 “순서 저장”을 눌러주세요. (앞쪽일수록 위에 보입니다)</p>
+      )}
       {items.length === 0 ? (
         <p className="empty-state">등록된 소식이 없습니다.</p>
       ) : (
         <div className="news-list-grid">
-          {items.map((item) => {
+          {items.map((item, idx) => {
             const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
             const excerpt = excerptOf(item)
             return (
               <div key={item.id} className={`admin-item${item.hidden ? ' news-hidden' : ''}`}>
-                <EditButton onClick={() => setEditing({ item })} />
-                {hideButton(item)}
-                <button type="button" className="news-list-card" onClick={() => navigate(`/news?id=${item.id}`)}>
+                {!ordering && <EditButton onClick={() => setEditing({ item })} />}
+                {!ordering && hideButton(item)}
+                <button
+                  type="button"
+                  className="news-list-card"
+                  disabled={ordering}
+                  onClick={() => navigate(`/news?id=${item.id}`)}
+                >
                   <div className="news-list-thumb">
                     <SafeImage src={thumb} alt="" fallback={<span />} />
                   </div>
@@ -137,6 +178,21 @@ export default function News() {
                     {excerpt && <p className="news-list-excerpt">{excerpt}</p>}
                   </div>
                 </button>
+                {ordering && (
+                  <div className="reorder-controls">
+                    <button type="button" onClick={() => moveItem(item.id, -1)} disabled={idx === 0} aria-label="앞으로">
+                      ◀
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => moveItem(item.id, 1)}
+                      disabled={idx === items.length - 1}
+                      aria-label="뒤로"
+                    >
+                      ▶
+                    </button>
+                  </div>
+                )}
               </div>
             )
           })}
@@ -144,9 +200,31 @@ export default function News() {
       )}
 
       <AdminFab>
-        <button type="button" className="admin-fab-btn" onClick={() => setEditing({ item: null })}>
-          + 소식 추가
-        </button>
+        {ordering ? (
+          <>
+            <button type="button" className="admin-fab-btn secondary" onClick={() => setDraft(null)} disabled={savingOrder}>
+              취소
+            </button>
+            <button type="button" className="admin-fab-btn" onClick={saveOrder} disabled={savingOrder}>
+              {savingOrder ? '저장 중...' : '순서 저장'}
+            </button>
+          </>
+        ) : (
+          <>
+            {items.length > 1 && (
+              <button
+                type="button"
+                className="admin-fab-btn secondary"
+                onClick={() => setDraft(items.map((i) => i.id))}
+              >
+                ↔ 순서 바꾸기
+              </button>
+            )}
+            <button type="button" className="admin-fab-btn" onClick={() => setEditing({ item: null })}>
+              + 소식 추가
+            </button>
+          </>
+        )}
       </AdminFab>
 
       {editing && (
