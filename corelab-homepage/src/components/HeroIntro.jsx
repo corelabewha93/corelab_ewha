@@ -1,13 +1,15 @@
-import { Fragment, useEffect, useMemo, useState } from 'react'
+import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 
 /**
  * 메인 화면 인트로 — "CoRe"가 COllaborative REsearch에서 왔다는 걸 보여주는 모션.
  *
- *  1) intro     : 정식 이름 "Collaborative Research Learning Lab"이 한 줄로, 글자 하나하나가
- *                 흐릿함 속에서 살짝 떠오르며 왼쪽에서 오른쪽으로 차례로 나타남
- *  2) highlight : Co · Re가 금빛으로 켜지며 은은하게 커졌다 돌아오고, 나머지 글자는 옅어짐
- *  3) collapse  : 옅어진 글자들이 접혀 사라지고, 남은 Co · Re · Lab이 서로 다가와 "CoRe Lab"이 됨
- *  4) done      : 정식 이름(작게, CO·RE 금색) → 모토 → 소속(대학교 · 학과 · 지도교수)이 차례로 등장
+ *  1) intro     : 정식 이름 "Collaborative Research Learning Lab"이 한 줄로, 부드러운 빛이 왼쪽에서
+ *                 오른쪽으로 지나가듯 깔끔하게 나타남 (글자가 흔들리지 않음)
+ *  2) highlight : Co · Re가 금빛으로 켜지고, 나머지 글자는 옅어짐
+ *  3) fade      : 약자에 쓰이지 않는 글자가 조용히 사라짐
+ *  4) merge     : 남은 Co · Re · Lab이 한 번의 부드러운 움직임으로 미끄러져 모이며 "CoRe Lab"으로 커짐
+ *                 (글자 배치를 바꾸는 대신 위치·크기 변환(transform)만으로 움직여 끊김이 없습니다)
+ *  5) done      : 정식 이름(작게, CO·RE 금색) → 모토 → 소속(대학교 · 학과 · 지도교수)이 차례로 등장
  *
  * - tagline(site.json의 labTagline)과 labName(site.json의 labName)을 보고 남길 글자를 자동으로 찾습니다.
  *   관리자 화면에서 이름을 바꿔도 코드를 고칠 필요가 없습니다.
@@ -79,67 +81,113 @@ export function splitName(tagline = '', labName = '') {
 
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-// 단계가 바뀌는 시각(ms) — 글자가 모두 나타난 뒤 → 강조 → 접힘 → 완성
-const T_HIGHLIGHT = 2000
-const T_COLLAPSE = 3400
-const T_DONE = T_COLLAPSE + 1150
+// 단계가 바뀌는 시각(ms)
+const T_HIGHLIGHT = 1500
+const T_FADE = 2700
+const T_MERGE = 3150
+const MERGE_MS = 1300
+const T_DONE = T_MERGE + 900
 
 export default function HeroIntro({ labName = '', tagline = '', affiliation = [], motto = '' }) {
   const words = useMemo(() => splitName(tagline, labName), [tagline, labName])
   const animated = Boolean(words) && !REDUCED
 
   const [phase, setPhase] = useState(animated ? 'intro' : 'done')
+  const nameRef = useRef(null)
+  const firstRects = useRef(null)
 
   // 화면이 처음 열릴 때 한 번만 시간표를 잡습니다.
   useEffect(() => {
     if (!animated) return undefined
     const timers = [
       setTimeout(() => setPhase('highlight'), T_HIGHLIGHT),
-      setTimeout(() => setPhase('collapse'), T_COLLAPSE),
+      setTimeout(() => setPhase('fade'), T_FADE),
+      setTimeout(() => {
+        // 합쳐지기 직전, 남는 글자(Co · Re · Lab)의 현재 자리를 기억해 둡니다.
+        const els = nameRef.current?.querySelectorAll('.hero-piece-keep') ?? []
+        firstRects.current = Array.from(els, (el) => el.getBoundingClientRect())
+        setPhase('merge')
+      }, T_MERGE),
       setTimeout(() => setPhase('done'), T_DONE),
     ]
     return () => timers.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // "CoRe Lab" 배치로 바뀐 직후(화면에 그려지기 전), 각 글자를 원래 자리·크기로 되돌려 놓고
+  // 새 자리까지 한 번에 부드럽게 미끄러지게 합니다.
+  useLayoutEffect(() => {
+    if (phase !== 'merge' || !firstRects.current) return
+    const els = nameRef.current?.querySelectorAll('.hero-piece-keep') ?? []
+    els.forEach((el, i) => {
+      const first = firstRects.current[i]
+      const last = el.getBoundingClientRect()
+      if (!first || !last.width) return
+      const scale = first.width / last.width
+      const dx = first.left - last.left
+      const dy = first.top - last.top
+      el.animate(
+        [
+          { transform: `translate(${dx}px, ${dy}px) scale(${scale})` },
+          { transform: 'translate(0px, 0px) scale(1)' },
+        ],
+        { duration: MERGE_MS, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'backwards' },
+      )
+    })
+    firstRects.current = null
+  }, [phase])
+
   // 소속 문구는 순서대로: 대학교 → 학과(강조) → 지도교수. 정식 이름과 같은 줄은 빼서 두 번 보이지 않게 합니다.
   const lines = affiliation.filter((l) => l && l.trim().toLowerCase() !== tagline.trim().toLowerCase())
   const affClass = (i) => (i === 0 ? 'hero-aff-univ' : i === 1 ? 'hero-aff-dept' : 'hero-aff-line')
 
-  // 글자마다 번호(--c)를 붙여, 왼쪽부터 차례로 나타나게 합니다.
-  let charIndex = 0
+  // 약자의 두 번째 단어("Lab")가 시작되는 조각 앞에는 완성된 뒤 띄어쓰기 간격을 줍니다.
+  let lastPart = null
 
   return (
     <section className={`hero-intro hero-phase-${phase}`}>
       <div className="hero-intro-content">
-        <h1 className="hero-name" aria-label={labName}>
+        <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {words ? (
-            words.map((w, wi) => (
-              <Fragment key={wi}>
-                {/* 단어 하나를 통째로 묶어, 좁은 화면에서도 단어 중간에서 줄이 바뀌지 않게 합니다. */}
-                <span className="hero-word" aria-hidden="true">
-                  {w.pieces.map((p, pi) => (
-                    <span
-                      key={pi}
-                      className={`hero-seg ${p.keep ? 'hero-seg-keep' : 'hero-seg-drop'}${p.keep && p.part === 0 ? ' hero-seg-core' : ''}`}
-                    >
-                      {Array.from(p.text).map((ch, k) => (
-                        <span key={k} className="hero-ch" style={{ '--c': charIndex++ }}>
-                          {ch}
+            words.map((w, wi) => {
+              const hasKeep = w.pieces.some((p) => p.keep)
+              return (
+                <Fragment key={wi}>
+                  {/* 단어 하나를 통째로 묶어, 좁은 화면에서도 단어 중간에서 줄이 바뀌지 않게 합니다. */}
+                  <span className={`hero-word${hasKeep ? '' : ' hero-word-drop'}`} aria-hidden="true">
+                    {w.pieces.map((p, pi) => {
+                      let gap = false
+                      if (p.keep) {
+                        gap = lastPart !== null && p.part !== lastPart
+                        lastPart = p.part
+                      }
+                      const cls = [
+                        'hero-piece',
+                        p.keep ? 'hero-piece-keep' : 'hero-piece-drop',
+                        p.keep && p.part === 0 ? 'hero-piece-core' : '',
+                        gap ? 'hero-piece-gap' : '',
+                      ]
+                        .filter(Boolean)
+                        .join(' ')
+                      return (
+                        <span key={pi} className={cls}>
+                          {p.text}
                         </span>
-                      ))}
-                    </span>
-                  ))}
-                </span>
-                {wi < words.length - 1 && (
-                  <span className={`hero-seg hero-space ${w.keepSpace ? 'hero-seg-keep' : 'hero-seg-drop'}`} aria-hidden="true">
-                    {' '}
+                      )
+                    })}
                   </span>
-                )}
-              </Fragment>
-            ))
+                  {wi < words.length - 1 && (
+                    <span className="hero-space" aria-hidden="true">
+                      {' '}
+                    </span>
+                  )}
+                </Fragment>
+              )
+            })
           ) : (
-            <span className="hero-seg hero-seg-keep hero-seg-core">{labName}</span>
+            <span className="hero-word">
+              <span className="hero-piece hero-piece-keep hero-piece-core">{labName}</span>
+            </span>
           )}
         </h1>
 
