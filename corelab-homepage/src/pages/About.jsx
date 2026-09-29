@@ -11,7 +11,8 @@ import HeroIntro from '../components/HeroIntro'
 
 function NewsPreview() {
   const { data } = useData('news.json')
-  const items = (data ?? []).slice(0, 3)
+  // 숨긴 소식은 홈 화면 미리보기에 넣지 않습니다.
+  const items = (data ?? []).filter((i) => !i.hidden).slice(0, 3)
 
   if (items.length === 0) return null
 

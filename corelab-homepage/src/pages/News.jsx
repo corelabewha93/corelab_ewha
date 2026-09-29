@@ -2,6 +2,7 @@ import { useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../admin/collection'
+import { showToast } from '../admin/toast'
 import { makeId } from '../admin/dataStore'
 import { newsFields } from '../admin/schemas'
 import { useHashRoute, navigate } from '../router/useHashRoute'
@@ -23,7 +24,7 @@ function excerptOf(item) {
 
 export default function News() {
   const { data, error, loading } = useData('news.json')
-  const { token } = useAdminAuth()
+  const { token, isAdmin } = useAdminAuth()
   const { query } = useHashRoute()
   const [editing, setEditing] = useState(null) // { item|null }
 
@@ -32,8 +33,40 @@ export default function News() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const items = data ?? []
+  // hidden: 'hidden'인 소식은 방문자에게 보이지 않습니다 (관리자에게는 흐리게 보임).
+  const items = (data ?? []).filter((i) => isAdmin || !i.hidden)
   const openItem = query.id ? items.find((i) => i.id === query.id) : null
+
+  // 소식 "숨기기 / 표시하기" 버튼
+  // 값은 관리자 입력창의 "표시 여부" 선택칸과 같은 형식('hidden' 또는 빈 문자열)으로 저장합니다.
+  const toggleHidden = async (item) => {
+    const hidden = item.hidden ? '' : 'hidden'
+    try {
+      await upsertItem(token, 'news.json', null, { ...item, hidden }, `소식 ${hidden ? '숨김' : '표시'}: ${item.title}`)
+      showToast(
+        hidden
+          ? '소식을 숨겼어요. 방문자 화면에는 1~2분 뒤 반영됩니다.'
+          : '소식을 다시 표시해요. 방문자 화면에는 1~2분 뒤 반영됩니다.',
+      )
+    } catch (err) {
+      showToast(`저장 실패: ${err.message}`, 6000)
+    }
+  }
+
+  const hideButton = (item) =>
+    isAdmin ? (
+      <button
+        type="button"
+        className={`news-hide-btn${item.hidden ? ' is-hidden' : ''}`}
+        onClick={(e) => {
+          e.stopPropagation()
+          toggleHidden(item)
+        }}
+        title={item.hidden ? '방문자에게 다시 보이게 합니다' : '방문자에게 보이지 않게 숨깁니다'}
+      >
+        {item.hidden ? '표시하기' : '숨기기'}
+      </button>
+    ) : null
 
   const handleSave = async (values) => {
     const original = editing.item
@@ -56,8 +89,10 @@ export default function News() {
         <button type="button" className="news-back-link" onClick={() => navigate('/news')}>
           ← News 목록으로
         </button>
-        <div className="admin-item news-detail">
+        <div className={`admin-item news-detail${openItem.hidden ? ' news-hidden' : ''}`}>
           <EditButton onClick={() => setEditing({ item: openItem })} label={`${openItem.title} 수정`} />
+          {hideButton(openItem)}
+          {openItem.hidden && <p className="news-hidden-note">숨긴 소식 · 관리자에게만 보입니다</p>}
           <NewsCard item={openItem} />
         </div>
 
@@ -88,13 +123,15 @@ export default function News() {
             const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
             const excerpt = excerptOf(item)
             return (
-              <div key={item.id} className="admin-item">
+              <div key={item.id} className={`admin-item${item.hidden ? ' news-hidden' : ''}`}>
                 <EditButton onClick={() => setEditing({ item })} />
+                {hideButton(item)}
                 <button type="button" className="news-list-card" onClick={() => navigate(`/news?id=${item.id}`)}>
                   <div className="news-list-thumb">
                     <SafeImage src={thumb} alt="" fallback={<span />} />
                   </div>
                   <div className="news-list-body">
+                    {item.hidden && <span className="news-hidden-chip">숨김 · 관리자에게만 보임</span>}
                     <h3 className="news-list-title">{item.title}</h3>
                     {item.subtitle && <p className="news-list-subtitle">{item.subtitle}</p>}
                     {excerpt && <p className="news-list-excerpt">{excerpt}</p>}

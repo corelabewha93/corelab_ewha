@@ -128,6 +128,28 @@ export default function People() {
     if (category !== tab) setTab(category)
   }
 
+  // "OOO의 연구 실적 보기" 숨기기/표시하기 (팝업 안의 버튼)
+  // 값은 관리자 입력창의 선택칸과 같은 형식('hidden' 또는 빈 문자열)으로 저장합니다.
+  const toggleResearch = async (person, category) => {
+    const hideResearch = person.hideResearch ? '' : 'hidden'
+    try {
+      await upsertItem(
+        token,
+        'people.json',
+        category,
+        { ...person, hideResearch },
+        `연구 실적 모아보기 ${hideResearch ? '숨김' : '표시'}: ${person.name}`,
+      )
+      showToast(
+        hideResearch
+          ? `${person.name}의 연구 실적 모아보기를 숨겼어요. 방문자 화면에는 1~2분 뒤 반영됩니다.`
+          : `${person.name}의 연구 실적 모아보기를 다시 표시해요. 방문자 화면에는 1~2분 뒤 반영됩니다.`,
+      )
+    } catch (err) {
+      showToast(`저장 실패: ${err.message}`, 6000)
+    }
+  }
+
   const handleDelete = async () => {
     const { person, category } = editing
     await deleteItem(token, 'people.json', category, person.id, `구성원 삭제: ${person.name}`)
@@ -141,6 +163,7 @@ export default function People() {
           person={p}
           category={category}
           onEdit={(person) => setEditing({ person, category })}
+          onToggleResearch={(person) => toggleResearch(person, category)}
           reorder={reorderPropsFor(p)}
         />
       ))}
