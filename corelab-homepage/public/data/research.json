@@ -2416,7 +2416,10 @@
       "venue": "37th Association for Educational Communications and Technology Conference",
       "details": "Dubai, UAE",
       "doi": "",
-      "link": ""
+      "link": "",
+      "excludeAuthors": [
+        "김혜준"
+      ]
     },
     {
       "id": "pub-163",
