@@ -13,27 +13,28 @@ import Publications from './Publications'
 import Projects from './Projects'
 import Patents from './Patents'
 import Tools from './Tools'
-import Books from './Books'
+import Theses from './Theses'
 import AuthorResearch from './AuthorResearch'
 
 const TABS = [
   { key: 'publications', label: 'Publications' },
-  { key: 'books', label: 'Books' },
+  { key: 'theses', label: 'Theses' },
   { key: 'projects', label: 'Projects' },
   { key: 'patents', label: 'Patents' },
   { key: 'tools', label: 'Systems & Tools' },
 ]
 
 const EDITORS = {
+  // 학술지 논문 · 학회 발표 · 저역서(type: 'book')가 모두 publications 목록에 함께 저장됩니다.
   publications: { fields: publicationFields, label: '논문', prefix: 'pub', titleOf: (i) => i.title },
-  // 저역서는 논문 목록(publications)에 type: 'book'으로 함께 저장됩니다.
-  books: {
+  // 학위논문도 같은 목록(publications)에 type: 'other'로 저장되고, Theses 탭에서만 보여줍니다.
+  theses: {
     fields: publicationFields,
-    label: '저역서',
+    label: '학위논문',
     prefix: 'pub',
     titleOf: (i) => i.title,
     dataKey: 'publications',
-    defaults: () => ({ type: 'book', year: new Date().getFullYear() }),
+    defaults: () => ({ type: 'other', year: new Date().getFullYear() }),
   },
   projects: { fields: projectFields, label: '연구과제', prefix: 'proj', titleOf: (i) => i.title },
   patents: { fields: patentFields, label: '특허', prefix: 'pat', titleOf: (i) => i.title },
@@ -46,7 +47,7 @@ export default function Research() {
   const { query: routeQuery } = useHashRoute()
   const searchQuery = routeQuery.q ?? ''
 
-  useDocumentMeta('Research', 'CoRe Lab의 논문, 저역서, 연구과제, 특허, 시스템 및 도구 연구 실적입니다.')
+  useDocumentMeta('Research', 'CoRe Lab의 논문·저역서, 학위논문, 연구과제, 특허, 시스템 및 도구 연구 실적입니다.')
 
   // People 페이지의 "OOO의 연구 실적" 링크(#/research?author=이름)로 들어오면
   // 그 사람 이름이 올라간 논문·저역서·특허를 한 화면에 모아 보여줍니다(AuthorResearch).
@@ -80,6 +81,19 @@ export default function Research() {
     await deleteItem(token, 'research.json', ed.dataKey ?? key, item.id, `${ed.label} 삭제: ${ed.titleOf(item)}`)
   }
 
+  // 특허 "숨김/표시" 버튼: 등록이 확정되지 않은 특허를 잠시 감춰 두었다가 다시 띄울 때 씁니다.
+  const togglePatentHidden = async (pat) => {
+    // 값은 관리자 입력창의 "표시 여부" 선택칸과 같은 형식('hidden' 또는 빈 문자열)으로 저장합니다.
+    const hidden = pat.hidden ? '' : 'hidden'
+    await upsertItem(
+      token,
+      'research.json',
+      'patents',
+      { ...pat, hidden },
+      `특허 ${hidden ? '숨김' : '표시'}: ${pat.title}`,
+    )
+  }
+
   const initialFor = (key) =>
     EDITORS[key].defaults?.() ?? (key === 'publications' ? { year: new Date().getFullYear() } : {})
 
@@ -103,9 +117,10 @@ export default function Research() {
               onClear={() => setTab('publications')}
               onEdit={{
                 publications: onEdit('publications'),
-                books: onEdit('books'),
+                theses: onEdit('theses'),
                 patents: onEdit('patents'),
               }}
+              onToggleHidden={togglePatentHidden}
             />
           )}
 
@@ -119,9 +134,11 @@ export default function Research() {
                   initialQuery={searchQuery}
                 />
               )}
-              {tab === 'books' && <Books items={data.publications} onEdit={onEdit('books')} />}
+              {tab === 'theses' && <Theses items={data.publications} onEdit={onEdit('theses')} />}
               {tab === 'projects' && <Projects items={data.projects} onEdit={onEdit('projects')} />}
-              {tab === 'patents' && <Patents items={data.patents} onEdit={onEdit('patents')} />}
+              {tab === 'patents' && (
+                <Patents items={data.patents} onEdit={onEdit('patents')} onToggleHidden={togglePatentHidden} />
+              )}
               {tab === 'tools' && <Tools items={data.tools} onEdit={onEdit('tools')} />}
             </>
           )}

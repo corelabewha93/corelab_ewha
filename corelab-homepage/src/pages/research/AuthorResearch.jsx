@@ -1,15 +1,15 @@
 import { useEffect, useMemo } from 'react'
 import Publications from './Publications'
-import Books from './Books'
+import Theses from './Theses'
 import Patents from './Patents'
 import { makeFocus, includesFocus } from './authorMatch'
 
 /**
  * "OOO의 연구 실적" — People 페이지에서 들어오는 한 사람의 모아보기 화면.
- * 논문(저자) · 저역서(지은이·옮긴이) · 특허(발명자)에 이름이 올라간 실적만 모아 보여줍니다.
+ * 논문·저역서(저자·옮긴이) · 학위논문 · 특허(발명자)에 이름이 올라간 실적만 모아 보여줍니다.
  * people.json에 적어둔 영문 표기(pubNames)도 같은 사람으로 봅니다.
  */
-export default function AuthorResearch({ data, author, onClear, onEdit }) {
+export default function AuthorResearch({ data, author, onClear, onEdit, onToggleHidden }) {
   const focus = useMemo(() => makeFocus(author.aliases), [author])
 
   // 모아보기 화면이 열리면 이름이 먼저 보이도록 맨 위로 올립니다.
@@ -18,13 +18,12 @@ export default function AuthorResearch({ data, author, onClear, onEdit }) {
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [])
 
-  const { pubs, books, patents } = useMemo(() => {
+  const { pubs, theses, patents } = useMemo(() => {
     const all = data.publications ?? []
+    const mine = (p) => includesFocus(p.authors, focus) || includesFocus(p.translators, focus)
     return {
-      pubs: all.filter((p) => p.type !== 'book' && includesFocus(p.authors, focus)),
-      books: all.filter(
-        (p) => p.type === 'book' && (includesFocus(p.authors, focus) || includesFocus(p.translators, focus)),
-      ),
+      pubs: all.filter((p) => p.type !== 'other' && mine(p)),
+      theses: all.filter((p) => p.type === 'other' && mine(p)),
       patents: (data.patents ?? []).filter((p) => includesFocus(p.inventors, focus)),
     }
   }, [data, focus])
@@ -32,18 +31,18 @@ export default function AuthorResearch({ data, author, onClear, onEdit }) {
   // 0건인 종류는 요약·목록 모두에서 뺍니다.
   const sections = [
     { key: 'publications', title: 'Publications', count: pubs.length },
-    { key: 'books', title: 'Books', count: books.length },
+    { key: 'theses', title: 'Theses', count: theses.length },
     { key: 'patents', title: 'Patents', count: patents.length },
   ].filter((s) => s.count > 0)
-  const total = pubs.length + books.length + patents.length
+  const total = pubs.length + theses.length + patents.length
 
-  // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 학위논문을 나눠서 셉니다.
+  // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 저역서 / 학위논문을 나눠서 셉니다.
   const countType = (t) => pubs.filter((p) => p.type === t).length
   const summary = [
     ['학술지 논문', countType('journal')],
     ['학회 발표', countType('conference')],
-    ['학위논문', countType('other')],
-    ['저역서', books.length],
+    ['저역서', countType('book')],
+    ['학위논문', theses.length],
     ['특허', patents.length],
   ].filter(([, n]) => n > 0)
 
@@ -79,8 +78,10 @@ export default function AuthorResearch({ data, author, onClear, onEdit }) {
           {s.key === 'publications' && (
             <Publications items={pubs} onEdit={onEdit.publications} embedded focus={focus} />
           )}
-          {s.key === 'books' && <Books items={books} onEdit={onEdit.books} focus={focus} />}
-          {s.key === 'patents' && <Patents items={patents} onEdit={onEdit.patents} focus={focus} />}
+          {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} embedded focus={focus} />}
+          {s.key === 'patents' && (
+            <Patents items={patents} onEdit={onEdit.patents} onToggleHidden={onToggleHidden} focus={focus} />
+          )}
         </section>
       ))}
     </div>
