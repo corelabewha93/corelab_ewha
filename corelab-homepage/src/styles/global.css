@@ -2523,6 +2523,7 @@ mark.pub-hl {
   align-items: center;
   justify-content: center;
   padding: var(--space-3);
+  overscroll-behavior: contain;
   /* 헤더(z-index:100)보다 위에 있어야 스크롤된 화면에서도 팝업이 가려지거나
      클릭이 헤더에 가로채이지 않습니다. */
   z-index: 110;
@@ -2537,13 +2538,36 @@ mark.pub-hl {
   width: 100%;
   max-width: 480px;
   max-height: 85vh;
-  overflow-y: auto;
-  padding: var(--space-4);
+  max-height: 85dvh;
+  /* 카드 전체가 아니라 아래 이력(.person-modal-scroll)만 스크롤됩니다. 사진 · 이름은 위에 고정. */
+  overflow: hidden;
+  padding: var(--space-4) var(--space-4) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
   gap: 0;
   text-align: center;
+}
+
+.person-modal-head {
+  flex: 0 0 auto;
+  width: 100%;
+  padding-bottom: var(--space-1, 0.25rem);
+}
+
+.person-modal-scroll {
+  flex: 1 1 auto;
+  min-height: 0;
+  width: 100%;
+  overflow-y: auto;
+  -webkit-overflow-scrolling: touch;
+  /* 이력 끝까지 내려가도 뒤 화면이 따라 움직이지 않게 합니다. */
+  overscroll-behavior: contain;
+  padding: 0 0 var(--space-4);
+}
+
+.person-modal-card .person-detail {
+  margin-top: 0.4rem;
 }
 
 .person-modal-close {
@@ -2579,7 +2603,7 @@ mark.pub-hl {
   font-size: 2rem;
   font-weight: 700;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-  margin: 0 auto var(--space-3);
+  margin: 0 auto var(--space-2);
 }
 
 .person-modal-photo img {
@@ -2616,8 +2640,9 @@ mark.pub-hl {
 
 @media (max-width: 520px) {
   .person-modal-card {
-    padding: var(--space-3);
+    padding: var(--space-3) var(--space-3) 0;
     max-height: 88vh;
+    max-height: 88dvh;
   }
   .person-modal-photo {
     width: 96px;
@@ -3528,38 +3553,33 @@ mark.pub-hl {
     font-size: 0.92rem;
   }
 
-  /* Students / Alumni: 휴대폰에서는 큰 카드 대신 "사진 왼쪽 + 이름 오른쪽" 목록형.
-     펼치면 상세 이력이 그 줄 아래로 전체 너비로 열려서, 사진이 튀거나
-     화면이 크게 출렁이지 않습니다. */
+  /* Students / Alumni: 휴대폰에서도 PC처럼 "사진 아래에 이름"을 붙이고, 2열로 배치합니다.
+     (사진 옆에 이름을 두면 오른쪽에 빈 공간이 크게 생겨서 바꿨습니다.) */
   .people-grid {
-    grid-template-columns: 1fr;
-    gap: 0;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: var(--space-3) var(--space-2);
   }
   .person-card {
-    display: grid;
-    grid-template-columns: 72px minmax(0, 1fr);
-    column-gap: var(--space-2);
-    align-items: center;
-    text-align: left;
-    padding: 0.85rem 0;
-    border-bottom: 1px solid var(--color-border);
-  }
-  .person-card:first-child {
-    padding-top: 0;
+    display: block;
+    text-align: center;
+    padding: 0;
+    border-bottom: 0;
   }
   .person-photo-btn {
-    margin: 0;
+    display: block;
+    width: 100%;
+    margin: 0 auto;
   }
   .person-photo {
-    width: 72px;
-    margin: 0;
-    font-size: 1.4rem;
+    width: min(100%, 150px);
+    margin: 0 auto 0.5rem;
+    font-size: 1.6rem;
   }
   .person-name-btn {
-    justify-content: flex-start;
-    width: auto;
-    margin: 0;
-    padding: 0.4rem 0;
+    justify-content: center;
+    width: 100%;
+    margin: 0 auto;
+    padding: 0.15rem 0;
   }
   .people-group-title {
     margin-bottom: var(--space-2);
