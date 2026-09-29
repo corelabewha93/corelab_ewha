@@ -12,6 +12,7 @@ import PersonCard from '../components/PersonCard'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab } from '../components/admin/AdminControls'
 import { useDocumentMeta } from '../router/useDocumentMeta'
+import { useNoZoom } from '../hooks/useNoZoom'
 
 const TABS = [
   { key: 'faculty', label: 'Faculty' },
@@ -66,6 +67,7 @@ export default function People() {
   const [draft, setDraft] = useState(null) // { tab, ids } 순서 바꾸기 중일 때
 
   useDocumentMeta('People', 'CoRe Lab의 교수진, 대학원생, 졸업생을 소개합니다.')
+  useNoZoom() // 사진 확대(줌인) 차단 — Lab Life와 동일
   const [savingOrder, setSavingOrder] = useState(false)
 
   const ordering = draft && draft.tab === tab
