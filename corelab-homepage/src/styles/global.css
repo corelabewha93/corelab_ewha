@@ -1406,12 +1406,6 @@ h1.section-title {
   vertical-align: 0.15em;
 }
 
-/* Theses 탭의 요약 (Theses / Ph.D. / M.A.) — 3칸 */
-.pub-stats-theses {
-  grid-template-columns: repeat(3, 1fr);
-  max-width: 480px;
-}
-
 /* 필터 줄 */
 .pub-toolbar {
   display: flex;
@@ -1982,30 +1976,31 @@ mark.pub-hl {
 }
 
 @media (max-width: 700px) {
-  /* 모바일: 부드러운 카드 한 장.
-     맨 위 한 줄 = 총계(Journal Articles 116 / Theses 32)를 왼쪽 라벨 · 오른쪽 큰 숫자로,
-     그 아래 = 세부 항목을 2칸씩 깔끔하게 (International · KCI / Conferences · Books) */
-  .pub-stats,
-  .pub-stats-theses {
+  /* 모바일: 색 배경 없이 "선"으로만 구분하는 작고 간결한 표.
+     맨 위 한 줄 = 총계(Journal Articles)를 왼쪽 라벨 · 오른쪽 숫자로,
+     그 아래 = 세부 항목을 2칸씩 (KCI · International / Conferences · Books) */
+  .pub-stats {
     grid-template-columns: 1fr 1fr;
     max-width: none;
-    padding: 0.2rem 1.1rem 0.35rem;
-    border: none;
-    border-radius: 12px;
-    background: var(--color-primary-soft);
+    margin-bottom: var(--space-3);
+    padding: 0;
+    background: none;
+    border-top: 1px solid var(--color-primary);
+    border-bottom: 1px solid var(--color-border);
+    border-radius: 0;
   }
 
   .pub-stats > div,
   .pub-stats > div:first-child {
-    padding: 0.8rem 0 0.75rem;
+    padding: 0.55rem 0 0.5rem;
     border-left: none;
-    border-top: 1px solid rgba(0, 70, 42, 0.1);
+    border-top: 1px solid var(--color-border);
   }
 
   /* 2칸 줄의 오른쪽 칸은 가는 세로선으로 구분 */
   .pub-stats > div:nth-child(2n + 3) {
-    padding-left: 1rem;
-    border-left: 1px solid rgba(0, 70, 42, 0.1);
+    padding-left: 0.9rem;
+    border-left: 1px solid var(--color-border);
   }
 
   /* 맨 위 총계 줄 */
@@ -2015,27 +2010,27 @@ mark.pub-hl {
     align-items: baseline;
     justify-content: space-between;
     border-top: none;
-    padding: 0.85rem 0 0.8rem;
+    padding: 0.6rem 0 0.55rem;
   }
 
   .pub-stats > div:first-child dd {
     margin: 0;
-    font-size: 1.75rem;
+    font-size: 1.25rem;
   }
 
   .pub-stats dt {
-    font-size: 0.68rem;
+    font-size: 0.62rem;
     letter-spacing: 0.06em;
   }
 
   .pub-stats dd {
-    margin-top: 0.15rem;
-    font-size: 1.3rem;
+    margin-top: 0.1rem;
+    font-size: 1rem;
   }
 
   .pub-stats-sub {
-    margin-left: 0.35rem;
-    font-size: 0.66rem;
+    margin-left: 0.3rem;
+    font-size: 0.6rem;
   }
 
   .pub-search,
@@ -3557,7 +3552,7 @@ mark.pub-hl {
      (사진 옆에 이름을 두면 오른쪽에 빈 공간이 크게 생겨서 바꿨습니다.) */
   .people-grid {
     grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: var(--space-3) var(--space-2);
+    gap: 1.9rem 1.1rem;
   }
   .person-card {
     display: block;
@@ -3571,15 +3566,18 @@ mark.pub-hl {
     margin: 0 auto;
   }
   .person-photo {
-    width: min(100%, 150px);
-    margin: 0 auto 0.5rem;
-    font-size: 1.6rem;
+    width: min(84%, 118px);
+    margin: 0 auto 0.65rem;
+    font-size: 1.4rem;
   }
   .person-name-btn {
     justify-content: center;
     width: 100%;
     margin: 0 auto;
-    padding: 0.15rem 0;
+    padding: 0.1rem 0;
+  }
+  .person-name {
+    font-size: 0.9rem;
   }
   .people-group-title {
     margin-bottom: var(--space-2);
