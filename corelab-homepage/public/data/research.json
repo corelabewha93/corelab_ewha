@@ -581,7 +581,8 @@
       "venue": "한국교육공학회 춘계학술대회",
       "details": "제주",
       "doi": "",
-      "link": ""
+      "link": "",
+      "award": "우수포스터 발표상"
     },
     {
       "id": "pub-40",
@@ -1438,7 +1439,8 @@
       "venue": "한국교육정보미디어학회·한국교육공학회 추계공동학술대회 발표자료집",
       "details": "대전",
       "doi": "",
-      "link": ""
+      "link": "",
+      "award": "최우수논문상"
     },
     {
       "id": "pub-98",
@@ -2045,7 +2047,8 @@
       "venue": "한국교육공학회 학술대회 발표자료집",
       "details": "서울",
       "doi": "",
-      "link": ""
+      "link": "",
+      "award": "대상"
     },
     {
       "id": "pub-139",
@@ -2876,7 +2879,7 @@
       "doi": "",
       "link": "",
       "translators": [],
-      "bookRole": "",
+      "bookRole": "저서 (챕터 저술)",
       "indexes": ""
     },
     {
@@ -3292,7 +3295,8 @@
       "venue": "Handbook of Design in Educational Technology (Routledge) 수록",
       "details": "",
       "doi": "10.4324/9780203075227-37",
-      "link": ""
+      "link": "",
+      "bookRole": "저서 (챕터 저술)"
     },
     {
       "id": "book-9",
@@ -3395,7 +3399,8 @@
       "number": "",
       "status": "registered",
       "date": "",
-      "country": "KR"
+      "country": "KR",
+      "hidden": "hidden"
     },
     {
       "id": "patent-2",
@@ -3410,7 +3415,8 @@
       "number": "",
       "status": "registered",
       "date": "",
-      "country": "KR"
+      "country": "KR",
+      "hidden": "hidden"
     },
     {
       "id": "patent-3",
@@ -3421,20 +3427,6 @@
       ],
       "number": "1024429230000",
       "status": "registered",
-      "date": "",
-      "country": "KR"
-    },
-    {
-      "id": "patent-4",
-      "title": "사회비교 관점에서의 학습 모니터링용 온라인학습 대시보드 학습 정보 제공 방법 및 장치",
-      "inventors": [
-        "임규연",
-        "어정인",
-        "임지영",
-        "한가형"
-      ],
-      "number": "",
-      "status": "pending",
       "date": "",
       "country": "KR"
     },
