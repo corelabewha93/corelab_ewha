@@ -7,6 +7,13 @@ import react from '@vitejs/plugin-react'
 // (public/CNAME 파일이 있으면 배포 워크플로가 base를 자동으로 '/'로 바꿔줍니다.)
 const REPO_NAME = 'corelab-homepage'
 
+// 빌드(배포)할 때마다 달라지는 번호. 아래 세 곳에 쓰입니다.
+//  1) 화면 코드 안(__BUILD_ID__) : 지금 열려 있는 화면이 어느 배포본인지
+//  2) version.json               : 서버에 올라가 있는 "가장 최신" 배포본 번호
+//  3) index.html의 %BUILD_ID%     : 링크 미리보기 이미지 주소 끝에 붙여, 카카오톡이 옛날 이미지를 붙들고 있지 못하게 함
+// 폰 브라우저가 옛날 화면을 붙들고 있으면 (1)과 (2)가 달라서, 화면이 스스로 새로고침합니다.
+const BUILD_ID = Date.now().toString(36)
+
 /**
  * 배포 주소(https://... 전체 URL)를 자동으로 알아냅니다.
  *   1) VITE_SITE_URL 환경변수가 있으면 그 값
@@ -39,7 +46,7 @@ function siteUrlPlugin() {
       base = config.base
     },
     transformIndexHtml(html) {
-      return html.replaceAll('%SITE_URL%', resolveSiteUrl(base))
+      return html.replaceAll('%SITE_URL%', resolveSiteUrl(base)).replaceAll('%BUILD_ID%', BUILD_ID)
     },
   }
 }
@@ -87,6 +94,7 @@ Allow: /
 
 Sitemap: ${siteUrl}sitemap.xml
 `
+      this.emitFile({ type: 'asset', fileName: 'version.json', source: JSON.stringify({ id: BUILD_ID }) })
       this.emitFile({ type: 'asset', fileName: 'sitemap.xml', source: sitemap })
       this.emitFile({ type: 'asset', fileName: 'robots.txt', source: robots })
     },
@@ -95,5 +103,6 @@ Sitemap: ${siteUrl}sitemap.xml
 
 export default defineConfig({
   plugins: [react(), siteUrlPlugin(), seoFilesPlugin()],
+  define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
   base: process.env.VITE_BASE ?? `/${REPO_NAME}/`,
 })

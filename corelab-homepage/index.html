@@ -22,6 +22,16 @@
         }
       })(window.location)
     </script>
+    <!-- 방문 주소 끝에 붙는 _v=... (옛날 화면을 새 화면으로 바꿀 때 자동으로 붙는 표시)는 주소창에서 지웁니다. -->
+    <script>
+      ;(function (l) {
+        if (/[?&]_v=/.test(l.search)) {
+          var s = l.search.replace(/([?&])_v=[^&]*&?/, '$1').replace(/[?&]$/, '')
+          window.history.replaceState(null, null, l.pathname + s + l.hash)
+        }
+      })(window.location)
+    </script>
+    <meta http-equiv="Cache-Control" content="no-cache" />
     <link rel="icon" type="image/svg+xml" href="images/logo.svg" />
     <link rel="apple-touch-icon" href="images/apple-touch-icon.png" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -65,14 +75,14 @@
       property="og:description"
       content="Seeing How We Learn Together — 함께 배우는 과정을 데이터로 포착하고 시각화하는 임규연 교수 연구실입니다."
     />
-    <meta property="og:image" content="%SITE_URL%images/og-image.png" />
+    <meta property="og:image" content="%SITE_URL%images/og-image.png?v=%BUILD_ID%" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:image:alt" content="CoRe Lab — Seeing How We Learn Together" />
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:title" content="CoRe Lab | 이화여자대학교 교육공학과" />
     <meta name="twitter:description" content="Seeing How We Learn Together — Collaborative Research Learning Lab" />
-    <meta name="twitter:image" content="%SITE_URL%images/og-image.png" />
+    <meta name="twitter:image" content="%SITE_URL%images/og-image.png?v=%BUILD_ID%" />
   </head>
   <body>
     <div id="root"></div>
