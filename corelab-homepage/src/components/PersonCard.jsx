@@ -199,6 +199,25 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
     return () => window.removeEventListener('keydown', onKey)
   }, [onClose])
 
+  // 팝업이 열려 있는 동안 뒤 화면을 그 자리에 고정합니다.
+  // (휴대폰에서 이력을 스크롤할 때 뒤 화면과 위쪽 메뉴가 같이 움직이는 걸 막습니다.)
+  useEffect(() => {
+    const body = document.body
+    const scrollY = window.scrollY
+    const prev = { position: body.style.position, top: body.style.top, width: body.style.width, overflow: body.style.overflow }
+    body.style.position = 'fixed'
+    body.style.top = `-${scrollY}px`
+    body.style.width = '100%'
+    body.style.overflow = 'hidden'
+    return () => {
+      body.style.position = prev.position
+      body.style.top = prev.top
+      body.style.width = prev.width
+      body.style.overflow = prev.overflow
+      window.scrollTo(0, scrollY)
+    }
+  }, [])
+
   return (
     <div className="person-modal-overlay" onClick={onClose}>
       <div className="person-modal-card" onClick={(e) => e.stopPropagation()}>
@@ -206,6 +225,7 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
           ×
         </button>
 
+        <div className="person-modal-head">
         <div className="person-modal-photo">
           <SafeImage
             src={person.photo}
@@ -216,10 +236,11 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
           />
         </div>
 
-        <div className="person-modal-info">
           <h2 className="person-modal-name">{person.name}</h2>
           {person.nameEn && <p className="person-modal-name-en">{person.nameEn}</p>}
+        </div>
 
+        <div className="person-modal-scroll">
           <ul className="person-detail">
             {expandLines.map((line, i) =>
               line.kind === 'link' ? (
