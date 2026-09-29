@@ -250,9 +250,9 @@ export const publicationFields = [
       { value: 'journal', label: 'Journal (학술지)' },
       { value: 'conference', label: 'Conference (학회 발표)' },
       { value: 'book', label: 'Book (저역서) — Publications에 연도별로 함께 표시' },
-      { value: 'other', label: 'Thesis (학위논문) — Theses 탭에 표시' },
+      { value: 'other', label: 'Thesis (학위논문) — Dissertations 탭에 표시' },
     ],
-    hint: '학위논문은 "Thesis"를 선택하세요. Publications가 아니라 Theses 탭에 따로 모입니다.',
+    hint: '학위논문은 "Thesis"를 선택하세요. Publications가 아니라 Dissertations 탭에 따로 모입니다.',
   },
   {
     name: 'authors',
