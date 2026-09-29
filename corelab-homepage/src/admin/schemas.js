@@ -85,6 +85,18 @@ export const personFields = [
     showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
   {
+    name: 'hideResearch',
+    label: '연구 실적 모아보기',
+    type: 'select',
+    default: '',
+    options: [
+      { value: '', label: '표시 (팝업에 "OOO의 연구 실적 보기" 버튼이 보임)' },
+      { value: 'hidden', label: '숨김 (방문자에게 보이지 않음)' },
+    ],
+    hint: '본인이 원하지 않으면 "숨김"으로 두세요. 논문 목록 자체에서는 이름이 그대로 보이고, 이 사람만 모아 보는 화면만 숨겨집니다. 팝업 안의 "숨기기/표시하기" 버튼으로도 바꿀 수 있어요.',
+    showIf: (v) => v.category === 'students' || v.category === 'alumni',
+  },
+  {
     name: 'email',
     label: '이메일',
     type: 'text',
@@ -190,6 +202,17 @@ export const newsFields = [
       '기사처럼 자유롭게 적으세요. 문단 사이는 빈 줄로 구분하면 됩니다. 사진을 본문 중간에 넣고 싶으면, 넣고 싶은 위치에 [사진2], [사진3]처럼 한 줄만 따로 적으세요 (숫자는 위에서 선택한 사진 순서, 첫 번째 사진은 이미 대표 사진으로 맨 위에 쓰이니 2번째부터 씁니다). 정렬도 함께 정하고 싶으면 [사진2:왼쪽], [사진2:오른쪽]처럼 뒤에 붙이면 됩니다 (안 쓰면 가운데 정렬). 아무 표시도 안 하면 남은 사진은 글 맨 아래에 모아서 보여줍니다.',
   },
   { name: 'link', label: '관련 링크 (선택)', type: 'text', placeholder: 'https://...' },
+  {
+    name: 'hidden',
+    label: '표시 여부',
+    type: 'select',
+    default: '',
+    options: [
+      { value: '', label: '표시 (방문자에게 보임)' },
+      { value: 'hidden', label: '숨김 (관리자에게만 보임)' },
+    ],
+    hint: '아직 공개하기 이른 소식은 "숨김"으로 두었다가 나중에 "표시"로 바꾸세요. 목록의 "숨기기/표시하기" 버튼으로도 바꿀 수 있습니다.',
+  },
 ]
 
 export const lablifeFields = () => [
@@ -345,21 +368,21 @@ export const siteIntroFields = [
     label: '연구실 정식 이름 (영문)',
     type: 'text',
     placeholder: '예: Collaborative Research Learning Lab',
-    hint: '메인 화면 인트로에서 이 이름이 먼저 나타난 뒤, 약자(연구실 이름)에 쓰이지 않는 글자들이 사라지며 "CoRe Lab"이 완성됩니다. 약자의 글자가 이 이름의 단어 첫 부분(Co-llaborative, Re-search, Lab)에 있어야 모션이 됩니다.',
+    hint: '메인 화면 인트로에서 이 이름이 세로로 쌓여 먼저 나타나고, 약자(연구실 이름)에 쓰이는 글자(Co · Re · Lab)만 남아 "CoRe Lab"으로 합쳐집니다. 약자의 글자가 이 이름의 단어 첫 부분(Co-llaborative, Re-search, Lab)에 있어야 모션이 됩니다.',
   },
   {
     name: 'mottoKr',
     label: '랩 모토 (한글)',
     type: 'text',
-    placeholder: '예: 보이지 않는 것을, 보이게',
+    placeholder: '예: 함께 배우는 과정을 들여다봅니다',
     hint: 'Lab Overview 위에 큰 글씨로 강조되어 표시됩니다.',
   },
   {
     name: 'mottoEn',
     label: '랩 모토 (영문)',
     type: 'text',
-    placeholder: '예: Make the Invisible Visible',
-    hint: '메인 화면 인트로 맨 아래에 작게 표시되고, Lab Overview에서는 한글 모토 아래 함께 표시됩니다. 비워두면 메인 화면에서는 나오지 않습니다.',
+    placeholder: '예: Seeing How We Learn Together',
+    hint: '메인 화면 인트로에서 "CoRe Lab"이 완성된 뒤 부제 아래에 표시되고, Lab Overview에서는 한글 모토 아래 함께 표시됩니다. 비워두면 메인 화면에서는 나오지 않습니다.',
   },
   {
     name: 'heroAffiliation',
