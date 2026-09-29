@@ -311,6 +311,14 @@ export const publicationFields = [
     placeholder: '예: 최우수논문상',
     hint: '학회 등에서 상을 받은 논문이면 상 이름을 적으세요. 목록에 상장 모양 배지로 표시됩니다.',
   },
+  {
+    name: 'awardOrg',
+    label: '수여 기관 (선택)',
+    type: 'text',
+    placeholder: '예: 이화여대 대학원 / 한국교육공학회 2025',
+    hint: '적으면 상 이름 옆에 수여 기관이 함께 표시됩니다. 이름에 "학회"가 들어가면 남보라색, 그 밖의 기관(대학원 등)은 청록색 배지가 됩니다. 비워두면 기존처럼 금색 배지입니다.',
+    showIf: (v) => Boolean(v.award),
+  },
   { name: 'doi', label: 'DOI (선택)', type: 'text', placeholder: '10.xxxx/xxxxx' },
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
 ]
