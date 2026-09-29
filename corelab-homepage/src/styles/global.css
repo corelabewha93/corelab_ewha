@@ -176,7 +176,7 @@ h1.section-title {
 
 /* 단어는 통째로 한 덩어리 — 줄바꿈은 단어 사이에서만 */
 .hero-word {
-  display: inline;
+  display: inline-block;
   white-space: nowrap;
 }
 
@@ -193,28 +193,25 @@ h1.section-title {
     text-shadow 1s ease;
 }
 
-/* ① 등장: 글자는 제자리에 가만히 있고, 부드러운 경계의 빛이 왼쪽에서 오른쪽으로 지나가며 드러납니다. */
-.hero-phase-intro .hero-name {
-  -webkit-mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
-  mask-image: linear-gradient(90deg, #000 40%, transparent 60%);
-  -webkit-mask-size: 260% 100%;
-  mask-size: 260% 100%;
-  animation: hero-name-reveal 1.25s cubic-bezier(0.33, 0, 0.2, 1) 0.15s both;
+/* ① 등장: 단어가 하나씩, 초점이 맞춰지듯(흐릿 → 또렷) 살짝 떠오르며 나타납니다.
+   글자 크기·간격은 전혀 바뀌지 않고 투명도·위치·흐림만 움직여서 출렁이거나 끊기지 않습니다. */
+.hero-phase-intro .hero-word {
+  animation: hero-word-in 0.95s cubic-bezier(0.22, 0.7, 0.2, 1) calc(0.12s + var(--i, 0) * 0.15s) both;
 }
 
-@keyframes hero-name-reveal {
+@keyframes hero-word-in {
   from {
-    -webkit-mask-position: 100% 0;
-    mask-position: 100% 0;
-    opacity: 0.001;
+    opacity: 0;
+    transform: translateY(0.32em);
+    filter: blur(9px);
   }
-  12% {
+  55% {
     opacity: 1;
   }
   to {
-    -webkit-mask-position: 0% 0;
-    mask-position: 0% 0;
     opacity: 1;
+    transform: translateY(0);
+    filter: blur(0);
   }
 }
 
@@ -1883,6 +1880,60 @@ mark.pub-hl {
 
 .patent-item:has(> .patent-hide-btn) {
   padding-right: 8rem;
+}
+
+/* 모아보기의 "내 실적 아님 / 다시 포함" 버튼 (관리자에게만 보임) — 동명이인 논문을 이 사람의 실적에서만 뺍니다 */
+.pub-exclude-btn {
+  position: absolute;
+  top: 0.75rem;
+  right: 2.6rem;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+  z-index: 5;
+}
+
+.pub-exclude-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.pub-exclude-btn.is-excluded {
+  border-color: #e6c58f;
+  color: #a0651c;
+}
+
+.pub-item.admin-item:has(> .pub-exclude-btn),
+.patent-item.admin-item:has(> .pub-exclude-btn) {
+  padding-right: 8.2rem;
+}
+
+/* 좁은 화면: 버튼을 제목 옆이 아니라 오른쪽 아래 모서리로 내려서 제목 폭을 지킵니다 */
+@media (max-width: 700px) {
+  .pub-item.admin-item:has(> .pub-exclude-btn),
+  .patent-item.admin-item:has(> .pub-exclude-btn) {
+    padding-right: 2.6rem;
+    padding-bottom: 2.6rem;
+  }
+  .pub-exclude-btn {
+    top: auto;
+    bottom: 0.6rem;
+    right: 0.2rem;
+  }
+}
+
+.pub-item.pub-item-excluded {
+  opacity: 0.55;
+}
+
+.pub-item.pub-item-excluded:hover {
+  opacity: 0.85;
 }
 
 .project-item .pub-venue,
