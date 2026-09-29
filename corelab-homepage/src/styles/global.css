@@ -1776,6 +1776,35 @@ mark.pub-hl {
   color: #b8912a;
 }
 
+/* 수여 기관이 붙는 수상 배지 — 박사학위논문 태그(금색)와 겹치지 않도록 청록 / 남보라 */
+.pub-award-org {
+  margin-left: 0.15rem;
+  padding-left: 0.42rem;
+  border-left: 1px solid currentColor;
+  font-weight: 600;
+  opacity: 0.8;
+}
+
+.pub-award.pub-award-univ {
+  color: #17667a;
+  background: linear-gradient(180deg, #eef8fb 0%, #e0f1f6 100%);
+  border-color: #b3d9e3;
+}
+
+.pub-award.pub-award-univ svg {
+  color: #2a8aa1;
+}
+
+.pub-award.pub-award-society {
+  color: #4a3f96;
+  background: linear-gradient(180deg, #f3f1fb 0%, #e8e4f7 100%);
+  border-color: #cbc4ec;
+}
+
+.pub-award.pub-award-society svg {
+  color: #6a5cc0;
+}
+
 .pub-doi {
   font-size: 0.72rem;
   font-weight: 600;
