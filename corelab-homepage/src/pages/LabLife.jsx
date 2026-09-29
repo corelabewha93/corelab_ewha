@@ -9,6 +9,7 @@ import SafeImage, { resolveImageSrc } from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
 import { useDocumentMeta } from '../router/useDocumentMeta'
+import { useNoZoom } from '../hooks/useNoZoom'
 
 // 사진 배열과, 각 사진에 저장된 위치·확대(imageCrops)를 짝지어 돌려줍니다.
 // (imageCrops가 없거나 개수가 안 맞아도 기본값으로 채워지므로 안전합니다.)
@@ -32,6 +33,9 @@ export default function LabLife() {
   const [editing, setEditing] = useState(null) // { item|null }
 
   useDocumentMeta('Lab Life', 'CoRe Lab 구성원들의 일상과 활동 모습입니다.')
+
+  // 사진을 손가락으로 벌리거나 트랙패드로 확대하지 못하게 막습니다 (이 페이지에서만).
+  useNoZoom()
 
   const openLightbox = (item) => {
     setSelected(item)
