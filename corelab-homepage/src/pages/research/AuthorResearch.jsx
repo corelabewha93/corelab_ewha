@@ -3,13 +3,15 @@ import Publications from './Publications'
 import Theses from './Theses'
 import Patents from './Patents'
 import { makeFocus, includesFocus } from './authorMatch'
+import { useAdminAuth } from '../../admin/AdminAuthContext'
 
 /**
  * "OOO의 연구 실적" — People 페이지에서 들어오는 한 사람의 모아보기 화면.
  * 논문·저역서(저자·옮긴이) · 학위논문 · 특허(발명자)에 이름이 올라간 실적만 모아 보여줍니다.
  * people.json에 적어둔 영문 표기(pubNames)도 같은 사람으로 봅니다.
  */
-export default function AuthorResearch({ data, author, onClear, onEdit, onToggleHidden }) {
+export default function AuthorResearch({ data, author, onClear, onEdit, onToggleHidden, onToggleExclude }) {
+  const { isAdmin } = useAdminAuth()
   const focus = useMemo(() => makeFocus(author.aliases), [author])
 
   // 모아보기 화면이 열리면 이름이 먼저 보이도록 맨 위로 올립니다.
@@ -18,32 +20,45 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
     window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
   }, [])
 
+  // "이 사람의 실적이 아님"으로 표시된 항목(동명이인 등)은 방문자에게 이 사람의 모아보기에서 빠집니다.
+  // 관리자에게는 흐리게 남아 있어서 "다시 포함"으로 되돌릴 수 있어요. (전체 목록에는 영향이 없습니다.)
+  const isExcluded = (p) => (p.excludeAuthors ?? []).includes(author.name)
+
   const { pubs, theses, patents } = useMemo(() => {
     const all = data.publications ?? []
     const mine = (p) => includesFocus(p.authors, focus) || includesFocus(p.translators, focus)
+    const show = (p) => isAdmin || !(p.excludeAuthors ?? []).includes(author.name)
     return {
-      pubs: all.filter((p) => p.type !== 'other' && mine(p)),
-      theses: all.filter((p) => p.type === 'other' && mine(p)),
-      patents: (data.patents ?? []).filter((p) => includesFocus(p.inventors, focus)),
+      pubs: all.filter((p) => p.type !== 'other' && mine(p) && show(p)),
+      theses: all.filter((p) => p.type === 'other' && mine(p) && show(p)),
+      patents: (data.patents ?? []).filter((p) => includesFocus(p.inventors, focus) && show(p)),
     }
-  }, [data, focus])
+  }, [data, focus, isAdmin, author.name])
+
+  const toolFor = (dataKey) =>
+    isAdmin && onToggleExclude
+      ? { name: author.name, isExcluded, onToggle: (item) => onToggleExclude(item, dataKey, author.name) }
+      : null
+
+  // 건수는 "제외된 항목"을 빼고 셉니다. (관리자 화면에도 방문자와 같은 숫자가 보입니다)
+  const counted = (list) => list.filter((p) => !isExcluded(p))
 
   // 0건인 종류는 요약·목록 모두에서 뺍니다.
   const sections = [
-    { key: 'publications', title: 'Publications', count: pubs.length },
-    { key: 'theses', title: 'Dissertations', count: theses.length },
-    { key: 'patents', title: 'Patents', count: patents.length },
-  ].filter((s) => s.count > 0)
-  const total = pubs.length + theses.length + patents.length
+    { key: 'publications', title: 'Publications', count: counted(pubs).length, shown: pubs.length },
+    { key: 'theses', title: 'Dissertations', count: counted(theses).length, shown: theses.length },
+    { key: 'patents', title: 'Patents', count: counted(patents).length, shown: patents.length },
+  ].filter((s) => s.shown > 0)
+  const total = counted(pubs).length + counted(theses).length + counted(patents).length
 
   // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 저역서 / 학위논문을 나눠서 셉니다.
-  const countType = (t) => pubs.filter((p) => p.type === t).length
+  const countType = (t) => counted(pubs).filter((p) => p.type === t).length
   const summary = [
     ['학술지 논문', countType('journal')],
     ['학회 발표', countType('conference')],
     ['저역서', countType('book')],
-    ['학위논문', theses.length],
-    ['특허', patents.length],
+    ['학위논문', counted(theses).length],
+    ['특허', counted(patents).length],
   ].filter(([, n]) => n > 0)
 
   return (
@@ -82,11 +97,23 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
             </h3>
           )}
           {s.key === 'publications' && (
-            <Publications items={pubs} onEdit={onEdit.publications} embedded focus={focus} />
+            <Publications
+              items={pubs}
+              onEdit={onEdit.publications}
+              embedded
+              focus={focus}
+              authorTool={toolFor('publications')}
+            />
           )}
-          {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} focus={focus} />}
+          {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} focus={focus} authorTool={toolFor('publications')} />}
           {s.key === 'patents' && (
-            <Patents items={patents} onEdit={onEdit.patents} onToggleHidden={onToggleHidden} focus={focus} />
+            <Patents
+              items={patents}
+              onEdit={onEdit.patents}
+              onToggleHidden={onToggleHidden}
+              focus={focus}
+              authorTool={toolFor('patents')}
+            />
           )}
         </section>
       ))}

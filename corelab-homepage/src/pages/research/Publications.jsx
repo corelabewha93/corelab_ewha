@@ -159,7 +159,7 @@ function stripSaleStatus(text = '') {
     .join(' · ')
 }
 
-export function PubItem({ pub, onEdit, terms = [], focus = null }) {
+export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = null }) {
   const isBook = pub.type === 'book'
   const { title, thesis } = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
 
@@ -178,8 +178,22 @@ export function PubItem({ pub, onEdit, terms = [], focus = null }) {
   const details = isBook ? stripSaleStatus(pub.details) : pub.details
 
   return (
-    <li className="pub-item admin-item">
+    <li className={`pub-item admin-item${authorTool?.excluded ? ' pub-item-excluded' : ''}`}>
       <EditButton onClick={() => onEdit(pub)} />
+      {authorTool && (
+        <button
+          type="button"
+          className={`pub-exclude-btn${authorTool.excluded ? ' is-excluded' : ''}`}
+          onClick={authorTool.onToggle}
+          title={
+            authorTool.excluded
+              ? `${authorTool.name}의 연구 실적에 다시 포함합니다`
+              : `동명이인 등 ${authorTool.name}의 실적이 아닐 때, 이 사람의 모아보기에서만 뺍니다 (전체 논문 목록에는 그대로 남아요)`
+          }
+        >
+          {authorTool.excluded ? '다시 포함' : '내 실적 아님'}
+        </button>
+      )}
       <p className="pub-title">
         {pub.link ? (
           <a href={pub.link} target="_blank" rel="noreferrer">
@@ -200,6 +214,9 @@ export function PubItem({ pub, onEdit, terms = [], focus = null }) {
         {typeTag && <span className={`pub-type-tag${typeTagClass}`}>{typeTag}</span>}
         <IndexBadges indexes={getIndexes(pub)} />
         <AwardBadge award={pub.award} />
+        {authorTool?.excluded && (
+          <span className="badge badge-hidden">{authorTool.name} 실적에서 제외됨 · 관리자에게만 보임</span>
+        )}
         {pub.doi && (
           <a className="pub-doi" href={`https://doi.org/${pub.doi}`} target="_blank" rel="noreferrer">
             DOI
@@ -221,13 +238,28 @@ export function groupByYear(list) {
   return Object.entries(groups).sort((a, b) => Number(b[0]) - Number(a[0]))
 }
 
-export function YearGroups({ groups, onEdit, terms = [], focus = null }) {
+export function YearGroups({ groups, onEdit, terms = [], focus = null, authorTool = null }) {
   return groups.map(([year, list]) => (
     <section key={year} className="pub-year-group">
       <h3 className="pub-year-title">{year}</h3>
       <ul className="pub-list">
         {list.map((pub) => (
-          <PubItem key={pub.id} pub={pub} onEdit={onEdit} terms={terms} focus={focus} />
+          <PubItem
+            key={pub.id}
+            pub={pub}
+            onEdit={onEdit}
+            terms={terms}
+            focus={focus}
+            authorTool={
+              authorTool
+                ? {
+                    name: authorTool.name,
+                    excluded: authorTool.isExcluded(pub),
+                    onToggle: () => authorTool.onToggle(pub),
+                  }
+                : null
+            }
+          />
         ))}
       </ul>
     </section>
@@ -249,7 +281,14 @@ export function searchText(p) {
  * embedded: "OOO의 연구 실적" 화면 안에 들어갈 때 — 상단 연구실 전체 통계를 숨깁니다.
  * focus: 모아보기 중인 사람 이름(비교용 Set). 저자 목록에서 그 이름만 초록색으로 표시합니다.
  */
-export default function Publications({ items = [], onEdit, initialQuery = '', embedded = false, focus = null }) {
+export default function Publications({
+  items = [],
+  onEdit,
+  initialQuery = '',
+  embedded = false,
+  focus = null,
+  authorTool = null,
+}) {
   const [filter, setFilter] = useState('all')
   const [query, setQuery] = useState(initialQuery)
   const terms = useMemo(() => toTerms(query), [query])
@@ -352,7 +391,7 @@ export default function Publications({ items = [], onEdit, initialQuery = '', em
         </p>
       )}
 
-      <YearGroups groups={byYear} onEdit={onEdit} terms={terms} focus={focus} />
+      <YearGroups groups={byYear} onEdit={onEdit} terms={terms} focus={focus} authorTool={authorTool} />
     </div>
   )
 }

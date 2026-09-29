@@ -7,7 +7,7 @@ import { groupByYear, YearGroups } from './Publications'
  * (제목 끝의 "(석사학위논문)" / "(박사학위논문)" 표시는 그대로 보입니다.)
  * 건수 통계·검색창·Ph.D./M.A. 구분 버튼 없이, 연도별 목록만 간결하게 보여줍니다.
  */
-export default function Theses({ items = [], onEdit, focus = null }) {
+export default function Theses({ items = [], onEdit, focus = null, authorTool = null }) {
   const theses = useMemo(() => items.filter((p) => p.type === 'other'), [items])
   const byYear = useMemo(() => groupByYear(theses), [theses])
 
@@ -15,7 +15,7 @@ export default function Theses({ items = [], onEdit, focus = null }) {
 
   return (
     <div className="pubs">
-      <YearGroups groups={byYear} onEdit={onEdit} terms={[]} focus={focus} />
+      <YearGroups groups={byYear} onEdit={onEdit} terms={[]} focus={focus} authorTool={authorTool} />
     </div>
   )
 }

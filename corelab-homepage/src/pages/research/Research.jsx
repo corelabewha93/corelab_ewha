@@ -4,6 +4,7 @@ import { useHashRoute, useQueryTab } from '../../router/useHashRoute'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 import { upsertItem, deleteItem } from '../../admin/collection'
 import { makeId } from '../../admin/dataStore'
+import { showToast } from '../../admin/toast'
 import { publicationFields, projectFields, patentFields, toolFields } from '../../admin/schemas'
 import Tabs from '../../components/Tabs'
 import EditModal from '../../components/admin/EditModal'
@@ -96,6 +97,31 @@ export default function Research() {
     )
   }
 
+  // 모아보기에서 "내 실적 아님 / 다시 포함" 버튼: 동명이인 논문을 이 사람의 실적에서만 빼거나 되돌립니다.
+  // 항목에 excludeAuthors(제외할 사람 이름 목록)를 적어 두는 방식이라, 전체 논문 목록에는 영향이 없습니다.
+  const toggleExclude = async (item, dataKey, name) => {
+    const current = Array.isArray(item.excludeAuthors) ? item.excludeAuthors : []
+    const excluded = current.includes(name)
+    const next = excluded ? current.filter((n) => n !== name) : [...current, name]
+    const title = item.title ?? ''
+    try {
+      await upsertItem(
+        token,
+        'research.json',
+        dataKey,
+        { ...item, excludeAuthors: next },
+        `${name} 실적 ${excluded ? '다시 포함' : '제외'}: ${title}`,
+      )
+      showToast(
+        excluded
+          ? `${name}의 연구 실적에 다시 포함했어요. 방문자 화면에는 1~2분 뒤 반영됩니다.`
+          : `${name}의 연구 실적에서 뺐어요. 방문자 화면에는 1~2분 뒤 반영됩니다.`,
+      )
+    } catch (err) {
+      showToast(`저장 실패: ${err.message}`, 6000)
+    }
+  }
+
   const initialFor = (key) =>
     EDITORS[key].defaults?.() ?? (key === 'publications' ? { year: new Date().getFullYear() } : {})
 
@@ -123,6 +149,7 @@ export default function Research() {
                 patents: onEdit('patents'),
               }}
               onToggleHidden={togglePatentHidden}
+              onToggleExclude={toggleExclude}
             />
           )}
 
