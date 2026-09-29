@@ -120,10 +120,12 @@ h1.section-title {
   }
 }
 
-/* ---------- Hero (About page) — 정식 이름 "Collaborative Research Learning Lab"이 먼저 뜨고,
-   약자에 쓰이지 않는 글자들이 남는 글자 속으로 빨려 들어가며 "CoRe Lab"이 완성되는 인트로.
-   단계(.hero-phase-full → -collapse → -done)는 HeroIntro.jsx가 시간에 맞춰 바꿔 줍니다. ---------- */
+/* ---------- Hero (About page) — "CoRe"가 COllaborative REsearch에서 왔다는 걸 보여주는 인트로.
+   정식 이름이 세로로 쌓여 등장 → Co·Re가 금색 밑줄과 함께 켜짐 → 나머지 글자가 사라지고
+   Co·Re·Lab 글자가 실제로 날아와 한 줄 "CoRe Lab"으로 합쳐짐 → 부제·모토·소속 등장.
+   단계(.hero-phase-intro → highlight → fade → mark → done)는 HeroIntro.jsx가 시간에 맞춰 바꿔 줍니다. ---------- */
 .hero-intro {
+  --hero-gold: #e4d083;
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
@@ -133,7 +135,7 @@ h1.section-title {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-3) calc(var(--space-6) + 1.5rem);
+  padding: var(--space-6) var(--space-3);
   overflow: hidden;
   color: var(--color-on-primary);
   background:
@@ -153,39 +155,46 @@ h1.section-title {
   max-width: 1000px;
 }
 
-/* 이름 한 줄. 처음엔 정식 이름 크기, 약자가 완성되면 로고 크기로 커집니다. */
+/* ---- 이름 ---- */
 .hero-name {
   margin: 0;
   font-weight: 800;
-  letter-spacing: -0.015em;
-  line-height: 1.12;
-  word-break: keep-all;
-  font-size: clamp(1.6rem, 5vw, 3.3rem);
-  text-wrap: balance;
-  transition: font-size 0.9s cubic-bezier(0.65, 0, 0.25, 1);
-  will-change: font-size;
+  letter-spacing: -0.02em;
+  line-height: 1.04;
+  /* 세로로 쌓인 단계: 왼쪽 정렬이라 Co · Re가 왼쪽 끝에 나란히 섭니다 */
+  text-align: left;
+  font-size: clamp(2.1rem, 10vw, 4.4rem);
 }
 
-.hero-phase-done .hero-name {
-  font-size: clamp(3rem, 11vw, 6.2rem);
-  letter-spacing: -0.02em;
+.hero-word {
+  display: block;
   white-space: nowrap;
 }
 
-.hero-seg {
+.hero-piece {
   display: inline;
-  white-space: pre-wrap;
 }
 
-/* 정식 이름 글자들이 위에서 살짝 내려앉으며 나타납니다. */
-.hero-phase-full .hero-name {
-  animation: hero-name-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+/* 날아가는 글자(Co, Re, Lab)는 transform이 먹도록 inline-block. 기준점은 왼쪽 위 */
+.hero-piece-keep {
+  position: relative;
+  display: inline-block;
+  transform-origin: 0 0;
+  transition:
+    color 0.6s ease,
+    text-shadow 0.9s ease;
 }
 
-@keyframes hero-name-in {
+/* 1) 한 단어씩 아래에서 떠오르며 등장 */
+.hero-phase-intro .hero-word {
+  animation: hero-word-in 0.85s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+  animation-delay: calc(var(--w, 0) * 0.14s + 0.1s);
+}
+
+@keyframes hero-word-in {
   from {
     opacity: 0;
-    transform: translateY(14px);
+    transform: translateY(0.35em);
     filter: blur(6px);
   }
   to {
@@ -195,73 +204,149 @@ h1.section-title {
   }
 }
 
-/* 사라지는 글자: 먼저 옅어진 뒤 크기가 0으로 줄어들어, 남는 글자들이 서로 다가와 붙습니다. */
-.hero-seg-drop {
-  opacity: 0.92;
+/* 2) Co · Re가 금색으로 켜지고, 나머지는 옅어짐 */
+.hero-piece-drop {
+  transition: opacity 0.55s ease;
+}
+
+.hero-phase-highlight .hero-piece-drop {
+  opacity: 0.2;
+}
+
+.hero-phase-highlight .hero-piece-core,
+.hero-phase-fade .hero-piece-core,
+.hero-phase-mark .hero-piece-core,
+.hero-phase-done .hero-piece-core {
+  color: var(--hero-gold);
+}
+
+/* Co · Re 아래 금색 밑줄 — 왼쪽에서 오른쪽으로 그어졌다가, 합쳐질 때 사라집니다 */
+.hero-piece-core::after {
+  content: '';
+  position: absolute;
+  left: 0.02em;
+  right: 0.04em;
+  bottom: 0.02em;
+  height: max(2px, 0.055em);
+  border-radius: 1px;
+  background: var(--hero-gold);
+  transform: scaleX(0);
+  transform-origin: left center;
   transition:
-    opacity 0.38s ease,
-    font-size 0.95s cubic-bezier(0.7, 0, 0.2, 1),
-    letter-spacing 0.95s cubic-bezier(0.7, 0, 0.2, 1),
-    filter 0.4s ease;
+    transform 0.6s cubic-bezier(0.2, 0.7, 0.2, 1) 0.15s,
+    opacity 0.3s ease;
 }
 
-.hero-phase-collapse .hero-seg-drop,
-.hero-phase-done .hero-seg-drop {
+.hero-phase-highlight .hero-piece-core::after,
+.hero-phase-fade .hero-piece-core::after {
+  transform: scaleX(1);
+}
+
+.hero-phase-mark .hero-piece-core::after,
+.hero-phase-done .hero-piece-core::after {
+  transform: scaleX(1);
   opacity: 0;
-  font-size: 0.001em;
-  letter-spacing: -0.2em;
-  filter: blur(3px);
 }
 
-/* 남는 글자 중 "CoRe"는 완성되는 순간 금색으로 물듭니다. */
-.hero-seg-keep {
-  transition: color 0.9s ease, text-shadow 0.9s ease;
+/* 3) 약자에 쓰이지 않는 글자가 사라짐 */
+.hero-phase-fade .hero-piece-drop {
+  opacity: 0;
 }
 
-.hero-phase-collapse .hero-seg-core,
-.hero-phase-done .hero-seg-core {
-  color: #e4d083;
-  text-shadow: 0 0 28px rgba(228, 208, 131, 0.28);
+/* 4) 한 줄 "CoRe Lab" 배치 — 글자 이동은 HeroIntro.jsx의 FLIP 애니메이션이 담당 */
+.hero-phase-mark .hero-name,
+.hero-phase-done .hero-name {
+  text-align: center;
+  font-size: clamp(3rem, 11.5vw, 6.4rem);
+  white-space: nowrap;
 }
 
-/* 이름 아래로 가늘게 퍼지는 선 */
+.hero-phase-mark .hero-word,
+.hero-phase-done .hero-word {
+  display: inline;
+}
+
+.hero-phase-mark .hero-word-drop,
+.hero-phase-done .hero-word-drop,
+.hero-phase-mark .hero-piece-drop,
+.hero-phase-done .hero-piece-drop {
+  display: none;
+}
+
+.hero-phase-mark .hero-piece-gap,
+.hero-phase-done .hero-piece-gap {
+  margin-left: 0.24em;
+}
+
+.hero-phase-done .hero-piece-core {
+  text-shadow: 0 0 30px rgba(228, 208, 131, 0.3);
+}
+
+/* ---- 이름 아래 ---- */
 .hero-rule {
   width: 0;
   height: 1px;
   margin: 1.6rem 0 1.3rem;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
-  transition: width 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s;
+  transition: width 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s;
 }
 
 .hero-phase-done .hero-rule {
   width: min(360px, 60%);
 }
 
-/* 정식 이름(작게) + 소속 문구 — 약자가 완성된 뒤에 조용히 올라옵니다. */
+/* 부제 · 모토 · 소속 — 약자가 완성된 뒤 차례로 올라옵니다 */
 .hero-after {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.9rem;
+  gap: 0.85rem;
+}
+
+.hero-after > * {
   opacity: 0;
   transform: translateY(10px);
   transition:
-    opacity 0.9s ease 0.45s,
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.45s;
+    opacity 0.9s ease,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
 }
 
-.hero-phase-done .hero-after {
+.hero-phase-done .hero-after > * {
   opacity: 1;
   transform: translateY(0);
 }
 
+.hero-phase-done .hero-after > :nth-child(1) {
+  transition-delay: 0.3s;
+}
+.hero-phase-done .hero-after > :nth-child(2) {
+  transition-delay: 0.65s;
+}
+.hero-phase-done .hero-after > :nth-child(3) {
+  transition-delay: 1s;
+}
+
 .hero-tagline {
   margin: 0;
-  font-size: clamp(0.82rem, 2.6vw, 1.05rem);
+  font-size: clamp(0.8rem, 2.5vw, 1.02rem);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.92);
+  color: rgba(255, 255, 255, 0.9);
+}
+
+/* 부제에서도 CO · RE만 금색 — 약자의 출처를 끝까지 남겨 둡니다 */
+.hero-tagline-core {
+  color: var(--hero-gold);
+}
+
+.hero-motto {
+  margin: 0.15rem 0 0;
+  font-size: clamp(1.1rem, 3.6vw, 1.5rem);
+  font-weight: 300;
+  letter-spacing: 0.005em;
+  line-height: 1.35;
+  color: rgba(255, 255, 255, 0.95);
 }
 
 .hero-affiliation {
@@ -269,48 +354,27 @@ h1.section-title {
   flex-wrap: wrap;
   justify-content: center;
   gap: 0.3em 1.4em;
-  margin: 0;
+  margin: 0.9rem 0 0;
 }
 
 .hero-affiliation p {
   margin: 0;
-  font-size: clamp(0.78rem, 2.4vw, 0.92rem);
+  font-size: clamp(0.74rem, 2.3vw, 0.86rem);
   font-weight: 500;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.62);
-}
-
-/* 모토 — 히어로 맨 아래에 작게 */
-.hero-motto {
-  position: absolute;
-  left: 0;
-  right: 0;
-  bottom: 1.6rem;
-  margin: 0;
-  text-align: center;
-  font-size: 0.78rem;
-  font-weight: 600;
-  letter-spacing: 0.22em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.45);
-  opacity: 0;
-  transition: opacity 1s ease 1s;
-}
-
-.hero-phase-done .hero-motto {
-  opacity: 1;
+  color: rgba(255, 255, 255, 0.55);
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-name,
-  .hero-seg-drop,
-  .hero-seg-keep,
+  .hero-word,
+  .hero-piece-drop,
+  .hero-piece-keep,
+  .hero-piece-core::after,
   .hero-rule,
-  .hero-after,
-  .hero-motto {
-    animation: none;
-    transition: none;
+  .hero-after > * {
+    animation: none !important;
+    transition: none !important;
   }
 }
 
@@ -319,7 +383,7 @@ h1.section-title {
     min-height: min(100vh, 640px);
   }
   .hero-tagline {
-    font-size: 0.76rem;
+    font-size: 0.74rem;
     letter-spacing: 0.09em;
     text-wrap: balance;
   }
@@ -808,6 +872,63 @@ h1.section-title {
   gap: var(--space-3);
 }
 
+/* 숨긴 소식 (관리자에게만 보임) */
+.news-hidden .news-list-card,
+.news-hidden .news-article {
+  opacity: 0.5;
+}
+
+.news-hidden:hover .news-list-card,
+.news-hidden:hover .news-article {
+  opacity: 0.85;
+}
+
+.news-hidden-chip {
+  display: inline-block;
+  margin-bottom: 0.35rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.1rem 0.5rem;
+  border-radius: 999px;
+  color: #a0651c;
+  background: #fff7e8;
+  border: 1px solid #e6c58f;
+}
+
+.news-hidden-note {
+  margin: 0 0 var(--space-2);
+  font-size: 0.8rem;
+  font-weight: 600;
+  color: #a0651c;
+}
+
+.news-hide-btn {
+  position: absolute;
+  top: 0.4rem;
+  right: 2.6rem;
+  z-index: 2;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.22rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.news-hide-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.news-hide-btn.is-hidden {
+  border-color: #e6c58f;
+  background: #fff7e8;
+  color: #a0651c;
+}
+
 .news-list-card {
   display: flex;
   gap: var(--space-3);
@@ -1125,6 +1246,78 @@ h1.section-title {
 
 .person-detail li.person-detail-pub a {
   font-weight: 600;
+}
+
+/* 연구 실적 모아보기 숨김/표시 (관리자에게만 보이는 부분) */
+.person-detail li.person-detail-pub {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.4rem 0.75rem;
+}
+
+.person-detail li.person-detail-pub.is-hidden a {
+  opacity: 0.45;
+}
+
+.person-pub-admin {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.45rem;
+}
+
+.person-pub-hidden-note {
+  font-size: 0.72rem;
+  font-weight: 600;
+  color: #a0651c;
+}
+
+.person-pub-toggle {
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.2rem 0.65rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.person-pub-toggle:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.person-pub-toggle.is-hidden {
+  border-color: #e6c58f;
+  background: #fff7e8;
+  color: #a0651c;
+}
+
+/* 카드 아래 작은 표시 — 모아보기를 숨긴 사람 (관리자에게만) */
+.person-card-flag {
+  display: inline-block;
+  margin-top: 0.3rem;
+  font-size: 0.68rem;
+  font-weight: 600;
+  padding: 0.1rem 0.45rem;
+  border-radius: 999px;
+  color: #a0651c;
+  background: #fff7e8;
+  border: 1px solid #e6c58f;
+}
+
+/* 관리자가 숨겨진 모아보기 화면을 볼 때 안내 */
+.author-hidden-note {
+  margin: 0 0 var(--space-3);
+  padding: 0.7rem 0.9rem;
+  font-size: 0.85rem;
+  color: #8a5a17;
+  background: #fff7e8;
+  border: 1px solid #e6c58f;
+  border-radius: var(--radius);
 }
 
 .people-group + .people-group {
