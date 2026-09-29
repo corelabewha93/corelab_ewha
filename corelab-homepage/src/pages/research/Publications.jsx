@@ -119,11 +119,19 @@ function IndexBadges({ indexes }) {
   )
 }
 
-/** 학회 수상 배지 — 상장 모양 아이콘 + 상 이름 */
-export function AwardBadge({ award }) {
+/**
+ * 수상 배지 — 상장 모양 아이콘 + 상 이름.
+ * org(수여 기관)를 함께 적으면 상 이름 옆에 가는 선으로 구분해 기관이 붙고, 색으로도 구분됩니다.
+ *   - 학회(이름에 "학회"가 들어감) : 남보라색
+ *   - 그 밖의 기관(대학원 등)      : 청록색
+ * org가 없으면 예전처럼 금색 배지 하나로 보입니다. (박사학위논문 태그의 금색과는 별개입니다.)
+ */
+export function AwardBadge({ award, org = '' }) {
   if (!award) return null
+  const orgText = (org ?? '').trim()
+  const kind = !orgText ? '' : orgText.includes('학회') ? ' pub-award-society' : ' pub-award-univ'
   return (
-    <span className="pub-award" title="학회 수상">
+    <span className={`pub-award${kind}`} title={orgText ? `${orgText} 수여` : '수상'}>
       <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
         <path
           d="M4.5 1.5h7l-.9 6.2a2.6 2.6 0 0 1-5.2 0z"
@@ -140,6 +148,7 @@ export function AwardBadge({ award }) {
         />
       </svg>
       {award}
+      {orgText && <span className="pub-award-org">{orgText}</span>}
     </span>
   )
 }
@@ -213,7 +222,7 @@ export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = nu
         )}
         {typeTag && <span className={`pub-type-tag${typeTagClass}`}>{typeTag}</span>}
         <IndexBadges indexes={getIndexes(pub)} />
-        <AwardBadge award={pub.award} />
+        <AwardBadge award={pub.award} org={pub.awardOrg} />
         {authorTool?.excluded && (
           <span className="badge badge-hidden">{authorTool.name} 실적에서 제외됨 · 관리자에게만 보임</span>
         )}
