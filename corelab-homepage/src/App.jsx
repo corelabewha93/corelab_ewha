@@ -1,4 +1,4 @@
-import { lazy, Suspense, useEffect } from 'react'
+import { useEffect } from 'react'
 import { useHashRoute } from './router/useHashRoute'
 import Link from './router/Link'
 import { AdminAuthProvider } from './admin/AdminAuthContext'
@@ -9,8 +9,6 @@ import News from './pages/News'
 import Research from './pages/research/Research'
 import People from './pages/People'
 import LabLife from './pages/LabLife'
-// [임시] 로고 시안 예시 화면 — 이 주소로 들어올 때만 따로 불러와서, 다른 페이지 속도에는 영향이 없습니다.
-const LogoPreview = lazy(() => import('./pages/LogoPreview'))
 import { Toaster } from './components/admin/AdminControls'
 
 const ROUTES = {
@@ -19,7 +17,6 @@ const ROUTES = {
   '/research': Research,
   '/people': People,
   '/lablife': LabLife,
-  '/logo-preview': LogoPreview, // [임시] 메뉴에는 없음. 시안 확정 후 이 줄과 위 import를 지우면 됩니다.
 }
 
 function NotFound() {
@@ -46,12 +43,9 @@ export default function App() {
 
   return (
     <AdminAuthProvider>
-      {/* [임시] 테스트 홈 화면(/logo-preview)에서만 상단 "CoRe"를 로고로 보여줍니다. 다른 페이지는 그대로예요. */}
-      <Header brandLogo={path === '/logo-preview'} />
+      <Header />
       <main>
-        <Suspense fallback={null}>
-          <Page />
-        </Suspense>
+        <Page />
       </main>
       <Footer />
       <Toaster />
