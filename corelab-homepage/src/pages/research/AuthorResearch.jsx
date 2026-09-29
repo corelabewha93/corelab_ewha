@@ -31,7 +31,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
   // 0건인 종류는 요약·목록 모두에서 뺍니다.
   const sections = [
     { key: 'publications', title: 'Publications', count: pubs.length },
-    { key: 'theses', title: 'Theses', count: theses.length },
+    { key: 'theses', title: 'Dissertations', count: theses.length },
     { key: 'patents', title: 'Patents', count: patents.length },
   ].filter((s) => s.count > 0)
   const total = pubs.length + theses.length + patents.length
@@ -84,7 +84,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
           {s.key === 'publications' && (
             <Publications items={pubs} onEdit={onEdit.publications} embedded focus={focus} />
           )}
-          {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} embedded focus={focus} />}
+          {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} focus={focus} />}
           {s.key === 'patents' && (
             <Patents items={patents} onEdit={onEdit.patents} onToggleHidden={onToggleHidden} focus={focus} />
           )}

@@ -18,7 +18,7 @@ import AuthorResearch from './AuthorResearch'
 
 const TABS = [
   { key: 'publications', label: 'Publications' },
-  { key: 'theses', label: 'Theses' },
+  { key: 'theses', label: 'Dissertations' },
   { key: 'projects', label: 'Projects' },
   { key: 'patents', label: 'Patents' },
   { key: 'tools', label: 'Systems & Tools' },
@@ -27,7 +27,7 @@ const TABS = [
 const EDITORS = {
   // 학술지 논문 · 학회 발표 · 저역서(type: 'book')가 모두 publications 목록에 함께 저장됩니다.
   publications: { fields: publicationFields, label: '논문', prefix: 'pub', titleOf: (i) => i.title },
-  // 학위논문도 같은 목록(publications)에 type: 'other'로 저장되고, Theses 탭에서만 보여줍니다.
+  // 학위논문도 같은 목록(publications)에 type: 'other'로 저장되고, Dissertations 탭에서만 보여줍니다.
   theses: {
     fields: publicationFields,
     label: '학위논문',
