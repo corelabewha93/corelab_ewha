@@ -120,218 +120,212 @@ h1.section-title {
   }
 }
 
-/* ---------- Hero (About page) — 커다란 세로 키워드가 화면 가득 쏟아졌다 연해지고,
-   그 위로 모토 → 소속 → CoRe Lab 로고가 순서대로 등장하는 풀블리드 인트로 시퀀스 ---------- */
-.hero-sequence {
+/* ---------- Hero (About page) — 정식 이름 "Collaborative Research Learning Lab"이 먼저 뜨고,
+   약자에 쓰이지 않는 글자들이 남는 글자 속으로 빨려 들어가며 "CoRe Lab"이 완성되는 인트로.
+   단계(.hero-phase-full → -collapse → -done)는 HeroIntro.jsx가 시간에 맞춰 바꿔 줍니다. ---------- */
+.hero-intro {
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
   margin-bottom: var(--space-6);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  min-height: 100vh;
-  overflow: hidden;
+  min-height: min(100vh, 860px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-3);
+  padding: var(--space-6) var(--space-3) calc(var(--space-6) + 1.5rem);
+  overflow: hidden;
+  color: var(--color-on-primary);
+  background:
+    radial-gradient(900px 600px at 82% -10%, rgba(69, 162, 188, 0.28), rgba(69, 162, 188, 0) 62%),
+    radial-gradient(700px 520px at 8% 110%, rgba(217, 201, 122, 0.12), rgba(217, 201, 122, 0) 60%),
+    linear-gradient(135deg, #003a22 0%, var(--color-primary) 48%, #01532f 100%);
 }
 
-/* 배경 레이어: 연구 분야 키워드가 세로(반시계방향)로 크게 떨어졌다가 아주 옅게 가라앉습니다. */
-.hero-kw-fall {
-  position: absolute;
-  inset: 0;
-  display: flex;
-  flex-direction: row;
-  align-items: center;
-  justify-content: space-evenly;
-  list-style: none;
-  margin: 0;
-  padding: 0 4vw;
-  pointer-events: none;
-}
-
-.hero-kw-fall-item {
-  opacity: 0;
-  transform: translateY(-42vh);
-  animation: hero-kw-fall-seq 2.4s cubic-bezier(0.16, 0.7, 0.2, 1) forwards;
-  animation-delay: calc(var(--i, 0) * 0.22s + 0.1s);
-}
-
-/* writing-mode이 레이아웃 박스 자체를 세로로 계산해주므로(rotate 트랜스폼과 달리
-   가로 폭을 그대로 차지하지 않음), vertical-rl + 180deg 회전으로 시계반대방향처럼
-   보이는 세로 텍스트를 만듭니다. */
-.hero-kw-fall-text {
-  writing-mode: vertical-rl;
-  text-orientation: mixed;
-  transform: rotate(180deg);
-  white-space: nowrap;
-  display: block;
-  font-weight: 900;
-  letter-spacing: 0.02em;
-  text-transform: uppercase;
-  line-height: 1;
-  color: #a9e0c4;
-  /* 세로로 세운 글자는 높이가 (글자 수 × 글자 크기)라서, 화면 높이보다 길어지면 위아래가 잘립니다.
-     가장 긴 키워드(--kw-chars, About.jsx에서 계산)가 화면 높이의 84% 안에 들어오도록 크기를 제한합니다.
-     0.74 = 대문자 한 글자가 차지하는 평균 폭(em). */
-  --kw-fit: calc(84vh / (var(--kw-chars, 22) * 0.74));
-  font-size: min(clamp(1.9rem, 10vw, 3.2rem), var(--kw-fit));
-}
-
-/* 녹색 계열 안에서 서로 구분되는, 인식 가능한 톤으로 순서대로 내려옵니다. */
-.hero-kw-fall-item:nth-child(4n + 1) .hero-kw-fall-text {
-  color: #a9e0c4; /* 페일 민트 */
-}
-.hero-kw-fall-item:nth-child(4n + 2) .hero-kw-fall-text {
-  color: #7fc9d9; /* 이화 블루 계열 */
-}
-.hero-kw-fall-item:nth-child(4n + 3) .hero-kw-fall-text {
-  color: #d9c97a; /* 소프트 골드 */
-}
-.hero-kw-fall-item:nth-child(4n + 4) .hero-kw-fall-text {
-  color: #6fc7a0; /* 진한 민트 */
-}
-
-@keyframes hero-kw-fall-seq {
-  0% {
-    opacity: 0;
-    transform: translateY(-42vh);
-  }
-  30% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  58% {
-    opacity: 1;
-    transform: translateY(0);
-  }
-  100% {
-    opacity: 0.1;
-    transform: translateY(0);
-  }
-}
-
-/* 전경 레이어: 모토 → 소속 → CoRe Lab 로고 순서로 쌓입니다. */
-.hero-sequence-content {
+.hero-intro-content {
   position: relative;
-  z-index: 2;
+  z-index: 1;
   display: flex;
   flex-direction: column;
   align-items: center;
   text-align: center;
-  gap: var(--space-4);
-  max-width: 960px;
+  width: 100%;
+  max-width: 1000px;
 }
 
-.hero-motto-reveal {
-  opacity: 0;
+/* 이름 한 줄. 처음엔 정식 이름 크기, 약자가 완성되면 로고 크기로 커집니다. */
+.hero-name {
   margin: 0;
-  font-size: clamp(1.5rem, 7vw, 3.6rem);
   font-weight: 800;
-  letter-spacing: -0.01em;
-  line-height: 1.15;
-  color: var(--color-on-primary);
-  animation: hero-fade-up 0.9s ease forwards;
-  animation-delay: 2.55s;
+  letter-spacing: -0.015em;
+  line-height: 1.12;
+  word-break: keep-all;
+  font-size: clamp(1.6rem, 5vw, 3.3rem);
+  text-wrap: balance;
+  transition: font-size 0.9s cubic-bezier(0.65, 0, 0.25, 1);
+  will-change: font-size;
 }
 
-/* Invisible → Visible로 바뀌는 느낌을, "Invisible" 속 visible과 뒤이은 "Visible"을
-   같은 강조색으로 이어 붙여 표현합니다. */
-.hero-motto-accent {
-  /* 처음엔 나머지 글자와 같은 흰색으로 함께 나타났다가, 잠시 뒤 강조색으로 물듭니다.
-     (Invisible이 Visible로 "보이게 되는" 순간을 색 변화로 표현) */
-  color: var(--color-on-primary);
-  animation: hero-motto-tint 0.9s ease forwards;
-  animation-delay: 3.6s;
-}
-
-@keyframes hero-motto-tint {
-  from {
-    color: var(--color-on-primary);
-  }
-  to {
-    color: var(--color-accent);
-  }
-}
-
-.hero-affiliation {
-  opacity: 0;
-  display: flex;
-  flex-direction: column;
-  gap: 0.35em;
-  margin: 0;
-  animation: hero-fade-up 0.9s ease forwards;
-  animation-delay: 3.35s;
-}
-
-.hero-affiliation p {
-  margin: 0;
-  font-size: clamp(0.92rem, 3.4vw, 1.05rem);
-  font-weight: 600;
-  letter-spacing: 0.08em;
-  text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.78);
-}
-
-.hero-final-logo {
-  opacity: 0;
-  margin: 0;
-  font-size: clamp(2.4rem, 9vw, 4.6rem);
-  font-weight: 900;
+.hero-phase-done .hero-name {
+  font-size: clamp(3rem, 11vw, 6.2rem);
   letter-spacing: -0.02em;
-  line-height: 1.05;
-  color: var(--color-on-primary);
-  animation: hero-fade-up 1s ease forwards;
-  animation-delay: 4.15s;
+  white-space: nowrap;
 }
 
-/* "CoRe Lab"에서 CoRe만 소프트 골드로 강조 (히어로 키워드 팔레트의 골드와 같은 색) */
-.hero-final-core {
-  color: #d9c97a;
+.hero-seg {
+  display: inline;
+  white-space: pre-wrap;
 }
 
-@keyframes hero-fade-up {
+/* 정식 이름 글자들이 위에서 살짝 내려앉으며 나타납니다. */
+.hero-phase-full .hero-name {
+  animation: hero-name-in 1s cubic-bezier(0.2, 0.7, 0.2, 1) both;
+}
+
+@keyframes hero-name-in {
   from {
     opacity: 0;
-    transform: translateY(16px);
+    transform: translateY(14px);
+    filter: blur(6px);
   }
   to {
     opacity: 1;
     transform: translateY(0);
+    filter: blur(0);
   }
+}
+
+/* 사라지는 글자: 먼저 옅어진 뒤 크기가 0으로 줄어들어, 남는 글자들이 서로 다가와 붙습니다. */
+.hero-seg-drop {
+  opacity: 0.92;
+  transition:
+    opacity 0.38s ease,
+    font-size 0.95s cubic-bezier(0.7, 0, 0.2, 1),
+    letter-spacing 0.95s cubic-bezier(0.7, 0, 0.2, 1),
+    filter 0.4s ease;
+}
+
+.hero-phase-collapse .hero-seg-drop,
+.hero-phase-done .hero-seg-drop {
+  opacity: 0;
+  font-size: 0.001em;
+  letter-spacing: -0.2em;
+  filter: blur(3px);
+}
+
+/* 남는 글자 중 "CoRe"는 완성되는 순간 금색으로 물듭니다. */
+.hero-seg-keep {
+  transition: color 0.9s ease, text-shadow 0.9s ease;
+}
+
+.hero-phase-collapse .hero-seg-core,
+.hero-phase-done .hero-seg-core {
+  color: #e4d083;
+  text-shadow: 0 0 28px rgba(228, 208, 131, 0.28);
+}
+
+/* 이름 아래로 가늘게 퍼지는 선 */
+.hero-rule {
+  width: 0;
+  height: 1px;
+  margin: 1.6rem 0 1.3rem;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
+  transition: width 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.25s;
+}
+
+.hero-phase-done .hero-rule {
+  width: min(360px, 60%);
+}
+
+/* 정식 이름(작게) + 소속 문구 — 약자가 완성된 뒤에 조용히 올라옵니다. */
+.hero-after {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.9rem;
+  opacity: 0;
+  transform: translateY(10px);
+  transition:
+    opacity 0.9s ease 0.45s,
+    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1) 0.45s;
+}
+
+.hero-phase-done .hero-after {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-tagline {
+  margin: 0;
+  font-size: clamp(0.82rem, 2.6vw, 1.05rem);
+  font-weight: 600;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.92);
+}
+
+.hero-affiliation {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: 0.3em 1.4em;
+  margin: 0;
+}
+
+.hero-affiliation p {
+  margin: 0;
+  font-size: clamp(0.78rem, 2.4vw, 0.92rem);
+  font-weight: 500;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.62);
+}
+
+/* 모토 — 히어로 맨 아래에 작게 */
+.hero-motto {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 1.6rem;
+  margin: 0;
+  text-align: center;
+  font-size: 0.78rem;
+  font-weight: 600;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.45);
+  opacity: 0;
+  transition: opacity 1s ease 1s;
+}
+
+.hero-phase-done .hero-motto {
+  opacity: 1;
 }
 
 @media (prefers-reduced-motion: reduce) {
-  .hero-kw-fall-item {
+  .hero-name,
+  .hero-seg-drop,
+  .hero-seg-keep,
+  .hero-rule,
+  .hero-after,
+  .hero-motto {
     animation: none;
-    opacity: 0.1;
-    transform: none;
-  }
-  .hero-motto-reveal,
-  .hero-affiliation,
-  .hero-final-logo {
-    animation: none;
-    opacity: 1;
-    transform: none;
-  }
-  .hero-motto-accent {
-    animation: none;
-    color: var(--color-accent);
+    transition: none;
   }
 }
 
-@media (min-width: 720px) {
-  .hero-kw-fall {
-    justify-content: center;
-    column-gap: clamp(1.6rem, 5vw, 4.5rem);
+@media (max-width: 560px) {
+  .hero-intro {
+    min-height: min(100vh, 640px);
   }
-  .hero-kw-fall-text {
-    font-size: min(clamp(2.4rem, 6vw, 5rem), var(--kw-fit));
+  .hero-tagline {
+    font-size: 0.76rem;
+    letter-spacing: 0.09em;
+    text-wrap: balance;
   }
-  .hero-affiliation p {
-    font-size: 1.2rem;
+  .hero-affiliation {
+    flex-direction: column;
+    gap: 0.35em;
   }
 }
 
@@ -1159,10 +1153,11 @@ h1.section-title {
 
 /* ---------- Research lists ---------- */
 
-/* 상단 요약 숫자 (Journal Articles / SSCI·SCIE / Scopus / KCI / Conferences) */
+/* 상단 요약 숫자 (Journal Articles / International(SSCI 포함) / KCI / Conferences / Books)
+   International + KCI = Journal Articles 가 되도록 겹치지 않게 셉니다. */
 .pub-stats {
   display: grid;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(5, 1fr);
   margin: 0 0 var(--space-4);
   border-top: 2px solid var(--color-primary);
   border-bottom: 1px solid var(--color-border);
@@ -1194,6 +1189,23 @@ h1.section-title {
   line-height: 1.1;
   color: var(--color-primary);
   font-variant-numeric: tabular-nums;
+}
+
+/* "International 14" 옆에 작게 붙는 "SSCI 12" */
+.pub-stats-sub {
+  display: inline-block;
+  margin-left: 0.45rem;
+  font-size: 0.72rem;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--color-text-muted);
+  vertical-align: 0.15em;
+}
+
+/* Theses 탭의 요약 (Theses / Ph.D. / M.A.) — 3칸 */
+.pub-stats-theses {
+  grid-template-columns: repeat(3, 1fr);
+  max-width: 480px;
 }
 
 /* 필터 줄 */
@@ -1438,14 +1450,6 @@ mark.pub-hl {
   line-height: 1.2;
 }
 
-.pub-year-count {
-  display: block;
-  margin-top: 0.2rem;
-  font-size: 0.72rem;
-  font-weight: 500;
-  color: var(--color-text-muted);
-}
-
 .pub-list {
   list-style: none;
   margin: 0;
@@ -1529,13 +1533,54 @@ mark.pub-hl {
   border-color: #d7dce2;
 }
 
+/* 저역서 (저서 / 번역서 / 저서 (챕터 저술)) — 연한 초록 */
+.pub-type-tag-book {
+  color: var(--color-primary);
+  background: var(--color-primary-soft);
+  border-color: rgba(0, 70, 42, 0.18);
+}
+
+/* 저역서 저자 줄의 "지은이 / 옮긴이" 구분 표시 */
+.pub-role-label {
+  margin-right: 0.3rem;
+  font-size: 0.78rem;
+  color: var(--color-text-muted);
+  opacity: 0.8;
+}
+
+.pub-role-sep {
+  opacity: 0.6;
+}
+
+/* 학회 수상 배지 — 다른 배지와 같은 높이·모서리, 상장 아이콘 + 연한 금색으로 "수상"이 바로 읽히게 */
+.pub-award {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.28rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  line-height: 1;
+  padding: 0.24rem 0.5rem 0.24rem 0.42rem;
+  border-radius: 3px;
+  color: #8a6a12;
+  background: linear-gradient(180deg, #fdf6dd 0%, #f7ebc2 100%);
+  border: 1px solid #e3cf8a;
+  white-space: nowrap;
+}
+
+.pub-award svg {
+  flex: none;
+  color: #b8912a;
+}
+
 .pub-doi {
   font-size: 0.72rem;
   font-weight: 600;
   color: var(--color-accent);
 }
 
-/* 등재 등급 배지: SSCI(진한 초록) · SCIE(청록빛 초록, 구분용) > Scopus(연초록) > KCI(회색) */
+/* 등재 등급 배지: 논문마다 가장 높은 등급 하나만 — SSCI(진한 초록) > Scopus(연초록) > KCI(회색) */
 .pub-index-badges {
   display: inline-flex;
   gap: 0.25rem;
@@ -1554,12 +1599,6 @@ mark.pub-hl {
 
 .pub-index-ssci {
   background: var(--color-primary);
-  color: #fff;
-}
-
-.pub-index-scie {
-  /* 같은 초록 계열이되 청록에 가깝게 틀어서 SSCI와 구분되도록 합니다 */
-  background: #1f6b4f;
   color: #fff;
 }
 
@@ -1589,6 +1628,50 @@ mark.pub-hl {
 .badge.ongoing {
   color: var(--color-accent);
   border-color: var(--color-accent);
+}
+
+/* 숨긴 특허 (관리자에게만 보임) */
+.badge-hidden {
+  color: #a0651c;
+  border-color: #e6c58f;
+  background: #fff7e8;
+}
+
+.patent-item.patent-hidden {
+  opacity: 0.55;
+}
+
+.patent-item.patent-hidden:hover {
+  opacity: 0.85;
+}
+
+.patent-hide-btn {
+  position: absolute;
+  top: 0.55rem;
+  right: 2.6rem;
+  font: inherit;
+  font-size: 0.74rem;
+  font-weight: 600;
+  padding: 0.22rem 0.6rem;
+  border-radius: 999px;
+  border: 1px solid var(--color-border-strong);
+  background: var(--color-surface);
+  color: var(--color-text-muted);
+  cursor: pointer;
+}
+
+.patent-hide-btn:hover {
+  border-color: var(--color-primary);
+  color: var(--color-primary);
+}
+
+.patent-hide-btn.is-hidden {
+  border-color: #e6c58f;
+  color: #a0651c;
+}
+
+.patent-item:has(> .patent-hide-btn) {
+  padding-right: 8rem;
 }
 
 .project-item .pub-venue,
@@ -1682,7 +1765,7 @@ mark.pub-hl {
 }
 
 @media (max-width: 700px) {
-  /* 모바일: 3열 x 2줄 (1줄 = Journal Articles / SSCI·SCIE / Scopus, 2줄 = KCI / Conferences / Theses) */
+  /* 모바일: 3열 x 2줄 (1줄 = Journal Articles / International / KCI, 2줄 = Conferences / Books) */
   .pub-stats {
     grid-template-columns: repeat(3, 1fr);
   }
@@ -1728,11 +1811,6 @@ mark.pub-hl {
     align-items: baseline;
     gap: 0.5rem;
     margin-bottom: 0.25rem;
-  }
-
-  .pub-year-count {
-    display: inline;
-    margin: 0;
   }
 
   .book-row {
