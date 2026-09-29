@@ -7,40 +7,7 @@ import EditModal from '../components/admin/EditModal'
 import { EditButton } from '../components/admin/AdminControls'
 import SafeImage from '../components/SafeImage'
 import Link from '../router/Link'
-
-/** 연구 분야 태그가 "Computer-Supported Collaborative Learning (CSCL)"처럼 길면,
- *  히어로 키워드 목록에서는 괄호 속 약어만 크게 보여줍니다. */
-function heroKeyword(area) {
-  const m = area.match(/\(([^)]+)\)\s*$/)
-  return m ? m[1] : area
-}
-
-/** "CoRe Lab"에서 "CoRe" 부분만 강조색으로 표시합니다. (랩 이름이 CoRe로 시작하지 않으면 그대로) */
-function renderLabName(name) {
-  const m = name.match(/^(\s*CoRe)(.*)$/i)
-  if (!m) return name
-  return (
-    <>
-      <span className="hero-final-core">{m[1]}</span>
-      {m[2]}
-    </>
-  )
-}
-
-/** 모토 문구 속 "visible" 부분(Invisible의 뒷부분 + Visible)만 강조색으로 표시해,
- *  "Invisible → Visible"로 바뀌는 느낌을 색 변화로 보여줍니다. */
-function renderMotto(text) {
-  if (!text) return null
-  return text.split(/(visible)/gi).map((part, i) =>
-    /^visible$/i.test(part) ? (
-      <span key={i} className="hero-motto-accent">
-        {part}
-      </span>
-    ) : (
-      part
-    )
-  )
-}
+import HeroIntro from '../components/HeroIntro'
 
 function NewsPreview() {
   const { data } = useData('news.json')
@@ -81,7 +48,7 @@ export default function About() {
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { labName, mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } = data ?? {}
+  const { labName = '', labTagline = '', mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } = data ?? {}
 
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
@@ -91,36 +58,12 @@ export default function About() {
       <div className="admin-item">
         <EditButton onClick={() => setEditing(true)} label="소개 내용 수정" />
 
-        <section className="hero-sequence">
-          {researchAreas.length > 0 && (
-            <ul
-              className="hero-kw-fall"
-              aria-hidden="true"
-              /* 가장 긴 키워드 글자 수 → CSS에서 화면 높이에 맞춰 글자 크기를 제한하는 데 씁니다 (양 끝 키워드 잘림 방지) */
-              style={{ '--kw-chars': Math.max(...researchAreas.map((kw) => heroKeyword(kw).length)) }}
-            >
-              {researchAreas.map((kw, i) => (
-                <li key={kw} className="hero-kw-fall-item" style={{ '--i': i }}>
-                  <span className="hero-kw-fall-text">{heroKeyword(kw)}</span>
-                </li>
-              ))}
-            </ul>
-          )}
-
-          <div className="hero-sequence-content">
-            {mottoEn && <p className="hero-motto-reveal">{renderMotto(mottoEn)}</p>}
-
-            {heroAffiliation.length > 0 && (
-              <div className="hero-affiliation">
-                {heroAffiliation.map((line, i) => (
-                  <p key={i}>{line}</p>
-                ))}
-              </div>
-            )}
-
-            {labName && <h1 className="hero-final-logo">{renderLabName(labName)}</h1>}
-          </div>
-        </section>
+        <HeroIntro
+          labName={labName}
+          tagline={labTagline}
+          affiliation={heroAffiliation}
+          motto={mottoEn}
+        />
 
         <section className="section">
           <h2 className="section-title">Lab Overview</h2>
