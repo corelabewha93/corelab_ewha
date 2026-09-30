@@ -722,7 +722,7 @@
     },
     {
       "name": "정유진",
-      "photo": "",
+      "photo": "images/people/정유진-munt4io0.jpg",
       "degree": "PhD",
       "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
       "bio": "",
@@ -736,7 +736,13 @@
       "nameEn": "",
       "pubNames": [
         "Jung, Y"
-      ]
+      ],
+      "photoCrop": {
+        "x": 50.9,
+        "y": 60.3,
+        "zoom": 1
+      },
+      "hideResearch": ""
     }
   ]
 }
