@@ -286,7 +286,7 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
                   onChange={(e) => update(i, { name: e.target.value })}
                 />
                 <select className="modal-input" value={row.role} onChange={(e) => update(i, { role: e.target.value })}>
-                  {roles.map((r) => (
+                  {(roles.includes(row.role) || !row.role ? roles : [row.role, ...roles]).map((r) => (
                     <option key={r} value={r}>
                       {r}
                     </option>
