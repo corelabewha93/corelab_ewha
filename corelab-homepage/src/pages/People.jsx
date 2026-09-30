@@ -210,7 +210,7 @@ export default function People() {
 
   return (
     <div className="page container">
-      <PageTitle sub={TABS.find((t) => t.key === tab)?.label}>People</PageTitle>
+      <PageTitle pinDesktop sub={TABS.find((t) => t.key === tab)?.label}>People</PageTitle>
 
       <div className="tabs-layout">
         <Tabs
