@@ -1,4 +1,4 @@
-import { useEffect, useMemo } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
 import Publications from './Publications'
 import Theses from './Theses'
 import Patents from './Patents'
@@ -14,6 +14,23 @@ import { useAdminAuth } from '../../admin/AdminAuthContext'
 export default function AuthorResearch({ data, author, onClear, onEdit, onToggleHidden, onToggleExclude }) {
   const { isAdmin } = useAdminAuth()
   const focus = useMemo(() => makeFocus(author.aliases), [author])
+  const headRef = useRef(null)
+
+  // PC: 이름 머리말은 스크롤해도 제목 아래에 고정됩니다. 그 높이(--author-h)를 알려 주면
+  // 연도가 머리말 바로 아래에 붙습니다.
+  useLayoutEffect(() => {
+    const root = document.documentElement
+    const el = headRef.current
+    if (!el) return
+    const set = () => root.style.setProperty('--author-h', `${Math.round(el.getBoundingClientRect().height)}px`)
+    set()
+    const ro = new ResizeObserver(set)
+    ro.observe(el)
+    return () => {
+      ro.disconnect()
+      root.style.removeProperty('--author-h')
+    }
+  }, [])
 
   // 모아보기 화면이 열리면 이름이 먼저 보이도록 맨 위로 올립니다.
   // (People 페이지 아래쪽에서 눌러 들어와도 중간부터 보이지 않게)
@@ -68,7 +85,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
 
   return (
     <div className="author-research">
-      <div className="pub-author-head">
+      <div className="pub-author-head" ref={headRef}>
         <div>
           <p className="pub-author-eyebrow">Research Output</p>
           <h2 className="pub-author-name">

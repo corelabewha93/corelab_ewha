@@ -128,7 +128,9 @@ export default function Research() {
 
   return (
     <div className="page container">
-      <PageTitle sub={authorFilter ? '' : TABS.find((t) => t.key === tab)?.label}>Research</PageTitle>
+      <PageTitle pinDesktop sub={authorFilter ? authorFilter.name : TABS.find((t) => t.key === tab)?.label}>
+        Research
+      </PageTitle>
 
       <div className="tabs-layout">
         {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
