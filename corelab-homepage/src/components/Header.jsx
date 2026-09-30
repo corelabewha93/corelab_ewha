@@ -2,6 +2,7 @@ import { useEffect, useRef, useState } from 'react'
 import Link from '../router/Link'
 import { useData } from '../hooks/useData'
 import CoreLogo from './CoreLogo'
+import CoreWordmark from './CoreWordmark'
 
 const NAV_ITEMS = [
   { to: '/', label: 'About' },
@@ -50,10 +51,11 @@ export default function Header({ brandLogo = false }) {
           ) : (
             <span className="brand-name">
               {/^\s*CoRe/i.test(labName) ? (
-                <>
-                  <span className="brand-core">CoRe</span>
-                  {labRest ? ` ${labRest}` : ''}
-                </>
+                <span className="brand-wordmark">
+                  {/* 메인 화면에서 완성되는 CoRe 로고와 같은 모양·색 */}
+                  <CoreWordmark className="brand-core-logo" />
+                  {labRest && <span className="brand-rest">{labRest}</span>}
+                </span>
               ) : (
                 labName
               )}
