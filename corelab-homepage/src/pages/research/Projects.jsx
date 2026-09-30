@@ -1,5 +1,6 @@
 import { EditButton } from '../../components/admin/AdminControls'
 import { PROJECT_MEMBER_ROLES } from '../../admin/schemas'
+import FocusNames from './FocusNames'
 
 function isOngoing(end) {
   if (!end) return true
@@ -51,7 +52,7 @@ function groupMembers(members = []) {
  * 여러 해에 걸친 연속과제는 한 줄로 묶어, 전체 기간과 총 연구비를 보여줍니다.
  * 왼쪽에는 과제 기간(시작–종료 연도), 오른쪽에는 과제명 · 지원기관 · 사업명/규모 · 연구비 · 참여연구진.
  */
-export default function Projects({ items = [], onEdit }) {
+export default function Projects({ items = [], onEdit, focus = null }) {
   if (items.length === 0) return <p className="empty-state">등록된 연구과제가 없습니다.</p>
 
   const sorted = [...items].sort((a, b) => (b.start ?? '').localeCompare(a.start ?? ''))
@@ -117,7 +118,7 @@ export default function Projects({ items = [], onEdit }) {
                     {groups.map((g) => (
                       <span key={g.role} className="project-members-group">
                         <span className="project-members-role">{g.role}</span>
-                        {g.names.join(', ')}
+                        <FocusNames names={g.names} focus={focus} />
                       </span>
                     ))}
                   </span>

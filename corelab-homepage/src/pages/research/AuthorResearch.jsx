@@ -2,6 +2,7 @@ import { useEffect, useMemo } from 'react'
 import Publications from './Publications'
 import Theses from './Theses'
 import Patents from './Patents'
+import Projects from './Projects'
 import { makeFocus, includesFocus } from './authorMatch'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 
@@ -24,7 +25,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
   // 관리자에게는 흐리게 남아 있어서 "다시 포함"으로 되돌릴 수 있어요. (전체 목록에는 영향이 없습니다.)
   const isExcluded = (p) => (p.excludeAuthors ?? []).includes(author.name)
 
-  const { pubs, theses, patents } = useMemo(() => {
+  const { pubs, theses, patents, projects } = useMemo(() => {
     const all = data.publications ?? []
     const mine = (p) => includesFocus(p.authors, focus) || includesFocus(p.translators, focus)
     const show = (p) => isAdmin || !(p.excludeAuthors ?? []).includes(author.name)
@@ -32,6 +33,8 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
       pubs: all.filter((p) => p.type !== 'other' && mine(p) && show(p)),
       theses: all.filter((p) => p.type === 'other' && mine(p) && show(p)),
       patents: (data.patents ?? []).filter((p) => includesFocus(p.inventors, focus) && show(p)),
+      // 연구과제: 참여연구진에 이름이 있는 과제. (교수님은 모든 과제의 연구책임자라 따로 표기하지 않습니다.)
+      projects: (data.projects ?? []).filter((p) => includesFocus((p.members ?? []).map((m) => m.name), focus)),
     }
   }, [data, focus, isAdmin, author.name])
 
@@ -47,9 +50,10 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
   const sections = [
     { key: 'publications', title: 'Publications', count: counted(pubs).length, shown: pubs.length },
     { key: 'theses', title: 'Dissertations', count: counted(theses).length, shown: theses.length },
+    { key: 'projects', title: 'Projects', count: projects.length, shown: projects.length },
     { key: 'patents', title: 'Patents', count: counted(patents).length, shown: patents.length },
   ].filter((s) => s.shown > 0)
-  const total = counted(pubs).length + counted(theses).length + counted(patents).length
+  const total = counted(pubs).length + counted(theses).length + counted(patents).length + projects.length
 
   // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 저역서 / 학위논문을 나눠서 셉니다.
   const countType = (t) => counted(pubs).filter((p) => p.type === t).length
@@ -58,6 +62,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
     ['학회 발표', countType('conference')],
     ['저역서', countType('book')],
     ['학위논문', counted(theses).length],
+    ['연구과제', projects.length],
     ['특허', counted(patents).length],
   ].filter(([, n]) => n > 0)
 
@@ -106,6 +111,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
             />
           )}
           {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} focus={focus} authorTool={toolFor('publications')} />}
+          {s.key === 'projects' && <Projects items={projects} onEdit={onEdit.projects} focus={focus} />}
           {s.key === 'patents' && (
             <Patents
               items={patents}

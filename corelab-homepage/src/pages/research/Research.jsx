@@ -148,6 +148,7 @@ export default function Research() {
                 publications: onEdit('publications'),
                 theses: onEdit('theses'),
                 patents: onEdit('patents'),
+                projects: onEdit('projects'),
               }}
               onToggleHidden={togglePatentHidden}
               onToggleExclude={toggleExclude}
