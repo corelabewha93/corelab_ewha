@@ -64,7 +64,16 @@ export default function Projects({ items = [], onEdit }) {
               <EditButton onClick={() => onEdit(proj)} />
               <p className="pub-title">
                 {proj.title}
-                <span className={`badge${ongoing ? ' ongoing' : ''}`}>{ongoing ? '진행 중' : '종료'}</span>
+                {ongoing ? (
+                  <span className="badge ongoing">진행 중</span>
+                ) : (
+                  <span className="badge badge-done">
+                    <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false">
+                      <path d="M3.2 8.6l3 3 6.6-7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
+                    </svg>
+                    종료
+                  </span>
+                )}
               </p>
 
               {(proj.funder || proj.program || proj.scale) && (
@@ -105,7 +114,12 @@ export default function Projects({ items = [], onEdit }) {
                 </div>
               )}
 
-              {proj.description && <p className="project-desc">{proj.description}</p>}
+              {proj.description && (
+                <>
+                  <p className="project-desc-label">과제 소개</p>
+                  <p className="project-desc">{proj.description}</p>
+                </>
+              )}
             </div>
           </section>
         )
