@@ -469,7 +469,9 @@
       "degree": "PhD",
       "affiliation": "한국국방연구원 선임연구원",
       "bio": "",
-      "pubNames": [],
+      "pubNames": [
+        "Eun J. H."
+      ],
       "hideResearch": "",
       "detail": [
         "#소개",
