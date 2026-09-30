@@ -323,8 +323,8 @@ export const publicationFields = [
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
 ]
 
-/** 참여연구진 구분 — 과제 수행 "당시" 신분. 목록에는 이 순서대로 묶여서 보입니다. */
-export const PROJECT_MEMBER_ROLES = ['박사후연구원', '박사과정', '석사과정', '학부연구생', '연구원']
+/** 참여연구진 구분 — 과제 수행 "당시" 신분. 목록에는 이 순서대로 묶여서 보이고, 각 묶음 안에서는 가나다순입니다. */
+export const PROJECT_MEMBER_ROLES = ['박사후연구원', '학생연구원']
 
 export const projectFields = [
   { name: 'title', label: '과제명', type: 'text', required: true },
@@ -357,7 +357,7 @@ export const projectFields = [
     label: '참여연구진',
     type: 'members',
     roles: PROJECT_MEMBER_ROLES,
-    hint: '과제에 참여했던 "당시"의 신분을 고르세요 (예: 그때 석사과정이었다면 지금 박사여도 "석사과정"). 목록에는 박사후연구원 → 박사과정 → 석사과정 순으로 묶여 표시됩니다.',
+    hint: '과제에 참여했던 "당시"의 신분을 고르세요 (예: 그때 석사과정이었다면 지금 박사여도 "석사과정"). 목록에는 박사후연구원 → 학생연구원 순으로 묶이고, 이름은 가나다순으로 정렬됩니다. (박사·석사·학부 과정은 모두 "학생연구원")',
   },
   { name: 'description', label: '과제 소개 (선택)', type: 'textarea' },
 ]
@@ -379,6 +379,13 @@ export const patentFields = [
   { name: 'date', label: '날짜', type: 'date' },
   { name: 'country', label: '국가', type: 'text', placeholder: '예: KR' },
   {
+    name: 'description',
+    label: '간략한 소개 (선택)',
+    type: 'textarea',
+    rows: 3,
+    hint: '특허 제목 아래에 그대로 보입니다. 1~2문장으로 간결하게 적으세요.',
+  },
+  {
     name: 'hidden',
     label: '표시 여부',
     type: 'select',
@@ -396,6 +403,14 @@ export const toolFields = [
   { name: 'description', label: '설명', type: 'textarea', rows: 3 },
   { name: 'image', label: '이미지', type: 'image', folder: 'tools' },
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
+  {
+    name: 'acknowledgement',
+    label: '사사 표기 (선택)',
+    type: 'textarea',
+    rows: 2,
+    placeholder: '예: 이 시스템은 2024년 한국연구재단의 지원을 받아 개발되었습니다. (NRF-…)',
+    hint: '이 시스템을 만든 연구비 지원 문구입니다. 설명 아래에 작게 표시됩니다.',
+  },
   { name: 'tags', label: '태그', type: 'tags', hint: '쉼표로 구분 (예: Learning Analytics, CSCL)' },
 ]
 
