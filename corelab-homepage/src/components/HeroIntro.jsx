@@ -1,10 +1,12 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
+import HeroChalk, { CHALK_NAME_AT } from './HeroChalk'
 
 /**
  * 메인 화면 인트로 — "CoRe"가 COllaborative REsearch에서 왔다는 걸 보여주는 모션.
  *
- *  1) intro     : 정식 이름 "Collaborative Research Learning Lab"이 단어별로 하나씩, 초점이 맞춰지듯
- *                 (흐릿 → 또렷) 살짝 떠오르며 나타남 (글자 크기·간격은 그대로라 흔들리지 않음)
+ *  0) chalk     : 녹색 칠판에 분필로 사람들이 그려지고, 대화하다가 네트워크로 이어짐 (HeroChalk.jsx)
+ *  1) intro     : 정식 이름 "Collaborative Research Learning Lab"이 한 번에, 초점이 맞춰지듯
+ *                 (흐릿 → 또렷) 나타남 (글자 크기·간격은 그대로라 흔들리지 않음)
  *  2) highlight : Co · Re가 금빛으로 켜지고, 나머지 글자는 옅어짐
  *  3) fade      : 약자에 쓰이지 않는 글자가 조용히 사라짐
  *  4) merge     : 남은 Co · Re · Lab이 한 번의 부드러운 움직임으로 미끄러져 모이며 "CoRe Lab"으로 커짐
@@ -15,6 +17,8 @@ import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 
  *   관리자 화면에서 이름을 바꿔도 코드를 고칠 필요가 없습니다.
  * - 약자를 정식 이름에서 찾지 못하면(철자가 안 맞으면) 모션 없이 완성된 화면을 보여줍니다.
  * - "동작 줄이기"를 켜 둔 기기에서는 처음부터 완성된 화면을 보여줍니다.
+ * - 한 번 끝까지 본 뒤 사이트 안에서 다시 홈으로 돌아오면 바로 완성된 화면을 보여줍니다.
+ *   (새로고침하거나 새로 접속하면 다시 처음부터 재생)
  */
 
 /** 약자(target)의 글자들을 정식 이름의 단어 앞부분에서 순서대로 찾아 짝지어줍니다. */
@@ -81,18 +85,22 @@ export function splitName(tagline = '', labName = '') {
 
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
-// 단계가 바뀌는 시각(ms)
-const T_HIGHLIGHT = 1700
-const T_FADE = 2900
-const T_MERGE = 3350
-const MERGE_MS = 1300
-const T_DONE = T_MERGE + 900
+// 단계가 바뀌는 시각(ms) — 앞의 분필 장면(HeroChalk) 뒤에 이어집니다.
+const T_INTRO = CHALK_NAME_AT * 1000 // 4300: 이름이 한 번에 나타남
+const T_HIGHLIGHT = T_INTRO + 1250 // Co · Re가 금빛으로
+const T_FADE = T_HIGHLIGHT + 1000 // 나머지 글자가 사라짐
+const T_MERGE = T_FADE + 550 // Co · Re · Lab이 천천히 모임
+const MERGE_MS = 2300
+const T_DONE = T_MERGE + 1800 // 부제 · 모토 · 소속이 천천히 차례로
+
+// 사이트 안에서 홈으로 다시 돌아왔을 때는 인트로를 반복하지 않습니다.
+let playedOnce = false
 
 export default function HeroIntro({ labName = '', tagline = '', affiliation = [], motto = '' }) {
   const words = useMemo(() => splitName(tagline, labName), [tagline, labName])
-  const animated = Boolean(words) && !REDUCED
+  const [animated] = useState(() => Boolean(words) && !REDUCED && !playedOnce)
 
-  const [phase, setPhase] = useState(animated ? 'intro' : 'done')
+  const [phase, setPhase] = useState(animated ? 'chalk' : 'done')
   const nameRef = useRef(null)
   const firstRects = useRef(null)
 
@@ -100,6 +108,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   useEffect(() => {
     if (!animated) return undefined
     const timers = [
+      setTimeout(() => setPhase('intro'), T_INTRO),
       setTimeout(() => setPhase('highlight'), T_HIGHLIGHT),
       setTimeout(() => setPhase('fade'), T_FADE),
       setTimeout(() => {
@@ -108,7 +117,10 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
         firstRects.current = Array.from(els, (el) => el.getBoundingClientRect())
         setPhase('merge')
       }, T_MERGE),
-      setTimeout(() => setPhase('done'), T_DONE),
+      setTimeout(() => {
+        playedOnce = true
+        setPhase('done')
+      }, T_DONE),
     ]
     return () => timers.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
@@ -131,7 +143,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
           { transform: `translate(${dx}px, ${dy}px) scale(${scale})` },
           { transform: 'translate(0px, 0px) scale(1)' },
         ],
-        { duration: MERGE_MS, easing: 'cubic-bezier(0.65, 0, 0.35, 1)', fill: 'backwards' },
+        { duration: MERGE_MS, easing: 'cubic-bezier(0.45, 0, 0.15, 1)', fill: 'backwards' },
       )
     })
     firstRects.current = null
@@ -146,6 +158,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
 
   return (
     <section className={`hero-intro hero-phase-${phase}`}>
+      <HeroChalk animated={animated} />
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {words ? (
