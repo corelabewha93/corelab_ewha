@@ -3397,6 +3397,70 @@
       "details": "19(17), 1047-1071",
       "doi": "",
       "link": ""
+    },
+    {
+      "id": "pub-add13",
+      "year": 2008,
+      "type": "book",
+      "authors": [
+        "Lee, H. W.",
+        "Lim, K. Y.",
+        "Grabowski, B. L."
+      ],
+      "title": "Generative learning: Principles and implications for making meaning",
+      "venue": "Handbook of Research on Educational Communications and Technology, 3rd ed. (Routledge) 수록",
+      "details": "pp. 111-124",
+      "doi": "",
+      "link": "",
+      "bookRole": "저서 (챕터 저술)"
+    },
+    {
+      "id": "pub-add14",
+      "year": 2009,
+      "type": "book",
+      "authors": [
+        "Smith, B. K.",
+        "Sharma, P.",
+        "Lim, K. Y.",
+        "Akilli, G. K.",
+        "Kim, K.",
+        "Fujimoto, T."
+      ],
+      "title": "Finding meaning in online, very-large scale conversations",
+      "venue": "Handbook of Research on Web Log Analysis (IGI Global) 수록",
+      "details": "",
+      "doi": "10.4018/978-1-59904-974-8.ch015",
+      "link": "",
+      "bookRole": "저서 (챕터 저술)"
+    },
+    {
+      "id": "pub-add15",
+      "year": 2009,
+      "type": "journal",
+      "authors": [
+        "Lim, K. Y.",
+        "Lee, H. W.",
+        "Grabowski, B."
+      ],
+      "title": "Does concept-mapping strategy work for everyone? The levels of generativity and learners' self-regulated learning skills",
+      "venue": "British Journal of Educational Technology",
+      "details": "40(4), 606-618",
+      "doi": "10.1111/j.1467-8535.2008.00872.x",
+      "link": ""
+    },
+    {
+      "id": "pub-add16",
+      "year": 2011,
+      "type": "journal",
+      "authors": [
+        "Lim, K. Y."
+      ],
+      "title": "What does the Tablet PC mean to you? A phenomenological research",
+      "venue": "Innovations in Education and Teaching International",
+      "details": "48(3), 323-333",
+      "doi": "10.1080/14703297.2011.593708",
+      "link": "",
+      "indexes": "SSCI, Scopus"
     }
   ],
   "projects": [
