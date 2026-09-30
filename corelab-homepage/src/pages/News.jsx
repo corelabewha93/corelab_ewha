@@ -174,7 +174,6 @@ export default function News() {
                   <div className="news-list-body">
                     {item.hidden && <span className="news-hidden-chip">숨김 · 관리자에게만 보임</span>}
                     <h3 className="news-list-title">{item.title}</h3>
-                    {item.subtitle && <p className="news-list-subtitle">{item.subtitle}</p>}
                     {excerpt && <p className="news-list-excerpt">{excerpt}</p>}
                   </div>
                 </button>
