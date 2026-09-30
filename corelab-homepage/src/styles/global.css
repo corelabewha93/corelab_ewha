@@ -1873,6 +1873,23 @@ mark.pub-hl {
   border-color: var(--color-accent);
 }
 
+/* 종료 = 성공적 마무리: 차분한 에메랄드 톤 + 체크 */
+.badge.badge-done {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.22rem;
+  color: #1f7a4d;
+  background: linear-gradient(180deg, #f0faf4 0%, #dff3e7 100%);
+  border-color: #a9d9bd;
+  padding-left: 0.42rem;
+  vertical-align: 0.05em;
+}
+
+.badge.badge-done svg {
+  color: #2f9b64;
+  flex-shrink: 0;
+}
+
 /* 숨긴 특허 (관리자에게만 보임) */
 .badge-hidden {
   color: #a0651c;
@@ -2060,8 +2077,15 @@ mark.pub-hl {
   color: var(--color-text-muted);
 }
 
+.project-desc-label {
+  margin: 0.7rem 0 0;
+  font-size: 0.84rem;
+  font-weight: 700;
+  color: var(--color-text);
+}
+
 .project-desc {
-  margin: 0.45rem 0 0;
+  margin: 0.2rem 0 0;
   font-size: 0.86rem;
   line-height: 1.6;
   color: var(--color-text-muted);
