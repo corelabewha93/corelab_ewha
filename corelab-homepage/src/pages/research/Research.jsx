@@ -7,6 +7,7 @@ import { makeId } from '../../admin/dataStore'
 import { showToast } from '../../admin/toast'
 import { publicationFields, projectFields, patentFields, toolFields } from '../../admin/schemas'
 import Tabs from '../../components/Tabs'
+import PageTitle from '../../components/PageTitle'
 import EditModal from '../../components/admin/EditModal'
 import { AdminFab } from '../../components/admin/AdminControls'
 import { useDocumentMeta } from '../../router/useDocumentMeta'
@@ -127,7 +128,7 @@ export default function Research() {
 
   return (
     <div className="page container">
-      <h1 className="section-title">Research</h1>
+      <PageTitle sub={authorFilter ? '' : TABS.find((t) => t.key === tab)?.label}>Research</PageTitle>
 
       <div className="tabs-layout">
         {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
