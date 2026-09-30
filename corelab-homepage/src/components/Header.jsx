@@ -48,7 +48,16 @@ export default function Header({ brandLogo = false }) {
               {labRest && <span>{labRest}</span>}
             </span>
           ) : (
-            <span className="brand-name">{labName}</span>
+            <span className="brand-name">
+              {/^\s*CoRe/i.test(labName) ? (
+                <>
+                  <span className="brand-core">CoRe</span>
+                  {labRest ? ` ${labRest}` : ''}
+                </>
+              ) : (
+                labName
+              )}
+            </span>
           )}
         </Link>
 
