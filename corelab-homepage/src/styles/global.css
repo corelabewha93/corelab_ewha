@@ -768,6 +768,17 @@ h1.section-title {
   color: var(--color-text);
   margin: 0 0 0.85rem;
   white-space: pre-wrap;
+  text-align: justify;
+  text-justify: inter-word;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+}
+
+/* 좁은 모바일 화면: 단어 단위 줄바꿈이면 양쪽 정렬 시 공백이 크게 벌어져, 글자 단위로 줄바꿈해 간격을 촘촘하게 */
+@media (max-width: 700px) {
+  .news-article-p {
+    word-break: normal;
+  }
 }
 
 .news-article-p:last-child {
