@@ -9,6 +9,8 @@ import { useEffect, useRef } from 'react'
  *  1.55s~ 말풍선(Why? / Feedback / Let's try / Data / Ideas)이 차례로 떠오름
  *  2.6s~ 사람 사이에 분필 선이 이어지고, 머리가 금색·민트색 노드로 빛나며 선을 따라 빛이 오감
  *  3.7s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
+ *  6.9s~ "CoRe Lab"이 완성되면 학생들이 작아지며 로고의 두 학습자 점(o 위 · R 위)으로 모여 들어가고,
+ *        칠판에는 글자만 남음 (도착 지점은 HeroIntro.jsx가 그리는 로고 점의 실제 화면 위치)
  *
  * - 매 프레임 필터를 다시 계산하는 SVG 필터 대신, 한 번 만든 분필 결(노이즈) 무늬로 선을 칠해서
  *   휴대폰·카카오톡 인앱 브라우저에서도 가볍게 돌아갑니다.
@@ -23,8 +25,12 @@ const MINT = '#8fe3ea'
 
 // 시간표(초) — HeroIntro.jsx의 단계 시각과 맞춰져 있습니다.
 export const CHALK_NAME_AT = 3.7 // 이 시각에 랩 이름이 나타나기 시작
-const DIM2_AT = 7.4 // "CoRe Lab" 완성 무렵, 한 번 더 옅어짐
-const END_AT = 8.6
+const DIM2_AT = 6.2 // "CoRe Lab" 완성 무렵, 한 번 더 옅어짐
+// "CoRe Lab"이 완성된 뒤, 학생들이 로고의 두 학습자(o 위 · R 위의 점)로 모여 들어가는 구간
+export const CONV_AT = 6.9
+const FLY = 1.0 // 한 사람이 날아가는 데 걸리는 시간
+const STAG = 0.08 // 사람마다 출발 시차
+const END_AT = 10
 
 const clamp = (x) => Math.max(0, Math.min(1, x))
 const pr = (t, s, d) => clamp((t - s) / d)
@@ -176,7 +182,10 @@ function build(svg, L) {
   }
 
   const figs = P.map(([x, y], i) => {
-    const head = stroke(mk('circle', { cx: x, cy: y, r: R, transform: `rotate(-90 ${x} ${y})` }, lines))
+    // 사람마다 묶음(g)으로 두어, 마지막에 통째로 작아지며 로고 점으로 날아갈 수 있게 합니다.
+    const fl = mk('g', {}, lines)
+    const fg = mk('g', {}, glow)
+    const head = stroke(mk('circle', { cx: x, cy: y, r: R, transform: `rotate(-90 ${x} ${y})` }, fl))
     const sy = y + R + 16
     const sw = R * 1.75
     const sh = R * 1.85
@@ -186,12 +195,12 @@ function build(svg, L) {
         {
           d: `M${x - sw},${sy + sh} C${x - sw},${sy + sh * 0.35} ${x - sw * 0.55},${sy} ${x},${sy} C${x + sw * 0.55},${sy} ${x + sw},${sy + sh * 0.35} ${x + sw},${sy + sh}`,
         },
-        lines,
+        fl,
       ),
     )
-    const g = mk('circle', { cx: x, cy: y, r: R * 2.1, fill: `url(#hc-glow-${i % 2 ? 'b' : 'a'})`, opacity: 0 }, glow)
-    const fill = mk('circle', { cx: x, cy: y, r: R - 3, fill: i % 2 ? MINT : GOLD, opacity: 0 }, glow)
-    return { head, body, g, fill }
+    const g = mk('circle', { cx: x, cy: y, r: R * 2.1, fill: `url(#hc-glow-${i % 2 ? 'b' : 'a'})`, opacity: 0 }, fg)
+    const fill = mk('circle', { cx: x, cy: y, r: R - 3, fill: i % 2 ? MINT : GOLD, opacity: 0 }, fg)
+    return { head, body, g, fill, fl, fg, x, y }
   })
 
   const bubbles = P.map(([x, y], i) => {
@@ -284,14 +293,89 @@ function render(s, t) {
       l.pulse.setAttribute('opacity', 0)
     }
   })
-  const dim = 1 - 0.68 * eo(pr(t, CHALK_NAME_AT, 0.9)) - 0.14 * eo(pr(t, DIM2_AT, 1))
-  s.shift.setAttribute('opacity', dim.toFixed(3))
+  let dim = 1 - 0.68 * eo(pr(t, CHALK_NAME_AT, 0.9)) - 0.14 * eo(pr(t, DIM2_AT, 1))
+  if (t >= CONV_AT) dim = converge(s, t, dim)
+  s.shift.setAttribute('opacity', Math.max(0, dim).toFixed(3))
   // 이름이 놓일 자리를 비워 주려고, 네트워크가 아래쪽으로 부드럽게 내려앉습니다.
   const u = eio(pr(t, CHALK_NAME_AT - 0.35, 1.1))
   const [VW, VH] = s.L.vb
   const { dy, k } = s.L.settle
   const kk = 1 + (k - 1) * u
   s.shift.setAttribute('transform', `translate(${VW / 2} ${VH / 2 + dy * u}) scale(${kk}) translate(${-VW / 2} ${-VH / 2})`)
+}
+
+/**
+ * 로고로 모이기: 연결선·말풍선은 사라지고, 사람들이 작아지며 곡선을 그리고 날아가
+ * (1·3·5번째 → o 위 점, 2·4번째 → R 위 점) 로고의 두 학습자 점 크기로 수렴합니다.
+ * 도착 지점은 HeroIntro.jsx가 로고 점 자리에 놓아둔 표식(data-hero-dot)의 실제 화면 위치를 읽어
+ * 칠판 좌표로 바꿔 씁니다. (표식이 아직 없으면 그냥 옅어지기만 합니다)
+ */
+function converge(s, t, dim0) {
+  const svg = s.shift.ownerSVGElement
+  let dim = dim0 + (0.95 - dim0) * eo(pr(t, CONV_AT - 0.15, 0.45))
+  const linesOut = 1 - eo(pr(t, CONV_AT - 0.05, 0.45))
+  s.bubbles.forEach((b) => {
+    b.path.style.opacity = 0
+    b.text.setAttribute('opacity', 0)
+  })
+  s.links.forEach((l) => {
+    l.path.style.opacity = linesOut
+    l.pulse.setAttribute('opacity', 0)
+  })
+  if (!s.targets) {
+    const dots = ['a', 'b'].map((k) => {
+      const el = document.querySelector(`[data-hero-dot="${k}"]`)
+      if (!el) return null
+      const r = el.getBoundingClientRect()
+      return { x: r.left + r.width / 2, y: r.top + r.height / 2, r: r.width / 2 }
+    })
+    if (dots[0] && dots[1]) s.targets = dots
+  }
+  if (s.targets) {
+    const ctm = s.net.getScreenCTM()
+    const inv = ctm.inverse()
+    const toLocal = (x, y) => {
+      const p = svg.createSVGPoint()
+      p.x = x
+      p.y = y
+      return p.matrixTransform(inv)
+    }
+    const scaleNow = Math.hypot(ctm.a, ctm.b)
+    s.figs.forEach((f, i) => {
+      const tgt = s.targets[i % 2]
+      const T = toLocal(tgt.x, tgt.y)
+      const rEnd = tgt.r / scaleNow / s.L.r
+      const u = eio(pr(t, CONV_AT + i * STAG, FLY))
+      // 위로 살짝 휘어 올라가는 곡선 경로
+      const dx = T.x - f.x
+      const dy = T.y - f.y
+      const l = Math.hypot(dx, dy) || 1
+      const bend = (i % 2 ? -1 : 1) * l * 0.22
+      const cx = (f.x + T.x) / 2 - (dy / l) * bend
+      const cy = (f.y + T.y) / 2 + (dx / l) * bend
+      const a = (1 - u) * (1 - u)
+      const b = 2 * (1 - u) * u
+      const c = u * u
+      const px = a * f.x + b * cx + c * T.x
+      const py = a * f.y + b * cy + c * T.y
+      const k = 1 + (rEnd - 1) * u
+      const tr = `translate(${px} ${py}) scale(${k}) translate(${-f.x} ${-f.y})`
+      f.fl.setAttribute('transform', tr)
+      f.fg.setAttribute('transform', tr)
+      // 몸통 선은 날아가는 동안 옅어지고, 도착하면 머리(빛)도 점 안으로 사라집니다.
+      f.body.style.opacity = 1 - eo(pr(t, CONV_AT + i * STAG + 0.15, FLY * 0.6))
+      f.head.style.opacity = 1 - eo(pr(t, CONV_AT + i * STAG + FLY * 0.5, FLY * 0.5))
+      const gone = 1 - eo(pr(t, CONV_AT + i * STAG + FLY - 0.12, 0.16))
+      f.g.setAttribute('opacity', (0.55 * gone * (1 - 0.6 * u)).toFixed(3))
+      f.fill.setAttribute('opacity', (0.92 * gone).toFixed(3))
+      // 금색 학습자는 o 위의 아이보리 점으로 들어가며 색이 서서히 바뀝니다.
+      if (i % 2 === 0) {
+        const m = (x, y) => Math.round(x + (y - x) * u)
+        f.fill.setAttribute('fill', `rgb(${m(228, 245)},${m(208, 242)},${m(131, 232)})`)
+      }
+    })
+  }
+  return dim * (1 - eo(pr(t, CONV_AT + FLY + 0.5, 0.4)))
 }
 
 export default function HeroChalk({ animated }) {
