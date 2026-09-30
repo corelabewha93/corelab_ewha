@@ -153,6 +153,25 @@ h1.section-title {
     linear-gradient(135deg, #003a22 0%, var(--color-primary) 48%, #01532f 100%);
 }
 
+.hero-intro {
+  --hero-lift: 3.6rem; /* 이름이 나타나는 동안: 위로 약 1.8rem */
+}
+
+.hero-phase-merge,
+.hero-phase-done {
+  --hero-lift: 1.7rem; /* 완성된 화면: 위로 약 0.85rem */
+}
+
+@media (max-width: 560px) {
+  .hero-intro {
+    --hero-lift: 3rem;
+  }
+  .hero-phase-merge,
+  .hero-phase-done {
+    --hero-lift: 1.7rem;
+  }
+}
+
 .hero-intro-content {
   position: relative;
   z-index: 1;
@@ -162,6 +181,9 @@ h1.section-title {
   text-align: center;
   width: 100%;
   max-width: 1180px;
+  /* 아래 여백으로 내용 전체를 위로 살짝 올립니다. 이름이 나타나는 동안은 사람들 머리 위 빈 공간에,
+     완성된 화면에서는 아주 조금만 올라가게 단계별로 다르게 줍니다. */
+  padding-bottom: var(--hero-lift, 0px);
 }
 
 /* ---- 이름 ---- */
@@ -304,7 +326,7 @@ h1.section-title {
   height: 1px;
   margin: 1.6rem 0 1.3rem;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
-  transition: width 1.5s cubic-bezier(0.25, 0.6, 0.2, 1) 0.3s;
+  transition: width 1.3s cubic-bezier(0.25, 0.6, 0.2, 1) 0.25s;
 }
 
 .hero-phase-done .hero-rule {
@@ -323,8 +345,8 @@ h1.section-title {
   opacity: 0;
   transform: translateY(10px);
   transition:
-    opacity 1.4s ease,
-    transform 1.4s cubic-bezier(0.25, 0.6, 0.2, 1);
+    opacity 1.2s ease,
+    transform 1.2s cubic-bezier(0.25, 0.6, 0.2, 1);
 }
 
 .hero-phase-done .hero-after > * {
@@ -333,13 +355,13 @@ h1.section-title {
 }
 
 .hero-phase-done .hero-after > :nth-child(1) {
-  transition-delay: 0.5s;
+  transition-delay: 0.4s;
 }
 .hero-phase-done .hero-after > :nth-child(2) {
-  transition-delay: 1.3s;
+  transition-delay: 1.05s;
 }
 .hero-phase-done .hero-after > :nth-child(3) {
-  transition-delay: 2.1s;
+  transition-delay: 1.7s;
 }
 
 .hero-tagline {
