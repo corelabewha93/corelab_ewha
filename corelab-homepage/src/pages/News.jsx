@@ -7,6 +7,7 @@ import { makeId } from '../admin/dataStore'
 import { newsFields } from '../admin/schemas'
 import { useHashRoute, navigate } from '../router/useHashRoute'
 import NewsCard from '../components/NewsCard'
+import Pagination from '../components/Pagination'
 import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
@@ -22,6 +23,9 @@ function excerptOf(item) {
   return text.length > 70 ? `${text.slice(0, 70)}…` : text
 }
 
+const PAGE_SIZE = 10
+let lastPage = 1 // 글을 열었다가 목록으로 돌아와도 보던 페이지를 유지
+
 export default function News() {
   const { data, error, loading } = useData('news.json')
   const { token, isAdmin } = useAdminAuth()
@@ -29,8 +33,15 @@ export default function News() {
   const [editing, setEditing] = useState(null) // { item|null }
   const [draft, setDraft] = useState(null) // 순서 바꾸기 중일 때: 소식 id 배열
   const [savingOrder, setSavingOrder] = useState(false)
+  const [page, setPageState] = useState(lastPage)
 
   useDocumentMeta('News', '이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.')
+
+  const setPage = (n) => {
+    lastPage = n
+    setPageState(n)
+    window.scrollTo({ top: 0 })
+  }
 
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
@@ -46,6 +57,10 @@ export default function News() {
     visibleItems.forEach((i) => !draft.includes(i.id) && ordered.push(i))
     return ordered
   })()
+  // 순서 바꾸기 중에는 전체를 한 번에 보여주고, 평소에는 10개씩 나눠 보여줍니다.
+  const pageCount = ordering ? 1 : Math.max(1, Math.ceil(items.length / PAGE_SIZE))
+  const curPage = Math.min(page, pageCount)
+  const pageItems = ordering ? items : items.slice((curPage - 1) * PAGE_SIZE, curPage * PAGE_SIZE)
   const openItem = query.id ? items.find((i) => i.id === query.id) : null
 
   // 소식 "숨기기 / 표시하기" 버튼
@@ -155,7 +170,7 @@ export default function News() {
         <p className="empty-state">등록된 소식이 없습니다.</p>
       ) : (
         <div className="news-list-grid">
-          {items.map((item, idx) => {
+          {pageItems.map((item, idx) => {
             const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
             const excerpt = excerptOf(item)
             return (
@@ -197,6 +212,8 @@ export default function News() {
           })}
         </div>
       )}
+
+      <Pagination page={curPage} pageCount={pageCount} onChange={setPage} />
 
       <AdminFab>
         {ordering ? (

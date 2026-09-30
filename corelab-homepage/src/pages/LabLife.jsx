@@ -5,6 +5,7 @@ import { upsertItem, deleteItem } from '../admin/collection'
 import { makeId } from '../admin/dataStore'
 import { lablifeFields } from '../admin/schemas'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
+import Pagination from '../components/Pagination'
 import SafeImage, { resolveImageSrc } from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
@@ -25,12 +26,15 @@ function imagesOf(item) {
   return photosOf(item).map((p) => p.src)
 }
 
+const PAGE_SIZE = 12
+
 export default function LabLife() {
   const { data, error, loading } = useData('lablife.json')
   const { token, isAdmin } = useAdminAuth()
   const [selected, setSelected] = useState(null)
   const [photoIdx, setPhotoIdx] = useState(0)
   const [editing, setEditing] = useState(null) // { item|null }
+  const [page, setPageState] = useState(1)
 
   useDocumentMeta('Lab Life', 'CoRe Lab 구성원들의 일상과 활동 모습입니다.')
 
@@ -42,6 +46,10 @@ export default function LabLife() {
     setPhotoIdx(0)
   }
   const closeLightbox = () => setSelected(null)
+  const setPage = (n) => {
+    setPageState(n)
+    window.scrollTo({ top: 0 })
+  }
 
   useEffect(() => {
     if (!selected) return
@@ -71,6 +79,9 @@ export default function LabLife() {
   if (error) return <div className="page container error-state">{error}</div>
 
   const items = [...(data ?? [])].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
+  const pageCount = Math.max(1, Math.ceil(items.length / PAGE_SIZE))
+  const curPage = Math.min(page, pageCount)
+  const pageItems = items.slice((curPage - 1) * PAGE_SIZE, curPage * PAGE_SIZE)
 
   const handleSave = async (values) => {
     const original = editing.item
@@ -96,7 +107,7 @@ export default function LabLife() {
         <p className="empty-state">등록된 사진이 없습니다.</p>
       ) : (
         <div className="gallery-grid">
-          {items.map((item) => {
+          {pageItems.map((item) => {
             const photos = photosOf(item)
             return (
               <div key={item.id} className="admin-item gallery-card">
@@ -128,6 +139,8 @@ export default function LabLife() {
           })}
         </div>
       )}
+
+      <Pagination page={curPage} pageCount={pageCount} onChange={setPage} />
 
       {selected &&
         (() => {
