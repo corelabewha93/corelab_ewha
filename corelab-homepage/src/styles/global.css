@@ -1,6 +1,25 @@
 @import './tokens.css';
 
-/* 메인 화면 모토용 세리프 (Playfair Display 600, 정자체, SIL Open Font License) — 사이트에 직접 포함되어 있어 외부 서버가 필요 없습니다. */
+/* 메인 화면 전용 글꼴 (모두 SIL Open Font License, 사이트에 직접 포함되어 있어 외부 서버가 필요 없습니다)
+   - Philosopher 700: 랩 이름 — CoRe 로고 글자와 결이 같아, 로고 글자와 나란히 놓여도 한 글꼴처럼 보입니다.
+   - Cormorant Garamond 600: 모토 — 정갈한 고전 세리프.
+   - Playfair Display 600: 칠판 말풍선 글씨. */
+@font-face {
+  font-family: 'Philosopher';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/philosopher-latin-700-normal.woff2') format('woff2');
+}
+
+@font-face {
+  font-family: 'Cormorant Garamond';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url('../assets/fonts/cormorant-garamond-latin-600-normal.woff2') format('woff2');
+}
+
 @font-face {
   font-family: 'Playfair Display';
   font-style: normal;
@@ -189,11 +208,21 @@ h1.section-title {
 /* ---- 이름 ---- */
 .hero-name {
   margin: 0;
-  font-weight: 800;
-  letter-spacing: -0.015em;
+  font-family: 'Philosopher', var(--font-sans);
+  font-weight: 700;
+  letter-spacing: 0;
   line-height: 1.12;
   font-size: clamp(1.6rem, 5vw, 3.7rem);
   text-wrap: balance;
+}
+
+/* 이름 속 "Co" · "Re" = CoRe 로고 글자 (SVG). 글자 크기(em)에 맞춰 함께 커집니다. */
+.hero-glyph {
+  display: inline-block;
+  height: 1em;
+  vertical-align: -0.2em;
+  fill: currentColor;
+  overflow: visible;
 }
 
 /* 단어는 통째로 한 덩어리 — 줄바꿈은 단어 사이에서만 */
@@ -284,7 +313,17 @@ h1.section-title {
 .hero-phase-merge .hero-piece-core,
 .hero-phase-done .hero-piece-core {
   color: var(--hero-gold);
-  text-shadow: 0 0 30px rgba(228, 208, 131, 0.38);
+}
+
+.hero-piece-core .hero-glyph {
+  transition: filter 1s ease;
+}
+
+.hero-phase-highlight .hero-piece-core .hero-glyph,
+.hero-phase-fade .hero-piece-core .hero-glyph,
+.hero-phase-merge .hero-piece-core .hero-glyph,
+.hero-phase-done .hero-piece-core .hero-glyph {
+  filter: drop-shadow(0 0 16px rgba(228, 208, 131, 0.35));
 }
 
 /* ③ 약자에 쓰이지 않는 글자는 조용히 사라집니다. */
@@ -297,9 +336,47 @@ h1.section-title {
    글자 이동 자체는 HeroIntro.jsx가 transform 한 번으로 부드럽게 처리합니다. */
 .hero-phase-merge .hero-name,
 .hero-phase-done .hero-name {
-  font-size: clamp(3rem, 11vw, 6.2rem);
-  letter-spacing: -0.02em;
+  font-size: clamp(4rem, 19vw, 8rem);
+  letter-spacing: 0;
   white-space: nowrap;
+}
+
+/* ⑤ 로고 완성 — 두 학습자 점이 톡 나타나고(학생들이 도착하는 순간), 이어서 어깨선이 그려집니다. */
+.hero-logo-overlay {
+  position: absolute;
+  z-index: 1;
+  pointer-events: none;
+}
+
+.hero-logo-overlay svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+.hero-logo-dot {
+  transform-box: fill-box;
+  transform-origin: center;
+  transform: scale(0);
+  transition: transform 0.6s cubic-bezier(0.3, 1.55, 0.5, 1);
+}
+
+.hero-logo-dot-b {
+  transition-delay: 0.1s;
+}
+
+.hero-logo-dots .hero-logo-dot {
+  transform: scale(1);
+}
+
+.hero-logo-clip {
+  width: 0;
+  transition: width 0.95s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.hero-logo-curve .hero-logo-clip {
+  width: 340px;
 }
 
 .hero-phase-merge .hero-piece-drop,
@@ -326,7 +403,8 @@ h1.section-title {
   height: 1px;
   margin: 1.6rem 0 1.3rem;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
-  transition: width 1.3s cubic-bezier(0.25, 0.6, 0.2, 1) 0.25s;
+  /* 학생들이 로고에 다 들어간 뒤(완성 후 약 2초)부터 */
+  transition: width 1.3s cubic-bezier(0.25, 0.6, 0.2, 1) 2s;
 }
 
 .hero-phase-done .hero-rule {
@@ -355,13 +433,13 @@ h1.section-title {
 }
 
 .hero-phase-done .hero-after > :nth-child(1) {
-  transition-delay: 0.4s;
+  transition-delay: 2.2s;
 }
 .hero-phase-done .hero-after > :nth-child(2) {
-  transition-delay: 1.05s;
+  transition-delay: 2.7s;
 }
 .hero-phase-done .hero-after > :nth-child(3) {
-  transition-delay: 1.7s;
+  transition-delay: 3.2s;
 }
 
 .hero-tagline {
@@ -378,16 +456,16 @@ h1.section-title {
   color: var(--hero-gold);
 }
 
-/* 모토 — 반듯한 세리프(정자체) + 얼음빛 민트 그라데이션으로, 위아래 글씨와 구분되며 이 문구만 도드라지게 */
+/* 모토 — 정갈한 고전 세리프(Cormorant Garamond) + 얼음빛 민트 그라데이션으로, 위아래 글씨와 구분되며 이 문구만 도드라지게 */
 .hero-motto {
   margin: 0.2rem 0 0.35rem;
   padding: 0.1em 0.14em 0.16em;
-  font-family: 'Playfair Display', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-family: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   font-style: normal;
   font-weight: 600;
-  font-size: clamp(1.45rem, 5.2vw, 2.4rem);
-  line-height: 1.25;
-  letter-spacing: 0.01em;
+  font-size: clamp(1.75rem, 6.2vw, 2.9rem);
+  line-height: 1.2;
+  letter-spacing: 0.02em;
   color: #9fe6f0; /* 그라데이션을 못 쓰는 환경용 */
   background: linear-gradient(95deg, #8fdcf2 0%, #a6ecea 48%, #c2f5d9 100%);
   -webkit-background-clip: text;
@@ -2878,10 +2956,16 @@ mark.pub-hl {
   min-height: 0;
   width: 100%;
   overflow-y: auto;
+  /* 스크롤은 되지만 스크롤바는 보이지 않게 (마우스 휠 · 트랙패드 · 손가락으로 넘깁니다) */
+  scrollbar-width: none;
   -webkit-overflow-scrolling: touch;
   /* 이력 끝까지 내려가도 뒤 화면이 따라 움직이지 않게 합니다. */
   overscroll-behavior: contain;
   padding: 0 0 var(--space-4);
+}
+
+.person-modal-scroll::-webkit-scrollbar {
+  display: none;
 }
 
 .person-modal-card .person-detail {
