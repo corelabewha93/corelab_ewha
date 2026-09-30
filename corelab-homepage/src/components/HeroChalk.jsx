@@ -178,6 +178,7 @@ function build(svg, L) {
     e.setAttribute('stroke-linejoin', 'round')
     e.style.strokeDasharray = '1 1'
     e.style.strokeDashoffset = '1'
+    e.style.visibility = 'hidden' // 아직 그리기 전에는 아예 숨김 (둥근 끝 모양 때문에 점이 남는 것을 막음)
     return e
   }
 
@@ -258,6 +259,15 @@ function build(svg, L) {
   return { smudges, shift, net, figs, bubbles, links, L }
 }
 
+/**
+ * 선을 p(0~1)만큼 그립니다. 그리기 전(p=0)에는 선을 숨깁니다.
+ * (선 끝이 둥글어서, 숨겨 두지 않으면 시작하기 전 각 선의 시작점에 작은 점이 찍혀 보입니다)
+ */
+function draw(e, p) {
+  e.style.strokeDashoffset = 1 - p
+  e.style.visibility = p > 0.001 ? 'visible' : 'hidden'
+}
+
 function render(s, t) {
   s.smudges.forEach((e, i) =>
     e.setAttribute('opacity', (0.06 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, CHALK_NAME_AT - 0.1, 0.8)))).toFixed(3)),
@@ -265,8 +275,8 @@ function render(s, t) {
   s.figs.forEach((f, i) => {
     // 한 명씩이 아니라 무리 지어 그려집니다: (1·3·5번째) 먼저, (2·4번째) 이어서
     const st = (i % 2 === 0 ? 0.5 : 1.0) + Math.floor(i / 2) * 0.07
-    f.head.style.strokeDashoffset = 1 - eio(pr(t, st, 0.5))
-    f.body.style.strokeDashoffset = 1 - eio(pr(t, st + 0.25, 0.5))
+    draw(f.head, eio(pr(t, st, 0.5)))
+    draw(f.body, eio(pr(t, st + 0.25, 0.5)))
     const on = eio(pr(t, 2.85 + i * 0.07, 0.55))
     f.g.setAttribute('opacity', (on * 0.55).toFixed(3))
     f.fill.setAttribute('opacity', (on * 0.92).toFixed(3))
@@ -274,12 +284,12 @@ function render(s, t) {
   const bOut = 1 - eo(pr(t, 2.9, 0.45))
   s.bubbles.forEach((b, i) => {
     const st = 1.55 + i * 0.22
-    b.path.style.strokeDashoffset = 1 - eio(pr(t, st, 0.4))
+    draw(b.path, eio(pr(t, st, 0.4)))
     b.path.style.opacity = bOut
     b.text.setAttribute('opacity', (eo(pr(t, st + 0.25, 0.28)) * bOut).toFixed(3))
   })
   s.links.forEach((l, k) => {
-    l.path.style.strokeDashoffset = 1 - eio(pr(t, 2.6 + k * 0.09, 0.5))
+    draw(l.path, eio(pr(t, 2.6 + k * 0.09, 0.5)))
     const pp = pr(t, 3.15 + k * 0.08, 0.85)
     if (pp > 0 && pp < 1) {
       const u = eio(pp)
