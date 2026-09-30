@@ -86,12 +86,12 @@ export function splitName(tagline = '', labName = '') {
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 // 단계가 바뀌는 시각(ms) — 앞의 분필 장면(HeroChalk) 뒤에 이어집니다.
-const T_INTRO = CHALK_NAME_AT * 1000 // 4300: 이름이 한 번에 나타남
-const T_HIGHLIGHT = T_INTRO + 1250 // Co · Re가 금빛으로
-const T_FADE = T_HIGHLIGHT + 1000 // 나머지 글자가 사라짐
-const T_MERGE = T_FADE + 550 // Co · Re · Lab이 천천히 모임
-const MERGE_MS = 2300
-const T_DONE = T_MERGE + 1800 // 부제 · 모토 · 소속이 천천히 차례로
+const T_INTRO = CHALK_NAME_AT * 1000 // 3700: 이름이 한 번에 나타남
+const T_HIGHLIGHT = T_INTRO + 1100 // Co · Re가 금빛으로
+const T_FADE = T_HIGHLIGHT + 850 // 나머지 글자가 사라짐
+const T_MERGE = T_FADE + 450 // Co · Re · Lab이 모임
+const MERGE_MS = 1700
+const T_DONE = T_MERGE + 1500 // 부제 · 모토 · 소속이 차례로
 
 // 사이트 안에서 홈으로 다시 돌아왔을 때는 인트로를 반복하지 않습니다.
 let playedOnce = false
@@ -143,7 +143,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
           { transform: `translate(${dx}px, ${dy}px) scale(${scale})` },
           { transform: 'translate(0px, 0px) scale(1)' },
         ],
-        { duration: MERGE_MS, easing: 'cubic-bezier(0.45, 0, 0.15, 1)', fill: 'backwards' },
+        { duration: MERGE_MS, easing: 'cubic-bezier(0.45, 0, 0.2, 1)', fill: 'backwards' },
       )
     })
     firstRects.current = null

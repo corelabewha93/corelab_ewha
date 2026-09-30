@@ -5,10 +5,10 @@ import { useEffect, useRef } from 'react'
  * 서로 선으로 이어져 빛나는 네트워크(협력학습 상호작용)로 바뀌는 장면.
  *
  *  0.0s  칠판에 지워진 분필 자국이 희미하게 남아 있음
- *  0.6s~ 다섯 사람이 분필로 하나씩 그려짐
- *  1.9s~ 말풍선(Why? / Feedback / Let's try / Data / Ideas)이 차례로 떠오름
- *  3.0s~ 사람 사이에 분필 선이 이어지고, 머리가 금색·민트색 노드로 빛나며 선을 따라 빛이 오감
- *  4.3s~ 네트워크가 옅어지며 배경으로 물러나고, 그 위에 랩 이름이 나타남 (HeroIntro.jsx)
+ *  0.5s~ 다섯 사람이 두 무리로 나뉘어(3명 → 2명) 분필로 그려짐
+ *  1.55s~ 말풍선(Why? / Feedback / Let's try / Data / Ideas)이 차례로 떠오름
+ *  2.6s~ 사람 사이에 분필 선이 이어지고, 머리가 금색·민트색 노드로 빛나며 선을 따라 빛이 오감
+ *  3.7s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
  *
  * - 매 프레임 필터를 다시 계산하는 SVG 필터 대신, 한 번 만든 분필 결(노이즈) 무늬로 선을 칠해서
  *   휴대폰·카카오톡 인앱 브라우저에서도 가볍게 돌아갑니다.
@@ -22,9 +22,9 @@ const GOLD = '#e4d083'
 const MINT = '#8fe3ea'
 
 // 시간표(초) — HeroIntro.jsx의 단계 시각과 맞춰져 있습니다.
-export const CHALK_NAME_AT = 4.3 // 이 시각에 랩 이름이 나타나기 시작
-const DIM2_AT = 8.7 // "CoRe Lab" 완성 무렵, 한 번 더 옅어짐
-const END_AT = 10
+export const CHALK_NAME_AT = 3.7 // 이 시각에 랩 이름이 나타나기 시작
+const DIM2_AT = 7.4 // "CoRe Lab" 완성 무렵, 한 번 더 옅어짐
+const END_AT = 8.6
 
 const clamp = (x) => Math.max(0, Math.min(1, x))
 const pr = (t, s, d) => clamp((t - s) / d)
@@ -47,6 +47,7 @@ const LAYOUTS = {
     font: 20,
     charW: 11,
     bubbleH: 40,
+    settle: { dy: 50, k: 1 }, // 이름이 나타날 때 네트워크가 내려앉는 정도(아래로, 크기)
   },
   tall: {
     vb: [400, 720],
@@ -63,6 +64,7 @@ const LAYOUTS = {
     font: 18,
     charW: 10,
     bubbleH: 36,
+    settle: { dy: 130, k: 0.75 },
   },
 }
 
@@ -156,7 +158,8 @@ function build(svg, L) {
     ),
   )
 
-  const net = mk('g', { class: 'hero-chalk-net' }, svg)
+  const shift = mk('g', {}, svg)
+  const net = mk('g', { class: 'hero-chalk-net' }, shift)
   const lines = mk('g', {}, net)
   const glow = mk('g', {}, net)
 
@@ -243,31 +246,32 @@ function build(svg, L) {
     return { path, pulse, A, B, C }
   })
 
-  return { smudges, net, figs, bubbles, links }
+  return { smudges, shift, net, figs, bubbles, links, L }
 }
 
 function render(s, t) {
   s.smudges.forEach((e, i) =>
-    e.setAttribute('opacity', (0.06 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, 4.2, 0.8)))).toFixed(3)),
+    e.setAttribute('opacity', (0.06 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, CHALK_NAME_AT - 0.1, 0.8)))).toFixed(3)),
   )
   s.figs.forEach((f, i) => {
-    const st = 0.6 + i * 0.3
+    // 한 명씩이 아니라 무리 지어 그려집니다: (1·3·5번째) 먼저, (2·4번째) 이어서
+    const st = (i % 2 === 0 ? 0.5 : 1.0) + Math.floor(i / 2) * 0.07
     f.head.style.strokeDashoffset = 1 - eio(pr(t, st, 0.5))
-    f.body.style.strokeDashoffset = 1 - eio(pr(t, st + 0.28, 0.55))
-    const on = eio(pr(t, 3.3 + i * 0.08, 0.6))
+    f.body.style.strokeDashoffset = 1 - eio(pr(t, st + 0.25, 0.5))
+    const on = eio(pr(t, 2.85 + i * 0.07, 0.55))
     f.g.setAttribute('opacity', (on * 0.55).toFixed(3))
     f.fill.setAttribute('opacity', (on * 0.92).toFixed(3))
   })
-  const bOut = 1 - eo(pr(t, 3.3, 0.5))
+  const bOut = 1 - eo(pr(t, 2.9, 0.45))
   s.bubbles.forEach((b, i) => {
-    const st = 1.95 + i * 0.28
-    b.path.style.strokeDashoffset = 1 - eio(pr(t, st, 0.42))
+    const st = 1.55 + i * 0.22
+    b.path.style.strokeDashoffset = 1 - eio(pr(t, st, 0.4))
     b.path.style.opacity = bOut
-    b.text.setAttribute('opacity', (eo(pr(t, st + 0.3, 0.3)) * bOut).toFixed(3))
+    b.text.setAttribute('opacity', (eo(pr(t, st + 0.25, 0.28)) * bOut).toFixed(3))
   })
   s.links.forEach((l, k) => {
-    l.path.style.strokeDashoffset = 1 - eio(pr(t, 3.05 + k * 0.11, 0.55))
-    const pp = pr(t, 3.75 + k * 0.09, 0.9)
+    l.path.style.strokeDashoffset = 1 - eio(pr(t, 2.6 + k * 0.09, 0.5))
+    const pp = pr(t, 3.15 + k * 0.08, 0.85)
     if (pp > 0 && pp < 1) {
       const u = eio(pp)
       const a = (1 - u) * (1 - u)
@@ -281,7 +285,13 @@ function render(s, t) {
     }
   })
   const dim = 1 - 0.68 * eo(pr(t, CHALK_NAME_AT, 0.9)) - 0.14 * eo(pr(t, DIM2_AT, 1))
-  s.net.setAttribute('opacity', dim.toFixed(3))
+  s.shift.setAttribute('opacity', dim.toFixed(3))
+  // 이름이 놓일 자리를 비워 주려고, 네트워크가 아래쪽으로 부드럽게 내려앉습니다.
+  const u = eio(pr(t, CHALK_NAME_AT - 0.35, 1.1))
+  const [VW, VH] = s.L.vb
+  const { dy, k } = s.L.settle
+  const kk = 1 + (k - 1) * u
+  s.shift.setAttribute('transform', `translate(${VW / 2} ${VH / 2 + dy * u}) scale(${kk}) translate(${-VW / 2} ${-VH / 2})`)
 }
 
 export default function HeroChalk({ animated }) {
