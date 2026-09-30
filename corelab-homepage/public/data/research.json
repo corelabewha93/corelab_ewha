@@ -2154,7 +2154,10 @@
       "venue": "EdMedia: World Conference on Educational Media and Technology",
       "details": "Montreal, Canada",
       "doi": "",
-      "link": ""
+      "link": "",
+      "excludeAuthors": [
+        "김혜준"
+      ]
     },
     {
       "id": "pub-145",
