@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { upsertItem, deleteItem, reorderItems } from '../admin/collection'
@@ -25,6 +25,7 @@ function excerptOf(item) {
 
 const PAGE_SIZE = 10
 let lastPage = 1 // 글을 열었다가 목록으로 돌아와도 보던 페이지를 유지
+let listScrollY = 0 // 목록에서 글을 누르기 직전 스크롤 위치 (돌아올 때 복원)
 
 export default function News() {
   const { data, error, loading } = useData('news.json')
@@ -34,6 +35,21 @@ export default function News() {
   const [draft, setDraft] = useState(null) // 순서 바꾸기 중일 때: 소식 id 배열
   const [savingOrder, setSavingOrder] = useState(false)
   const [page, setPageState] = useState(lastPage)
+
+  // 글을 열면 제목이 보이도록 맨 위로, 목록으로 돌아오면 누르기 전 위치로 되돌립니다.
+  // (주소만 바뀌는 이동이라 App의 "페이지 이동 시 맨 위로"가 작동하지 않았습니다.)
+  const openId = query.id
+  useEffect(() => {
+    if (openId) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+    else window.scrollTo({ top: listScrollY, left: 0, behavior: 'instant' })
+  }, [openId])
+  // News 페이지를 완전히 떠나면 저장해 둔 위치는 버립니다 (다음에 들어올 땐 맨 위부터).
+  useEffect(
+    () => () => {
+      listScrollY = 0
+    },
+    [],
+  )
 
   useDocumentMeta('News', '이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.')
 
@@ -181,7 +197,10 @@ export default function News() {
                   type="button"
                   className="news-list-card"
                   disabled={ordering}
-                  onClick={() => navigate(`/news?id=${item.id}`)}
+                  onClick={() => {
+                    listScrollY = window.scrollY
+                    navigate(`/news?id=${item.id}`)
+                  }}
                 >
                   <div className="news-list-thumb">
                     <SafeImage src={thumb} alt="" fallback={<span />} />
