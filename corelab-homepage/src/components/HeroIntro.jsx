@@ -132,6 +132,41 @@ function LogoLayer({ d, color }) {
   )
 }
 
+/**
+ * 모바일에서 두 줄로 나눌 자리(몇 번째 단어 뒤)를 고릅니다.
+ * 윗줄이 아랫줄보다 조금 짧은 "사다리꼴" 모양(윗줄 ≈ 전체의 40%)이 되도록 합니다.
+ * 예: "Seeing How / We Learn Together", "COLLABORATIVE / RESEARCH LEARNING LAB"
+ */
+function mobileBreak(wordList) {
+  const lens = wordList.map((w) => w.length)
+  const total = lens.reduce((a, b) => a + b, 0) + lens.length - 1
+  let best = -1
+  let bestDiff = Infinity
+  let first = -1
+  for (let i = 0; i < lens.length - 1; i++) {
+    first += lens[i] + 1
+    const diff = Math.abs(first - total * 0.4)
+    if (first < total - first - 1 && diff < bestDiff) {
+      best = i
+      bestDiff = diff
+    }
+  }
+  return best
+}
+
+/** 글자 사이에 모바일에서만 줄바꿈이 되는 자리(<br class="hero-br">)를 넣어 돌려줍니다. */
+function withMobileBreak(text) {
+  const ws = text.trim().split(/\s+/)
+  const at = mobileBreak(ws)
+  if (at < 0) return text
+  return (
+    <>
+      {ws.slice(0, at + 1).join(' ')} <br className="hero-br" />
+      {ws.slice(at + 1).join(' ')}
+    </>
+  )
+}
+
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 // 단계가 바뀌는 시각(ms) — 앞의 분필 장면(HeroChalk) 뒤에 이어집니다.
@@ -241,6 +276,9 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   const lines = affiliation.filter((l) => l && l.trim().toLowerCase() !== tagline.trim().toLowerCase())
   const affClass = (i) => (i === 0 ? 'hero-aff-univ' : i === 1 ? 'hero-aff-dept' : 'hero-aff-line')
 
+  // 모바일: 정식 이름(부제)을 두 줄로 나눌 자리
+  const taglineBreak = words ? mobileBreak(words.map((w) => w.pieces.map((p) => p.text).join(''))) : -1
+
   // 약자의 두 번째 단어("Lab")가 시작되는 조각 앞에는 완성된 뒤 띄어쓰기 간격을 줍니다.
   let lastPart = null
 
@@ -333,6 +371,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
               {words
                 ? words.map((w, wi) => (
                     <Fragment key={wi}>
+                      {wi > 0 && wi === taglineBreak + 1 && <br className="hero-br" />}
                       {w.pieces.map((p, pi) =>
                         p.keep && p.part === 0 ? (
                           <span key={pi} className="hero-tagline-core">
@@ -348,12 +387,12 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
                 : tagline}
             </p>
           )}
-          {motto && <p className="hero-motto">{motto}</p>}
+          {motto && <p className="hero-motto">{withMobileBreak(motto)}</p>}
           {lines.length > 0 && (
             <div className="hero-affiliation">
               {lines.map((line, i) => (
                 <p key={i} className={affClass(i)}>
-                  {line}
+                  {i === 1 ? withMobileBreak(line) : line}
                 </p>
               ))}
             </div>
