@@ -713,6 +713,28 @@
       ],
       "links": [],
       "id": "person-mue6sv64kpi"
+    },
+    {
+      "name": "은주희",
+      "nameEn": "",
+      "photo": "",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "한국국방연구원 선임연구원",
+      "bio": "",
+      "pubNames": [],
+      "hideResearch": "",
+      "detail": [
+        "#소개",
+        "평생학습자의 자기주도적학습과 성장을 촉진하는 학습환경설계에 관심이 있는 연구자",
+        "#관심분야",
+        "테크놀로지기반학습, 일터학습, 교육프로그램개발"
+      ],
+      "id": "person-mundcuz0icn"
     }
   ]
 }
