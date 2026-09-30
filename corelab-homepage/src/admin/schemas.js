@@ -323,12 +323,43 @@ export const publicationFields = [
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
 ]
 
+/** 참여연구진 구분 — 과제 수행 "당시" 신분. 목록에는 이 순서대로 묶여서 보입니다. */
+export const PROJECT_MEMBER_ROLES = ['박사후연구원', '박사과정', '석사과정', '학부연구생', '연구원']
+
 export const projectFields = [
   { name: 'title', label: '과제명', type: 'text', required: true },
-  { name: 'funder', label: '지원기관', type: 'text', placeholder: '예: 한국연구재단' },
+  {
+    name: 'funder',
+    label: '지원기관',
+    type: 'text',
+    placeholder: '예: 교육부 · 한국연구재단',
+    hint: '부처와 전문기관을 가운데 점( · )으로 이어 적으세요.',
+  },
+  { name: 'program', label: '사업명', type: 'text', placeholder: '예: 인문사회기초연구사업' },
+  {
+    name: 'scale',
+    label: '과제 규모',
+    type: 'text',
+    placeholder: '예: 중견연구',
+    hint: '중견연구 · 신진연구 · 우수신진 · 리더연구 등. 사업명 옆에 작은 태그로 표시됩니다.',
+  },
   { name: 'start', label: '시작', type: 'month' },
   { name: 'end', label: '종료', type: 'month', hint: '비워두면 "진행 중"으로 표시됩니다.' },
-  { name: 'description', label: '설명', type: 'textarea' },
+  {
+    name: 'budget',
+    label: '총 연구비 (원)',
+    type: 'number',
+    placeholder: '예: 74766000',
+    hint: '여러 해에 걸친 연속과제는 모든 연차의 연구비를 더한 총액을 숫자만 적으세요. 화면에는 "74,766,000원"처럼 표시됩니다.',
+  },
+  {
+    name: 'members',
+    label: '참여연구진',
+    type: 'members',
+    roles: PROJECT_MEMBER_ROLES,
+    hint: '과제에 참여했던 "당시"의 신분을 고르세요 (예: 그때 석사과정이었다면 지금 박사여도 "석사과정"). 목록에는 박사후연구원 → 박사과정 → 석사과정 순으로 묶여 표시됩니다.',
+  },
+  { name: 'description', label: '설명 (선택)', type: 'textarea' },
 ]
 
 export const patentFields = [
