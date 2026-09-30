@@ -193,31 +193,64 @@ h1.section-title {
     text-shadow 1s ease;
 }
 
-/* ① 등장: 단어가 하나씩, 초점이 맞춰지듯(흐릿 → 또렷) 살짝 떠오르며 나타납니다.
-   글자 크기·간격은 전혀 바뀌지 않고 투명도·위치·흐림만 움직여서 출렁이거나 끊기지 않습니다. */
-.hero-phase-intro .hero-word {
-  animation: hero-word-in 0.95s cubic-bezier(0.22, 0.7, 0.2, 1) calc(0.12s + var(--i, 0) * 0.15s) both;
+/* ⓪ 칠판 장면(HeroChalk.jsx) — 이름 뒤 배경에 깔리고, 끝나면 아주 천천히 떠다니기만 합니다. */
+.hero-chalk {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
 }
 
-@keyframes hero-word-in {
+.hero-chalk-word {
+  font-family: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
+  font-weight: 600;
+  fill: #f4f1e6;
+  letter-spacing: 0.3px;
+}
+
+.hero-chalk-settled .hero-chalk-net {
+  animation: hero-chalk-float 14s ease-in-out infinite alternate;
+}
+
+@keyframes hero-chalk-float {
+  from {
+    transform: translate(0, 0);
+  }
+  to {
+    transform: translate(5px, -4px);
+  }
+}
+
+/* 칠판 장면이 그려지는 동안 이름은 숨겨 둡니다. */
+.hero-phase-chalk .hero-name {
+  opacity: 0;
+}
+
+/* ① 등장: 정식 이름 전체가 한 번에, 초점이 맞춰지듯(흐릿 → 또렷) 나타납니다.
+   글자 크기·간격은 전혀 바뀌지 않고 투명도·흐림만 움직여서 출렁이거나 끊기지 않습니다. */
+.hero-phase-intro .hero-name {
+  animation: hero-name-in 1.2s cubic-bezier(0.22, 0.7, 0.2, 1) both;
+}
+
+@keyframes hero-name-in {
   from {
     opacity: 0;
-    transform: translateY(0.32em);
-    filter: blur(9px);
+    filter: blur(10px);
   }
-  55% {
+  60% {
     opacity: 1;
   }
   to {
     opacity: 1;
-    transform: translateY(0);
     filter: blur(0);
   }
 }
 
 /* ② Co · Re가 금빛으로 켜지고, 나머지는 옅어집니다. */
 .hero-piece-drop {
-  transition: opacity 0.6s ease;
+  transition: opacity 0.8s ease;
 }
 
 .hero-phase-highlight .hero-piece-drop {
@@ -235,7 +268,7 @@ h1.section-title {
 /* ③ 약자에 쓰이지 않는 글자는 조용히 사라집니다. */
 .hero-phase-fade .hero-piece-drop {
   opacity: 0;
-  transition-duration: 0.45s;
+  transition-duration: 0.55s;
 }
 
 /* ④ "CoRe Lab" 배치 — merge와 done은 배치가 완전히 같아서, 완성된 뒤에 다시 튀는 일이 없습니다.
@@ -271,7 +304,7 @@ h1.section-title {
   height: 1px;
   margin: 1.6rem 0 1.3rem;
   background: linear-gradient(90deg, rgba(255, 255, 255, 0), rgba(255, 255, 255, 0.55), rgba(255, 255, 255, 0));
-  transition: width 1s cubic-bezier(0.2, 0.7, 0.2, 1) 0.2s;
+  transition: width 1.5s cubic-bezier(0.25, 0.6, 0.2, 1) 0.3s;
 }
 
 .hero-phase-done .hero-rule {
@@ -290,8 +323,8 @@ h1.section-title {
   opacity: 0;
   transform: translateY(10px);
   transition:
-    opacity 0.9s ease,
-    transform 0.9s cubic-bezier(0.2, 0.7, 0.2, 1);
+    opacity 1.4s ease,
+    transform 1.4s cubic-bezier(0.25, 0.6, 0.2, 1);
 }
 
 .hero-phase-done .hero-after > * {
@@ -300,13 +333,13 @@ h1.section-title {
 }
 
 .hero-phase-done .hero-after > :nth-child(1) {
-  transition-delay: 0.3s;
+  transition-delay: 0.5s;
 }
 .hero-phase-done .hero-after > :nth-child(2) {
-  transition-delay: 0.65s;
+  transition-delay: 1.3s;
 }
 .hero-phase-done .hero-after > :nth-child(3) {
-  transition-delay: 1s;
+  transition-delay: 2.1s;
 }
 
 .hero-tagline {
@@ -375,6 +408,7 @@ h1.section-title {
   .hero-piece-keep,
   .hero-piece-drop,
   .hero-rule,
+  .hero-chalk-net,
   .hero-after > * {
     animation: none !important;
     transition: none !important;
