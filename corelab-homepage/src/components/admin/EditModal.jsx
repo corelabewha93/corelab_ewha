@@ -20,6 +20,7 @@ import CropEditor from './CropEditor'
  *   - image + multiple + crop: true : 사진 여러 장 각각의 위치/확대 조정.
  *       cropField(예: 'imageCrops')에 사진 배열과 같은 순서로 crop 값이 저장됩니다.
  *       cropAspect: [4, 3] 처럼 실제 화면 비율을 넘기면 그 비율로 미리보기가 보입니다(생략 시 3:4).
+ *   - members    : 참여연구진 [{ name, role }] — 이름 입력칸 + 신분 선택칸을 한 줄씩 추가/삭제 (roles: 선택지 배열)
  *   - showIf(values) : 조건부로 보이는 필드
  */
 
@@ -37,6 +38,8 @@ function toForm(field, value) {
       return normalizeCrop({ photoCrop: value })
     case 'number':
       return value == null ? '' : String(value)
+    case 'members':
+      return Array.isArray(value) ? value.map((m) => ({ name: m.name ?? '', role: m.role ?? field.roles?.[0] ?? '' })) : []
     default:
       return value ?? (field.default ?? '')
   }
@@ -72,6 +75,10 @@ function fromForm(field, value) {
         .filter((l) => l.label || l.url)
     case 'number':
       return value === '' ? null : Number(value)
+    case 'members':
+      return (Array.isArray(value) ? value : [])
+        .map((m) => ({ name: (m.name ?? '').trim(), role: m.role }))
+        .filter((m) => m.name)
     case 'crop':
       return value
     case 'image':
@@ -263,6 +270,48 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
         return <textarea {...common} className="modal-input modal-textarea" rows={f.rows ?? (f.type === 'paragraphs' ? 6 : 4)} />
       case 'number':
         return <input {...common} type="number" />
+      case 'members': {
+        const rows = Array.isArray(value) ? value : []
+        const roles = f.roles ?? []
+        const update = (i, patch) => set(f.name, rows.map((r, j) => (j === i ? { ...r, ...patch } : r)))
+        return (
+          <div className="members-field">
+            {rows.map((row, i) => (
+              <div className="members-row" key={i}>
+                <input
+                  className="modal-input"
+                  type="text"
+                  value={row.name}
+                  placeholder="이름"
+                  onChange={(e) => update(i, { name: e.target.value })}
+                />
+                <select className="modal-input" value={row.role} onChange={(e) => update(i, { role: e.target.value })}>
+                  {roles.map((r) => (
+                    <option key={r} value={r}>
+                      {r}
+                    </option>
+                  ))}
+                </select>
+                <button
+                  type="button"
+                  className="members-remove"
+                  onClick={() => set(f.name, rows.filter((_, j) => j !== i))}
+                  aria-label="이 연구진 빼기"
+                >
+                  ×
+                </button>
+              </div>
+            ))}
+            <button
+              type="button"
+              className="members-add"
+              onClick={() => set(f.name, [...rows, { name: '', role: roles[1] ?? roles[0] ?? '' }])}
+            >
+              + 참여연구진 추가
+            </button>
+          </div>
+        )
+      }
       case 'date':
         return <input {...common} type="date" />
       case 'month':
