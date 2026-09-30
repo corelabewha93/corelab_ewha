@@ -8,6 +8,7 @@ import { normalizeCrop } from '../admin/photoCrop'
 import { personFields } from '../admin/schemas'
 import { showToast } from '../admin/toast'
 import Tabs from '../components/Tabs'
+import PageTitle from '../components/PageTitle'
 import PersonCard from '../components/PersonCard'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab } from '../components/admin/AdminControls'
@@ -209,7 +210,7 @@ export default function People() {
 
   return (
     <div className="page container">
-      <h1 className="section-title">People</h1>
+      <PageTitle sub={TABS.find((t) => t.key === tab)?.label}>People</PageTitle>
 
       <div className="tabs-layout">
         <Tabs

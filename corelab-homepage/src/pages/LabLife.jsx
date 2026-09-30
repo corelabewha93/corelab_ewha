@@ -5,6 +5,7 @@ import { upsertItem, deleteItem } from '../admin/collection'
 import { makeId } from '../admin/dataStore'
 import { lablifeFields } from '../admin/schemas'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
+import PageTitle from '../components/PageTitle'
 import Pagination from '../components/Pagination'
 import SafeImage, { resolveImageSrc } from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
@@ -101,7 +102,7 @@ export default function LabLife() {
 
   return (
     <div className="page container">
-      <h1 className="section-title">Lab Life</h1>
+      <PageTitle>Lab Life</PageTitle>
 
       {items.length === 0 ? (
         <p className="empty-state">등록된 사진이 없습니다.</p>

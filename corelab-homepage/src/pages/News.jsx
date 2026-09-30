@@ -7,6 +7,7 @@ import { makeId } from '../admin/dataStore'
 import { newsFields } from '../admin/schemas'
 import { useHashRoute, navigate } from '../router/useHashRoute'
 import NewsCard from '../components/NewsCard'
+import PageTitle from '../components/PageTitle'
 import Pagination from '../components/Pagination'
 import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
@@ -178,7 +179,7 @@ export default function News() {
   // 목록 화면: 카드를 눌러야 본문이 열립니다.
   return (
     <div className="page container">
-      <h1 className="section-title">News</h1>
+      <PageTitle>News</PageTitle>
       {ordering && (
         <p className="reorder-banner">◀ ▶ 버튼으로 순서를 바꾼 뒤, 오른쪽 아래 “순서 저장”을 눌러주세요. (앞쪽일수록 위에 보입니다)</p>
       )}
