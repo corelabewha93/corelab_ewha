@@ -458,30 +458,26 @@
       ]
     },
     {
-      "name": "임지영",
-      "photo": "images/people/임지영-muh0cm5a.jpg",
+      "name": "은주희",
+      "nameEn": "",
+      "photo": "",
       "photoCrop": {
-        "x": 49.7,
-        "y": 25.9,
-        "zoom": 2.37
+        "x": 50,
+        "y": 50,
+        "zoom": 1
       },
       "degree": "PhD",
-      "affiliation": "부산교육대학교 교육학과 교수",
+      "affiliation": "한국국방연구원 선임연구원",
       "bio": "",
+      "pubNames": [],
+      "hideResearch": "",
       "detail": [
         "#소개",
-        "새로운 테크놀로지를 통해 ‘어떤 배움을 만들어야 하는가’를 질문하는 연구자",
-        "교육 현장의 고민을 연구로 연결하고, 다시 연구에서 얻은 통찰을 더 나은 수업과 학습 경험으로 발전시키는 데 힘쓰고 있다",
+        "평생학습자의 자기주도적학습과 성장을 촉진하는 학습환경설계에 관심이 있는 연구자",
         "#관심분야",
-        "테크놀로지 기반 교수설계, AI·디지털 활용 교육, 협력학습"
+        "테크놀로지기반학습, 일터학습, 교육프로그램개발"
       ],
-      "links": [],
-      "id": "person-mue0nja9m7m",
-      "nameEn": "",
-      "pubNames": [
-        "Lim, J. Y",
-        "Lim, J.Y."
-      ]
+      "id": "person-mundcuz0icn"
     },
     {
       "name": "이지현",
@@ -526,6 +522,32 @@
       ]
     },
     {
+      "name": "임지영",
+      "photo": "images/people/임지영-muh0cm5a.jpg",
+      "photoCrop": {
+        "x": 49.7,
+        "y": 25.9,
+        "zoom": 2.37
+      },
+      "degree": "PhD",
+      "affiliation": "부산교육대학교 교육학과 교수",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "새로운 테크놀로지를 통해 ‘어떤 배움을 만들어야 하는가’를 질문하는 연구자",
+        "교육 현장의 고민을 연구로 연결하고, 다시 연구에서 얻은 통찰을 더 나은 수업과 학습 경험으로 발전시키는 데 힘쓰고 있다",
+        "#관심분야",
+        "테크놀로지 기반 교수설계, AI·디지털 활용 교육, 협력학습"
+      ],
+      "links": [],
+      "id": "person-mue0nja9m7m",
+      "nameEn": "",
+      "pubNames": [
+        "Lim, J. Y",
+        "Lim, J.Y."
+      ]
+    },
+    {
       "name": "박하나",
       "nameEn": "",
       "photo": "",
@@ -548,31 +570,6 @@
         "협력학습, 테크놀로지 기반 학습, AI 윤리 교육, 인지적 위임"
       ],
       "id": "person-mujmquwfy5k"
-    },
-    {
-      "name": "진명화",
-      "photo": "images/people/진명화-muf2lubm.jpg",
-      "photoCrop": {
-        "x": 50.5,
-        "y": 62.6,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "이화여자대학교/서울시립대학교 강사",
-      "bio": "",
-      "detail": [
-        "#경력",
-        "前 경상북도 교육청 소속 중등 정교사",
-        "#관심분야",
-        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
-      ],
-      "links": [],
-      "id": "person-mue71g7y55e",
-      "nameEn": "",
-      "pubNames": [
-        "Jin, M",
-        "Jin M. H."
-      ]
     },
     {
       "name": "박하은",
@@ -635,25 +632,28 @@
       "id": "person-muf2g7fen4u"
     },
     {
-      "name": "김혜준",
-      "photo": "images/people/김혜준-mue646h2.jpg",
+      "name": "진명화",
+      "photo": "images/people/진명화-muf2lubm.jpg",
       "photoCrop": {
-        "x": 50,
-        "y": 50,
+        "x": 50.5,
+        "y": 62.6,
         "zoom": 1
       },
       "degree": "PhD",
-      "affiliation": "이화여자대학교 강사",
+      "affiliation": "이화여자대학교/서울시립대학교 강사",
       "bio": "",
       "detail": [
+        "#경력",
+        "前 경상북도 교육청 소속 중등 정교사",
         "#관심분야",
-        "인간-AI 협력, 문제해결, CSCL"
+        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
       ],
       "links": [],
-      "id": "person-mue648lk2gx",
+      "id": "person-mue71g7y55e",
       "nameEn": "",
       "pubNames": [
-        "Kim, H. J."
+        "Jin, M",
+        "Jin M. H."
       ]
     },
     {
@@ -681,21 +681,25 @@
       ]
     },
     {
-      "name": "정유진",
-      "photo": "",
+      "name": "김혜준",
+      "photo": "images/people/김혜준-mue646h2.jpg",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
       "degree": "PhD",
-      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
+      "affiliation": "이화여자대학교 강사",
       "bio": "",
       "detail": [
-        "#소개",
-        "교수학습센터에서 교수지원 업무를 담당하고 있다",
-        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
+        "#관심분야",
+        "인간-AI 협력, 문제해결, CSCL"
       ],
       "links": [],
-      "id": "person-mue7boc1zes",
+      "id": "person-mue648lk2gx",
       "nameEn": "",
       "pubNames": [
-        "Jung, Y"
+        "Kim, H. J."
       ]
     },
     {
@@ -715,26 +719,22 @@
       "id": "person-mue6sv64kpi"
     },
     {
-      "name": "은주희",
-      "nameEn": "",
+      "name": "정유진",
       "photo": "",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
       "degree": "PhD",
-      "affiliation": "한국국방연구원 선임연구원",
+      "affiliation": "추계예술대학교 교수학습센터 교수지원 담당",
       "bio": "",
-      "pubNames": [],
-      "hideResearch": "",
       "detail": [
         "#소개",
-        "평생학습자의 자기주도적학습과 성장을 촉진하는 학습환경설계에 관심이 있는 연구자",
-        "#관심분야",
-        "테크놀로지기반학습, 일터학습, 교육프로그램개발"
+        "교수학습센터에서 교수지원 업무를 담당하고 있다",
+        "교육공학적 관점에서 수업 개선과 교수자의 성장을 지원하는 일에 관심을 가지고 실천하고 있다"
       ],
-      "id": "person-mundcuz0icn"
+      "links": [],
+      "id": "person-mue7boc1zes",
+      "nameEn": "",
+      "pubNames": [
+        "Jung, Y"
+      ]
     }
   ]
 }
