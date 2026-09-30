@@ -4163,3 +4163,43 @@ a[x-apple-data-detectors] {
     font-weight: 400;
   }
 }
+
+/* ---------- PC: 제목 · 왼쪽 메뉴 · 모아보기 머리말 고정 (Research · People) ----------
+   스크롤해도 "Research" 제목과 왼쪽 메뉴가 그 자리에 머물고,
+   한 사람의 연구 실적을 볼 때는 이름 머리말(이름 · 건수 · 전체 실적 보기)도 함께 고정됩니다.
+   아래 목록만 머리말 밑으로 지나갑니다. 높이(--title-h, --author-h)는 화면이 알아서 재서 넣어 줍니다. */
+@media (min-width: 701px) {
+  .page-title-pin {
+    position: sticky;
+    top: var(--header-h);
+    z-index: 30;
+    margin-top: calc(-1 * var(--space-3));
+    padding: var(--space-3) 0 var(--space-4);
+    background: var(--color-bg);
+  }
+
+  .page-title-pin .section-title {
+    margin-bottom: 0;
+  }
+
+  .page-title-pin ~ .tabs-layout .tabs-nav {
+    top: calc(var(--header-h) + var(--title-h, 0px));
+  }
+
+  .page-title-pin ~ .tabs-layout .pub-author-head {
+    position: sticky;
+    top: calc(var(--header-h) + var(--title-h, 0px));
+    z-index: 20;
+    background: var(--color-bg);
+    box-shadow: 0 -1px 0 var(--color-bg); /* 제목 띠와의 사이 1px 틈 메우기 */
+  }
+
+  /* 연도: 고정된 머리말 바로 아래에 붙음 */
+  .page-title-pin ~ .tabs-layout .pub-year-title {
+    top: calc(var(--header-h) + var(--title-h, 0px) + 0.25rem);
+  }
+
+  .page-title-pin ~ .tabs-layout .author-research .pub-year-title {
+    top: calc(var(--header-h) + var(--title-h, 0px) + var(--author-h, 0px) + 0.25rem);
+  }
+}
