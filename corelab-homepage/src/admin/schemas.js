@@ -359,7 +359,7 @@ export const projectFields = [
     roles: PROJECT_MEMBER_ROLES,
     hint: '과제에 참여했던 "당시"의 신분을 고르세요 (예: 그때 석사과정이었다면 지금 박사여도 "석사과정"). 목록에는 박사후연구원 → 박사과정 → 석사과정 순으로 묶여 표시됩니다.',
   },
-  { name: 'description', label: '설명 (선택)', type: 'textarea' },
+  { name: 'description', label: '과제 소개 (선택)', type: 'textarea' },
 ]
 
 export const patentFields = [
