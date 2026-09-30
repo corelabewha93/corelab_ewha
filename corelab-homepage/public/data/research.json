@@ -2399,7 +2399,10 @@
       "venue": "International Conference on Smart Learning Environments",
       "details": "Hong Kong, China",
       "doi": "",
-      "link": ""
+      "link": "",
+      "excludeAuthors": [
+        "김혜준"
+      ]
     },
     {
       "id": "pub-161",
