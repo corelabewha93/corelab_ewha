@@ -2,7 +2,7 @@
 
 /* 메인 화면 전용 글꼴 (모두 SIL Open Font License, 사이트에 직접 포함되어 있어 외부 서버가 필요 없습니다)
    - Philosopher 700: 랩 이름 — CoRe 로고 글자와 결이 같아, 로고 글자와 나란히 놓여도 한 글꼴처럼 보입니다.
-   - Cormorant Garamond 600: 모토 — 정갈한 고전 세리프.
+   - EB Garamond 500: 모토 — 정갈한 고전 세리프. 획이 너무 가늘지 않아 어두운 배경에서도 또렷합니다.
    - Playfair Display 600: 칠판 말풍선 글씨. */
 @font-face {
   font-family: 'Philosopher';
@@ -13,11 +13,11 @@
 }
 
 @font-face {
-  font-family: 'Cormorant Garamond';
+  font-family: 'EB Garamond';
   font-style: normal;
-  font-weight: 600;
+  font-weight: 500;
   font-display: swap;
-  src: url('../assets/fonts/cormorant-garamond-latin-600-normal.woff2') format('woff2');
+  src: url('../assets/fonts/eb-garamond-latin-500-normal.woff2') format('woff2');
 }
 
 @font-face {
@@ -336,7 +336,7 @@ h1.section-title {
    글자 이동 자체는 HeroIntro.jsx가 transform 한 번으로 부드럽게 처리합니다. */
 .hero-phase-merge .hero-name,
 .hero-phase-done .hero-name {
-  font-size: clamp(4rem, 19vw, 8rem);
+  font-size: clamp(4rem, 19vw, 8.7rem);
   letter-spacing: 0;
   white-space: nowrap;
 }
@@ -444,7 +444,7 @@ h1.section-title {
 
 .hero-tagline {
   margin: 0;
-  font-size: clamp(0.8rem, 2.5vw, 1.02rem);
+  font-size: clamp(0.8rem, 2.5vw, 1.12rem);
   font-weight: 600;
   letter-spacing: 0.16em;
   text-transform: uppercase;
@@ -456,14 +456,14 @@ h1.section-title {
   color: var(--hero-gold);
 }
 
-/* 모토 — 정갈한 고전 세리프(Cormorant Garamond) + 얼음빛 민트 그라데이션으로, 위아래 글씨와 구분되며 이 문구만 도드라지게 */
+/* 모토 — 정갈한 고전 세리프(EB Garamond) + 얼음빛 민트 그라데이션으로, 위아래 글씨와 구분되며 이 문구만 도드라지게 */
 .hero-motto {
   margin: 0.2rem 0 0.35rem;
   padding: 0.1em 0.14em 0.16em;
-  font-family: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-family: 'EB Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
   font-style: normal;
-  font-weight: 600;
-  font-size: clamp(1.75rem, 6.2vw, 2.9rem);
+  font-weight: 500;
+  font-size: clamp(1.3rem, 6.4vw, 3.05rem);
   line-height: 1.2;
   letter-spacing: 0.02em;
   color: #9fe6f0; /* 그라데이션을 못 쓰는 환경용 */
@@ -490,14 +490,14 @@ h1.section-title {
 
 .hero-aff-univ,
 .hero-aff-line {
-  font-size: clamp(0.72rem, 2.2vw, 0.84rem);
+  font-size: clamp(0.72rem, 2.2vw, 0.92rem);
   font-weight: 500;
   letter-spacing: 0.18em;
   color: rgba(255, 255, 255, 0.58);
 }
 
 .hero-aff-dept {
-  font-size: clamp(0.86rem, 2.8vw, 1.02rem);
+  font-size: clamp(0.86rem, 2.8vw, 1.12rem);
   font-weight: 700;
   letter-spacing: 0.13em;
   color: rgba(255, 255, 255, 0.95);
@@ -585,6 +585,29 @@ h1.section-title {
   font-size: 1.15rem;
   font-weight: 700;
   letter-spacing: 0.005em;
+}
+
+/* 상단 왼쪽 "CoRe Lab" — 메인 화면 로고와 똑같이: CoRe 로고 + Philosopher 글꼴의 Lab */
+.brand-wordmark {
+  display: inline-block;
+  font-family: 'Philosopher', var(--font-sans);
+  font-weight: 700;
+  font-size: 1.62rem;
+  line-height: 1.05;
+  white-space: nowrap;
+  padding-top: 0.12em; /* 학습자 점이 글자 위로 살짝 올라오는 만큼 */
+}
+
+.core-wordmark {
+  display: inline-block;
+  height: 1em;
+  vertical-align: -0.2em;
+  overflow: visible;
+}
+
+.brand-rest {
+  margin-left: 0.24em;
+  color: #fff;
 }
 
 @media (max-width: 480px) {
