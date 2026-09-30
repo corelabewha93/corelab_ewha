@@ -145,7 +145,10 @@ export default function Research() {
               key={authorName}
               data={data}
               author={authorFilter}
-              onClear={() => setTab('publications')}
+              onClear={() => {
+                setTab('publications')
+                window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
+              }}
               onEdit={{
                 publications: onEdit('publications'),
                 theses: onEdit('theses'),
