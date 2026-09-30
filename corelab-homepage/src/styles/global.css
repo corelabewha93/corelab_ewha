@@ -515,23 +515,37 @@ h1.section-title {
   }
 }
 
+/* 모바일에서만 줄을 바꾸는 자리 — PC에서는 한 줄 그대로 */
+.hero-br {
+  display: none;
+}
+
 @media (max-width: 560px) {
   .hero-intro {
     min-height: min(100vh, 680px);
   }
+  /* 모바일: 부제와 모토를 두 줄로 나누고(윗줄이 조금 짧은 모양) 글자를 키워 또렷하게 */
+  .hero-br {
+    display: inline;
+  }
   .hero-tagline {
-    font-size: 0.74rem;
-    letter-spacing: 0.09em;
-    text-wrap: balance;
+    font-size: clamp(0.82rem, 4vw, 0.95rem);
+    letter-spacing: 0.14em;
+    line-height: 1.6;
+  }
+  .hero-motto {
+    font-size: clamp(1.75rem, 9.2vw, 2.35rem);
+    line-height: 1.15;
   }
   .hero-aff-univ,
   .hero-aff-line {
     letter-spacing: 0.12em;
   }
-  /* 학과명이 한 줄에 들어가도록 살짝 줄입니다 (굵기·색으로 강조는 그대로) */
+  /* 학과명도 두 줄(DEPARTMENT OF / EDUCATIONAL TECHNOLOGY)로 나눠 조금 크게 */
   .hero-aff-dept {
-    font-size: clamp(0.7rem, 3.3vw, 0.86rem);
-    letter-spacing: 0.06em;
+    font-size: clamp(0.8rem, 3.9vw, 0.92rem);
+    letter-spacing: 0.12em;
+    line-height: 1.55;
   }
 }
 
