@@ -70,7 +70,7 @@ function Authors({ authors = [], translators = [], terms, focus }) {
   )
 }
 
-export function SearchBox({ value, onChange, placeholder = '제목, 저자, 학술지 검색' }) {
+export function SearchBox({ value, onChange, placeholder = '검색어를 입력하세요.' }) {
   const inputRef = useRef(null)
   return (
     <div className={`pub-search${value ? ' has-value' : ''}`} role="search">
@@ -316,6 +316,7 @@ export default function Publications({
       journals: journals.length,
       international: intl.length,
       ssci: intl.filter((p) => getIndexes(p).includes('SSCI')).length,
+      scopus: intl.filter((p) => getIndexes(p).includes('Scopus')).length,
       kci: journals.filter((p) => !isIntl(p)).length,
       conferences: pubs.filter((p) => p.type === 'conference').length,
       books: pubs.filter((p) => p.type === 'book').length,
@@ -354,7 +355,13 @@ export default function Publications({
             <dt>International</dt>
             <dd>
               {stats.international}
-              {stats.ssci > 0 && <small className="pub-stats-sub">SSCI {stats.ssci}</small>}
+              {(stats.ssci > 0 || stats.scopus > 0) && (
+                <small className="pub-stats-sub">
+                  {[stats.ssci > 0 && `SSCI ${stats.ssci}`, stats.scopus > 0 && `Scopus ${stats.scopus}`]
+                    .filter(Boolean)
+                    .join(' · ')}
+                </small>
+              )}
             </dd>
           </div>
           <div>

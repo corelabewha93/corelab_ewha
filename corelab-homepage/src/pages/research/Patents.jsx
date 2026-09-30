@@ -60,6 +60,7 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
             {pat.number ? ` · ${pat.number}` : ''}
             {pat.country ? ` (${pat.country})` : ''}
           </div>
+          {pat.description && <p className="patent-desc">{pat.description}</p>}
         </div>
       ))}
     </div>

@@ -22,6 +22,7 @@ export default function Tools({ items = [], onEdit }) {
             )}
           </h3>
           {tool.description && <p className="muted" style={{ margin: 0 }}>{tool.description}</p>}
+          {tool.acknowledgement && <p className="tool-ack">{tool.acknowledgement}</p>}
           <div>
             {(tool.tags ?? []).map((tag) => (
               <span key={tag} className="tag">

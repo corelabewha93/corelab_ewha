@@ -27,12 +27,22 @@ function formatWon(n) {
   return `${Number(n).toLocaleString('ko-KR')}원`
 }
 
-/** 참여연구진을 신분별로 묶어 정해진 순서(박사후연구원 → 박사과정 → 석사과정 …)로 돌려줍니다. */
+/** 예전에 입력된 박사과정·석사과정·학부연구생은 모두 "학생연구원"으로 묶어 보여줍니다. */
+const STUDENT_ROLES = new Set(['박사과정', '석사과정', '학부연구생', '학생연구원'])
+
+/** 참여연구진을 박사후연구원 → 학생연구원 순으로 묶고, 각 묶음 안에서 이름을 가나다순으로 돌려줍니다. */
 function groupMembers(members = []) {
+  const labelOf = (role) => (STUDENT_ROLES.has(role) ? '학생연구원' : role)
   const order = [...PROJECT_MEMBER_ROLES]
-  members.forEach((m) => m.role && !order.includes(m.role) && order.push(m.role))
+  members.forEach((m) => m.role && !order.includes(labelOf(m.role)) && order.push(labelOf(m.role)))
   return order
-    .map((role) => ({ role, names: members.filter((m) => m.name && m.role === role).map((m) => m.name) }))
+    .map((role) => ({
+      role,
+      names: members
+        .filter((m) => m.name && labelOf(m.role) === role)
+        .map((m) => m.name)
+        .sort((x, y) => x.localeCompare(y, 'ko')),
+    }))
     .filter((g) => g.names.length > 0)
 }
 
