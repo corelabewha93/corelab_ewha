@@ -2368,9 +2368,13 @@ mark.pub-hl {
     padding-top: var(--space-3);
   }
 
+  /* 모바일: 연도(과제 기간)도 스크롤하는 동안 상단 띠 바로 아래에 고정 */
   .pub-year-title {
-    position: static;
-    padding-top: 0;
+    position: sticky;
+    top: calc(var(--header-h) + 1px + var(--bar-h));
+    z-index: 5;
+    background: var(--color-bg);
+    padding: 0.4rem 0;
     display: flex;
     align-items: baseline;
     gap: 0.5rem;
@@ -3998,4 +4002,57 @@ a[x-apple-data-detectors] {
   font-size: 0.78rem;
   line-height: 1.55;
   color: var(--color-text-muted);
+}
+
+/* ---------- 모바일 고정 제목 띠 (Research · Publications 등) ---------- */
+.page-sticky-bar {
+  display: none;
+}
+
+@media (max-width: 700px) {
+  :root {
+    --bar-h: 2.4rem;
+  }
+
+  .page-sticky-bar {
+    position: fixed;
+    top: calc(var(--header-h) + 1px);
+    left: 0;
+    right: 0;
+    z-index: 90;
+    height: var(--bar-h);
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    padding: 0 var(--space-3);
+    background: var(--color-bg);
+    border-bottom: 1px solid var(--color-border);
+    font-size: 0.9rem;
+    transform: translateY(-100%);
+    opacity: 0;
+    pointer-events: none;
+    transition: transform 0.18s ease, opacity 0.18s ease;
+  }
+
+  .page-sticky-bar.show {
+    transform: none;
+    opacity: 1;
+  }
+
+  .page-sticky-title {
+    font-weight: 700;
+    color: var(--color-text);
+  }
+
+  .page-sticky-sub {
+    color: var(--color-primary);
+    font-weight: 600;
+  }
+
+  .page-sticky-sub::before {
+    content: '·';
+    margin-right: 0.55rem;
+    color: var(--color-text-muted);
+    font-weight: 400;
+  }
 }
