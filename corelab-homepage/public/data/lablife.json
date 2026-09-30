@@ -293,5 +293,45 @@
         "zoom": 1.16
       }
     ]
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2025-12-munt1kff.jpg",
+      "images/lablife/lablife-2025-12-munt1ncj.jpg",
+      "images/lablife/lablife-2025-12-munt1par.jpg",
+      "images/lablife/lablife-2025-12-munt1rxg.jpg",
+      "images/lablife/lablife-2025-12-munt1u3s.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      }
+    ],
+    "caption": "2025년 12월, 첫 눈❄️",
+    "body": "산학협력관에서 주람&효정이 함께 과제하다가 첫 눈이 온 날.\n눈 길을 탈출하다가 만난 처음본 유학생과 함께 낭만있는 한 컷☃️🤳🏻\n\n첫 눈이 왔던 날, 낭만 가득한 캠퍼스의 풍경도 함께 첨부한다.",
+    "date": "2025-12",
+    "id": "lablife-munt1vvfbp9"
   }
 ]
