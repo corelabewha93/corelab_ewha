@@ -4224,3 +4224,27 @@ html.modal-locked .site-header {
   position: relative;
   top: var(--lock-y, 0px);
 }
+
+/* About 메뉴로 내려올 때 Lab Overview 제목이 고정 헤더에 가려지지 않도록 */
+#overview {
+  scroll-margin-top: calc(var(--header-h) + 0.5rem);
+}
+
+/* PC 상단 헤더: 넓은 화면에서 메뉴·로고를 조금 더 크고 여유 있게 (모바일 721px 미만은 그대로) */
+@media (min-width: 721px) {
+  :root {
+    --header-h: 74px;
+  }
+  .nav {
+    gap: 2.3rem;
+  }
+  .nav a {
+    font-size: 1.02rem;
+  }
+  .brand-wordmark {
+    font-size: 1.85rem;
+  }
+  .brand-dept {
+    font-size: 0.72rem;
+  }
+}
