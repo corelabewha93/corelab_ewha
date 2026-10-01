@@ -209,7 +209,14 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
     body.style.top = `-${scrollY}px`
     body.style.width = '100%'
     body.style.overflow = 'hidden'
+    // 화면을 이렇게 고정하면 맨 위의 CoRe Lab 헤더가 같이 위로 밀려 사라지므로,
+    // 스크롤했던 만큼 헤더를 아래로 내려 항상 화면 맨 위에 보이게 합니다. (global.css의 modal-locked)
+    const root = document.documentElement
+    root.style.setProperty('--lock-y', `${scrollY}px`)
+    root.classList.add('modal-locked')
     return () => {
+      root.classList.remove('modal-locked')
+      root.style.removeProperty('--lock-y')
       body.style.position = prev.position
       body.style.top = prev.top
       body.style.width = prev.width
