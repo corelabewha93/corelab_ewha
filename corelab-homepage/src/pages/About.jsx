@@ -1,4 +1,4 @@
-import { useState } from 'react'
+import { useEffect, useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { saveData } from '../admin/dataStore'
@@ -7,6 +7,8 @@ import EditModal from '../components/admin/EditModal'
 import { EditButton } from '../components/admin/AdminControls'
 import SafeImage from '../components/SafeImage'
 import Link from '../router/Link'
+import { useHashRoute } from '../router/useHashRoute'
+import { scrollToSection } from '../router/scrollToSection'
 import HeroIntro from '../components/HeroIntro'
 
 function NewsPreview() {
@@ -45,6 +47,16 @@ export default function About() {
   const { data, error, loading } = useData('site.json')
   const { token } = useAdminAuth()
   const [editing, setEditing] = useState(false)
+  const { query } = useHashRoute()
+  const ready = !(loading && !data)
+
+  // 다른 페이지에서 About을 눌러 들어오면(/?section=overview) Lab Overview로 내려갑니다.
+  // (페이지가 바뀔 때 App이 맨 위로 올리는 동작이 끝난 뒤에 이동하도록 잠깐 기다립니다.)
+  useEffect(() => {
+    if (!ready || query.section !== 'overview') return
+    const t = setTimeout(() => scrollToSection('overview'), 80)
+    return () => clearTimeout(t)
+  }, [ready, query.section])
 
   if (loading && !data) return <div className="page container">불러오는 중...</div>
   if (error) return <div className="page container error-state">{error}</div>
@@ -66,7 +78,7 @@ export default function About() {
           motto={mottoEn}
         />
 
-        <section className="section">
+        <section className="section" id="overview">
           <h2 className="section-title">Lab Overview</h2>
 
           {(mottoKr || mottoEn) && (
