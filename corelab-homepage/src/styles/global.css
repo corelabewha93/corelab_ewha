@@ -4217,3 +4217,10 @@ a[x-apple-data-detectors] {
     top: calc(var(--header-h) + var(--title-h, 0px) + var(--author-h, 0px) + 0.25rem);
   }
 }
+
+/* 이력 팝업이 열려 있는 동안 뒤 화면을 고정하면(PersonCard.jsx) 상단 헤더가 같이 밀려 올라가 사라집니다.
+   스크롤한 만큼(--lock-y) 헤더를 내려서, 팝업이 열려도 헤더가 화면 맨 위에 그대로 보이게 합니다. */
+html.modal-locked .site-header {
+  position: relative;
+  top: var(--lock-y, 0px);
+}
