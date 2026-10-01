@@ -1,10 +1,11 @@
 import { useHashRoute, navigate, withBase } from './useHashRoute'
 
 /** <a href="/news">처럼 동작하되, 클릭하면 새로고침 없이 이동하고, 현재 경로와 일치하면 active 클래스를 붙여줍니다. */
-export default function Link({ to, children, className = '', onClick, ...rest }) {
+export default function Link({ to, children, className = '', onClick, active, ...rest }) {
   const { path } = useHashRoute()
   const targetPath = to.split('?')[0]
-  const isActive = path === targetPath
+  // active를 직접 넘기면(예: 홈 안에서 스크롤 위치로 판단하는 About 메뉴) 그 값을 따릅니다.
+  const isActive = active ?? path === targetPath
   const classes = [className, isActive ? 'active' : ''].filter(Boolean).join(' ')
 
   // 메뉴 닫기처럼 바깥에서 넘겨준 onClick도 함께 실행합니다.
