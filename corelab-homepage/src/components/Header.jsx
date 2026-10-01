@@ -1,11 +1,13 @@
 import { useEffect, useRef, useState } from 'react'
 import Link from '../router/Link'
+import { useHashRoute } from '../router/useHashRoute'
+import { scrollToSection } from '../router/scrollToSection'
 import { useData } from '../hooks/useData'
 import CoreLogo from './CoreLogo'
 import CoreWordmark from './CoreWordmark'
 
 const NAV_ITEMS = [
-  { to: '/', label: 'About' },
+  { to: '/?section=overview', label: 'About', about: true },
   { to: '/news', label: 'News' },
   { to: '/research?tab=publications', label: 'Research' },
   { to: '/people?tab=faculty', label: 'People' },
@@ -21,6 +23,8 @@ export default function Header({ brandLogo = false }) {
   const [open, setOpen] = useState(false)
   const { data } = useData('site.json')
   const headerRef = useRef(null)
+  const { path } = useHashRoute()
+  const [aboutActive, setAboutActive] = useState(false)
   const labName = data?.labName ?? 'CoRe Lab'
   const labRest = labName.replace(/^\s*CoRe\s*/i, '')
 
@@ -38,10 +42,50 @@ export default function Header({ brandLogo = false }) {
     }
   }, [])
 
+  // About 메뉴: 홈에서 Lab Overview 구역이 화면에 들어와 있는 동안만 강조합니다.
+  // (맨 위 인트로 화면에서는 로고가 "홈"이고, 어느 메뉴도 강조되지 않습니다.)
+  useEffect(() => {
+    if (path !== '/') {
+      setAboutActive(false)
+      return
+    }
+    let raf = 0
+    const update = () => {
+      raf = 0
+      const el = document.getElementById('overview')
+      if (!el) return setAboutActive(false)
+      const r = el.getBoundingClientRect()
+      setAboutActive(r.top < window.innerHeight * 0.45 && r.bottom > 80)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(update)
+    }
+    update()
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    const t = setTimeout(update, 600) // 소개 데이터가 늦게 뜨는 경우 대비
+    return () => {
+      clearTimeout(t)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      if (raf) cancelAnimationFrame(raf)
+    }
+  }, [path])
+
+  // 로고(홈): 이미 홈이면 맨 위로, About: 이미 홈이면 Lab Overview로 부드럽게 이동
+  const onLogoClick = () => {
+    setOpen(false)
+    if (path === '/') window.scrollTo({ top: 0, behavior: 'smooth' })
+  }
+  const onNavClick = (item) => () => {
+    setOpen(false)
+    if (item.about && path === '/') setTimeout(() => scrollToSection('overview'), 0)
+  }
+
   return (
     <header className="site-header" ref={headerRef}>
       <div className="container">
-        <Link to="/" className="brand" onClick={() => setOpen(false)}>
+        <Link to="/" className="brand" onClick={onLogoClick} active={false}>
           <span className="brand-dept">이화여자대학교 교육공학과</span>
           {brandLogo ? (
             <span className="brand-name brand-name-logo">
@@ -77,7 +121,12 @@ export default function Header({ brandLogo = false }) {
 
         <nav className={`nav${open ? ' open' : ''}`}>
           {NAV_ITEMS.map((item) => (
-            <Link key={item.to} to={item.to} onClick={() => setOpen(false)}>
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={onNavClick(item)}
+              active={item.about ? aboutActive : undefined}
+            >
               {item.label}
             </Link>
           ))}
