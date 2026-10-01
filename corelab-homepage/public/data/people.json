@@ -432,6 +432,32 @@
       ]
     },
     {
+      "name": "김주연",
+      "nameEn": "",
+      "photo": "images/people/김주연-mup0xl88.jpg",
+      "photoCrop": {
+        "x": 49.6,
+        "y": 84.3,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "한국공학대학교 교수학습개발원 학술연구교수/이화여대 교육대학원 강사/수업컨설턴트(연세대, 동국대, 건국대 등)",
+      "bio": "",
+      "pubNames": [],
+      "hideResearch": "",
+      "detail": [
+        "#소개",
+        "무엇을, 어떻게 가르칠까를 통해 학습자의 학습 촉진과 수행 향상을 고민하는 연구자",
+        "#경력",
+        "前 경희대 교수학습개발원 학술연구교수",
+        "㈜능률교육 과장",
+        "삼성SDS(주) 선임",
+        "#관심분야",
+        "문제해결, 교수설계, AI 기반 교육, 학습과학 및 학습분석 등을 통한 교수역량 향상"
+      ],
+      "id": "person-mup0xmst4ub"
+    },
+    {
       "name": "김영주",
       "photo": "images/people/김영주-mugpx7xl.jpg",
       "photoCrop": {
@@ -456,30 +482,6 @@
         "Kim, Y.J",
         "Kim, Y.J."
       ]
-    },
-    {
-      "name": "은주희",
-      "nameEn": "",
-      "photo": "",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "한국국방연구원 선임연구원",
-      "bio": "",
-      "pubNames": [
-        "Eun J. H."
-      ],
-      "hideResearch": "",
-      "detail": [
-        "#소개",
-        "평생학습자의 자기주도적학습과 성장을 촉진하는 학습환경설계에 관심이 있는 연구자",
-        "#관심분야",
-        "테크놀로지기반학습, 일터학습, 교육프로그램개발"
-      ],
-      "id": "person-mundcuz0icn"
     },
     {
       "name": "이지현",
@@ -524,6 +526,30 @@
       ]
     },
     {
+      "name": "은주희",
+      "nameEn": "",
+      "photo": "",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "한국국방연구원 선임연구원",
+      "bio": "",
+      "pubNames": [
+        "Eun J. H."
+      ],
+      "hideResearch": "",
+      "detail": [
+        "#소개",
+        "평생학습자의 자기주도적학습과 성장을 촉진하는 학습환경설계에 관심이 있는 연구자",
+        "#관심분야",
+        "테크놀로지기반학습, 일터학습, 교육프로그램개발"
+      ],
+      "id": "person-mundcuz0icn"
+    },
+    {
       "name": "임지영",
       "photo": "images/people/임지영-muh0cm5a.jpg",
       "photoCrop": {
@@ -548,30 +574,6 @@
         "Lim, J. Y",
         "Lim, J.Y."
       ]
-    },
-    {
-      "name": "박하나",
-      "nameEn": "",
-      "photo": "",
-      "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "경기대학교 전공설계융합지원센터 연구교수",
-      "bio": "",
-      "pubNames": [
-        "Park, H.",
-        "Park H. N."
-      ],
-      "detail": [
-        "#소개",
-        "교육공학을 기반으로 AI 시대의 학습과 사고 변화를 공부하고 연구하고 있다",
-        "#관심분야",
-        "협력학습, 테크놀로지 기반 학습, AI 윤리 교육, 인지적 위임"
-      ],
-      "id": "person-mujmquwfy5k"
     },
     {
       "name": "박하은",
@@ -634,6 +636,54 @@
       "id": "person-muf2g7fen4u"
     },
     {
+      "name": "박하나",
+      "nameEn": "",
+      "photo": "",
+      "photoCrop": {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      "degree": "PhD",
+      "affiliation": "경기대학교 전공설계융합지원센터 연구교수",
+      "bio": "",
+      "pubNames": [
+        "Park, H.",
+        "Park H. N."
+      ],
+      "detail": [
+        "#소개",
+        "교육공학을 기반으로 AI 시대의 학습과 사고 변화를 공부하고 연구하고 있다",
+        "#관심분야",
+        "협력학습, 테크놀로지 기반 학습, AI 윤리 교육, 인지적 위임"
+      ],
+      "id": "person-mujmquwfy5k"
+    },
+    {
+      "name": "이다혜",
+      "photo": "images/people/이다혜-mufhrtd4.jpg",
+      "photoCrop": {
+        "x": 54.3,
+        "y": 4.4,
+        "zoom": 1.56
+      },
+      "degree": "MA",
+      "affiliation": "펜실베니아 주립대학교 LDT 프로그램 박사과정",
+      "bio": "",
+      "detail": [
+        "#소개",
+        "경기도교육청 소속 중등 영어교사로 근무한 뒤, 모교인 이화여자대학교에서 교육공학 석사 학위를 받았다",
+        "현재 미국 Pennsylvania State University에서  Learning, Design, and Technology 프로그램 박사과정을 밟고 있다",
+        "학습자가 협력학습에서 공동의 이해와 의미를 구성하는 과정에 관심을 갖고 연구하고 있다"
+      ],
+      "links": [],
+      "id": "person-mue7fnvzf88",
+      "nameEn": "",
+      "pubNames": [
+        "Lee, D"
+      ]
+    },
+    {
       "name": "진명화",
       "photo": "images/people/진명화-muf2lubm.jpg",
       "photoCrop": {
@@ -659,28 +709,20 @@
       ]
     },
     {
-      "name": "이다혜",
-      "photo": "images/people/이다혜-mufhrtd4.jpg",
-      "photoCrop": {
-        "x": 54.3,
-        "y": 4.4,
-        "zoom": 1.56
-      },
+      "name": "김다현",
+      "photo": "",
       "degree": "MA",
-      "affiliation": "펜실베니아 주립대학교 LDT 프로그램 박사과정",
+      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
       "bio": "",
       "detail": [
         "#소개",
-        "경기도교육청 소속 중등 영어교사로 근무한 뒤, 모교인 이화여자대학교에서 교육공학 석사 학위를 받았다",
-        "현재 미국 Pennsylvania State University에서  Learning, Design, and Technology 프로그램 박사과정을 밟고 있다",
-        "학습자가 협력학습에서 공동의 이해와 의미를 구성하는 과정에 관심을 갖고 연구하고 있다"
+        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
+        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
+        "#관심분야",
+        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
       ],
       "links": [],
-      "id": "person-mue7fnvzf88",
-      "nameEn": "",
-      "pubNames": [
-        "Lee, D"
-      ]
+      "id": "person-mue6sv64kpi"
     },
     {
       "name": "김혜준",
@@ -709,22 +751,6 @@
       "hideResearch": ""
     },
     {
-      "name": "김다현",
-      "photo": "",
-      "degree": "MA",
-      "affiliation": "국가과학기술인력개발원(KIRD) 위촉연구원",
-      "bio": "",
-      "detail": [
-        "#소개",
-        "과학기술인재의 성장을 돕는 교육사업을 기획·운영하고 있다",
-        "학습자에게 ‘긍정적인 변화’를 선물하는 교육공학자를 꿈꾼다",
-        "#관심분야",
-        "학습경험설계(LXD), 컴퓨터기반협력학습(CSCL), 학습분석학(LA)"
-      ],
-      "links": [],
-      "id": "person-mue6sv64kpi"
-    },
-    {
       "name": "정유진",
       "photo": "images/people/정유진-munt4io0.jpg",
       "degree": "PhD",
@@ -747,32 +773,6 @@
         "zoom": 1
       },
       "hideResearch": ""
-    },
-    {
-      "name": "김주연",
-      "nameEn": "",
-      "photo": "images/people/김주연-mup0xl88.jpg",
-      "photoCrop": {
-        "x": 49.6,
-        "y": 84.3,
-        "zoom": 1
-      },
-      "degree": "PhD",
-      "affiliation": "한국공학대학교 교수학습개발원 학술연구교수/이화여대 교육대학원 강사/수업컨설턴트(연세대, 동국대, 건국대 등)",
-      "bio": "",
-      "pubNames": [],
-      "hideResearch": "",
-      "detail": [
-        "#소개",
-        "무엇을, 어떻게 가르칠까를 통해 학습자의 학습 촉진과 수행 향상을 고민하는 연구자",
-        "#경력",
-        "前 경희대 교수학습개발원 학술연구교수",
-        "㈜능률교육 과장",
-        "삼성SDS(주) 선임",
-        "#관심분야",
-        "문제해결, 교수설계, AI 기반 교육, 학습과학 및 학습분석 등을 통한 교수역량 향상"
-      ],
-      "id": "person-mup0xmst4ub"
     }
   ]
 }
