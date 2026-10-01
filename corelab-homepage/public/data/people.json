@@ -443,7 +443,9 @@
       "degree": "PhD",
       "affiliation": "한국공학대학교 교수학습개발원 학술연구교수",
       "bio": "",
-      "pubNames": [],
+      "pubNames": [
+        "Kim, J. Y."
+      ],
       "hideResearch": "",
       "detail": [
         "#소개",
