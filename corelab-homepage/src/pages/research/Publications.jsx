@@ -166,7 +166,7 @@ function stripSaleStatus(text = '') {
     .join(' · ')
 }
 
-export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = null }) {
+export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = null, reorder = null }) {
   const isBook = pub.type === 'book'
   const { title, thesis } = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
 
@@ -185,8 +185,10 @@ export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = nu
   const details = isBook ? stripSaleStatus(pub.details) : pub.details
 
   return (
-    <li className={`pub-item admin-item${authorTool?.excluded ? ' pub-item-excluded' : ''}`}>
-      <EditButton onClick={() => onEdit(pub)} />
+    <li
+      className={`pub-item admin-item${authorTool?.excluded ? ' pub-item-excluded' : ''}${reorder ? ' pub-item-reordering' : ''}`}
+    >
+      {!reorder && <EditButton onClick={() => onEdit(pub)} />}
       {authorTool && (
         <button
           type="button"
@@ -230,6 +232,16 @@ export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = nu
           </a>
         )}
       </div>
+      {reorder && (
+        <div className="reorder-controls pub-reorder-controls">
+          <button type="button" onClick={() => reorder.move(-1)} disabled={!reorder.canPrev} aria-label="위로">
+            ▲
+          </button>
+          <button type="button" onClick={() => reorder.move(1)} disabled={!reorder.canNext} aria-label="아래로">
+            ▼
+          </button>
+        </div>
+      )}
     </li>
   )
 }
@@ -245,7 +257,7 @@ export function groupByYear(list) {
   return Object.entries(groups).sort((a, b) => Number(b[0]) - Number(a[0]))
 }
 
-export function YearGroups({ groups, onEdit, terms = [], focus = null, authorTool = null }) {
+export function YearGroups({ groups, onEdit, terms = [], focus = null, authorTool = null, reorderFor = null }) {
   return groups.map(([year, list]) => (
     <section key={year} className="pub-year-group">
       <h3 className="pub-year-title">{year}</h3>
@@ -257,6 +269,7 @@ export function YearGroups({ groups, onEdit, terms = [], focus = null, authorToo
             onEdit={onEdit}
             terms={terms}
             focus={focus}
+            reorder={reorderFor ? reorderFor(pub) : null}
             authorTool={
               authorTool
                 ? {

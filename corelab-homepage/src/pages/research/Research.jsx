@@ -2,7 +2,7 @@ import { useMemo, useState } from 'react'
 import { useData } from '../../hooks/useData'
 import { useHashRoute, useQueryTab } from '../../router/useHashRoute'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
-import { upsertItem, deleteItem } from '../../admin/collection'
+import { upsertItem, deleteItem, reorderItems } from '../../admin/collection'
 import { makeId } from '../../admin/dataStore'
 import { showToast } from '../../admin/toast'
 import { publicationFields, projectFields, patentFields, toolFields } from '../../admin/schemas'
@@ -15,7 +15,7 @@ import Publications from './Publications'
 import Projects from './Projects'
 import Patents from './Patents'
 import Tools from './Tools'
-import Theses from './Theses'
+import Theses, { moveThesisWithinYear } from './Theses'
 import AuthorResearch from './AuthorResearch'
 
 const TABS = [
@@ -67,6 +67,35 @@ export default function Research() {
     return { name: authorName, aliases: [authorName, ...extra], hidden: Boolean(person?.hideResearch) }
   }, [authorName, people, isAdmin])
   const [editing, setEditing] = useState(null) // { key, item|null }
+
+  // 학위논문 "순서 바꾸기": 같은 연도 안에서 위/아래로 옮기고 저장합니다.
+  // draft = 바꾸는 중인 학위논문 id 순서 (아니면 null). 저장할 때는 학위논문이 있던 자리만 바꾸고
+  // 일반 논문 등 다른 항목의 순서는 그대로 둡니다.
+  const [draft, setDraft] = useState(null)
+  const [savingOrder, setSavingOrder] = useState(false)
+  const ordering = tab === 'theses' && Boolean(draft)
+
+  const startOrdering = () =>
+    setDraft((data?.publications ?? []).filter((p) => p.type === 'other').map((p) => p.id))
+
+  const saveOrder = async () => {
+    setSavingOrder(true)
+    try {
+      const all = data?.publications ?? []
+      const thesisIds = all.filter((p) => p.type === 'other').map((p) => p.id)
+      // 바꾸는 사이 새로 생긴 학위논문은 맨 뒤에 둡니다.
+      const queue = [...draft.filter((id) => thesisIds.includes(id)), ...thesisIds.filter((id) => !draft.includes(id))]
+      let k = 0
+      const ids = all.map((p) => (p.type === 'other' ? queue[k++] : p.id))
+      await reorderItems(token, 'research.json', 'publications', ids, '학위논문 순서 변경')
+      setDraft(null)
+      showToast('순서를 저장했어요. 방문자 화면에는 1~2분 뒤 반영됩니다.')
+    } catch (err) {
+      showToast(`저장 실패: ${err.message}`, 6000)
+    } finally {
+      setSavingOrder(false)
+    }
+  }
 
   const onEdit = (key) => (item) => setEditing({ key, item })
   const editor = editing && EDITORS[editing.key]
@@ -134,7 +163,14 @@ export default function Research() {
 
       <div className="tabs-layout">
         {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
-        <Tabs tabs={TABS} current={authorFilter ? '' : tab} onChange={setTab} />
+        <Tabs
+          tabs={TABS}
+          current={authorFilter ? '' : tab}
+          onChange={(t) => {
+            setDraft(null)
+            setTab(t)
+          }}
+        />
 
         <div className="tabs-content">
           {loading && !data && <div>불러오는 중...</div>}
@@ -160,6 +196,12 @@ export default function Research() {
             />
           )}
 
+          {data && !authorFilter && ordering && (
+            <p className="reorder-banner">
+              ▲ ▼ 버튼으로 순서를 바꾼 뒤, 오른쪽 아래 “순서 저장”을 눌러주세요. (같은 연도 안에서만 옮길 수 있어요. 위쪽일수록 먼저 보입니다)
+            </p>
+          )}
+
           {data && !authorFilter && (
             <>
               {tab === 'publications' && (
@@ -170,7 +212,16 @@ export default function Research() {
                   initialQuery={searchQuery}
                 />
               )}
-              {tab === 'theses' && <Theses items={data.publications} onEdit={onEdit('theses')} />}
+              {tab === 'theses' && (
+                <Theses
+                  items={data.publications}
+                  onEdit={onEdit('theses')}
+                  order={ordering ? draft : null}
+                  onMove={(id, dir) =>
+                    setDraft((ids) => moveThesisWithinYear(data.publications, ids, id, dir))
+                  }
+                />
+              )}
               {tab === 'projects' && <Projects items={data.projects} onEdit={onEdit('projects')} />}
               {tab === 'patents' && (
                 <Patents items={data.patents} onEdit={onEdit('patents')} onToggleHidden={togglePatentHidden} />
@@ -182,9 +233,27 @@ export default function Research() {
       </div>
 
       <AdminFab>
-        <button type="button" className="admin-fab-btn" onClick={() => setEditing({ key: tab, item: null })}>
-          + {EDITORS[tab].label} 추가
-        </button>
+        {ordering ? (
+          <>
+            <button type="button" className="admin-fab-btn secondary" onClick={() => setDraft(null)} disabled={savingOrder}>
+              취소
+            </button>
+            <button type="button" className="admin-fab-btn" onClick={saveOrder} disabled={savingOrder}>
+              {savingOrder ? '저장 중...' : '순서 저장'}
+            </button>
+          </>
+        ) : (
+          <>
+            {tab === 'theses' && !authorFilter && (data?.publications ?? []).filter((p) => p.type === 'other').length > 1 && (
+              <button type="button" className="admin-fab-btn secondary" onClick={startOrdering}>
+                ↔ 순서 바꾸기
+              </button>
+            )}
+            <button type="button" className="admin-fab-btn" onClick={() => setEditing({ key: tab, item: null })}>
+              + {EDITORS[tab].label} 추가
+            </button>
+          </>
+        )}
       </AdminFab>
 
       {editing && (
