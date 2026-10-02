@@ -3289,6 +3289,17 @@ mark.pub-hl {
   cursor: default;
 }
 
+/* 학위논문 순서 바꾸기: 항목 아래에 ▲▼ 버튼 */
+.pub-item.pub-item-reordering {
+  border: 1px dashed var(--color-border);
+  border-radius: var(--radius);
+  padding: var(--space-2) 0.9rem;
+}
+
+.pub-reorder-controls {
+  justify-content: flex-end;
+}
+
 .footer-admin-row {
   display: flex;
   justify-content: center;
