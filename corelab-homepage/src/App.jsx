@@ -11,6 +11,7 @@ import People from './pages/People'
 import LabLife from './pages/LabLife'
 import { Toaster } from './components/admin/AdminControls'
 import Celebration from './components/Celebration'
+import LogoJump from './components/LogoJump'
 
 const ROUTES = {
   '/': About,
@@ -45,6 +46,7 @@ export default function App() {
   return (
     <AdminAuthProvider>
       <Celebration />
+      <LogoJump />
       <Header />
       <main>
         <Page />
