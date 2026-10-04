@@ -55,6 +55,20 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
               <span className="badge badge-hidden">{authorTool.name} 실적에서 제외됨 · 관리자에게만 보임</span>
             )}
           </div>
+          {pat.titleEn && (
+            <p
+              className="patent-title-en"
+              style={{
+                margin: '0.1rem 0 0',
+                fontSize: '0.76rem',
+                lineHeight: 1.45,
+                fontStyle: 'italic',
+                color: 'var(--color-text-muted)',
+              }}
+            >
+              {pat.titleEn}
+            </p>
+          )}
           <div className="pub-venue">
             <FocusNames names={pat.inventors ?? []} focus={focus} />
             {pat.number ? ` · ${pat.number}` : ''}
