@@ -3727,7 +3727,9 @@
       "status": "registered",
       "date": "",
       "country": "KR",
-      "hidden": "hidden"
+      "hidden": "hidden",
+      "titleEn": "APPARATUS AND METHOD FOR LEARNING PROBLEM SOLVING BASED ON DASHBOARD TO AID LEARNING",
+      "description": "단계별 질문 프롬프트에 대한 학습자의 자기평가 결과를 그래프로 시각화해 보여줌으로써, 학습자가 자신의 문제해결 과정을 스스로 점검하도록 돕는 학습장치 및 그 동작방법"
     },
     {
       "id": "patent-3",
