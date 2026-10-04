@@ -364,6 +364,7 @@ export const projectFields = [
 
 export const patentFields = [
   { name: 'title', label: '특허명', type: 'text', required: true },
+  { name: 'titleEn', label: '영문 특허명 (선택)', type: 'text', hint: '한글 특허명 바로 아래에 작게 보입니다.' },
   { name: 'inventors', label: '발명자', type: 'lines', rows: 2, hint: '한 줄에 한 명씩' },
   { name: 'number', label: '출원/등록 번호', type: 'text' },
   {
