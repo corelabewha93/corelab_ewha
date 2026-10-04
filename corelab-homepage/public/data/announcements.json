@@ -1,0 +1,9 @@
+{
+  "types": [
+    { "id": "gen", "name": "공지", "color": "gold" },
+    { "id": "imp", "name": "중요", "color": "coral" },
+    { "id": "rec", "name": "모집", "color": "mint" },
+    { "id": "evt", "name": "행사", "color": "lavender" }
+  ],
+  "items": []
+}
