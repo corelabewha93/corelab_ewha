@@ -12,6 +12,7 @@ import LabLife from './pages/LabLife'
 import { Toaster } from './components/admin/AdminControls'
 import Celebration from './components/Celebration'
 import LogoJump from './components/LogoJump'
+import NoticeBanner from './components/NoticeBanner'
 
 const ROUTES = {
   '/': About,
@@ -47,6 +48,7 @@ export default function App() {
     <AdminAuthProvider>
       <Celebration />
       <LogoJump />
+      <NoticeBanner />
       <Header />
       <main>
         <Page />
