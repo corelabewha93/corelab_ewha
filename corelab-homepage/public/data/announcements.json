@@ -1,9 +1,30 @@
 {
   "types": [
-    { "id": "gen", "name": "공지", "color": "gold" },
-    { "id": "imp", "name": "중요", "color": "coral" },
-    { "id": "rec", "name": "모집", "color": "mint" },
-    { "id": "evt", "name": "행사", "color": "lavender" }
+    {
+      "id": "gen",
+      "name": "공지",
+      "color": "gold"
+    },
+    {
+      "id": "imp",
+      "name": "중요",
+      "color": "coral"
+    },
+    {
+      "id": "rec",
+      "name": "모집",
+      "color": "mint"
+    },
+    {
+      "id": "evt",
+      "name": "행사",
+      "color": "lavender"
+    },
+    {
+      "id": "t-mutl7mugyfc",
+      "name": "일정",
+      "color": "sky"
+    }
   ],
   "items": []
 }
