@@ -3711,7 +3711,9 @@
       "status": "registered",
       "date": "",
       "country": "KR",
-      "hidden": "hidden"
+      "hidden": "hidden",
+      "titleEn": "APPARATUS AND METHOD FOR LEARNING PROBLEM SOLVING BASED ON PROMPT TO AID LEARNING",
+      "description": "문제와 단계별 질문 프롬프트를 학습자에게 제공하고, 학습자의 응답에 맞춰 프롬프트 내비게이션을 안내해 문제해결 과정을 단계별로 돕는 학습장치 및 그 동작방법"
     },
     {
       "id": "patent-2",
