@@ -26,5 +26,14 @@
       "color": "sky"
     }
   ],
-  "items": []
+  "items": [
+    {
+      "id": "n-mutl7aqwotd",
+      "type": "t-mutl7mugyfc",
+      "text": "10월 16일 오후 3시 연구모임",
+      "start": "2026-10-04",
+      "end": "2026-10-16",
+      "link": ""
+    }
+  ]
 }
