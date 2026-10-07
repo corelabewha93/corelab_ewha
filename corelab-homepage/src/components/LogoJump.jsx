@@ -210,7 +210,7 @@ function heroSurprise(px, py, reduced) {
   letters.forEach((L) => {
     const s = document.createElement('span')
     s.textContent = L.c
-    s.style.cssText = `position:fixed;left:${L.rc.left}px;top:${L.rc.top}px;height:${L.rc.height}px;line-height:${L.rc.height}px;font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};white-space:pre;transform-origin:50% 80%`
+    s.style.cssText = `position:fixed;left:${L.rc.left}px;top:${L.rc.top}px;height:${L.rc.height}px;line-height:${L.rc.height}px;font-family:${cs.fontFamily};font-size:${cs.fontSize};font-weight:${cs.fontWeight};font-style:${cs.fontStyle};letter-spacing:${cs.letterSpacing};-webkit-text-stroke:${cs.webkitTextStrokeWidth} currentColor;white-space:pre;transform-origin:50% 80%`
     L.el = s
     L.em = emS >= 0 && L.idx >= emS && L.idx < emE
     L.base = grad((L.rc.left + L.rc.width / 2 - mr.left) / (mr.width || 1))
