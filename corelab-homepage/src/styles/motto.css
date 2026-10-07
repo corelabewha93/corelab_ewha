@@ -1,0 +1,27 @@
+/* 홈 모토("Seeing How We Learn Together") 글꼴:
+   로고 옆 "Lab"과 같은 집안인 Philosopher 이탤릭으로 바꾸고, 획을 조금 두껍게 보이게 합니다.
+   (이 글꼴은 400/700 두 가지뿐이라, 그 사이 굵기는 아주 가는 테두리를 둘러 만듭니다 —
+    테두리 색을 투명으로 두면 모토의 민트 그라데이션이 그대로 이어집니다.)
+   .hero-intro .hero-motto 로 적어 기존 .hero-motto 설정보다 우선 적용됩니다. */
+@font-face {
+  font-family: 'Philosopher';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url('../assets/fonts/philosopher-latin-400-italic.woff2') format('woff2');
+}
+
+.hero-intro .hero-motto {
+  font-family: 'Philosopher', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-style: italic;
+  font-weight: 400;
+  font-size: clamp(1.45rem, 7.1vw, 3.4rem);
+  letter-spacing: 0.012em;
+  -webkit-text-stroke: 0.017em transparent;
+}
+
+@media (max-width: 560px) {
+  .hero-intro .hero-motto {
+    font-size: clamp(1.9rem, 10vw, 2.6rem);
+  }
+}
