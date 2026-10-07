@@ -1,0 +1,23 @@
+/* 양쪽 정렬: 교수님 소개(People)와 About(Lab Overview) 본문.
+   - 한글은 단어 단위로 줄바꿈(keep-all)하고, 마지막 줄은 왼쪽 정렬로 둡니다.
+   - text-wrap: pretty → 마지막 줄에 글자 한두 개만 덩그러니 남는 것을 줄여 줍니다.
+   - 모토(가운데 정렬)는 건드리지 않습니다. */
+.faculty-bio,
+#overview > p:not(.lab-motto-kr):not(.lab-motto-en) {
+  text-align: justify;
+  text-justify: inter-character;
+  word-break: keep-all;
+  overflow-wrap: break-word;
+  line-break: strict;
+  hyphens: manual;
+  text-wrap: pretty;
+}
+
+/* 좁은 모바일 화면: 단어 단위 줄바꿈이면 양쪽 정렬 시 공백이 크게 벌어져,
+   뉴스 본문과 같은 방식으로 글자 단위 줄바꿈을 허용해 간격을 촘촘하게 합니다. */
+@media (max-width: 700px) {
+  .faculty-bio,
+  #overview > p:not(.lab-motto-kr):not(.lab-motto-en) {
+    word-break: normal;
+  }
+}
