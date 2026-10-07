@@ -5,9 +5,11 @@ import { useEffect, useRef } from 'react'
  * 서로 선으로 이어져 빛나는 네트워크(협력학습 상호작용)로 바뀌는 장면.
  *
  *  0.0s  칠판에 지워진 분필 자국이 희미하게 남아 있음
- *  0.5s~ 다섯 사람이 두 무리로 나뉘어(3명 → 2명) 분필로 그려짐
- *  1.55s~ 말풍선(Why? / Feedback / Let's try / Data / Ideas)이 차례로 떠오름
- *  2.6s~ 사람 사이에 분필 선이 이어지고, 머리가 금색·민트색 노드로 빛나며 선을 따라 빛이 오감
+ *  0.25s~ 다섯 사람이 분필로 그려지고, 머리 둘레에 "참여 링"이 들쭉날쭉하게 생김(한 명은 거의 비어 있음)
+ *  1.05s~ 첫 번째 사람이 말풍선 "Your turn!"과 함께 조용한 친구에게 차례를 건넴(선 + 빛 알갱이)
+ *  1.6s~  차례를 받은 친구 머리 위에 분필 전구가 번뜩이고, 그 친구의 참여 링이 차오름
+ *  2.0s~  가운데 사람이 "And you?"로 한 번 더 건네고, 받은 친구는 끄덕이며 체크(✓)가 뜨고 링이 차오름
+ *  3.0s~  나머지 선이 이어지며 참여 링이 고르게 채워진 채 머리가 금색·민트색 노드로 빛남 ("균형 있는 참여")
  *  3.7s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
  *  6.9s~ "CoRe Lab"이 완성되면 학생들이 작아지며 로고의 두 학습자 점(o 위 · R 위)으로 모여 들어가고,
  *        칠판에는 글자만 남음 (도착 지점은 HeroIntro.jsx가 그리는 로고 점의 실제 화면 위치)
@@ -74,7 +76,26 @@ const LAYOUTS = {
   },
 }
 
-const WORDS = ['Why?', 'Feedback', "Let's try", 'Data', 'Ideas']
+// 말풍선: 누가(사람 번호) 무슨 말을 건네는지
+const SAYS = [
+  { who: 0, word: 'Your turn!' },
+  { who: 2, word: 'And you?' },
+]
+// 참여 링: 처음 값 → 마지막 값 (한 명은 조용했다가, 차례를 받으면 고르게 차오름)
+const PART_FROM = [0.92, 0.12, 0.78, 0.3, 0.85]
+const PART_TO = [0.92, 0.8, 0.82, 0.78, 0.85]
+// 각 사람의 머리가 노드로 빛나기 시작하는 시각
+const LIT_AT = [1.1, 1.7, 2.05, 2.7, 3.1]
+// 연결선 [그리기 시작, 빛 알갱이 출발]: 0·2번째 선은 "차례를 건네는" 선이라 먼저, 나머지는 마지막에 한꺼번에
+const LINK_AT = [
+  [1.1, 1.15],
+  [3.0, 3.2],
+  [2.05, 2.1],
+  [3.08, 3.28],
+  [3.16, 3.36],
+  [3.24, 3.44],
+  [3.32, 3.52],
+]
 const LINKS = [
   [0, 1],
   [1, 2],
@@ -201,22 +222,35 @@ function build(svg, L) {
     )
     const g = mk('circle', { cx: x, cy: y, r: R * 2.1, fill: `url(#hc-glow-${i % 2 ? 'b' : 'a'})`, opacity: 0 }, fg)
     const fill = mk('circle', { cx: x, cy: y, r: R - 3, fill: i % 2 ? MINT : GOLD, opacity: 0 }, fg)
-    return { head, body, g, fill, fl, fg, x, y }
+    // 참여 링: 머리 둘레의 원호(얼마나 말했는지). 옅은 바탕 링 위에 색 링이 차오릅니다.
+    const rr = R * 1.42
+    const ringW = L.sw * 1.45
+    const ringTrack = mk('circle', { cx: x, cy: y, r: rr, transform: `rotate(-90 ${x} ${y})`, pathLength: 1 }, fg)
+    ringTrack.setAttribute('fill', 'none')
+    ringTrack.setAttribute('stroke', 'rgba(245,242,232,0.16)')
+    ringTrack.setAttribute('stroke-width', ringW)
+    ringTrack.setAttribute('opacity', 0)
+    const ring = mk('circle', { cx: x, cy: y, r: rr, transform: `rotate(-90 ${x} ${y})`, pathLength: 1 }, fg)
+    ring.setAttribute('fill', 'none')
+    ring.setAttribute('stroke', i % 2 ? MINT : GOLD)
+    ring.setAttribute('stroke-width', ringW)
+    ring.setAttribute('stroke-linecap', 'round')
+    ring.setAttribute('opacity', 0)
+    return { head, body, g, fill, ring, ringTrack, fl, fg, x, y }
   })
 
-  const bubbles = P.map(([x, y], i) => {
-    const dx = L.bubbleDir[i]
-    const w = WORDS[i].length * L.charW + 32
+  // 말풍선: 말하는 사람 머리 바로 위 가운데에 놓고, 꼬리가 머리를 가리킵니다.
+  const bubbles = SAYS.map(({ who, word }) => {
+    const [x, y] = P[who]
+    const w = word.length * L.charW + 32
     const h = L.bubbleH
-    const bx = x + dx * (R + 8) + (dx > 0 ? 0 : -w)
-    const by = y - R - h - (VW > VH ? 10 : 6)
-    const tipA = bx + (dx > 0 ? 22 : w - 10)
-    const tipB = bx + (dx > 0 ? 10 : w - 22)
+    const bx = x - w / 2
+    const by = y - R - h - 16
     const path = stroke(
       mk(
         'path',
         {
-          d: `M${bx + 10},${by} H${bx + w - 10} Q${bx + w},${by} ${bx + w},${by + 10} V${by + h - 10} Q${bx + w},${by + h} ${bx + w - 10},${by + h} H${tipA} L${x + dx * R * 0.55},${y - R * 0.7} L${tipB},${by + h} H${bx + 10} Q${bx},${by + h} ${bx},${by + h - 10} V${by + 10} Q${bx},${by} ${bx + 10},${by}Z`,
+          d: `M${bx + 10},${by} H${bx + w - 10} Q${bx + w},${by} ${bx + w},${by + 10} V${by + h - 10} Q${bx + w},${by + h} ${bx + w - 10},${by + h} H${x + 9} L${x},${y - R - 3} L${x - 9},${by + h} H${bx + 10} Q${bx},${by + h} ${bx},${by + h - 10} V${by + 10} Q${bx},${by} ${bx + 10},${by}Z`,
         },
         lines,
       ),
@@ -224,7 +258,7 @@ function build(svg, L) {
     const text = mk(
       'text',
       {
-        x: bx + w / 2,
+        x: x,
         y: by + h / 2 + (VW > VH ? 7 : 6),
         'text-anchor': 'middle',
         'font-size': L.font,
@@ -233,9 +267,37 @@ function build(svg, L) {
       },
       lines,
     )
-    text.textContent = WORDS[i]
-    return { path, text }
+    text.textContent = word
+    return { path, text, who }
   })
+
+  // 표정 아이콘(분필 전구·체크): 사람 머리 위에 그려지듯 나타납니다.
+  const colored = (e, color, w) => {
+    stroke(e, w)
+    e.setAttribute('stroke', color)
+    return e
+  }
+  const iconBulb = (x, y) => {
+    const k = R / 31
+    const cy = y - R * 2.7
+    const w = L.sw * 0.95
+    const gl = mk('circle', { cx: x, cy, r: 30 * k, fill: 'url(#hc-glow-a)', opacity: 0 }, glow)
+    const parts = [
+      mk('path', { d: `M${x - 11 * k},${cy + 6 * k} C${x - 22 * k},${cy - 6 * k} ${x - 16 * k},${cy - 22 * k} ${x},${cy - 22 * k} C${x + 16 * k},${cy - 22 * k} ${x + 22 * k},${cy - 6 * k} ${x + 11 * k},${cy + 6 * k} C${x + 8 * k},${cy + 10 * k} ${x + 8 * k},${cy + 13 * k} ${x + 8 * k},${cy + 16 * k} L${x - 8 * k},${cy + 16 * k} C${x - 8 * k},${cy + 13 * k} ${x - 8 * k},${cy + 10 * k} ${x - 11 * k},${cy + 6 * k}Z` }, lines),
+      mk('path', { d: `M${x - 6 * k},${cy + 22 * k} L${x + 6 * k},${cy + 22 * k}` }, lines),
+      mk('path', { d: `M${x - 26 * k},${cy - 14 * k} L${x - 33 * k},${cy - 18 * k}` }, lines),
+      mk('path', { d: `M${x + 26 * k},${cy - 14 * k} L${x + 33 * k},${cy - 18 * k}` }, lines),
+      mk('path', { d: `M${x},${cy - 30 * k} L${x},${cy - 38 * k}` }, lines),
+    ].map((e) => colored(e, GOLD, w))
+    return { parts, gl }
+  }
+  const iconCheck = (x, y) => {
+    const k = R / 31
+    const cy = y - R * 2.6
+    const parts = [mk('path', { d: `M${x - 14 * k},${cy + 2 * k} L${x - 4 * k},${cy + 13 * k} L${x + 16 * k},${cy - 12 * k}` }, lines)].map((e) => colored(e, MINT, L.sw * 1.15))
+    return { parts, gl: null }
+  }
+  const icons = [iconBulb(P[1][0], P[1][1]), iconCheck(P[3][0], P[3][1])]
 
   const trim = (a, b, r) => {
     const dx = b[0] - a[0]
@@ -256,7 +318,7 @@ function build(svg, L) {
     return { path, pulse, A, B, C }
   })
 
-  return { smudges, shift, net, figs, bubbles, links, L }
+  return { smudges, shift, net, figs, bubbles, icons, links, L }
 }
 
 /**
@@ -272,25 +334,67 @@ function render(s, t) {
   s.smudges.forEach((e, i) =>
     e.setAttribute('opacity', (0.06 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, CHALK_NAME_AT - 0.1, 0.8)))).toFixed(3)),
   )
+  // 몸짓: 위로 쏙 올라가는 작은 점프(hop) / 끄덕임(nod). 로고로 모이기가 시작되면 converge()가 이어받습니다.
+  const R = s.L.r
+  const hop = (t0, d, amp) => -amp * Math.max(0, Math.sin(pr(t, t0, d) * Math.PI))
+  const nod = (t0, d, amp) => amp * Math.sin(pr(t, t0, d) * Math.PI * 2) * (1 - pr(t, t0 + d * 0.7, d * 0.3))
+  const bob = [
+    hop(1.05, 0.45, R * 0.13),
+    hop(1.6, 0.5, R * 0.16),
+    hop(2.0, 0.45, R * 0.13),
+    nod(2.6, 0.7, R * 0.1),
+    0,
+  ]
+  // 참여 링이 차오르는 정도: 차례를 받은 친구(1번·3번)의 링이 늦게 채워짐
+  const ringIn = eo(pr(t, 0.6, 0.55))
+  const ringFade = 1 - eo(pr(t, 3.9, 0.6))
+  const fill1 = eio(pr(t, 1.7, 0.7))
+  const fill3 = eio(pr(t, 2.7, 0.6))
   s.figs.forEach((f, i) => {
-    // 한 명씩이 아니라 무리 지어 그려집니다: (1·3·5번째) 먼저, (2·4번째) 이어서
-    const st = (i % 2 === 0 ? 0.5 : 1.0) + Math.floor(i / 2) * 0.07
-    draw(f.head, eio(pr(t, st, 0.5)))
-    draw(f.body, eio(pr(t, st + 0.25, 0.5)))
-    const on = eio(pr(t, 2.85 + i * 0.07, 0.55))
+    // 한 명씩 차례로 그려집니다(왼쪽부터).
+    const st = 0.25 + i * 0.1
+    draw(f.head, eio(pr(t, st, 0.45)))
+    draw(f.body, eio(pr(t, st + 0.2, 0.45)))
+    const on = eio(pr(t, LIT_AT[i], 0.45))
     f.g.setAttribute('opacity', (on * 0.55).toFixed(3))
     f.fill.setAttribute('opacity', (on * 0.92).toFixed(3))
+    // 참여 링
+    const v = i === 1 ? PART_FROM[1] + (PART_TO[1] - PART_FROM[1]) * fill1 : i === 3 ? PART_FROM[3] + (PART_TO[3] - PART_FROM[3]) * fill3 : PART_FROM[i]
+    f.ring.style.strokeDasharray = `${(v * ringIn).toFixed(4)} 1`
+    f.ring.setAttribute('opacity', (ringIn > 0.001 ? ringFade : 0).toFixed(3))
+    f.ringTrack.setAttribute('opacity', (ringIn * ringFade).toFixed(3))
+    const tr = bob[i] ? `translate(0 ${bob[i].toFixed(2)})` : ''
+    f.fl.setAttribute('transform', tr)
+    f.fg.setAttribute('transform', tr)
   })
-  const bOut = 1 - eo(pr(t, 2.9, 0.45))
+  // 말풍선: 건네는 순간 나타났다가 곧 사라짐
+  const SAY_AT = [1.05, 2.0]
+  const SAY_OUT = [1.85, 2.95]
   s.bubbles.forEach((b, i) => {
-    const st = 1.55 + i * 0.22
-    draw(b.path, eio(pr(t, st, 0.4)))
-    b.path.style.opacity = bOut
-    b.text.setAttribute('opacity', (eo(pr(t, st + 0.25, 0.28)) * bOut).toFixed(3))
+    const out = 1 - eo(pr(t, SAY_OUT[i], 0.4))
+    draw(b.path, eio(pr(t, SAY_AT[i], 0.35)))
+    b.path.style.opacity = out
+    b.text.setAttribute('opacity', (eo(pr(t, SAY_AT[i] + 0.2, 0.25)) * out).toFixed(3))
+  })
+  // 표정 아이콘: 전구(번뜩) · 체크(끄덕) — 그려지듯 나타났다가 이름이 나타나기 전에 옅어짐
+  const ICON_AT = [1.6, 2.6]
+  const ICON_OUT = [3.2, 3.45]
+  s.icons.forEach((ic, i) => {
+    const out = 1 - eo(pr(t, ICON_OUT[i], 0.45))
+    const d = eio(pr(t, ICON_AT[i], 0.4))
+    ic.parts.forEach((e) => {
+      draw(e, d)
+      e.style.opacity = out
+    })
+    if (ic.gl) {
+      const flick = 0.55 + 0.45 * Math.sin((t - ICON_AT[i]) * 14) * (1 - pr(t, ICON_AT[i] + 0.35, 0.5))
+      ic.gl.setAttribute('opacity', (d > 0.6 ? 0.8 * out * flick : 0).toFixed(3))
+    }
   })
   s.links.forEach((l, k) => {
-    draw(l.path, eio(pr(t, 2.6 + k * 0.09, 0.5)))
-    const pp = pr(t, 3.15 + k * 0.08, 0.85)
+    const [ls, ps] = LINK_AT[k] || LINK_AT[LINK_AT.length - 1]
+    draw(l.path, eio(pr(t, ls, 0.5)))
+    const pp = pr(t, ps, k === 0 || k === 2 ? 0.5 : 0.75)
     if (pp > 0 && pp < 1) {
       const u = eio(pp)
       const a = (1 - u) * (1 - u)
@@ -327,6 +431,14 @@ function converge(s, t, dim0) {
   s.bubbles.forEach((b) => {
     b.path.style.opacity = 0
     b.text.setAttribute('opacity', 0)
+  })
+  s.icons.forEach((ic) => {
+    ic.parts.forEach((e) => (e.style.opacity = 0))
+    if (ic.gl) ic.gl.setAttribute('opacity', 0)
+  })
+  s.figs.forEach((f) => {
+    f.ring.setAttribute('opacity', 0)
+    f.ringTrack.setAttribute('opacity', 0)
   })
   s.links.forEach((l) => {
     l.path.style.opacity = linesOut
