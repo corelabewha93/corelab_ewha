@@ -13,6 +13,7 @@ import { Toaster } from './components/admin/AdminControls'
 import Celebration from './components/Celebration'
 import LogoJump from './components/LogoJump'
 import NoticeBanner from './components/NoticeBanner'
+import './styles/justify.css'
 
 const ROUTES = {
   '/': About,
