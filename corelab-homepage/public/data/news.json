@@ -32,7 +32,7 @@
     "date": "2026-09-01",
     "thumbnail": "images/news/sample.jpg",
     "summary": "썸네일 이미지는 public/images/news/ 폴더에 넣고, 이 파일에서 파일명을 지정하면 됩니다.",
-    "link": "본교 대학원생 37명, 한국연구재단 학술연구지원사업 선정 | https://ewha.ac.kr/ewha/news/organ-news.do?mode=view&articleNo=367049&article.offset=0&articleLimit=10",
+    "link": "https://ewha.ac.kr/ewha/news/organ-news.do?mode=view&articleNo=367049&article.offset=0&articleLimit=10",
     "images": [
       "images/news/news-1790172500400-mue6hho0.jpg"
     ],
