@@ -82,10 +82,14 @@ const SAYS = [
   { who: 2, word: 'And you?' },
 ]
 // 참여 링: 처음 값 → 마지막 값 (한 명은 조용했다가, 차례를 받으면 고르게 차오름)
-const PART_FROM = [0.92, 0.12, 0.78, 0.3, 0.85]
-const PART_TO = [0.92, 0.8, 0.82, 0.78, 0.85]
-// 각 사람의 머리가 노드로 빛나기 시작하는 시각
-const LIT_AT = [1.1, 1.7, 2.05, 2.7, 3.1]
+// 모두가 대화에 끼면서 링이 차올라, 마지막엔 고르게 채워집니다(조용했던 1번·3번이 가장 크게 차오름).
+const PART_FROM = [0.42, 0.12, 0.46, 0.22, 0.4]
+const PART_TO = [0.86, 0.84, 0.86, 0.82, 0.86]
+// 각 사람의 링이 차오르기 시작하는 시각 / 걸리는 시간 (한 명씩 차례로 보이도록 어긋나게)
+const FILL_AT = [1.0, 1.65, 1.95, 2.6, 2.85]
+const FILL_D = [0.55, 0.65, 0.55, 0.6, 0.55]
+// 링이 다 차오를 즈음 그 사람의 머리가 노드로 빛납니다(링이 먼저 읽히도록)
+const LIT_AT = FILL_AT.map((a, i) => a + FILL_D[i] - 0.1)
 // 연결선 [그리기 시작, 빛 알갱이 출발]: 0·2번째 선은 "차례를 건네는" 선이라 먼저, 나머지는 마지막에 한꺼번에
 const LINK_AT = [
   [1.1, 1.15],
@@ -224,10 +228,10 @@ function build(svg, L) {
     const fill = mk('circle', { cx: x, cy: y, r: R - 3, fill: i % 2 ? MINT : GOLD, opacity: 0 }, fg)
     // 참여 링: 머리 둘레의 원호(얼마나 말했는지). 옅은 바탕 링 위에 색 링이 차오릅니다.
     const rr = R * 1.42
-    const ringW = L.sw * 1.45
+    const ringW = L.sw * 1.9
     const ringTrack = mk('circle', { cx: x, cy: y, r: rr, transform: `rotate(-90 ${x} ${y})`, pathLength: 1 }, fg)
     ringTrack.setAttribute('fill', 'none')
-    ringTrack.setAttribute('stroke', 'rgba(245,242,232,0.16)')
+    ringTrack.setAttribute('stroke', 'rgba(245,242,232,0.22)')
     ringTrack.setAttribute('stroke-width', ringW)
     ringTrack.setAttribute('opacity', 0)
     const ring = mk('circle', { cx: x, cy: y, r: rr, transform: `rotate(-90 ${x} ${y})`, pathLength: 1 }, fg)
@@ -236,7 +240,10 @@ function build(svg, L) {
     ring.setAttribute('stroke-width', ringW)
     ring.setAttribute('stroke-linecap', 'round')
     ring.setAttribute('opacity', 0)
-    return { head, body, g, fill, ring, ringTrack, fl, fg, x, y }
+    // 차오르는 끝에서 반짝이는 점, 다 찼을 때 퍼지는 작은 물결
+    const tip = mk('circle', { cx: x, cy: y, r: ringW * 0.62, fill: 'rgba(255,251,236,0.96)', opacity: 0 }, fg)
+    const ping = mk('circle', { cx: x, cy: y, r: rr, fill: 'none', stroke: i % 2 ? MINT : GOLD, 'stroke-width': ringW * 0.7, opacity: 0 }, fg)
+    return { head, body, g, fill, ring, ringTrack, tip, ping, rr, fl, fg, x, y }
   })
 
   // 말풍선: 말하는 사람 머리 바로 위 가운데에 놓고, 꼬리가 머리를 가리킵니다.
@@ -348,8 +355,6 @@ function render(s, t) {
   // 참여 링이 차오르는 정도: 차례를 받은 친구(1번·3번)의 링이 늦게 채워짐
   const ringIn = eo(pr(t, 0.6, 0.55))
   const ringFade = 1 - eo(pr(t, 3.9, 0.6))
-  const fill1 = eio(pr(t, 1.7, 0.7))
-  const fill3 = eio(pr(t, 2.7, 0.6))
   s.figs.forEach((f, i) => {
     // 한 명씩 차례로 그려집니다(왼쪽부터).
     const st = 0.25 + i * 0.1
@@ -359,8 +364,17 @@ function render(s, t) {
     f.g.setAttribute('opacity', (on * 0.55).toFixed(3))
     f.fill.setAttribute('opacity', (on * 0.92).toFixed(3))
     // 참여 링
-    const v = i === 1 ? PART_FROM[1] + (PART_TO[1] - PART_FROM[1]) * fill1 : i === 3 ? PART_FROM[3] + (PART_TO[3] - PART_FROM[3]) * fill3 : PART_FROM[i]
+    const fp = pr(t, FILL_AT[i], FILL_D[i])
+    const v = PART_FROM[i] + (PART_TO[i] - PART_FROM[i]) * eio(fp)
     f.ring.style.strokeDasharray = `${(v * ringIn).toFixed(4)} 1`
+    // 차오르는 동안 끝점에서 반짝, 다 차면 물결 한 번
+    const ang = -Math.PI / 2 + v * Math.PI * 2
+    f.tip.setAttribute('cx', (f.x + f.rr * Math.cos(ang)).toFixed(2))
+    f.tip.setAttribute('cy', (f.y + f.rr * Math.sin(ang)).toFixed(2))
+    f.tip.setAttribute('opacity', (fp > 0 && fp < 1 ? Math.min(1, Math.sin(fp * Math.PI) * 2.2) * ringFade : 0).toFixed(3))
+    const q = pr(t, FILL_AT[i] + FILL_D[i], 0.5)
+    f.ping.setAttribute('r', (f.rr * (1 + 0.5 * eo(q))).toFixed(2))
+    f.ping.setAttribute('opacity', (q > 0 && q < 1 ? 0.6 * (1 - q) * ringFade : 0).toFixed(3))
     f.ring.setAttribute('opacity', (ringIn > 0.001 ? ringFade : 0).toFixed(3))
     f.ringTrack.setAttribute('opacity', (ringIn * ringFade).toFixed(3))
     const tr = bob[i] ? `translate(0 ${bob[i].toFixed(2)})` : ''
@@ -439,6 +453,8 @@ function converge(s, t, dim0) {
   s.figs.forEach((f) => {
     f.ring.setAttribute('opacity', 0)
     f.ringTrack.setAttribute('opacity', 0)
+    f.tip.setAttribute('opacity', 0)
+    f.ping.setAttribute('opacity', 0)
   })
   s.links.forEach((l) => {
     l.path.style.opacity = linesOut
