@@ -62,11 +62,11 @@ const LAYOUTS = {
     r: 27,
     sw: 3.2,
     people: [
-      [92, 100],
-      [308, 215],
-      [92, 330],
-      [308, 445],
-      [92, 560],
+      [108, 100],
+      [292, 215],
+      [108, 330],
+      [292, 445],
+      [108, 560],
     ],
     bubbleDir: [1, -1, 1, -1, 1],
     font: 18,
@@ -313,13 +313,23 @@ function build(svg, L) {
     return [a[0] + (dx / l) * r, a[1] + (dy / l) * r]
   }
   const links = LINKS.map(([i, j], k) => {
-    const A = trim(P[i], P[j], R + 9)
-    const B = trim(P[j], P[i], R + 9)
-    const dx = B[0] - A[0]
-    const dy = B[1] - A[1]
-    const l = Math.hypot(dx, dy)
-    const bend = (k % 2 ? 1 : -1) * l * 0.16
-    const C = [(A[0] + B[0]) / 2 - (dy / l) * bend, (A[1] + B[1]) / 2 + (dx / l) * bend]
+    let A = trim(P[i], P[j], R + 9)
+    let B = trim(P[j], P[i], R + 9)
+    let dx = B[0] - A[0]
+    let dy = B[1] - A[1]
+    let l = Math.hypot(dx, dy)
+    let bend = (k % 2 ? 1 : -1) * l * 0.16
+    let C = [(A[0] + B[0]) / 2 - (dy / l) * bend, (A[1] + B[1]) / 2 + (dx / l) * bend]
+    // 세로 화면(모바일): 같은 줄의 두 사람을 곧게 이으면 선이 가운데 사람 몸을 가로지르므로,
+    // 머리 바깥쪽 옆에서 출발해 화면 가장자리 쪽으로 살짝 부풀어 오르는 곡선으로 이어 줍니다.
+    if (VW < VH && Math.abs(P[i][0] - P[j][0]) < 1) {
+      const side = P[i][0] < VW / 2 ? -1 : 1
+      const off = R + 11
+      const ax = P[i][0] + side * off * 0.88
+      A = [ax, P[i][1] + off * 0.48]
+      B = [ax, P[j][1] - off * 0.48]
+      C = [ax + side * 80, (A[1] + B[1]) / 2]
+    }
     const path = stroke(mk('path', { d: `M${A[0]},${A[1]} Q${C[0]},${C[1]} ${B[0]},${B[1]}` }, lines), L.sw * 0.76)
     const pulse = mk('circle', { r: L.sw * 1.45, fill: '#fff', opacity: 0 }, glow)
     return { path, pulse, A, B, C }
