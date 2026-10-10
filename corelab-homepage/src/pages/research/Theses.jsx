@@ -1,5 +1,6 @@
 import { useMemo } from 'react'
 import { groupByYear, YearGroups } from './Publications'
+import { useLang } from '../../i18n/LangContext'
 
 /**
  * Dissertations — 연구실에서 나온 석·박사 학위논문.
@@ -35,8 +36,9 @@ export default function Theses({ items = [], onEdit, focus = null, authorTool = 
     return ordered
   }, [items, order])
   const byYear = useMemo(() => groupByYear(theses), [theses])
+  const { tr } = useLang()
 
-  if (theses.length === 0) return <p className="empty-state">등록된 학위논문이 없습니다.</p>
+  if (theses.length === 0) return <p className="empty-state">{tr('등록된 학위논문이 없습니다.', 'No dissertations yet.')}</p>
 
   const reorderFor =
     order && onMove

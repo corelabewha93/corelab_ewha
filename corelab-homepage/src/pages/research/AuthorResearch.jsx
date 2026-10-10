@@ -5,6 +5,7 @@ import Patents from './Patents'
 import Projects from './Projects'
 import { makeFocus, includesFocus } from './authorMatch'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
+import { useLang } from '../../i18n/LangContext'
 
 /**
  * "OOO의 연구 실적" — People 페이지에서 들어오는 한 사람의 모아보기 화면.
@@ -13,6 +14,7 @@ import { useAdminAuth } from '../../admin/AdminAuthContext'
  */
 export default function AuthorResearch({ data, author, onClear, onEdit, onToggleHidden, onToggleExclude }) {
   const { isAdmin } = useAdminAuth()
+  const { tr } = useLang()
   const focus = useMemo(() => makeFocus(author.aliases), [author])
   const headRef = useRef(null)
 
@@ -75,12 +77,12 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
   // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 저역서 / 학위논문을 나눠서 셉니다.
   const countType = (t) => counted(pubs).filter((p) => p.type === t).length
   const summary = [
-    ['학술지 논문', countType('journal')],
-    ['학회 발표', countType('conference')],
-    ['저역서', countType('book')],
-    ['학위논문', counted(theses).length],
-    ['연구과제', projects.length],
-    ['특허', counted(patents).length],
+    [tr('학술지 논문', 'Journal articles'), countType('journal')],
+    [tr('학회 발표', 'Conference papers'), countType('conference')],
+    [tr('저역서', 'Books'), countType('book')],
+    [tr('학위논문', 'Dissertations'), counted(theses).length],
+    [tr('연구과제', 'Projects'), projects.length],
+    [tr('특허', 'Patents'), counted(patents).length],
   ].filter(([, n]) => n > 0)
 
   return (
@@ -89,15 +91,15 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
         <div>
           <p className="pub-author-eyebrow">Research Output</p>
           <h2 className="pub-author-name">
-            {author.name}
-            <span className="pub-author-count">{total}건</span>
+            {author.displayName || author.name}
+            <span className="pub-author-count">{tr(`${total}건`, `${total} ${total === 1 ? 'item' : 'items'}`)}</span>
           </h2>
           {summary.length > 0 && (
             <p className="pub-author-breakdown">{summary.map(([l, n]) => `${l} ${n}`).join(' · ')}</p>
           )}
         </div>
         <button type="button" className="pub-author-clear" onClick={onClear}>
-          전체 연구 실적 보기
+          {tr('전체 연구 실적 보기', 'View all research')}
         </button>
       </div>
 
@@ -107,7 +109,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
         </p>
       )}
 
-      {total === 0 && <p className="empty-state">아직 등록된 연구 실적이 없습니다.</p>}
+      {total === 0 && <p className="empty-state">{tr('아직 등록된 연구 실적이 없습니다.', 'No research output yet.')}</p>}
 
       {sections.map((s) => (
         <section key={s.key} className="author-section">

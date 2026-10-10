@@ -17,6 +17,7 @@ import Patents from './Patents'
 import Tools from './Tools'
 import Theses, { moveThesisWithinYear } from './Theses'
 import AuthorResearch from './AuthorResearch'
+import { useLang, fillSeed } from '../../i18n/LangContext'
 
 const TABS = [
   { key: 'publications', label: 'Publications' },
@@ -49,7 +50,14 @@ export default function Research() {
   const { query: routeQuery } = useHashRoute()
   const searchQuery = routeQuery.q ?? ''
 
-  useDocumentMeta('Research', 'CoRe Lab의 논문·저역서, 학위논문, 연구과제, 특허, 시스템 및 도구 연구 실적입니다.')
+  const { tr, loc, seedOf } = useLang()
+  useDocumentMeta(
+    'Research',
+    tr(
+      'CoRe Lab의 논문·저역서, 학위논문, 연구과제, 특허, 시스템 및 도구 연구 실적입니다.',
+      'Publications, dissertations, research projects, patents, and systems & tools from CoRe Lab.',
+    ),
+  )
 
   // People 페이지의 "OOO의 연구 실적" 링크(#/research?author=이름)로 들어오면
   // 그 사람 이름이 올라간 논문·저역서·특허를 한 화면에 모아 보여줍니다(AuthorResearch).
@@ -64,8 +72,9 @@ export default function Research() {
     // 본인이 원치 않아 모아보기를 숨긴 사람은, 주소로 직접 들어와도 방문자에게는 전체 목록을 보여줍니다.
     if (person?.hideResearch && !isAdmin) return null
     const extra = Array.isArray(person?.pubNames) ? person.pubNames : []
-    return { name: authorName, aliases: [authorName, ...extra], hidden: Boolean(person?.hideResearch) }
-  }, [authorName, people, isAdmin])
+    const displayName = person ? loc(person, 'people').name : authorName
+    return { name: authorName, displayName, aliases: [authorName, ...extra], hidden: Boolean(person?.hideResearch) }
+  }, [authorName, people, isAdmin, loc])
   const [editing, setEditing] = useState(null) // { key, item|null }
 
   // 학위논문 "순서 바꾸기": 같은 연도 안에서 위/아래로 옮기고 저장합니다.
@@ -157,7 +166,7 @@ export default function Research() {
 
   return (
     <div className="page container">
-      <PageTitle pinDesktop sub={authorFilter ? authorFilter.name : TABS.find((t) => t.key === tab)?.label}>
+      <PageTitle pinDesktop sub={authorFilter ? authorFilter.displayName : TABS.find((t) => t.key === tab)?.label}>
         Research
       </PageTitle>
 
@@ -173,7 +182,7 @@ export default function Research() {
         />
 
         <div className="tabs-content">
-          {loading && !data && <div>불러오는 중...</div>}
+          {loading && !data && <div>{tr('불러오는 중...', 'Loading...')}</div>}
           {error && <div className="error-state">{error}</div>}
 
           {data && authorFilter && (
@@ -260,7 +269,11 @@ export default function Research() {
         <EditModal
           title={editing.item ? `${editor.label} 수정` : `새 ${editor.label} 추가`}
           fields={editor.fields}
-          initial={editing.item ?? initialFor(editing.key)}
+          initial={
+            editing.item
+              ? fillSeed(editing.item, seedOf(editing.item, (EDITORS[editing.key].dataKey ?? editing.key)))
+              : initialFor(editing.key)
+          }
           uploadName={(v) => v.name || editor.prefix}
           onSave={handleSave}
           onDelete={editing.item ? handleDelete : undefined}

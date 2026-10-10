@@ -1,10 +1,15 @@
 import { EditButton } from '../../components/admin/AdminControls'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 import FocusNames from './FocusNames'
+import { useLang } from '../../i18n/LangContext'
 
 const STATUS_LABELS = {
   registered: '등록',
   pending: '출원',
+}
+const STATUS_LABELS_EN = {
+  registered: 'Registered',
+  pending: 'Filed',
 }
 
 /**
@@ -14,22 +19,26 @@ const STATUS_LABELS = {
  */
 export default function Patents({ items = [], onEdit, onToggleHidden, focus = null, authorTool = null }) {
   const { isAdmin } = useAdminAuth()
+  const { en, tr, loc } = useLang()
 
   const visible = isAdmin ? items : items.filter((p) => !p.hidden)
-  if (visible.length === 0) return <p className="empty-state">등록된 특허가 없습니다.</p>
+  if (visible.length === 0) return <p className="empty-state">{tr('등록된 특허가 없습니다.', 'No patents yet.')}</p>
 
   const sorted = [...visible].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
 
   return (
     <div>
-      {sorted.map((pat) => (
+      {sorted.map((raw) => {
+        // 영어 화면: 영문 특허명이 제목 자리에 오고, 아래 작은 영문 줄은 숨깁니다.
+        const pat = loc(raw, 'patents')
+        return (
         <div key={pat.id} className={`patent-item admin-item${pat.hidden || authorTool?.isExcluded(pat) ? ' patent-hidden' : ''}`}>
-          <EditButton onClick={() => onEdit(pat)} />
+          <EditButton onClick={() => onEdit(raw)} />
           {isAdmin && authorTool && (
             <button
               type="button"
               className={`pub-exclude-btn${authorTool.isExcluded(pat) ? ' is-excluded' : ''}`}
-              onClick={() => authorTool.onToggle(pat)}
+              onClick={() => authorTool.onToggle(raw)}
               title={`${authorTool.name}의 실적이 아닐 때, 이 사람의 모아보기에서만 뺍니다 (전체 특허 목록에는 그대로 남아요)`}
             >
               {authorTool.isExcluded(pat) ? '다시 포함' : '내 실적 아님'}
@@ -39,7 +48,7 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
             <button
               type="button"
               className={`patent-hide-btn${pat.hidden ? ' is-hidden' : ''}`}
-              onClick={() => onToggleHidden(pat)}
+              onClick={() => onToggleHidden(raw)}
               title={pat.hidden ? '방문자에게 다시 보이게 합니다' : '방문자에게 보이지 않게 숨깁니다'}
             >
               {pat.hidden ? '표시하기' : '숨기기'}
@@ -48,14 +57,14 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
           <div className="pub-title" style={{ fontWeight: 600 }}>
             {pat.title}{' '}
             <span className={`badge${pat.status === 'registered' ? ' ongoing' : ''}`}>
-              {STATUS_LABELS[pat.status] ?? pat.status}
+              {(en ? STATUS_LABELS_EN : STATUS_LABELS)[pat.status] ?? pat.status}
             </span>
             {pat.hidden && <span className="badge badge-hidden">숨김 · 관리자에게만 보임</span>}
             {authorTool?.isExcluded(pat) && (
               <span className="badge badge-hidden">{authorTool.name} 실적에서 제외됨 · 관리자에게만 보임</span>
             )}
           </div>
-          {pat.titleEn && (
+          {!en && pat.titleEn && (
             <p
               className="patent-title-en"
               style={{
@@ -76,7 +85,8 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
           </div>
           {pat.description && <p className="patent-desc">{pat.description}</p>}
         </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

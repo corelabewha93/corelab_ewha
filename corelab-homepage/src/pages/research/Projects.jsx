@@ -1,6 +1,9 @@
 import { EditButton } from '../../components/admin/AdminControls'
 import { PROJECT_MEMBER_ROLES } from '../../admin/schemas'
 import FocusNames from './FocusNames'
+import { useLang } from '../../i18n/LangContext'
+
+const ROLE_EN = { 박사후연구원: 'Postdoctoral Researchers', 학생연구원: 'Student Researchers' }
 
 function isOngoing(end) {
   if (!end) return true
@@ -53,13 +56,15 @@ function groupMembers(members = []) {
  * 왼쪽에는 과제 기간(시작–종료 연도), 오른쪽에는 과제명 · 지원기관 · 사업명/규모 · 연구비 · 참여연구진.
  */
 export default function Projects({ items = [], onEdit, focus = null }) {
-  if (items.length === 0) return <p className="empty-state">등록된 연구과제가 없습니다.</p>
+  const { en, tr, loc } = useLang()
+  if (items.length === 0) return <p className="empty-state">{tr('등록된 연구과제가 없습니다.', 'No research projects yet.')}</p>
 
   const sorted = [...items].sort((a, b) => (b.start ?? '').localeCompare(a.start ?? ''))
 
   return (
     <div className="pubs">
-      {sorted.map((proj) => {
+      {sorted.map((raw) => {
+        const proj = loc(raw, 'projects')
         const ongoing = isOngoing(proj.end)
         const sy = proj.start?.slice(0, 4)
         const ey = proj.end?.slice(0, 4)
@@ -72,17 +77,17 @@ export default function Projects({ items = [], onEdit, focus = null }) {
               {ey && ey !== sy ? <span className="project-years-end">–{ey}</span> : null}
             </h3>
             <div className="project-item admin-item">
-              <EditButton onClick={() => onEdit(proj)} />
+              <EditButton onClick={() => onEdit(raw)} />
               <p className="pub-title">
                 {proj.title}
                 {ongoing ? (
-                  <span className="badge ongoing">진행 중</span>
+                  <span className="badge ongoing">{tr('진행 중', 'Ongoing')}</span>
                 ) : (
                   <span className="badge badge-done">
                     <svg viewBox="0 0 16 16" width="11" height="11" aria-hidden="true" focusable="false">
                       <path d="M3.2 8.6l3 3 6.6-7" fill="none" stroke="currentColor" strokeWidth="2.2" strokeLinecap="round" strokeLinejoin="round" />
                     </svg>
-                    종료
+                    {tr('종료', 'Completed')}
                   </span>
                 )}
               </p>
@@ -98,14 +103,17 @@ export default function Projects({ items = [], onEdit, focus = null }) {
 
               <p className="project-line project-meta">
                 <span>
-                  {formatMonth(proj.start)} – {proj.end ? formatMonth(proj.end) : '진행 중'}
-                  {years ? ` (${years}년)` : ''}
+                  {formatMonth(proj.start)} – {proj.end ? formatMonth(proj.end) : tr('진행 중', 'present')}
+                  {years ? tr(` (${years}년)`, ` (${years} ${years === 1 ? 'year' : 'years'})`) : ''}
                 </span>
                 {proj.budget ? (
                   <>
                     <span className="project-sep">·</span>
                     <span>
-                      총 연구비 <strong className="project-budget">{formatWon(proj.budget)}</strong>
+                      {tr('총 연구비', 'Total funding')}{' '}
+                      <strong className="project-budget">
+                        {en ? `KRW ${Number(proj.budget).toLocaleString('en-US')}` : formatWon(proj.budget)}
+                      </strong>
                     </span>
                   </>
                 ) : null}
@@ -113,11 +121,11 @@ export default function Projects({ items = [], onEdit, focus = null }) {
 
               {groups.length > 0 && (
                 <div className="project-members">
-                  <span className="project-members-label">참여연구진</span>
+                  <span className="project-members-label">{tr('참여연구진', 'Research Team')}</span>
                   <span className="project-members-list">
                     {groups.map((g) => (
                       <span key={g.role} className="project-members-group">
-                        <span className="project-members-role">{g.role}</span>
+                        <span className="project-members-role">{en ? ROLE_EN[g.role] ?? g.role : g.role}</span>
                         <FocusNames names={g.names} focus={focus} />
                       </span>
                     ))}
@@ -127,7 +135,7 @@ export default function Projects({ items = [], onEdit, focus = null }) {
 
               {proj.description && (
                 <>
-                  <p className="project-desc-label">과제 소개</p>
+                  <p className="project-desc-label">{tr('과제 소개', 'About the project')}</p>
                   <p className="project-desc">{proj.description}</p>
                 </>
               )}

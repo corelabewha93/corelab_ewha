@@ -1,14 +1,18 @@
 import SafeImage from '../../components/SafeImage'
 import { EditButton } from '../../components/admin/AdminControls'
+import { useLang } from '../../i18n/LangContext'
 
 export default function Tools({ items = [], onEdit }) {
-  if (items.length === 0) return <p className="empty-state">등록된 시스템/도구가 없습니다.</p>
+  const { tr, loc } = useLang()
+  if (items.length === 0) return <p className="empty-state">{tr('등록된 시스템/도구가 없습니다.', 'No systems or tools yet.')}</p>
 
   return (
     <div className="tools-grid">
-      {items.map((tool) => (
+      {items.map((raw) => {
+        const tool = loc(raw, 'tools')
+        return (
         <div key={tool.id} className="card tool-card admin-item">
-          <EditButton onClick={() => onEdit(tool)} />
+          <EditButton onClick={() => onEdit(raw)} />
           <div className="tool-image">
             <SafeImage src={tool.image} alt="" fallback={<span />} />
           </div>
@@ -31,7 +35,8 @@ export default function Tools({ items = [], onEdit }) {
             ))}
           </div>
         </div>
-      ))}
+        )
+      })}
     </div>
   )
 }

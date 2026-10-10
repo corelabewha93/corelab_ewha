@@ -2,6 +2,7 @@ import { useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
 import { getIndexes, INTERNATIONAL } from './journalIndex'
 import { normalizeName } from './authorMatch'
+import { useLang } from '../../i18n/LangContext'
 
 // 처음에는 가장 최근 몇 해의 연구만 펼쳐 두고, 그 이전은 "이전 연구 더보기"로 엽니다.
 const RECENT_YEARS = 3
@@ -71,16 +72,17 @@ function NameList({ names = [], terms, focus }) {
 }
 
 function Authors({ authors = [], translators = [], terms, focus }) {
+  const { tr } = useLang()
   const isTranslation = translators.length > 0
   if (!authors.length && !translators.length) return null
   return (
     <p className="pub-authors">
-      {isTranslation && authors.length > 0 && <span className="pub-role-label">지은이</span>}
+      {isTranslation && authors.length > 0 && <span className="pub-role-label">{tr('지은이', 'Author')}</span>}
       <NameList names={authors} terms={terms} focus={focus} />
       {isTranslation && (
         <>
           <span className="pub-role-sep"> · </span>
-          <span className="pub-role-label">옮긴이</span>
+          <span className="pub-role-label">{tr('옮긴이', 'Translator')}</span>
           <NameList names={translators} terms={terms} focus={focus} />
         </>
       )}
@@ -88,8 +90,10 @@ function Authors({ authors = [], translators = [], terms, focus }) {
   )
 }
 
-export function SearchBox({ value, onChange, placeholder = '검색어를 입력하세요.' }) {
+export function SearchBox({ value, onChange, placeholder }) {
   const inputRef = useRef(null)
+  const { tr } = useLang()
+  const ph = placeholder ?? tr('검색어를 입력하세요.', 'Search publications')
   return (
     <div className={`pub-search${value ? ' has-value' : ''}`} role="search">
       <svg className="pub-search-icon" viewBox="0 0 20 20" width="15" height="15" aria-hidden="true">
@@ -100,8 +104,8 @@ export function SearchBox({ value, onChange, placeholder = '검색어를 입력�
         ref={inputRef}
         type="search"
         className="pub-search-input"
-        placeholder={placeholder}
-        aria-label="검색"
+        placeholder={ph}
+        aria-label={tr('검색', 'Search')}
         value={value}
         onChange={(e) => onChange(e.target.value)}
         onKeyDown={(e) => e.key === 'Escape' && onChange('')}
@@ -110,7 +114,7 @@ export function SearchBox({ value, onChange, placeholder = '검색어를 입력�
         <button
           type="button"
           className="pub-search-clear"
-          aria-label="검색어 지우기"
+          aria-label={tr('검색어 지우기', 'Clear search')}
           onClick={() => {
             onChange('')
             inputRef.current?.focus()
@@ -143,11 +147,17 @@ function IndexBadges({ indexes }) {
  * org가 없으면 예전처럼 금색 배지 하나로 보입니다. (박사학위논문 태그의 금색과는 별개입니다.)
  */
 export function AwardBadge({ award, org = '' }) {
+  const { en, tr, pack } = useLang()
   if (!award) return null
+  // 영어 화면: 상 이름·수여 기관을 영어로 (en.json의 terms에 있는 것만, 없으면 그대로)
+  if (en) {
+    award = pack?.terms?.awards?.[award.trim()] ?? award
+    if (org) org = pack?.terms?.orgs?.[org.trim()] ?? org
+  }
   const orgText = (org ?? '').trim()
   const kind = orgText ? ' pub-award-org-badge' : ''
   return (
-    <span className={`pub-award${kind}`} title={orgText ? `${orgText} 수여` : '수상'}>
+    <span className={`pub-award${kind}`} title={orgText ? tr(`${orgText} 수여`, `Awarded by ${orgText}`) : tr('수상', 'Award')}>
       <svg viewBox="0 0 16 16" width="12" height="12" aria-hidden="true">
         <path
           d="M4.5 1.5h7l-.9 6.2a2.6 2.6 0 0 1-5.2 0z"
@@ -170,12 +180,49 @@ export function AwardBadge({ award, org = '' }) {
 }
 
 /** 저역서 종류 배지 문구: 직접 적은 문구(bookRole) > 옮긴이 있으면 번역서 > 저서 */
-function bookRoleOf(pub) {
-  if (pub.bookRole?.trim()) return pub.bookRole.trim()
-  return (pub.translators?.length ?? 0) > 0 ? '번역서' : '저서'
+const BOOK_ROLE_EN = { 저서: 'Book', 번역서: 'Translation', '저서 (챕터 저술)': 'Book chapter', 공저: 'Co-authored book', 편저: 'Edited book' }
+const THESIS_EN = { 석사학위논문: "Master's thesis", 박사학위논문: 'Doctoral dissertation' }
+
+function bookRoleOf(pub, en = false) {
+  const ko = pub.bookRole?.trim() ? pub.bookRole.trim() : (pub.translators?.length ?? 0) > 0 ? '번역서' : '저서'
+  return en ? BOOK_ROLE_EN[ko] ?? ko : ko
+}
+
+/** 영어 화면: 한글 학술지·학회 이름은 en.json의 영문 이름으로 (관리자가 적은 영문 칸이 있으면 그것을 우선) */
+function venueEn(venue, pack) {
+  if (!venue) return venue
+  const v = venue.trim()
+  const hit = pack?.terms?.venues?.[v]
+  if (hit) return hit
+  // "… (Routledge) 수록" → "… (Routledge)"
+  return v.replace(/\s*수록\s*$/, '')
 }
 
 /** 쪽수 등 세부 정보에 "절판"·"품절" 같은 판매 상태가 섞여 있으면 빼고 보여줍니다. */
+const PLACE_EN = {
+  서울: 'Seoul',
+  대전: 'Daejeon',
+  제주: 'Jeju',
+  광주: 'Gwangju',
+  안동: 'Andong',
+  부산: 'Busan',
+  대구: 'Daegu',
+  인천: 'Incheon',
+  수원: 'Suwon',
+  춘천: 'Chuncheon',
+  청주: 'Cheongju',
+  전주: 'Jeonju',
+  공주: 'Gongju',
+  온라인: 'Online',
+}
+
+function detailsEn(text = '') {
+  return String(text ?? '')
+    .replace(/(\d+)\s*쪽/g, '$1 pp.')
+    .replace(/서울|대전|제주|광주|안동|부산|대구|인천|수원|춘천|청주|전주|공주|온라인/g, (m) => PLACE_EN[m])
+    .replace(/(\d+)\s*판/g, (m, n) => `${n}${['th', 'st', 'nd', 'rd'][(n % 100 > 10 && n % 100 < 14) || n % 10 > 3 ? 0 : n % 10]} ed.`)
+}
+
 function stripSaleStatus(text = '') {
   return text
     .split('·')
@@ -184,29 +231,38 @@ function stripSaleStatus(text = '') {
     .join(' · ')
 }
 
-export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = null, reorder = null }) {
+export function PubItem({ pub: raw, onEdit, terms = [], focus = null, authorTool = null, reorder = null }) {
+  const { en, tr, loc, pack } = useLang()
+  // 영어 화면: 영문 제목 칸(titleEn)이 있으면 그 제목으로. 없으면 원래 제목 그대로(학계 관례).
+  const pub = loc(raw, 'publications')
   const isBook = pub.type === 'book'
-  const { title, thesis } = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
+  const split = pub.type === 'other' ? splitThesis(pub.title) : { title: pub.title, thesis: null }
+  // 학위논문 표시는 한글 원제목에서 읽습니다(영문 제목에는 꼬리표가 없을 수 있으므로)
+  const thesisKo = pub.type === 'other' ? splitThesis(raw.title).thesis : null
+  const title = split.title
+  const thesis = split.thesis ?? thesisKo
 
   let typeTag = null
   let typeTagClass = ''
   if (pub.type === 'conference') typeTag = 'Conference'
   else if (pub.type === 'other') {
-    typeTag = thesis ?? 'Other'
+    typeTag = thesis ? (en ? THESIS_EN[thesis] ?? thesis : thesis) : 'Other'
     typeTagClass = thesis === '박사학위논문' ? ' pub-type-tag-phd' : thesis === '석사학위논문' ? ' pub-type-tag-ma' : ''
   } else if (isBook) {
-    typeTag = bookRoleOf(pub)
+    typeTag = bookRoleOf(pub, en)
     // 저서(초록) / 번역서(회색)를 색으로 구분합니다.
     typeTagClass = (pub.translators?.length ?? 0) > 0 ? ' pub-type-tag-translation' : ' pub-type-tag-book'
   }
 
-  const details = isBook ? stripSaleStatus(pub.details) : pub.details
+  let details = isBook ? stripSaleStatus(pub.details) : pub.details
+  if (en && details) details = detailsEn(details)
+  const venue = en && !(raw.venueEn ?? '').trim() ? venueEn(pub.venue, pack) : pub.venue
 
   return (
     <li
       className={`pub-item admin-item${authorTool?.excluded ? ' pub-item-excluded' : ''}${reorder ? ' pub-item-reordering' : ''}`}
     >
-      {!reorder && <EditButton onClick={() => onEdit(pub)} />}
+      {!reorder && <EditButton onClick={() => onEdit(raw)} />}
       {authorTool && (
         <button
           type="button"
@@ -232,9 +288,9 @@ export function PubItem({ pub, onEdit, terms = [], focus = null, authorTool = nu
       </p>
       <Authors authors={pub.authors} translators={isBook ? pub.translators : []} terms={terms} focus={focus} />
       <div className="pub-meta">
-        {pub.venue && (
+        {venue && (
           <span className="pub-venue">
-            <Highlight text={pub.venue} terms={terms} />
+            <Highlight text={venue} terms={terms} />
             {details ? <span className="pub-details">, {details}</span> : null}
           </span>
         )}
@@ -276,9 +332,10 @@ export function groupByYear(list) {
 }
 
 export function YearGroups({ groups, onEdit, terms = [], focus = null, authorTool = null, reorderFor = null }) {
+  const { tr } = useLang()
   return groups.map(([year, list]) => (
     <section key={year} className="pub-year-group">
-      <h3 className="pub-year-title">{year}</h3>
+      <h3 className="pub-year-title">{year === '기타' ? tr('기타', 'Other') : year}</h3>
       <ul className="pub-list">
         {list.map((pub) => (
           <PubItem
@@ -306,7 +363,7 @@ export function YearGroups({ groups, onEdit, terms = [], focus = null, authorToo
 
 /** 검색용 문자열 */
 export function searchText(p) {
-  return [p.title, (p.authors ?? []).join(' '), (p.translators ?? []).join(' '), p.venue, p.year, p.award]
+  return [p.title, p.titleEn, (p.authors ?? []).join(' '), (p.translators ?? []).join(' '), p.venue, p.venueEn, p.year, p.award]
     .filter(Boolean)
     .join(' ')
     .toLowerCase()
@@ -331,6 +388,7 @@ export default function Publications({
   const [query, setQuery] = useState(initialQuery)
   const [showAll, setShowAll] = useState(false)
   const moreRef = useRef(null)
+  const { en, tr } = useLang()
   const terms = useMemo(() => toTerms(query), [query])
 
   // 검색어가 주소에서 바뀌면 Research.jsx가 key를 바꿔 이 컴포넌트를 새로 그리므로
@@ -397,7 +455,7 @@ export default function Publications({
     })
   }
 
-  if (pubs.length === 0) return <p className="empty-state">등록된 논문이 없습니다.</p>
+  if (pubs.length === 0) return <p className="empty-state">{tr('등록된 논문이 없습니다.', 'No publications yet.')}</p>
 
   const presentTypes = new Set(pubs.map((p) => p.type))
   return (
@@ -456,13 +514,23 @@ export default function Publications({
 
       {terms.length > 0 && (
         <p className="pub-search-summary" aria-live="polite">
-          <strong>‘{query.trim()}’</strong> 검색 결과 {filtered.length}편
+          {en ? (
+            <>
+              {filtered.length} {filtered.length === 1 ? 'result' : 'results'} for <strong>‘{query.trim()}’</strong>
+            </>
+          ) : (
+            <>
+              <strong>‘{query.trim()}’</strong> 검색 결과 {filtered.length}편
+            </>
+          )}
         </p>
       )}
 
       {byYear.length === 0 && (
         <p className="empty-state">
-          {terms.length ? '검색어와 일치하는 논문이 없습니다.' : '해당하는 논문이 없습니다.'}
+          {terms.length
+            ? tr('검색어와 일치하는 논문이 없습니다.', 'No publications match your search.')
+            : tr('해당하는 논문이 없습니다.', 'No publications in this category.')}
         </p>
       )}
 
@@ -479,7 +547,7 @@ export default function Publications({
               </div>
               <div className="pub-more">
                 <button type="button" className="pub-more-btn is-less" onClick={collapse} aria-expanded="true">
-                  최근 연구만 보기
+                  {tr('최근 연구만 보기', 'Show recent only')}
                   <Chevron up />
                 </button>
               </div>
@@ -487,9 +555,9 @@ export default function Publications({
           ) : (
             <div className="pub-more">
               <button type="button" className="pub-more-btn" onClick={() => setShowAll(true)} aria-expanded="false">
-                이전 연구 더보기
+                {tr('이전 연구 더보기', 'Earlier publications')}
                 <span className="pub-more-meta">
-                  {olderRange} · {olderCount}편
+                  {olderRange} · {tr(`${olderCount}편`, `${olderCount}`)}
                 </span>
                 <Chevron />
               </button>
