@@ -51,7 +51,8 @@ function worstGap(p) {
 }
 
 function tune(p, mobile) {
-  if (!mobile) {
+  // 양쪽 정렬이 아닌 경우(예: 영어 화면의 휴대폰 왼쪽 정렬)에는 손대지 않습니다.
+  if (!mobile || getComputedStyle(p).textAlign !== 'justify') {
     p.style.letterSpacing = ''
     return
   }
