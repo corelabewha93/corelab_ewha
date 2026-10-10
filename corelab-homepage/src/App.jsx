@@ -15,6 +15,7 @@ import LogoJump from './components/LogoJump'
 import NoticeBanner from './components/NoticeBanner'
 import './styles/justify.css'
 import './styles/motto.css'
+import './styles/polish.css'
 
 const ROUTES = {
   '/': About,
