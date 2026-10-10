@@ -1,0 +1,63 @@
+/* =====================================================================
+   메인 화면: 인트로가 끝난 뒤에도 남는 작은 네트워크 + 스크롤 신호 (HeroAmbient.jsx)
+   global.css보다 먼저 불러와질 수 있어 선택자 앞에 html을 붙였습니다.
+   ===================================================================== */
+html .hero-ambient {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+
+/* 가운데 사람 아래 화살표 — 누르면 Lab Overview로 (눈에 보이는 모양은 그림 쪽이 그립니다) */
+html .hero-scroll-cue {
+  position: absolute;
+  left: 0;
+  top: 0;
+  z-index: 2;
+  width: 44px;
+  height: 60px;
+  padding: 0;
+  border: 0;
+  border-radius: 22px;
+  background: none;
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
+html .hero-scroll-cue:focus-visible {
+  outline: 1.5px solid rgba(255, 255, 255, 0.55);
+  outline-offset: 2px;
+}
+
+/* 소속 문구: 넓은 화면에서는 "대학교 · 학과"를 한 줄로, 지도교수는 그 아래 한 줄 (3줄 → 2줄) */
+@media (min-width: 900px) {
+  html .hero-affiliation {
+    flex-direction: row;
+    flex-wrap: wrap;
+    justify-content: center;
+    align-items: baseline;
+    row-gap: 0.6em;
+  }
+  html .hero-aff-univ::after {
+    content: '·';
+    display: inline-block;
+    margin: 0 0.5em 0 0.65em;
+    letter-spacing: 0;
+    opacity: 0.8;
+  }
+  html .hero-aff-dept {
+    font-size: 1.02rem;
+  }
+  html .hero-aff-line {
+    flex-basis: 100%;
+  }
+}
+
+/* 화면 높이가 낮을 때만: 이름·문구 묶음을 네트워크가 들어올 만큼 살짝 위로 (HeroAmbient.jsx의 fitAmbientRoom) */
+html .hero-phase-merge .hero-intro-content,
+html .hero-phase-done .hero-intro-content {
+  padding-bottom: calc(var(--hero-lift, 0px) + var(--ambient-room, 0px));
+}
