@@ -1,15 +1,16 @@
 import { useEffect, useRef } from 'react'
 
 /**
- * 메인 화면 배경 — 녹색 칠판에 분필로 사람들이 그려지고, 말풍선으로 대화하다가
- * 서로 선으로 이어져 빛나는 네트워크(협력학습 상호작용)로 바뀌는 장면.
+ * 메인 화면 배경 — 녹색 칠판에 분필로 다섯 사람이 그려지고, 가운데 친구의 "생각"이 선을 타고
+ * 양쪽으로 번져 나가며 모두가 이어지는 네트워크(협력학습 상호작용)가 되는 장면.
  *
  *  0.0s  칠판에 지워진 분필 자국이 희미하게 남아 있음
- *  0.25s~ 다섯 사람이 분필로 그려지고, 머리 둘레에 "참여 링"이 들쭉날쭉하게 생김(한 명은 거의 비어 있음)
- *  1.05s~ 첫 번째 사람이 말풍선 "Your turn!"과 함께 조용한 친구에게 차례를 건넴(선 + 빛 알갱이)
- *  1.6s~  차례를 받은 친구 머리 위에 분필 전구가 번뜩이고, 그 친구의 참여 링이 차오름
- *  2.0s~  가운데 사람이 "And you?"로 한 번 더 건네고, 받은 친구는 끄덕이며 체크(✓)가 뜨고 링이 차오름
- *  3.0s~  나머지 선이 이어지며 참여 링이 고르게 채워진 채 머리가 금색·민트색 노드로 빛남 ("균형 있는 참여")
+ *  0.15s~ 다섯 사람이 분필로 빠르게 그려지고, 머리 둘레에는 아직 빈 "참여 링"(옅은 바탕선)만 있음
+ *  1.0s~  가운데 친구 머리 위에 분필 전구가 번뜩이며 생각이 떠오르고, 그 친구의 링부터 차오름
+ *  1.3s~  생각(빛 알갱이)이 양옆 친구에게 동시에 건너감 → 도착한 친구만 링이 차오르고 머리가 빛남
+ *  1.95s~ 그 친구들이 바깥쪽 친구에게 다시 건넴. 생각이 지나간 선은 보낸 사람의 색(금색·민트)으로 물듦
+ *  2.55s~ 대각선 연결이 마저 그어지며 네트워크가 두 색으로 엮임
+ *  2.95s~ 모두 연결된 순간: 모든 링이 동시에 꽉 차고, 네트워크가 심장처럼 한 번 "쿵" 뛰며 물결이 퍼짐
  *  3.7s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
  *  6.9s~ "CoRe Lab"이 완성되면 학생들이 작아지며 로고의 두 학습자 점(o 위 · R 위)으로 모여 들어가고,
  *        칠판에는 글자만 남음 (도착 지점은 HeroIntro.jsx가 그리는 로고 점의 실제 화면 위치)
@@ -51,10 +52,6 @@ const LAYOUTS = {
       [680, 205],
       [860, 255],
     ],
-    bubbleDir: [1, 1, 1, 1, 1],
-    font: 20,
-    charW: 11,
-    bubbleH: 40,
     settle: { dy: 50, k: 1 }, // 이름이 나타날 때 네트워크가 내려앉는 정도(아래로, 크기)
   },
   tall: {
@@ -68,38 +65,32 @@ const LAYOUTS = {
       [292, 445],
       [108, 560],
     ],
-    bubbleDir: [1, -1, 1, -1, 1],
-    font: 18,
-    charW: 10,
-    bubbleH: 36,
     settle: { dy: 130, k: 0.75 },
   },
 }
 
-// 말풍선: 누가(사람 번호) 무슨 말을 건네는지
-const SAYS = [
-  { who: 0, word: 'Your turn!' },
-  { who: 2, word: 'And you?' },
+// ── 생각 릴레이 시간표 ──
+// 가운데 친구에게서 "생각(빛)"이 떠오르면 양쪽으로 동시에 퍼져 나가고,
+// 생각이 도착한 사람만 그제서야 참여 링이 차오르며 머리가 노드로 빛납니다(연결 → 채움).
+// 생각이 지나간 선은 보낸 사람의 색(금색·민트)으로 물들고, 다섯 명이 모두 이어지면
+// 대각선 연결이 마저 그어지며 모든 링이 동시에 꽉 차고, 네트워크가 심장처럼 한 번 "쿵" 뜁니다.
+const ORIGIN = 2 // 생각이 처음 떠오르는 사람(가운데)
+const ORIGIN_AT = 1.0
+const HOP_D = 0.36 // 한 칸 건너가는 데 걸리는 시간
+// 연결선마다 [보내는 사람, 출발 시각] (LINKS 순서: 0–1, 1–2, 2–3, 3–4, 0–2, 1–3, 2–4)
+const LINK_PLAN = [
+  [1, 1.95], // 1 → 0
+  [2, 1.3], // 2 → 1
+  [2, 1.3], // 2 → 3
+  [3, 1.95], // 3 → 4
+  [0, 2.55], // 대각선: 마지막에 한꺼번에
+  [1, 2.61],
+  [2, 2.67],
 ]
-// 참여 링: 처음 값 → 마지막 값 (한 명은 조용했다가, 차례를 받으면 고르게 차오름)
-// 모두가 대화에 끼면서 링이 차올라, 마지막엔 고르게 채워집니다(조용했던 1번·3번이 가장 크게 차오름).
-const PART_FROM = [0.42, 0.12, 0.46, 0.22, 0.4]
-const PART_TO = [0.86, 0.84, 0.86, 0.82, 0.86]
-// 각 사람의 링이 차오르기 시작하는 시각 / 걸리는 시간 (한 명씩 차례로 보이도록 어긋나게)
-const FILL_AT = [1.0, 1.65, 1.95, 2.6, 2.85]
-const FILL_D = [0.55, 0.65, 0.55, 0.6, 0.55]
-// 링이 다 차오를 즈음 그 사람의 머리가 노드로 빛납니다(링이 먼저 읽히도록)
-const LIT_AT = FILL_AT.map((a, i) => a + FILL_D[i] - 0.1)
-// 연결선 [그리기 시작, 빛 알갱이 출발]: 0·2번째 선은 "차례를 건네는" 선이라 먼저, 나머지는 마지막에 한꺼번에
-const LINK_AT = [
-  [1.1, 1.15],
-  [3.0, 3.2],
-  [2.05, 2.1],
-  [3.08, 3.28],
-  [3.16, 3.36],
-  [3.24, 3.44],
-  [3.32, 3.52],
-]
+const ARRIVE = [1.95 + HOP_D, 1.3 + HOP_D, ORIGIN_AT, 1.3 + HOP_D, 1.95 + HOP_D] // 사람마다 생각이 도착하는 시각
+const FILL_D = 0.34 // 도착 후 링이 차오르는 시간
+const SOLO = 0.72 // 혼자 연결됐을 때 링이 차는 정도
+const ALL_AT = 2.95 // 모두 연결 → 모든 링이 동시에 꽉 참 + "쿵"
 const LINKS = [
   [0, 1],
   [1, 2],
@@ -246,39 +237,7 @@ function build(svg, L) {
     return { head, body, g, fill, ring, ringTrack, tip, ping, rr, fl, fg, x, y }
   })
 
-  // 말풍선: 말하는 사람 머리 바로 위 가운데에 놓고, 꼬리가 머리를 가리킵니다.
-  const bubbles = SAYS.map(({ who, word }) => {
-    const [x, y] = P[who]
-    const w = word.length * L.charW + 32
-    const h = L.bubbleH
-    const bx = x - w / 2
-    const by = y - R - h - 16
-    const path = stroke(
-      mk(
-        'path',
-        {
-          d: `M${bx + 10},${by} H${bx + w - 10} Q${bx + w},${by} ${bx + w},${by + 10} V${by + h - 10} Q${bx + w},${by + h} ${bx + w - 10},${by + h} H${x + 9} L${x},${y - R - 3} L${x - 9},${by + h} H${bx + 10} Q${bx},${by + h} ${bx},${by + h - 10} V${by + 10} Q${bx},${by} ${bx + 10},${by}Z`,
-        },
-        lines,
-      ),
-    )
-    const text = mk(
-      'text',
-      {
-        x: x,
-        y: by + h / 2 + (VW > VH ? 7 : 6),
-        'text-anchor': 'middle',
-        'font-size': L.font,
-        class: 'hero-chalk-word',
-        opacity: 0,
-      },
-      lines,
-    )
-    text.textContent = word
-    return { path, text, who }
-  })
-
-  // 표정 아이콘(분필 전구·체크): 사람 머리 위에 그려지듯 나타납니다.
+  // 분필 전구: 생각이 처음 떠오르는 사람 머리 위에 그려지듯 나타납니다.
   const colored = (e, color, w) => {
     stroke(e, w)
     e.setAttribute('stroke', color)
@@ -298,13 +257,7 @@ function build(svg, L) {
     ].map((e) => colored(e, GOLD, w))
     return { parts, gl }
   }
-  const iconCheck = (x, y) => {
-    const k = R / 31
-    const cy = y - R * 2.6
-    const parts = [mk('path', { d: `M${x - 14 * k},${cy + 2 * k} L${x - 4 * k},${cy + 13 * k} L${x + 16 * k},${cy - 12 * k}` }, lines)].map((e) => colored(e, MINT, L.sw * 1.15))
-    return { parts, gl: null }
-  }
-  const icons = [iconBulb(P[1][0], P[1][1]), iconCheck(P[3][0], P[3][1])]
+  const icons = [iconBulb(P[ORIGIN][0], P[ORIGIN][1])]
 
   const trim = (a, b, r) => {
     const dx = b[0] - a[0]
@@ -331,11 +284,20 @@ function build(svg, L) {
       C = [ax + side * 80, (A[1] + B[1]) / 2]
     }
     const path = stroke(mk('path', { d: `M${A[0]},${A[1]} Q${C[0]},${C[1]} ${B[0]},${B[1]}` }, lines), L.sw * 0.76)
+    // 생각이 지나간 자리를 보낸 사람의 색으로 물들이는 선(분필선 위에 겹침)
+    const from = LINK_PLAN[k][0]
+    const tint = mk('path', { d: `M${A[0]},${A[1]} Q${C[0]},${C[1]} ${B[0]},${B[1]}`, pathLength: 1 }, lines)
+    tint.setAttribute('fill', 'none')
+    tint.setAttribute('stroke', from % 2 ? MINT : GOLD)
+    tint.setAttribute('stroke-width', L.sw * 0.95)
+    tint.setAttribute('stroke-linecap', 'round')
+    tint.setAttribute('opacity', 0.82)
+    tint.style.strokeDasharray = '1 1'
     const pulse = mk('circle', { r: L.sw * 1.45, fill: '#fff', opacity: 0 }, glow)
-    return { path, pulse, A, B, C }
+    return { path, tint, pulse, A, B, C, rev: from === j }
   })
 
-  return { smudges, shift, net, figs, bubbles, icons, links, L }
+  return { smudges, shift, net, figs, icons, links, L }
 }
 
 /**
@@ -351,82 +313,79 @@ function render(s, t) {
   s.smudges.forEach((e, i) =>
     e.setAttribute('opacity', (0.06 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, CHALK_NAME_AT - 0.1, 0.8)))).toFixed(3)),
   )
-  // 몸짓: 위로 쏙 올라가는 작은 점프(hop) / 끄덕임(nod). 로고로 모이기가 시작되면 converge()가 이어받습니다.
   const R = s.L.r
   const hop = (t0, d, amp) => -amp * Math.max(0, Math.sin(pr(t, t0, d) * Math.PI))
-  const nod = (t0, d, amp) => amp * Math.sin(pr(t, t0, d) * Math.PI * 2) * (1 - pr(t, t0 + d * 0.7, d * 0.3))
-  const bob = [
-    hop(1.05, 0.45, R * 0.13),
-    hop(1.6, 0.5, R * 0.16),
-    hop(2.0, 0.45, R * 0.13),
-    nod(2.6, 0.7, R * 0.1),
-    0,
-  ]
-  // 참여 링이 차오르는 정도: 차례를 받은 친구(1번·3번)의 링이 늦게 채워짐
-  const ringIn = eo(pr(t, 0.6, 0.55))
+  const ringIn = eo(pr(t, 0.5, 0.45))
   const ringFade = 1 - eo(pr(t, 3.9, 0.6))
+  const all = eio(pr(t, ALL_AT, 0.32)) // 모두 연결된 순간 → 링 100%
+  const allPing = pr(t, ALL_AT + 0.22, 0.6)
   s.figs.forEach((f, i) => {
-    // 한 명씩 차례로 그려집니다(왼쪽부터).
-    const st = 0.25 + i * 0.1
-    draw(f.head, eio(pr(t, st, 0.45)))
-    draw(f.body, eio(pr(t, st + 0.2, 0.45)))
-    const on = eio(pr(t, LIT_AT[i], 0.45))
-    f.g.setAttribute('opacity', (on * 0.55).toFixed(3))
+    // 한 명씩 빠르게 그려집니다(왼쪽부터).
+    const st = 0.15 + i * 0.08
+    draw(f.head, eio(pr(t, st, 0.4)))
+    draw(f.body, eio(pr(t, st + 0.15, 0.4)))
+    // 생각이 도착하면: 링이 차오르고 → 머리가 빛나고 → 살짝 뛰어오름("아하!")
+    const at = ARRIVE[i]
+    const fp = pr(t, at, FILL_D)
+    const v = SOLO * eio(fp) + (1 - SOLO) * all
+    f.ring.style.strokeDasharray = `${v.toFixed(4)} 1`
+    f.ring.setAttribute('opacity', (v > 0.002 ? ringFade : 0).toFixed(3))
+    f.ringTrack.setAttribute('opacity', (ringIn * ringFade * 0.9).toFixed(3))
+    const on = eio(pr(t, at + 0.12, 0.35))
+    const flash = Math.sin(pr(t, ALL_AT, 0.7) * Math.PI)
+    f.g.setAttribute('opacity', Math.min(1, on * 0.5 + flash * 0.35).toFixed(3))
     f.fill.setAttribute('opacity', (on * 0.92).toFixed(3))
-    // 참여 링
-    const fp = pr(t, FILL_AT[i], FILL_D[i])
-    const v = PART_FROM[i] + (PART_TO[i] - PART_FROM[i]) * eio(fp)
-    f.ring.style.strokeDasharray = `${(v * ringIn).toFixed(4)} 1`
-    // 차오르는 동안 끝점에서 반짝, 다 차면 물결 한 번
+    // 차오르는 끝점의 반짝임
+    const filling = fp > 0 && fp < 1 ? fp : all > 0 && all < 1 ? all : -1
     const ang = -Math.PI / 2 + v * Math.PI * 2
     f.tip.setAttribute('cx', (f.x + f.rr * Math.cos(ang)).toFixed(2))
     f.tip.setAttribute('cy', (f.y + f.rr * Math.sin(ang)).toFixed(2))
-    f.tip.setAttribute('opacity', (fp > 0 && fp < 1 ? Math.min(1, Math.sin(fp * Math.PI) * 2.2) * ringFade : 0).toFixed(3))
-    const q = pr(t, FILL_AT[i] + FILL_D[i], 0.5)
-    f.ping.setAttribute('r', (f.rr * (1 + 0.5 * eo(q))).toFixed(2))
-    f.ping.setAttribute('opacity', (q > 0 && q < 1 ? 0.6 * (1 - q) * ringFade : 0).toFixed(3))
-    f.ring.setAttribute('opacity', (ringIn > 0.001 ? ringFade : 0).toFixed(3))
-    f.ringTrack.setAttribute('opacity', (ringIn * ringFade).toFixed(3))
-    const tr = bob[i] ? `translate(0 ${bob[i].toFixed(2)})` : ''
+    f.tip.setAttribute('opacity', (filling >= 0 ? Math.min(1, Math.sin(filling * Math.PI) * 2.2) * ringFade : 0).toFixed(3))
+    // 물결: 혼자 채워졌을 때 작게, 모두 연결됐을 때 다 같이 크게
+    const q1 = pr(t, at + FILL_D, 0.45)
+    const solo = q1 > 0 && q1 < 1 ? { k: 1 + 0.4 * eo(q1), o: 0.5 * (1 - q1) } : null
+    const big = allPing > 0 && allPing < 1 ? { k: 1 + 0.85 * eo(allPing), o: 0.7 * (1 - allPing) } : null
+    const pg = big || solo
+    f.ping.setAttribute('r', (f.rr * (pg ? pg.k : 1)).toFixed(2))
+    f.ping.setAttribute('opacity', (pg ? pg.o * ringFade : 0).toFixed(3))
+    const b = i === ORIGIN ? hop(ORIGIN_AT + 0.05, 0.42, R * 0.13) : hop(at - 0.03, 0.42, R * 0.14)
+    const tr = b ? `translate(0 ${b.toFixed(2)})` : ''
     f.fl.setAttribute('transform', tr)
     f.fg.setAttribute('transform', tr)
   })
-  // 말풍선: 건네는 순간 나타났다가 곧 사라짐
-  const SAY_AT = [1.05, 2.0]
-  const SAY_OUT = [1.85, 2.95]
-  s.bubbles.forEach((b, i) => {
-    const out = 1 - eo(pr(t, SAY_OUT[i], 0.4))
-    draw(b.path, eio(pr(t, SAY_AT[i], 0.35)))
-    b.path.style.opacity = out
-    b.text.setAttribute('opacity', (eo(pr(t, SAY_AT[i] + 0.2, 0.25)) * out).toFixed(3))
-  })
-  // 표정 아이콘: 전구(번뜩) · 체크(끄덕) — 그려지듯 나타났다가 이름이 나타나기 전에 옅어짐
-  const ICON_AT = [1.6, 2.6]
-  const ICON_OUT = [3.2, 3.45]
-  s.icons.forEach((ic, i) => {
-    const out = 1 - eo(pr(t, ICON_OUT[i], 0.45))
-    const d = eio(pr(t, ICON_AT[i], 0.4))
+  // 가운데 친구 머리 위 전구: 생각이 "번뜩" 떠오름 → 그 생각이 양쪽 선을 타고 출발
+  s.icons.forEach((ic) => {
+    const d = eio(pr(t, ORIGIN_AT - 0.12, 0.32))
+    const out = 1 - eo(pr(t, 1.75, 0.35))
     ic.parts.forEach((e) => {
       draw(e, d)
       e.style.opacity = out
     })
     if (ic.gl) {
-      const flick = 0.55 + 0.45 * Math.sin((t - ICON_AT[i]) * 14) * (1 - pr(t, ICON_AT[i] + 0.35, 0.5))
-      ic.gl.setAttribute('opacity', (d > 0.6 ? 0.8 * out * flick : 0).toFixed(3))
+      const flick = 0.55 + 0.45 * Math.sin((t - ORIGIN_AT) * 16) * (1 - pr(t, ORIGIN_AT + 0.2, 0.4))
+      ic.gl.setAttribute('opacity', (d > 0.6 ? 0.85 * out * flick : 0).toFixed(3))
     }
   })
+  // 연결선: 빛 알갱이가 보낸 사람 쪽에서 선을 "그리며" 건너가고, 지나간 자리는 보낸 사람 색으로 물듦
   s.links.forEach((l, k) => {
-    const [ls, ps] = LINK_AT[k] || LINK_AT[LINK_AT.length - 1]
-    draw(l.path, eio(pr(t, ls, 0.5)))
-    const pp = pr(t, ps, k === 0 || k === 2 ? 0.5 : 0.75)
+    const start = LINK_PLAN[k][1]
+    const cross = k >= 4
+    const pp = pr(t, start, cross ? 0.3 : HOP_D)
+    const u = eio(pp)
+    const drawDir = (e, p) => {
+      e.style.strokeDashoffset = l.rev ? -(1 - p) : 1 - p
+      e.style.visibility = p > 0.001 ? 'visible' : 'hidden'
+    }
+    drawDir(l.path, u)
+    drawDir(l.tint, eio(pr(t, start + 0.04, cross ? 0.3 : HOP_D)))
     if (pp > 0 && pp < 1) {
-      const u = eio(pp)
-      const a = (1 - u) * (1 - u)
-      const b = 2 * (1 - u) * u
-      const c = u * u
+      const w = l.rev ? 1 - u : u
+      const a = (1 - w) * (1 - w)
+      const b = 2 * (1 - w) * w
+      const c = w * w
       l.pulse.setAttribute('cx', a * l.A[0] + b * l.C[0] + c * l.B[0])
       l.pulse.setAttribute('cy', a * l.A[1] + b * l.C[1] + c * l.B[1])
-      l.pulse.setAttribute('opacity', Math.sin(pp * Math.PI).toFixed(3))
+      l.pulse.setAttribute('opacity', (cross ? 0.8 : 1).toFixed(3))
     } else {
       l.pulse.setAttribute('opacity', 0)
     }
@@ -438,7 +397,9 @@ function render(s, t) {
   const u = eio(pr(t, CHALK_NAME_AT - 0.35, 1.1))
   const [VW, VH] = s.L.vb
   const { dy, k } = s.L.settle
-  const kk = 1 + (k - 1) * u
+  // 모두 연결된 순간 네트워크가 심장처럼 한 번 "쿵" (1.03배로 커졌다가 돌아옴)
+  const beat = 1 + 0.03 * Math.sin(pr(t, ALL_AT + 0.05, 0.42) * Math.PI)
+  const kk = (1 + (k - 1) * u) * beat
   s.shift.setAttribute('transform', `translate(${VW / 2} ${VH / 2 + dy * u}) scale(${kk}) translate(${-VW / 2} ${-VH / 2})`)
 }
 
@@ -452,10 +413,6 @@ function converge(s, t, dim0) {
   const svg = s.shift.ownerSVGElement
   let dim = dim0 + (0.95 - dim0) * eo(pr(t, CONV_AT - 0.15, 0.45))
   const linesOut = 1 - eo(pr(t, CONV_AT - 0.05, 0.45))
-  s.bubbles.forEach((b) => {
-    b.path.style.opacity = 0
-    b.text.setAttribute('opacity', 0)
-  })
   s.icons.forEach((ic) => {
     ic.parts.forEach((e) => (e.style.opacity = 0))
     if (ic.gl) ic.gl.setAttribute('opacity', 0)
@@ -468,6 +425,7 @@ function converge(s, t, dim0) {
   })
   s.links.forEach((l) => {
     l.path.style.opacity = linesOut
+    l.tint.style.opacity = linesOut
     l.pulse.setAttribute('opacity', 0)
   })
   if (!s.targets) {
@@ -553,7 +511,7 @@ export default function HeroChalk({ animated }) {
         render(scene, now())
       }
       const [VW, VH] = L.vb
-      // 가장자리 말풍선이 잘리지 않도록 살짝 여백을 둡니다.
+      // 가장자리(전구·물결)가 잘리지 않도록 살짝 여백을 둡니다.
       const s = Math.min(W / (VW * 1.06), H / (VH * 1.06))
       const vw = W / s
       const vh = H / s
