@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HeroChalk, { CHALK_NAME_AT, CONV_AT } from './HeroChalk'
+import HeroAmbient, { fitAmbientRoom } from './HeroAmbient'
 import { LOGO_TRANSFORM, INNER_SCALE, LETTERS, DOT_A, DOT_B, CURVE } from './coreLogoPaths'
 
 /**
@@ -249,10 +250,28 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
+  // 처음부터 완성된 화면(재방문·동작 줄이기)일 때, 그리고 창 너비가 바뀔 때 여유를 다시 잽니다.
+  useLayoutEffect(() => {
+    if (phase !== 'done') return undefined
+    const sec = nameRef.current?.closest('.hero-intro')
+    if (!animated) fitAmbientRoom(sec)
+    let w = window.innerWidth
+    const onResize = () => {
+      if (window.innerWidth === w) return // 휴대폰 주소창이 접히며 높이만 바뀌는 것은 무시
+      w = window.innerWidth
+      fitAmbientRoom(sec)
+    }
+    window.addEventListener('resize', onResize)
+    return () => window.removeEventListener('resize', onResize)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [phase === 'done'])
+
   // "CoRe Lab" 배치로 바뀐 직후(화면에 그려지기 전), 각 글자를 원래 자리·크기로 되돌려 놓고
   // 새 자리까지 한 번에 부드럽게 미끄러지게 합니다.
   useLayoutEffect(() => {
     if (phase !== 'merge' || !firstRects.current) return
+    // 작은 네트워크(HeroAmbient)가 첫 화면에 들어오도록 필요한 만큼만 묶음을 올립니다 — 글자가 모이는 움직임에 함께 섞입니다.
+    fitAmbientRoom(nameRef.current?.closest('.hero-intro'))
     const els = nameRef.current?.querySelectorAll('.hero-piece-keep') ?? []
     els.forEach((el, i) => {
       const first = firstRects.current[i]
@@ -285,6 +304,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   return (
     <section className={`hero-intro hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`}>
       <HeroChalk animated={animated} />
+      <HeroAmbient animated={animated} />
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {words ? (
