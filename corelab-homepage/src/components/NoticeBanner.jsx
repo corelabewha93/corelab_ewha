@@ -4,6 +4,7 @@ import { useHashRoute } from '../router/useHashRoute'
 import { useData, saveData } from '../admin/dataStore'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { showToast } from '../admin/toast'
+import { useLang } from '../i18n/LangContext'
 
 /**
  * 공지 띠 배너 (홈 화면 맨 위)
@@ -108,7 +109,11 @@ function normalizeLink(raw) {
 }
 
 /* ───────────── 띠 한 장 (방문자 화면 · 편집 미리보기 공용) ───────────── */
+// 영어 화면에서 종류 이름표: 관리자가 적은 영문 이름 → 초벌 번역 → 아래 기본 번역 → 한글 그대로
+const TYPE_NAME_EN = { 공지: 'Notice', 중요: 'Important', 모집: 'Recruiting', 행사: 'Event', 일정: 'Schedule', 안내: 'Info', 소식: 'News' }
+
 function Slide({ item, type, on, preview = false }) {
+  const { tr } = useLang()
   const pal = PALETTE[type?.color] || PALETTE.gold
   const style = {
     '--nb-bg0': pal.bg[0],
@@ -122,7 +127,7 @@ function Slide({ item, type, on, preview = false }) {
     <>
       {type?.name ? <span className="nb-chip">{type.name}</span> : null}
       <span className="nb-text">{item.text}</span>
-      {hasLink ? <span className="nb-more">자세히 ›</span> : null}
+      {hasLink ? <span className="nb-more">{tr('자세히 ›', 'More ›')}</span> : null}
     </>
   )
   const external = hasLink && /^https?:\/\//i.test(item.link)
@@ -149,6 +154,12 @@ function Slide({ item, type, on, preview = false }) {
 /* ───────────── 홈에서만 보이는 띠 ───────────── */
 function NoticeBannerHome() {
   const { isAdmin, token } = useAdminAuth()
+  const { en, tr, loc } = useLang()
+  const viewType = (t) => {
+    if (!en || !t) return t
+    const v = loc(t, 'announcementTypes')
+    return v.name !== t.name ? v : { ...t, name: TYPE_NAME_EN[(t.name || '').trim()] ?? t.name }
+  }
   const { data } = useData(FILE)
   const [today, setToday] = useState(kstToday)
   const [tick, setTick] = useState(0)
@@ -204,7 +215,7 @@ function NoticeBannerHome() {
         <div
           className={`nb${n > 1 ? ' multi' : ''}${isAdmin ? ' admin' : ''}`}
           role="region"
-          aria-label="공지"
+          aria-label={tr('공지', 'Announcements')}
           style={{ color: curPal.tx }}
           onMouseEnter={() => setPaused(true)}
           onMouseLeave={() => setPaused(false)}
@@ -213,7 +224,7 @@ function NoticeBannerHome() {
         >
           <div className="nb-stack">
             {visible.map((it, i) => (
-              <Slide key={it.id} item={it} type={typeOf(it.type)} on={i === cur} />
+              <Slide key={it.id} item={loc(it, 'announcements')} type={viewType(typeOf(it.type))} on={i === cur} />
             ))}
           </div>
           <div className="nb-tools">
@@ -228,7 +239,7 @@ function NoticeBannerHome() {
                 ✎
               </button>
             ) : (
-              <button type="button" className="nb-tool nb-x" aria-label="공지 닫기" onClick={dismiss}>
+              <button type="button" className="nb-tool nb-x" aria-label={tr('공지 닫기', 'Dismiss')} onClick={dismiss}>
                 ×
               </button>
             )}
@@ -240,7 +251,7 @@ function NoticeBannerHome() {
                   key={it.id}
                   type="button"
                   className={i === cur ? 'on' : ''}
-                  aria-label={`${i + 1}번째 공지 보기`}
+                  aria-label={tr(`${i + 1}번째 공지 보기`, `Show announcement ${i + 1}`)}
                   onClick={() => setIdx(i)}
                 />
               ))}
@@ -497,6 +508,8 @@ function EditView({ item, types, today, busy, error, onBack, onTypes, onSave, on
   const isNew = !item
   const [type, setType] = useState(item?.type && types.some((t) => t.id === item.type) ? item.type : types[0].id)
   const [text, setText] = useState(item?.text || '')
+  const { seedOf } = useLang()
+  const [textEn, setTextEn] = useState(item?.textEn || (item ? seedOf(item, 'announcements')?.textEn : '') || '')
   const [startD, setStartD] = useState(item?.start || today)
   const [endD, setEndD] = useState(item?.end || addDays(today, 7))
   const [link, setLink] = useState(item?.link || '')
@@ -514,6 +527,7 @@ function EditView({ item, types, today, busy, error, onBack, onTypes, onSave, on
       id: idRef.current,
       type: selType.id,
       text: text.trim().replace(/\s+/g, ' '),
+      textEn: textEn.trim().replace(/\s+/g, ' '),
       start: startD,
       end: endD,
       link: normalizeLink(link),
@@ -573,6 +587,21 @@ function EditView({ item, types, today, busy, error, onBack, onTypes, onSave, on
         <p className="field-hint">한두 줄로 짧게 쓰면 가장 보기 좋아요. ({text.length}/120)</p>
       </div>
 
+      <div className="modal-field modal-field-en">
+        <span>
+          <em className="en-badge">EN</em> 영문 문구 (선택)
+        </span>
+        <textarea
+          className="modal-input modal-textarea"
+          rows={2}
+          maxLength={160}
+          value={textEn}
+          onChange={(e) => setTextEn(e.target.value)}
+          placeholder="e.g. CoRe Lab research meeting · Oct 16, 3 PM"
+        />
+        <p className="field-hint">오른쪽 위 EN을 눌러 영어로 볼 때 이 문구가 나와요. 비워두면 영어 화면에서도 한글 문구가 보여요.</p>
+      </div>
+
       <div className="modal-field">
         <span>보여줄 기간 *</span>
         <div className="nb-dates">
@@ -619,7 +648,13 @@ function EditView({ item, types, today, busy, error, onBack, onTypes, onSave, on
 }
 
 function TypesView({ types, items, busy, error, onBack, onSave }) {
-  const [draft, setDraft] = useState(() => types.map((t) => ({ ...t })))
+  const { seedOf } = useLang()
+  const [draft, setDraft] = useState(() =>
+    types.map((t) => ({
+      ...t,
+      nameEn: t.nameEn || seedOf(t, 'announcementTypes')?.nameEn || TYPE_NAME_EN[(t.name || '').trim()] || '',
+    })),
+  )
   const [localErr, setLocalErr] = useState('')
   const used = (id) => items.filter((x) => x.type === id).length
 
@@ -638,7 +673,14 @@ function TypesView({ types, items, busy, error, onBack, onSave }) {
   }
   const save = () => {
     setLocalErr('')
-    onSave(draft.map((t) => ({ id: t.id, name: t.name.trim().slice(0, 8), color: PALETTE[t.color] ? t.color : 'gold' })))
+    onSave(
+      draft.map((t) => ({
+        id: t.id,
+        name: t.name.trim().slice(0, 8),
+        nameEn: (t.nameEn || '').trim().slice(0, 14),
+        color: PALETTE[t.color] ? t.color : 'gold',
+      })),
+    )
   }
 
   return (
@@ -667,6 +709,16 @@ function TypesView({ types, items, busy, error, onBack, onSave }) {
                 <button type="button" className="nb-type-del" onClick={() => remove(i)} aria-label="종류 삭제">
                   ×
                 </button>
+              </div>
+              <div className="nb-type-en">
+                <em className="en-badge">EN</em>
+                <input
+                  className="modal-input"
+                  value={t.nameEn || ''}
+                  maxLength={14}
+                  placeholder="영문 이름 (예: Notice)"
+                  onChange={(e) => upd(i, { nameEn: e.target.value })}
+                />
               </div>
               <div className="nb-swatches">
                 {Object.entries(PALETTE).map(([key, p]) => (
@@ -776,6 +828,8 @@ const CSS = `
 .nb-types{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:12px}
 .nb-type-top{display:flex;align-items:center;gap:8px}
 .nb-type-name{flex:0 0 7.5em;width:7.5em}
+.nb-type-en{display:flex;align-items:center;gap:6px;margin-top:6px}
+.nb-type-en .modal-input{flex:0 0 11em;width:11em;padding-top:4px;padding-bottom:4px;font-size:.82rem}
 .nb-type-prev{flex:1;min-width:0;display:flex;align-items:center;gap:6px;padding:6px 8px;border-radius:6px;font-size:.78rem;font-weight:600;overflow:hidden;white-space:nowrap}
 .nb-type-prev b{font-size:.68rem;padding:2px 7px;border-radius:999px}
 .nb-type-prev i{font-style:normal;overflow:hidden;text-overflow:ellipsis}

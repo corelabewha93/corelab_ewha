@@ -1,5 +1,6 @@
 import { useEffect } from 'react'
 import { findActiveEvent } from './celebration/events'
+import { useLang } from '../i18n/LangContext'
 
 /**
  * 기념일 효과 (임규연 교수님 생신 11/14 · 스승의 날 5/15).
@@ -38,11 +39,21 @@ function markSeen(key) {
 }
 
 export default function Celebration() {
+  const { en } = useLang()
   useEffect(() => {
     const params = new URLSearchParams(window.location.search)
     const forced = params.get('celebrate')
-    const ev = findActiveEvent(forced)
-    if (!ev) return undefined
+    const found = findActiveEvent(forced)
+    if (!found) return undefined
+    // 영어 화면이면 영어 문구로
+    const ev = en
+      ? {
+          ...found,
+          sub: found.subEn ?? found.sub,
+          messages: found.messagesEn ?? found.messages,
+          replayLabel: found.replayLabelEn ?? found.replayLabel,
+        }
+      : found
 
     const closedKey = `corelab-celebrate-closed-${ev.id}`
     if (!forced) {
@@ -93,7 +104,7 @@ export default function Celebration() {
       controller?.destroy()
       if (window.__corelabCelebrate === controller) delete window.__corelabCelebrate
     }
-  }, [])
+  }, [en])
 
   return null
 }

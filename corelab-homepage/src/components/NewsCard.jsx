@@ -1,10 +1,12 @@
 import SafeImage from './SafeImage'
+import { useLang } from '../i18n/LangContext'
 
 // 본문 중간에 사진을 넣고 싶을 때 쓰는 표시: [사진2], [사진2:왼쪽], [사진2:오른쪽] ...
 // (첫 번째 사진은 대표 사진으로 이미 사용됨. 정렬을 안 쓰면 가운데)
-const IMAGE_MARKER = /^\[\s*사진\s*(\d+)(?:\s*:\s*(왼쪽|가운데|오른쪽))?\s*\]$/
+// (영문 본문에서도 같은 [사진2] 표시를 그대로 쓰면 됩니다. [Photo 2:left] 같은 영어 표시도 알아봅니다)
+const IMAGE_MARKER = /^\[\s*(?:사진|photo|image)\s*(\d+)(?:\s*:\s*(왼쪽|가운데|오른쪽|left|center|right))?\s*\]$/i
 
-const ALIGN_KEY = { 왼쪽: 'left', 가운데: 'center', 오른쪽: 'right' }
+const ALIGN_KEY = { 왼쪽: 'left', 가운데: 'center', 오른쪽: 'right', left: 'left', center: 'center', right: 'right' }
 const ALIGN_CLASS = { left: 'align-left', center: 'align-center', right: 'align-right' }
 
 function alignClass(align) {
@@ -27,7 +29,9 @@ function heroWidthPx(item) {
  * 표시하지 않은 나머지 사진은 글 맨 아래에 모아서 보여줍니다.
  * 날짜는 어디에도 표시하지 않습니다 (정렬은 등록 순서로만 합니다).
  */
-export default function NewsCard({ item }) {
+export default function NewsCard({ item: raw }) {
+  const { tr, loc } = useLang()
+  const item = loc(raw, 'news')
   const images = Array.isArray(item.images)
     ? item.images.filter(Boolean)
     : [item.images, item.thumbnail].filter(Boolean)
@@ -60,7 +64,7 @@ export default function NewsCard({ item }) {
         if (m) {
           const src = images[Number(m[1]) - 1]
           if (!src) return null
-          const align = ALIGN_KEY[m[2]] || 'center'
+          const align = ALIGN_KEY[(m[2] || '').toLowerCase()] || ALIGN_KEY[m[2]] || 'center'
           return (
             <div className={`news-article-inline-img news-article-inline-img-${alignClass(align)}`} key={i}>
               <SafeImage src={src} alt="" fallback={<span />} />
@@ -86,7 +90,7 @@ export default function NewsCard({ item }) {
 
       {item.link && (
         <a className="news-article-link" href={item.link} target="_blank" rel="noreferrer">
-          관련 링크 →
+          {tr('관련 링크 →', 'Related link →')}
         </a>
       )}
     </article>

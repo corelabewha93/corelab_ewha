@@ -5,6 +5,7 @@ import { scrollToSection } from '../router/scrollToSection'
 import { useData } from '../hooks/useData'
 import CoreLogo from './CoreLogo'
 import CoreWordmark from './CoreWordmark'
+import { useLang } from '../i18n/LangContext'
 
 const NAV_ITEMS = [
   { to: '/?section=overview', label: 'About', about: true },
@@ -19,8 +20,34 @@ const NAV_ITEMS = [
  * 기본값은 false라서 실제 사이트(모든 페이지)는 지금과 완전히 똑같고,
  * 테스트 홈 화면(#/logo-preview)에서만 App.jsx가 true로 켭니다.
  */
+/** 오른쪽 위 KO · EN 전환 버튼 (지금 언어가 진하게, 밑줄 표시) */
+function LangToggle({ className = '' }) {
+  const { lang, setLang } = useLang()
+  return (
+    <div className={`lang-toggle ${className}`} role="group" aria-label="Language / 언어">
+      {[
+        ['ko', 'KO', '한국어로 보기'],
+        ['en', 'EN', 'View in English'],
+      ].map(([code, label, title]) => (
+        <button
+          key={code}
+          type="button"
+          className={`lang-btn${lang === code ? ' on' : ''}`}
+          aria-pressed={lang === code}
+          lang={code}
+          title={title}
+          onClick={() => setLang(code)}
+        >
+          {label}
+        </button>
+      ))}
+    </div>
+  )
+}
+
 export default function Header({ brandLogo = false }) {
   const [open, setOpen] = useState(false)
+  const { tr } = useLang()
   const { data } = useData('site.json')
   const headerRef = useRef(null)
   const { path } = useHashRoute()
@@ -86,7 +113,7 @@ export default function Header({ brandLogo = false }) {
     <header className="site-header" ref={headerRef}>
       <div className="container">
         <Link to="/" className="brand" onClick={onLogoClick} active={false}>
-          <span className="brand-dept">이화여자대학교 교육공학과</span>
+          <span className="brand-dept">{tr('이화여자대학교 교육공학과', 'Ewha Womans University · Educational Technology')}</span>
           {brandLogo ? (
             <span className="brand-name brand-name-logo">
               <CoreLogo tone="dark" className="brand-logo-mark" title="CoRe" />
@@ -107,11 +134,13 @@ export default function Header({ brandLogo = false }) {
           )}
         </Link>
 
+        <LangToggle className="lang-toggle-mobile" />
+
         <button
           type="button"
           className={`nav-toggle${open ? ' open' : ''}`}
           onClick={() => setOpen((v) => !v)}
-          aria-label={open ? '메뉴 닫기' : '메뉴 열기'}
+          aria-label={open ? tr('메뉴 닫기', 'Close menu') : tr('메뉴 열기', 'Open menu')}
           aria-expanded={open}
         >
           <span />
@@ -130,6 +159,7 @@ export default function Header({ brandLogo = false }) {
               {item.label}
             </Link>
           ))}
+          <LangToggle className="lang-toggle-desktop" />
         </nav>
       </div>
     </header>

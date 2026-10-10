@@ -4,6 +4,7 @@ import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 import { navigate, withBase } from '../router/useHashRoute'
 import { useAdminAuth } from '../admin/AdminAuthContext'
+import { useLang } from '../i18n/LangContext'
 
 /** 사진을 넣지 않은(또는 사진을 못 불러온) 사람에게 자동으로 보여줄 이화 심벌 기본 사진 */
 const DEFAULT_PHOTO = 'images/people/default-ewha.jpg'
@@ -26,7 +27,9 @@ function splitHistoryLine(line) {
 }
 
 /** 교수 프로필: 사진 + 이름 + 연락처 + 소개 + 연구관심분야를 한 화면에 바로 보여줍니다. */
-function FacultyProfile({ person, onEdit, reorder }) {
+function FacultyProfile({ person: raw, onEdit, reorder }) {
+  const { tr, loc } = useLang()
+  const person = loc(raw, 'people')
   const contactLines = [person.email, person.office, person.phone].filter(Boolean)
   const interests = Array.isArray(person.researchInterests) ? person.researchInterests : []
   const education = Array.isArray(person.education) ? person.education : []
@@ -36,7 +39,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
 
   return (
     <div className="faculty-profile admin-item">
-      {!reorder && <EditButton onClick={() => onEdit?.(person)} label={`${person.name} 정보 수정`} />}
+      {!reorder && <EditButton onClick={() => onEdit?.(raw)} label={`${raw.name} 정보 수정`} />}
 
       <div className="faculty-photo">
         <SafeImage
@@ -68,7 +71,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
             )}
             {interests.length > 0 && (
               <div className="faculty-interests">
-                <span className="faculty-meta-label">연구관심분야</span>
+                <span className="faculty-meta-label">{tr('연구관심분야', 'Research Interests')}</span>
                 <div>
                   {interests.map((tag) => (
                     <span key={tag} className="tag">
@@ -93,7 +96,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
           <div className="faculty-history-table">
             {education.length > 0 && (
               <div className="faculty-history-col">
-                <h4>학력</h4>
+                <h4>{tr('학력', 'Education')}</h4>
                 <ul>
                   {education.map((line, i) => (
                     <li key={i}>{line}</li>
@@ -103,7 +106,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
             )}
             {awards.length > 0 && (
               <div className="faculty-history-col">
-                <h4>교내수상이력</h4>
+                <h4>{tr('교내수상이력', 'Awards')}</h4>
                 <ul>
                   {awards.map((line, i) => {
                     const { label, date } = splitHistoryLine(line)
@@ -119,7 +122,7 @@ function FacultyProfile({ person, onEdit, reorder }) {
             )}
             {career.length > 0 && (
               <div className="faculty-history-col">
-                <h4>경력</h4>
+                <h4>{tr('경력', 'Career')}</h4>
                 <ul>
                   {career.map((line, i) => {
                     const { label, date } = splitHistoryLine(line)
@@ -156,8 +159,9 @@ function FacultyProfile({ person, onEdit, reorder }) {
  * person.hideResearch가 'hidden'이면 방문자에게는 아예 보이지 않고,
  * 관리자에게는 흐리게 보이면서 "표시하기" 버튼이 붙습니다.
  */
-function ResearchLinkRow({ person, onToggleResearch }) {
+function ResearchLinkRow({ person, displayName, onToggleResearch }) {
   const { isAdmin } = useAdminAuth()
+  const { tr } = useLang()
   const hidden = Boolean(person.hideResearch)
   if (hidden && !isAdmin) return null
 
@@ -172,7 +176,7 @@ function ResearchLinkRow({ person, onToggleResearch }) {
           navigate(researchLinkFor(person.name))
         }}
       >
-        {person.name}의 연구 실적 보기 →
+        {tr(`${person.name}의 연구 실적 보기 →`, `Publications by ${displayName || person.name} →`)}
       </a>
       {isAdmin && onToggleResearch && (
         <span className="person-pub-admin">
@@ -192,7 +196,8 @@ function ResearchLinkRow({ person, onToggleResearch }) {
 }
 
 /** 사진 + 이름을 누르면 뜨는 팝업. 사진과 함께 전체 이력을 한 화면에 보여줍니다. */
-function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) {
+function PersonModal({ person, view, expandLines, links, onClose, onToggleResearch }) {
+  const { en, tr } = useLang()
   useEffect(() => {
     const onKey = (e) => e.key === 'Escape' && onClose()
     window.addEventListener('keydown', onKey)
@@ -228,7 +233,7 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
   return (
     <div className="person-modal-overlay" onClick={onClose}>
       <div className="person-modal-card" onClick={(e) => e.stopPropagation()}>
-        <button type="button" className="person-modal-close" onClick={onClose} aria-label="닫기">
+        <button type="button" className="person-modal-close" onClick={onClose} aria-label={tr('닫기', 'Close')}>
           ×
         </button>
 
@@ -243,8 +248,8 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
           />
         </div>
 
-          <h2 className="person-modal-name">{person.name}</h2>
-          {person.nameEn && <p className="person-modal-name-en">{person.nameEn}</p>}
+          <h2 className="person-modal-name">{view.name}</h2>
+          {!en && person.nameEn && <p className="person-modal-name-en">{person.nameEn}</p>}
         </div>
 
         <div className="person-modal-scroll">
@@ -269,7 +274,7 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
                 </a>
               </li>
             ))}
-            <ResearchLinkRow person={person} onToggleResearch={onToggleResearch} />
+            <ResearchLinkRow person={person} displayName={view.name} onToggleResearch={onToggleResearch} />
           </ul>
         </div>
       </div>
@@ -285,19 +290,22 @@ function PersonModal({ person, expandLines, links, onClose, onToggleResearch }) 
 export default function PersonCard({ person, category, onEdit, onToggleResearch, reorder }) {
   const [open, setOpen] = useState(false)
   const { isAdmin } = useAdminAuth()
+  const { loc } = useLang()
+  // 화면에 보여줄 값(영어 화면이면 영문 칸). 편집·연구 실적 검색에는 원래 값(person)을 씁니다.
+  const view = loc(person, 'people')
 
   if (category === 'faculty') {
     return <FacultyProfile person={person} onEdit={onEdit} reorder={reorder} />
   }
 
   const isAlumni = category === 'alumni'
-  const detail = Array.isArray(person.detail) ? person.detail : []
+  const detail = Array.isArray(view.detail) ? view.detail : []
   const links = Array.isArray(person.links) ? person.links.filter((l) => l.url) : []
 
   // 팝업에 순서대로 표시: 한 줄 소개(굵게) → (Alumni만) 현재 직장 → #소제목으로 구분한 자유 이력
   const expandLines = []
-  if (person.bio) expandLines.push({ text: person.bio, kind: 'intro' })
-  if (isAlumni && person.affiliation) expandLines.push({ text: person.affiliation, kind: 'strong' })
+  if (view.bio) expandLines.push({ text: view.bio, kind: 'intro' })
+  if (isAlumni && view.affiliation) expandLines.push({ text: view.affiliation, kind: 'strong' })
   detail.forEach((line) => {
     const trimmed = line.trim()
     if (trimmed.startsWith('#')) {
@@ -331,16 +339,16 @@ export default function PersonCard({ person, category, onEdit, onToggleResearch,
         <div className="person-photo">
           <SafeImage
             src={person.photo}
-            alt={person.name}
+            alt={view.name}
             fallbackSrc={DEFAULT_PHOTO}
-            fallback={<span>{initials(person.name)}</span>}
+            fallback={<span>{initials(view.name)}</span>}
             imgStyle={cropToStyle(normalizeCrop(person))}
           />
         </div>
       </button>
 
       <button type="button" className="person-name-btn" onClick={openModal} disabled={!expandable || Boolean(reorder)}>
-        <span className="person-name">{person.name}</span>
+        <span className="person-name">{view.name}</span>
       </button>
 
       {isAdmin && person.hideResearch && !reorder && (
@@ -352,6 +360,7 @@ export default function PersonCard({ person, category, onEdit, onToggleResearch,
       {expandable && open && !reorder && (
         <PersonModal
           person={person}
+          view={view}
           expandLines={expandLines}
           links={links}
           onClose={() => setOpen(false)}
