@@ -14,6 +14,7 @@ import EditModal from '../components/admin/EditModal'
 import { AdminFab } from '../components/admin/AdminControls'
 import { useDocumentMeta } from '../router/useDocumentMeta'
 import { useNoZoom } from '../hooks/useNoZoom'
+import { useLang, fillSeed } from '../i18n/LangContext'
 
 const TABS = [
   { key: 'faculty', label: 'Faculty' },
@@ -67,7 +68,8 @@ export default function People() {
   const [editing, setEditing] = useState(null) // { person|null, category }
   const [draft, setDraft] = useState(null) // { tab, ids } 순서 바꾸기 중일 때
 
-  useDocumentMeta('People', 'CoRe Lab의 교수진, 대학원생, 졸업생을 소개합니다.')
+  const { tr, seedOf } = useLang()
+  useDocumentMeta('People', tr('CoRe Lab의 교수진, 대학원생, 졸업생을 소개합니다.', 'Faculty, graduate students, and alumni of CoRe Lab.'))
   useNoZoom() // 사진 확대(줌인) 차단 — Lab Life와 동일
   const [savingOrder, setSavingOrder] = useState(false)
 
@@ -176,7 +178,8 @@ export default function People() {
   const renderContent = () => {
     if (list.length === 0) {
       const label = { faculty: '교수진', students: '재학생', alumni: '졸업생' }[tab]
-      return <p className="empty-state">등록된 {label}이 없습니다.</p>
+      const labelEn = { faculty: 'faculty members', students: 'students', alumni: 'alumni' }[tab]
+      return <p className="empty-state">{tr(`등록된 ${label}이 없습니다.`, `No ${labelEn} yet.`)}</p>
     }
     if (tab === 'students' || tab === 'alumni') {
       return DEGREE_GROUPS.map((g) => {
@@ -223,7 +226,7 @@ export default function People() {
         />
 
         <div className="tabs-content">
-          {loading && !data && <div>불러오는 중...</div>}
+          {loading && !data && <div>{tr('불러오는 중...', 'Loading...')}</div>}
           {error && <div className="error-state">{error}</div>}
           {ordering && (
             <p className="reorder-banner">◀ ▶ 버튼으로 순서를 바꾼 뒤, 오른쪽 아래 “순서 저장”을 눌러주세요.</p>
@@ -261,7 +264,7 @@ export default function People() {
           title={editing.person ? '구성원 정보 수정' : '새 구성원 추가'}
           fields={personFields}
           initial={{
-            ...(editing.person ?? {}),
+            ...fillSeed(editing.person, seedOf(editing.person, 'people')),
             degree: editing.person ? (studentGroup(editing.person)) : 'MA',
             category: editing.category,
             photoCrop: normalizeCrop(editing.person),

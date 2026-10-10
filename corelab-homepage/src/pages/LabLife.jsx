@@ -11,6 +11,7 @@ import SafeImage, { resolveImageSrc } from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
 import { useDocumentMeta } from '../router/useDocumentMeta'
+import { useLang, fillSeed } from '../i18n/LangContext'
 import { useNoZoom } from '../hooks/useNoZoom'
 
 // 사진 배열과, 각 사진에 저장된 위치·확대(imageCrops)를 짝지어 돌려줍니다.
@@ -36,8 +37,10 @@ export default function LabLife() {
   const [photoIdx, setPhotoIdx] = useState(0)
   const [editing, setEditing] = useState(null) // { item|null }
   const [page, setPageState] = useState(1)
+  const { tr, loc, seedOf } = useLang()
+  const view = (it) => loc(it, 'lablife') ?? {}
 
-  useDocumentMeta('Lab Life', 'CoRe Lab 구성원들의 일상과 활동 모습입니다.')
+  useDocumentMeta('Lab Life', tr('CoRe Lab 구성원들의 일상과 활동 모습입니다.', 'Everyday moments and activities of CoRe Lab members.'))
 
   // 사진을 손가락으로 벌리거나 트랙패드로 확대하지 못하게 막습니다 (이 페이지에서만).
   useNoZoom()
@@ -76,7 +79,7 @@ export default function LabLife() {
     })
   }, [selected, isAdmin])
 
-  if (loading && !data) return <div className="page container">불러오는 중...</div>
+  if (loading && !data) return <div className="page container">{tr('불러오는 중...', 'Loading...')}</div>
   if (error) return <div className="page container error-state">{error}</div>
 
   const items = [...(data ?? [])].sort((a, b) => (b.date ?? '').localeCompare(a.date ?? ''))
@@ -105,22 +108,23 @@ export default function LabLife() {
       <PageTitle>Lab Life</PageTitle>
 
       {items.length === 0 ? (
-        <p className="empty-state">등록된 사진이 없습니다.</p>
+        <p className="empty-state">{tr('등록된 사진이 없습니다.', 'No photos yet.')}</p>
       ) : (
         <div className="gallery-grid">
           {pageItems.map((item) => {
             const photos = photosOf(item)
+            const v = view(item)
             return (
               <div key={item.id} className="admin-item gallery-card">
                 <EditButton onClick={() => setEditing({ item })} />
                 <button
                   className="gallery-item"
                   onClick={() => openLightbox(item)}
-                  aria-label={item.caption || '사진 크게 보기'}
+                  aria-label={v.caption || tr('사진 크게 보기', 'View photo')}
                 >
                   <SafeImage
                     src={photos[0]?.src}
-                    alt={item.caption ?? ''}
+                    alt={v.caption ?? ''}
                     fallback={<span />}
                     imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[0]?.crop }))}
                   />
@@ -134,7 +138,7 @@ export default function LabLife() {
                     </span>
                   )}
                 </button>
-                {item.caption && <p className="gallery-item-caption">{item.caption}</p>}
+                {v.caption && <p className="gallery-item-caption">{v.caption}</p>}
               </div>
             )
           })}
@@ -150,14 +154,14 @@ export default function LabLife() {
           return (
             <div className="lightbox-overlay" onClick={closeLightbox}>
               <div className="lightbox-card" onClick={(e) => e.stopPropagation()}>
-                <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label="닫기">
+                <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label={tr('닫기', 'Close')}>
                   ×
                 </button>
 
                 <div className="lightbox-photo-frame">
                   <SafeImage
                     src={photos[photoIdx]?.src}
-                    alt={selected.caption ?? ''}
+                    alt={view(selected).caption ?? ''}
                     fallback={<span />}
                     loading="eager"
                     imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
@@ -168,7 +172,7 @@ export default function LabLife() {
                         type="button"
                         className="lightbox-nav lightbox-nav-prev"
                         onClick={() => setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)}
-                        aria-label="이전 사진"
+                        aria-label={tr('이전 사진', 'Previous photo')}
                       >
                         <span className="lightbox-nav-icon">‹</span>
                       </button>
@@ -176,7 +180,7 @@ export default function LabLife() {
                         type="button"
                         className="lightbox-nav lightbox-nav-next"
                         onClick={() => setPhotoIdx((i) => (i + 1) % photos.length)}
-                        aria-label="다음 사진"
+                        aria-label={tr('다음 사진', 'Next photo')}
                       >
                         <span className="lightbox-nav-icon">›</span>
                       </button>
@@ -195,16 +199,16 @@ export default function LabLife() {
                         type="button"
                         className={`lightbox-dot${i === photoIdx ? ' active' : ''}`}
                         onClick={() => setPhotoIdx(i)}
-                        aria-label={`${i + 1}번째 사진`}
+                        aria-label={tr(`${i + 1}번째 사진`, `Photo ${i + 1}`)}
                       />
                     ))}
                   </div>
                 )}
 
-                {(selected.caption || selected.body) && (
+                {(view(selected).caption || view(selected).body) && (
                   <div className="lightbox-text">
-                    {selected.caption && <p className="lightbox-caption">{selected.caption}</p>}
-                    {selected.body && <p className="lightbox-body">{selected.body}</p>}
+                    {view(selected).caption && <p className="lightbox-caption">{view(selected).caption}</p>}
+                    {view(selected).body && <p className="lightbox-body">{view(selected).body}</p>}
                   </div>
                 )}
               </div>
@@ -222,7 +226,7 @@ export default function LabLife() {
         <EditModal
           title={editing.item ? '게시물 수정' : '사진 추가'}
           fields={lablifeFields()}
-          initial={editing.item ?? { date: new Date().toISOString().slice(0, 7) }}
+          initial={editing.item ? fillSeed(editing.item, seedOf(editing.item, 'lablife')) : { date: new Date().toISOString().slice(0, 7) }}
           uploadName={(v) => `lablife-${v.date || Date.now()}`}
           onSave={handleSave}
           onDelete={editing.item ? handleDelete : undefined}

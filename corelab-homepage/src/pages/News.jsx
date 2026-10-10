@@ -13,15 +13,16 @@ import SafeImage from '../components/SafeImage'
 import EditModal from '../components/admin/EditModal'
 import { AdminFab, EditButton } from '../components/admin/AdminControls'
 import { useDocumentMeta } from '../router/useDocumentMeta'
+import { useLang, fillSeed } from '../i18n/LangContext'
 
 // 본문 중간 사진 표시([사진2] 등)는 목록 미리보기 요약 글에서 제외합니다.
-const IMAGE_MARKER = /^\[\s*사진\s*(\d+)(?:\s*:\s*(왼쪽|가운데|오른쪽))?\s*\]$/
+const IMAGE_MARKER = /^\[\s*(?:사진|photo|image)\s*(\d+)(?:\s*:\s*(왼쪽|가운데|오른쪽|left|center|right))?\s*\]$/i
 
-function excerptOf(item) {
+function excerptOf(item, max = 70) {
   const body = Array.isArray(item.body) ? item.body : item.summary ? [item.summary] : []
   const text = body.find((p) => !p.trim().match(IMAGE_MARKER))
   if (!text) return ''
-  return text.length > 70 ? `${text.slice(0, 70)}…` : text
+  return text.length > max ? `${text.slice(0, max).replace(/\s+\S*$/, '')}…` : text
 }
 
 const PAGE_SIZE = 10
@@ -36,6 +37,7 @@ export default function News() {
   const [draft, setDraft] = useState(null) // 순서 바꾸기 중일 때: 소식 id 배열
   const [savingOrder, setSavingOrder] = useState(false)
   const [page, setPageState] = useState(lastPage)
+  const { en, tr, loc, seedOf } = useLang()
 
   // 글을 열면 제목이 보이도록 맨 위로, 목록으로 돌아오면 누르기 전 위치로 되돌립니다.
   // (주소만 바뀌는 이동이라 App의 "페이지 이동 시 맨 위로"가 작동하지 않았습니다.)
@@ -52,7 +54,7 @@ export default function News() {
     [],
   )
 
-  useDocumentMeta('News', '이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.')
+  useDocumentMeta('News', tr('이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.', 'News and activities from CoRe Lab, Ewha Womans University.'))
 
   const setPage = (n) => {
     lastPage = n
@@ -60,7 +62,7 @@ export default function News() {
     window.scrollTo({ top: 0 })
   }
 
-  if (loading && !data) return <div className="page container">불러오는 중...</div>
+  if (loading && !data) return <div className="page container">{tr('불러오는 중...', 'Loading...')}</div>
   if (error) return <div className="page container error-state">{error}</div>
 
   // hidden: 'hidden'인 소식은 방문자에게 보이지 않습니다 (관리자에게는 흐리게 보임).
@@ -152,7 +154,7 @@ export default function News() {
     return (
       <div className="page container news-detail-page">
         <button type="button" className="news-back-link" onClick={() => navigate('/news')}>
-          ← News 목록으로
+          {tr('← News 목록으로', '← Back to News')}
         </button>
         <div className={`admin-item news-detail${openItem.hidden ? ' news-hidden' : ''}`}>
           <EditButton onClick={() => setEditing({ item: openItem })} label={`${openItem.title} 수정`} />
@@ -165,7 +167,7 @@ export default function News() {
           <EditModal
             title="소식 수정"
             fields={newsFields}
-            initial={editing.item}
+            initial={fillSeed(editing.item, seedOf(editing.item, 'news'))}
             uploadName={() => `news-${Date.now()}`}
             onSave={handleSave}
             onDelete={handleDelete}
@@ -184,12 +186,13 @@ export default function News() {
         <p className="reorder-banner">◀ ▶ 버튼으로 순서를 바꾼 뒤, 오른쪽 아래 “순서 저장”을 눌러주세요. (앞쪽일수록 위에 보입니다)</p>
       )}
       {items.length === 0 ? (
-        <p className="empty-state">등록된 소식이 없습니다.</p>
+        <p className="empty-state">{tr('등록된 소식이 없습니다.', 'No news yet.')}</p>
       ) : (
         <div className="news-list-grid">
           {pageItems.map((item, idx) => {
             const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
-            const excerpt = excerptOf(item)
+            const it = loc(item, 'news')
+            const excerpt = excerptOf(it, en ? 120 : 70)
             return (
               <div key={item.id} className={`admin-item${item.hidden ? ' news-hidden' : ''}`}>
                 {!ordering && <EditButton onClick={() => setEditing({ item })} />}
@@ -208,7 +211,7 @@ export default function News() {
                   </div>
                   <div className="news-list-body">
                     {item.hidden && <span className="news-hidden-chip">숨김 · 관리자에게만 보임</span>}
-                    <h3 className="news-list-title">{item.title}</h3>
+                    <h3 className="news-list-title">{it.title}</h3>
                     {excerpt && <p className="news-list-excerpt">{excerpt}</p>}
                   </div>
                 </button>
@@ -267,7 +270,7 @@ export default function News() {
         <EditModal
           title={editing.item ? '소식 수정' : '새 소식 추가'}
           fields={newsFields}
-          initial={editing.item ?? {}}
+          initial={editing.item ? fillSeed(editing.item, seedOf(editing.item, 'news')) : {}}
           uploadName={() => `news-${Date.now()}`}
           onSave={handleSave}
           onDelete={editing.item ? handleDelete : undefined}

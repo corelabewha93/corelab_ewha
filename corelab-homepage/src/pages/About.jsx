@@ -12,9 +12,11 @@ import { scrollToSection } from '../router/scrollToSection'
 import HeroIntro from '../components/HeroIntro'
 import { softHyphen } from '../utils/softHyphen'
 import { useSmartJustify } from '../hooks/useSmartJustify'
+import { useLang, fillSeed } from '../i18n/LangContext'
 
 function NewsPreview() {
   const { data } = useData('news.json')
+  const { tr, loc } = useLang()
   // 숨긴 소식은 홈 화면 미리보기에 넣지 않습니다.
   const items = (data ?? []).filter((i) => !i.hidden).slice(0, 4)
 
@@ -25,18 +27,19 @@ function NewsPreview() {
       <div className="news-preview-head">
         <h2 className="section-title">Latest News</h2>
         <Link to="/news" className="news-preview-more">
-          News 더보기 →
+          {tr('News 더보기 →', 'More news →')}
         </Link>
       </div>
       <div className="news-preview-grid">
         {items.map((item) => {
           const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
+          const it = loc(item, 'news')
           return (
             <Link key={item.id} to={`/news?id=${item.id}`} className="news-preview-card">
               <div className="news-preview-thumb">
                 <SafeImage src={thumb} alt="" fallback={<span />} />
               </div>
-              <h3 className="title">{item.title}</h3>
+              <h3 className="title">{it.title}</h3>
             </Link>
           )
         })}
@@ -50,9 +53,10 @@ export default function About() {
   const { token } = useAdminAuth()
   const [editing, setEditing] = useState(false)
   const { query } = useHashRoute()
+  const { en, tr, loc, seedOf } = useLang()
   const ready = !(loading && !data)
   const overviewRef = useRef(null)
-  useSmartJustify(overviewRef, ':scope > p:not(.lab-motto-kr):not(.lab-motto-en)', [ready, data?.overview])
+  useSmartJustify(overviewRef, ':scope > p:not(.lab-motto-kr):not(.lab-motto-en)', [ready, data?.overview, en])
 
   // 다른 페이지에서 About을 눌러 들어오면(/?section=overview) Lab Overview로 내려갑니다.
   // (페이지가 바뀔 때 App이 맨 위로 올리는 동작이 끝난 뒤에 이동하도록 잠깐 기다립니다.)
@@ -62,10 +66,11 @@ export default function About() {
     return () => clearTimeout(t)
   }, [ready, query.section])
 
-  if (loading && !data) return <div className="page container">불러오는 중...</div>
+  if (loading && !data) return <div className="page container">{tr('불러오는 중...', 'Loading...')}</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { labName = '', labTagline = '', mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } = data ?? {}
+  const { labName = '', labTagline = '', mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } =
+    loc(data ?? {}, 'site')
 
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
@@ -85,15 +90,21 @@ export default function About() {
         <section className="section" id="overview" ref={overviewRef}>
           <h2 className="section-title">Lab Overview</h2>
 
-          {(mottoKr || mottoEn) && (
-            <div className="lab-motto">
-              {mottoKr && <p className="lab-motto-kr">{mottoKr}</p>}
-              {mottoEn && <p className="lab-motto-en">{mottoEn}</p>}
-            </div>
-          )}
+          {(mottoKr || mottoEn) &&
+            (en ? (
+              // 영어 화면: 영문 모토를 큰 글씨로 한 번만
+              <div className="lab-motto">
+                <p className="lab-motto-kr lab-motto-en-main">{mottoEn || mottoKr}</p>
+              </div>
+            ) : (
+              <div className="lab-motto">
+                {mottoKr && <p className="lab-motto-kr">{mottoKr}</p>}
+                {mottoEn && <p className="lab-motto-en">{mottoEn}</p>}
+              </div>
+            ))}
 
           {overview.map((paragraph, i) => (
-            <p key={i}>{softHyphen(paragraph)}</p>
+            <p key={i}>{en ? paragraph : softHyphen(paragraph)}</p>
           ))}
 
           {researchAreas.length > 0 && (
@@ -114,7 +125,7 @@ export default function About() {
         <EditModal
           title="홈 소개 내용 수정"
           fields={siteIntroFields}
-          initial={data ?? {}}
+          initial={fillSeed(data, seedOf(data, 'site'))}
           onSave={handleSave}
           onClose={() => setEditing(false)}
         />
