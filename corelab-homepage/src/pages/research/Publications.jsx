@@ -3,6 +3,24 @@ import { EditButton } from '../../components/admin/AdminControls'
 import { getIndexes, INTERNATIONAL } from './journalIndex'
 import { normalizeName } from './authorMatch'
 
+// 처음에는 가장 최근 몇 해의 연구만 펼쳐 두고, 그 이전은 "이전 연구 더보기"로 엽니다.
+const RECENT_YEARS = 3
+
+function Chevron({ up = false }) {
+  return (
+    <svg className="pub-more-chev" viewBox="0 0 12 12" width="11" height="11" aria-hidden="true">
+      <path
+        d={up ? 'M2.5 7.5 6 4l3.5 3.5' : 'M2.5 4.5 6 8l3.5-3.5'}
+        fill="none"
+        stroke="currentColor"
+        strokeWidth="1.6"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+      />
+    </svg>
+  )
+}
+
 const FILTERS = [
   { key: 'all', label: 'All' },
   { key: 'journal', label: 'Journal' },
@@ -311,6 +329,8 @@ export default function Publications({
 }) {
   const [filter, setFilter] = useState('all')
   const [query, setQuery] = useState(initialQuery)
+  const [showAll, setShowAll] = useState(false)
+  const moreRef = useRef(null)
   const terms = useMemo(() => toTerms(query), [query])
 
   // 검색어가 주소에서 바뀌면 Research.jsx가 key를 바꿔 이 컴포넌트를 새로 그리므로
@@ -348,6 +368,32 @@ export default function Publications({
   )
 
   const byYear = useMemo(() => groupByYear(filtered), [filtered])
+
+  // 최근 RECENT_YEARS년(가장 최신 연도 기준)만 먼저 보여줍니다.
+  // 검색 중이거나, 개인 연구 실적 화면(embedded)이거나, 최근 연구가 하나도 없으면 전부 보여줍니다.
+  const latestYear = useMemo(
+    () => Math.max(...pubs.map((p) => Number(p.year)).filter(Number.isFinite)),
+    [pubs],
+  )
+  const isRecent = ([y]) => Number(y) > latestYear - RECENT_YEARS
+  const recentGroups = byYear.filter(isRecent)
+  const olderGroups = byYear.filter((g) => !isRecent(g))
+  const collapsible = !embedded && !terms.length && recentGroups.length > 0 && olderGroups.length > 0
+  const olderCount = olderGroups.reduce((n, [, list]) => n + list.length, 0)
+  const olderYears = olderGroups.map(([y]) => Number(y)).filter(Number.isFinite)
+  const olderRange = olderYears.length
+    ? `${Math.max(...olderYears)}–${Math.min(...olderYears)}`
+    : ''
+
+  const collapse = () => {
+    setShowAll(false)
+    requestAnimationFrame(() => {
+      const el = moreRef.current
+      if (!el) return
+      const y = el.getBoundingClientRect().top + window.scrollY - window.innerHeight * 0.45
+      window.scrollTo({ top: Math.max(0, y), behavior: 'smooth' })
+    })
+  }
 
   if (pubs.length === 0) return <p className="empty-state">등록된 논문이 없습니다.</p>
 
@@ -418,7 +464,37 @@ export default function Publications({
         </p>
       )}
 
-      <YearGroups groups={byYear} onEdit={onEdit} terms={terms} focus={focus} authorTool={authorTool} />
+      {!collapsible ? (
+        <YearGroups groups={byYear} onEdit={onEdit} terms={terms} focus={focus} authorTool={authorTool} />
+      ) : (
+        <>
+          <YearGroups groups={recentGroups} onEdit={onEdit} terms={terms} focus={focus} authorTool={authorTool} />
+          <div ref={moreRef} />
+          {showAll ? (
+            <>
+              <div className="pub-older">
+                <YearGroups groups={olderGroups} onEdit={onEdit} terms={terms} focus={focus} authorTool={authorTool} />
+              </div>
+              <div className="pub-more">
+                <button type="button" className="pub-more-btn is-less" onClick={collapse} aria-expanded="true">
+                  최근 연구만 보기
+                  <Chevron up />
+                </button>
+              </div>
+            </>
+          ) : (
+            <div className="pub-more">
+              <button type="button" className="pub-more-btn" onClick={() => setShowAll(true)} aria-expanded="false">
+                이전 연구 더보기
+                <span className="pub-more-meta">
+                  {olderRange} · {olderCount}편
+                </span>
+                <Chevron />
+              </button>
+            </div>
+          )}
+        </>
+      )}
     </div>
   )
 }
