@@ -1,4 +1,5 @@
-import { existsSync, readFileSync } from 'node:fs'
+import { existsSync, mkdirSync, readFileSync, writeFileSync } from 'node:fs'
+import { join, resolve } from 'node:path'
 import { defineConfig } from 'vite'
 import react from '@vitejs/plugin-react'
 
@@ -101,8 +102,116 @@ Sitemap: ${siteUrl}sitemap.xml
   }
 }
 
+/**
+ * 링크 미리보기(카카오톡·문자·슬랙 등)용 페이지를 메뉴마다, 소식마다 따로 만들어 둡니다.
+ *
+ * 카카오톡은 링크를 받으면 그 주소의 HTML만 읽고(화면 코드를 실행하지 않음) og:image·og:title을 봅니다.
+ * 그런데 이 사이트는 한 장짜리 앱이라 원래는 모든 주소가 같은 index.html(홈 미리보기)이거나,
+ * /news처럼 직접 들어오면 404 페이지를 거쳐 열려서 미리보기가 아예 안 떴습니다.
+ *
+ * 그래서 빌드할 때 index.html을 복사해 미리보기 정보만 바꾼 파일을 만듭니다.
+ *   dist/news/index.html, dist/research/index.html, dist/people/index.html, dist/lablife/index.html
+ *   dist/news/<소식id>/index.html  ← 소식 제목 + 그 소식의 첫 사진
+ * 화면은 index.html과 똑같이 열리므로 방문자가 보는 것은 달라지지 않습니다.
+ * 관리자 화면에서 소식을 올리면 자동 배포 때 그 소식의 페이지도 새로 만들어집니다. (숨긴 소식은 만들지 않음)
+ */
+const PREVIEW_PAGES = [
+  { path: 'news', title: 'News | CoRe Lab', desc: '이화여자대학교 교육공학과 CoRe Lab의 연구 성과 · 수상 · 활동 소식', image: 'images/og/og-news.png', alt: 'CoRe Lab News — 연구실 소식' },
+  { path: 'research', title: 'Research | CoRe Lab', desc: 'CoRe Lab의 논문 · 학위논문 · 연구과제 · 특허 — 협력학습(CSCL), 학습분석학, 협력적 문제해결', image: 'images/og/og-research.png', alt: 'CoRe Lab Research — 연구' },
+  { path: 'people', title: 'People | CoRe Lab', desc: 'CoRe Lab의 지도교수 · 재학생 · 졸업생을 소개합니다.', image: 'images/og/og-people.png', alt: 'CoRe Lab People — 구성원' },
+  { path: 'lablife', title: 'Lab Life | CoRe Lab', desc: '함께 공부하고 함께 나눈 CoRe Lab의 시간들', image: 'images/og/og-lablife.png', alt: 'CoRe Lab Lab Life — 연구실 생활' },
+]
+
+const escAttr = (v) => String(v ?? '').replace(/&/g, '&amp;').replace(/"/g, '&quot;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+const clip = (t, n) => {
+  const s = String(t ?? '').replace(/\s+/g, ' ').trim()
+  return s.length > n ? `${s.slice(0, n - 1).trim()}…` : s
+}
+
+function setMetaTag(html, attr, key, value) {
+  const re = new RegExp(`<meta\\s+${attr}="${key.replace(/[:.]/g, '\\$&')}"\\s+content="[^"]*"\\s*/?>`)
+  return html.replace(re, () => `<meta ${attr}="${key}" content="${escAttr(value)}" />`)
+}
+function dropMetaTag(html, attr, key) {
+  const re = new RegExp(`\\s*<meta\\s+${attr}="${key.replace(/[:.]/g, '\\$&')}"\\s+content="[^"]*"\\s*/?>`)
+  return html.replace(re, '')
+}
+
+function previewHtml(html, siteUrl, pg) {
+  const url = `${siteUrl}${pg.path}`
+  let out = html.replace(/<title>[\s\S]*?<\/title>/, () => `<title>${escAttr(pg.title)}</title>`)
+  out = out.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/, () => `<link rel="canonical" href="${escAttr(url)}" />`)
+  out = setMetaTag(out, 'name', 'description', pg.desc)
+  out = setMetaTag(out, 'property', 'og:type', pg.type ?? 'website')
+  out = setMetaTag(out, 'property', 'og:url', url)
+  out = setMetaTag(out, 'property', 'og:title', pg.title)
+  out = setMetaTag(out, 'property', 'og:description', pg.desc)
+  out = setMetaTag(out, 'property', 'og:image', pg.imageUrl)
+  out = setMetaTag(out, 'property', 'og:image:alt', pg.alt ?? pg.title)
+  if (pg.photo) {
+    // 소식 사진은 크기가 제각각이라 가로·세로 크기 표시는 빼 둡니다 (카카오톡이 사진을 직접 재서 맞춥니다).
+    out = dropMetaTag(out, 'property', 'og:image:width')
+    out = dropMetaTag(out, 'property', 'og:image:height')
+  }
+  out = setMetaTag(out, 'name', 'twitter:title', pg.title)
+  out = setMetaTag(out, 'name', 'twitter:description', pg.desc)
+  out = setMetaTag(out, 'name', 'twitter:image', pg.imageUrl)
+  return out
+}
+
+function linkPreviewPagesPlugin() {
+  let base = '/'
+  let outDir = 'dist'
+  let root = process.cwd()
+  return {
+    name: 'corelab-link-preview-pages',
+    apply: 'build',
+    configResolved(config) {
+      base = config.base
+      root = config.root
+      outDir = resolve(config.root, config.build.outDir)
+    },
+    closeBundle() {
+      const indexPath = join(outDir, 'index.html')
+      if (!existsSync(indexPath)) return
+      const html = readFileSync(indexPath, 'utf8')
+      const siteUrl = resolveSiteUrl(base)
+      const abs = (p) => (/^https?:\/\//.test(p) ? p : `${siteUrl}${encodeURI(String(p).replace(/^\/+/, ''))}`)
+      const pages = PREVIEW_PAGES.map((pg) => ({ ...pg, imageUrl: `${abs(pg.image)}?v=${BUILD_ID}` }))
+
+      let news = []
+      try {
+        news = JSON.parse(readFileSync(join(root, 'public/data/news.json'), 'utf8'))
+      } catch {
+        news = []
+      }
+      ;(Array.isArray(news) ? news : []).forEach((n) => {
+        // 숨긴 소식, 주소로 쓸 수 없는 id는 건너뜁니다 (그런 소식도 사이트에서는 그대로 열립니다).
+        if (!n || n.hidden || !/^[A-Za-z0-9._-]+$/.test(n.id ?? '') || n.id.startsWith('.')) return
+        const photo = (Array.isArray(n.images) && n.images.find(Boolean)) || n.thumbnail || n.image || ''
+        const firstLine = (Array.isArray(n.body) ? n.body : [n.body]).find((l) => l && !/^\s*\[/.test(l)) ?? ''
+        pages.push({
+          path: `news/${n.id}`,
+          type: 'article',
+          title: `${clip(n.title, 90)} | CoRe Lab`,
+          desc: clip(n.subtitle || n.summary || firstLine || 'CoRe Lab 소식', 120),
+          imageUrl: photo ? abs(photo) : `${abs('images/og/og-news.png')}?v=${BUILD_ID}`,
+          photo: Boolean(photo),
+          alt: clip(n.title, 90),
+        })
+      })
+
+      pages.forEach((pg) => {
+        const dir = join(outDir, pg.path)
+        mkdirSync(dir, { recursive: true })
+        writeFileSync(join(dir, 'index.html'), previewHtml(html, siteUrl, pg))
+      })
+    },
+  }
+}
+
 export default defineConfig({
-  plugins: [react(), siteUrlPlugin(), seoFilesPlugin()],
+  plugins: [react(), siteUrlPlugin(), seoFilesPlugin(), linkPreviewPagesPlugin()],
   define: { __BUILD_ID__: JSON.stringify(BUILD_ID) },
   base: process.env.VITE_BASE ?? `/${REPO_NAME}/`,
 })
