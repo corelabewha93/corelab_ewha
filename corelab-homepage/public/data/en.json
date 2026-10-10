@@ -1,0 +1,684 @@
+{
+  "_about": "영어 화면(오른쪽 위 EN)용 초벌 번역입니다. 관리자 편집창의 '영문' 칸에 미리 채워져 보이고, 편집창에서 고쳐 저장하면 각 데이터 파일에 저장된 값이 이 파일보다 우선합니다.",
+  "site": {
+    "universityEn": "Prof. Kyu Yon Lim's Lab, Department of Educational Technology, Ewha Womans University",
+    "overviewEn": [
+      "CoRe Lab (Collaborative Research Learning Lab) is the research group of Professor Kyu Yon Lim in the Department of Educational Technology, College of Education, Ewha Womans University. Guided by our motto, “Seeing How We Learn Together,” we capture, analyze, and visualize the cognitive and social interactions that unfold among learners during collaborative learning.",
+      "The participation, emotions, and self-regulation that arise in moments of joint problem solving are rarely visible on the surface, yet they shape the quality of learning. CoRe Lab explores the question “How do we learn together?” through learning analytics and human–AI collaboration, and designs dashboards and support systems that let learners and instructors see that process for themselves.",
+      "With continuous support from the National Research Foundation of Korea in both the humanities and social sciences and in science and engineering, we study collaborative learning analytics, learning experience design (LXD), and personalized learning support systems. Our work appears in domestic and international journals, conference presentations, and patents, and our graduate students build strong records every year through conference awards and selection for national research grants."
+    ]
+  },
+  "contact": {
+    "addressEn": "Room 563, Education Building B, Ewha Womans University, 52 Ewhayeodae-gil, Seodaemun-gu, Seoul 03760, Korea"
+  },
+  "news": {
+    "news-mue7umbwyms": {
+      "titleEn": "Prof. Kyu Yon Lim’s team secures two patents for problem-solving learning support technology",
+      "subtitleEn": "Breaking programming problem solving into 11 steps with sequential prompts",
+      "bodyEn": [
+        "A research team led by Professor Kyu Yon Lim (CoRe Lab), Department of Educational Technology, College of Education, Ewha Womans University, received decisions to grant two patents on technologies that support problem-solving learning on September 15, 2026.",
+        "The two patents are “Problem-solving learning apparatus based on prompts to aid learning and its operating method” and “Problem-solving learning apparatus based on a dashboard to aid learning and its operating method.”",
+        "The team focused on a gap left by existing learning support tools. Most tools supported only early stages such as understanding the problem or making a plan, and even those covering the whole process did not adequately support evaluation, reflection, and improvement after a solution had been produced.",
+        "Visualization tools, likewise, tended simply to display information about programming activity; few treated programming as a problem-solving process and helped learners check their own understanding, analysis, and evaluation of the problem.",
+        "The two patents fill this gap. While the prompt-based technology guides learners sequentially through the entire problem-solving process, the dashboard-based technology turns the data accumulated along the way back into information that learners can read.",
+        "The prompt-based technology divides programming problem solving into six steps of planning before coding, two steps of carrying out the coding, and three steps of reflecting after coding, and provides the cognitive and metacognitive prompts needed at each step. What learners write at one step carries over to the next, so the flow from planning to execution to reflection is built into the interface.",
+        "[사진2]",
+        "The dashboard-based technology visualizes, as a graph, the achievement level learners rate for themselves after each step, and adds explanations grouped into strengths and areas for improvement. Experts’ actual behavior distributions and the frequency of each type of error learners encountered are also presented, so learners can examine their problem-solving process from several angles.",
+        "[사진3]",
+        "The inventors are Professor Kyu Yon Lim, Dr. Hyejun Kim, Juwon Lee (Ph.D. candidate), Eunju Park (M.A.), and Haeun Park (M.A.). Both patents result from the mid-career research project “Designing an AI-based Personalized Learning Model and Online Platform for SW Education,” supported for three years from 2020 by the Ministry of Science and ICT and the National Research Foundation of Korea under the Basic Research Program in Science and Engineering."
+      ]
+    },
+    "2026-09-sample-news": {
+      "titleEn": "Ph.D. student Juwon Lee selected for the NRF Doctoral Student Research Grant",
+      "bodyEn": [
+        "Juwon Lee, a Ph.D. student in the Department of Educational Technology, College of Education, Ewha Womans University (advisor: Prof. Kyu Yon Lim), has been selected for the National Research Foundation of Korea (NRF) 2026 Doctoral Student Research Grant in the Humanities and Social Sciences.",
+        "The program, run by the NRF to support stable research activity and strengthen the research capacity of doctoral students in the humanities and social sciences, provides KRW 20 million per year for two years. With a selection rate of about 31% for new projects (as of 2026), it is regarded as one of the most competitive national research grants for doctoral students.",
+        "After earning her master’s degree in Educational Technology at Ewha in 2023, Lee continued into the doctoral program. As principal investigator, she will receive two years of funding to conduct research on “Developing and Validating an AI-based System to Support Collaborative Knowledge Building.”"
+      ]
+    },
+    "news-jyj-award-2026": {
+      "titleEn": "Dr. Yujin Jung receives Ewha Graduate School Outstanding Dissertation Award (Spring 2026)",
+      "subtitleEn": "Exploring teachers’ roles in the age of generative AI through actor-network theory",
+      "bodyEn": [
+        "Dr. Yujin Jung (advisor: Prof. Kyu Yon Lim), who earned her bachelor’s, master’s, and doctoral degrees in Educational Technology at Ewha, received the Ewha Womans University Graduate School Outstanding Dissertation Award for the spring semester of 2026. The award-winning work is her doctoral dissertation, “Exploring the Network Formation of Teachers and Generative AI and Teachers’ Roles in Instructional Contexts: Focusing on Actor-Network Theory.”",
+        "As generative AI is rapidly introduced into schools, the study explored how interactions between teachers and generative AI vary across instructional contexts and how teachers’ roles take shape in the process. Dr. Jung viewed generative AI as an actor that influences teachers’ practice and adopted actor-network theory as her analytic framework.",
+        "The analysis showed that teachers did not simply produce materials themselves. They made appropriate requests to generative AI, reviewed and selected its outputs, and decided where AI would sit in the lesson and how it would be used. When students used generative AI, teachers observed those interactions and intervened or facilitated as needed. On this basis, Dr. Jung interpreted teachers’ roles not as fixed, but as formed and transformed through interaction with generative AI.",
+        "In an interview with the Ewha graduate school newspaper, Dr. Jung advised students preparing their theses to “just start writing.” “Even a problem that won’t come together in your head starts to show where the logic is missing and what needs more thought once you put it into writing,” she said.",
+        "Dr. Jung plans to continue studying interactions between humans and generative AI in teaching and learning contexts, examining how instructors and learners interact with generative AI to identify factors that shape educationally meaningful interactions and the support they need.",
+        "The interview appeared in the “Academic News” section of Ewha Graduate School Newspaper No. 107."
+      ]
+    },
+    "news-munfl7f6252": {
+      "titleEn": "Dr. Hyejun Kim receives Ewha Graduate School Outstanding Dissertation Award (Fall 2024)",
+      "subtitleEn": "What happens when learners choose their own scaffolding?",
+      "bodyEn": [
+        "Dr. Hyejun Kim (advisor: Prof. Kyu Yon Lim), who earned her bachelor’s, master’s, and doctoral degrees in Educational Technology at Ewha, received the Outstanding Dissertation Award from the Ewha Womans University Graduate School for the fall semester of 2024.",
+        "Her dissertation, “Exploring College Learners’ Problem-Solving Performance and Scaffolding Use Behaviors in Programming Problem Solving: Focusing on Shared Control,” began from the concern that over-reliance on AI tools can weaken learner agency. Dr. Kim proposed “scaffolding control” as a way to support problem solving without learners losing ownership, extending the established notion of learner control over sequence, pace, and feedback to scaffolding itself.",
+        "To examine this, she developed mySTEPS, a scaffolding tool for programming problem solving. mySTEPS provides 24 scaffolds across 11 steps, from problem representation to solution design, execution and evaluation, and reflection. The system preselects scaffolds based on problem difficulty, and learners can accept or reject them, add others, and change their choices during problem solving—implementing “shared control” in which the system and the learner divide control.",
+        "Eleven college students solved two programming problems of different difficulty, and Dr. Kim analyzed their behavior by triangulating screen recordings, think-aloud protocols, and interviews. Learners judged whether a scaffold was necessary and useful, and chose scaffolds by considering their own characteristics, the difficulty of the problem, and how the solution was actually unfolding. Even scaffolds chosen beforehand were skipped if they seemed unnecessary mid-task, and added when they became necessary. This decision process looked similar across problem difficulty and solution scores.",
+        "The study offers a theoretical basis for extending the object of control to scaffolding. It also proposes concrete design guidance: let learners control scaffolds whose necessity depends on learner characteristics (such as checking requirements) before problem solving, and scaffolds whose necessity depends on the solution process (such as comparing code) during problem solving."
+      ]
+    },
+    "news-munfhmipt8m": {
+      "titleEn": "Dr. Myunghwa Jin receives the KSET Outstanding Doctoral Dissertation Award",
+      "subtitleEn": "Real-time adaptive feedback deepens cognitive engagement in collaborative learning",
+      "bodyEn": [
+        "Dr. Myunghwa Jin (advisor: Prof. Kyu Yon Lim), who earned her master’s and doctoral degrees in Educational Technology at Ewha, received the Outstanding Doctoral Dissertation Award at the 2025 Spring Conference of the Korean Society for Educational Technology (KSET). The society selects and honors outstanding doctoral dissertations.",
+        "Her dissertation, “The Effects of Real-time Adaptive Feedback on Cognitive Engagement and Interaction in Computer-Supported Collaborative Learning (CSCL),” started from the observation that collaborative learning moves quickly, making it hard for learners to reflect on their own, so instructional support must also be delivered in real time.",
+        "Dr. Jin designed SCoLA (Supporting Collaborative Learning with Adaptive feedback), an adaptive collaborative learning support tool. SCoLA analyzes learners’ chat messages in real time in terms of cognitive engagement and interaction, and provides feedback. The analysis was automated using generative-AI text classification and social network analysis, and the feedback combined descriptive feedback on the current state with prescriptive feedback guiding improvement.",
+        "Forty-eight pre-service teachers were divided into 12 teams, with six teams each in experimental and control groups. The experimental group, which received real-time adaptive feedback, showed deeper cognitive engagement, such as integrating ideas, and higher network density—meaning messages connected to one another rather than breaking off. These differences did not appear early in the collaboration but emerged significantly in the middle and later phases.",
+        "The study provides a theoretical foundation for designing real-time adaptive feedback that supports synchronous collaborative learning, and empirically shows the importance of examining collaboration over time and of supporting both its cognitive and social dimensions."
+      ]
+    },
+    "news-mumwtjuuqkl": {
+      "titleEn": "Dr. Jiyoung Lim appointed faculty member at Busan National University of Education",
+      "bodyEn": [
+        "Dr. Jiyoung Lim (advisor: Prof. Kyu Yon Lim), who earned her doctorate in Educational Technology at Ewha, was appointed as a full-time faculty member at Busan National University of Education in September 2025.",
+        "Dr. Lim completed her bachelor’s degree and a master’s in psychology (psychometrics) in Ewha’s Department of Psychology before moving to educational technology for her doctorate. Her path—beginning in psychology and broadening into educational technology—has now come to fruition with this appointment.",
+        "Dr. Lim has also built a strong research record. As principal investigator, she has secured an NRF Early-Career Research Grant in Science and Engineering (2023–2025) and an NRF Collaborative Research Grant in the Humanities and Social Sciences (2025–2028). She received Ewha’s Excellence in Teaching Award (2020) and the KSET Outstanding Paper Award (2022, 2026). Her current research focuses on technology-based learning design, digital literacy education, and AI- and digital-enhanced education."
+      ]
+    }
+  },
+  "people": {
+    "lim-gyuyeon": {
+      "nameEn": "Kyu Yon Lim",
+      "positionEn": "Professor",
+      "affiliationEn": "Department of Educational Technology, Ewha Womans University",
+      "officeEn": "Room 563, Education Building B",
+      "bioEn": "Kyu Yon Lim is a Professor in the Department of Educational Technology, College of Education, Ewha Womans University, where she conducts research on technology-enhanced learning, collaborative and self-regulated learning, and learning experience design (LXD). She has led or co-led a range of research projects, including NRF early-career, mid-career, and convergence research grants in the humanities and social sciences and BK21 Plus projects, and has received mid-career grants in science and engineering for designing dashboards for online learning (2017–2019) and designing personalized learning (2020–2022). She is currently the principal investigator of projects on teacher–AI collaboration (2024–2026) and collaborative learning analytics (2023–2025). She received Ewha’s Excellence in Teaching Award in 2014 and the Graduate School of Education Excellence in Teaching Award in 2022.",
+      "educationEn": [
+        "Ph.D. in Instructional Systems, The Pennsylvania State University"
+      ],
+      "awardsEn": [
+        "Excellence in Teaching Award, Ewha Womans University | 2014",
+        "Excellence in Teaching Award, Graduate School of Education | 2022"
+      ],
+      "careerEn": [
+        "Associate Dean of Academic Affairs (Education) | 2025-02~2027-01",
+        "Director, Center for Teaching and Learning Innovation | 2025-02~2027-01",
+        "Director of Teacher Education | 2020-02~2020-07",
+        "Director, Center for Teaching and Learning Innovation | 2020-08~2022-07",
+        "Chair, Department of Educational Technology | 2014-02~2018-01",
+        "Program Director, Interdisciplinary Program in Multimedia | 2014-02~2018-01"
+      ]
+    },
+    "person-mue0s3a1gna": {
+      "detailEn": [
+        "#Research Interests",
+        "HAC, CSCL"
+      ]
+    },
+    "person-mue0b4yqslt": {
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2025-03~present",
+        "B.A., Education, Dong-A University | 2018~2023",
+        "#Experience",
+        "Educational Content Team, Linkareer Inc. | 2023~2025",
+        "Intern, Korea Education and Research Information Service (KERIS) | 2021~2022",
+        "#Awards",
+        "KSET Outstanding Poster Award, Encouragement Prize (Hyejun Kim, Jae Hyun Kim, Hyemin Kim, Hyojeong Jeon, Kyu Yon Lim) | 2026",
+        "#Research Projects",
+        "Developing an Adaptive Learning Support Platform Applying Collaborative Learning Analytics | National Research Foundation of Korea | Researcher | 2024~2025",
+        "#Contact",
+        "jeonhj@ewha.ac.kr"
+      ]
+    },
+    "person-mue0p5ffjac": {
+      "bioEn": "Searching for many answers rather than a single right one",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2025-09~present",
+        "B.A., Seoul Women’s University | 2017~2022",
+        "#Experience",
+        "Planning & Operations Team, Eunpyeong-gu Lifelong Learning Center | 2022~2023",
+        "#Awards",
+        "Rookie Lifelong Educator Award, Korea Lifelong Learning City Good Policy Awards | 2023",
+        "#Research Interests",
+        "Human–AI collaboration, CSCL, learning communities",
+        "#Contact",
+        "juyeram@ewha.ac.kr"
+      ]
+    },
+    "person-mue0kdsk1o4": {
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2025-09~present",
+        "B.A., Korean Language, Yangon University of Foreign Languages | 2017~2024",
+        "#Experience",
+        "Planning Department, BNK Financial Myanmar Branch | 2024~2025",
+        "Korean language instructor | 2021~2025",
+        "#Awards",
+        "Runner-up, Quiz on Korea, Korean Finals | 2023",
+        "Winner, Quiz on Korea, Myanmar Preliminaries | 2023",
+        "#Contact",
+        "khinemyatnoe27@ewha.ac.kr"
+      ]
+    },
+    "person-mue0u56rs37": {
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-03~present",
+        "B.S., Mathematics, Kyung Hee University | 2021~2025"
+      ]
+    },
+    "hwang-hyejeong": {
+      "bioEn": "Looking around for blind spots",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-09~present",
+        "B.A., Educational Technology, Ewha Womans University | 2016~2022",
+        "#Experience",
+        "Contributing Reporter, Editorial Department, Women’s News | 2026~present",
+        "Sports Reporter, Sports Seoul | 2022~2024",
+        "Intern Reporter, Newsis | 2021",
+        "Data Entry Assistant, Department of Clinical Pharmacology, Seoul National University College of Medicine | 2018",
+        "#Awards",
+        "Baseball Journalist of the Quarter (Q2) | Korea Baseball Writers Association | 2024-07",
+        "Sports Journalist of the Quarter (Q2) | Korea Sports Press Union | 2024-07",
+        "Baseball Journalist of the Year | Korea Baseball Writers Association | 2024-03",
+        "#Content Production & Advisory",
+        "Documentary ‘Covering the Women’s Pro Baseball League (WPBL)’ | Women’s News | 2026",
+        "Documentary ‘Michyeotdaedo: Women’s Baseball’ | SBS | 2025",
+        "Entertainment show ‘Queen of Baseball’ | Channel A | 2025",
+        "#Portfolio",
+        "Hye Jung Hwang Portfolio | https://et16.netlify.app/",
+        "#Research Interests",
+        "Everything that isn’t ‘education,’ everything that doesn’t use ‘AI’",
+        "Yet still, finding what goes unseen beneath words that have grown stale",
+        "Spatial cognition, metacognition, learning analytics",
+        "#Contact",
+        "hwang.et@ewha.ac.kr"
+      ]
+    },
+    "person-mue0fxe71xi": {
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-09~present",
+        "B.A., Educational Technology, Ewha Womans University | 2022~2026",
+        "#Experience",
+        "Intern, Change Solutions Division, Root Consulting | 2025",
+        "#Contact",
+        "imys@ewha.ac.kr"
+      ]
+    },
+    "person-mue1c44wa7b": {
+      "detailEn": [
+        "#Education",
+        "Ph.D. student, Educational Technology, Ewha Womans University | 2024~present",
+        "M.A., Educational Technology, Graduate School of Education, Ewha Womans University",
+        "B.A., Korean Language and Literature, The Catholic University of Korea",
+        "#Experience",
+        "Content Producer, EBS Middle School Premium | 2018~2024",
+        "Content Planner, Daekyo Gongbuwarak | 2009~2018",
+        "#Research Interests",
+        "Technology-enhanced learning, human–AI collaboration, learning analytics",
+        "#Contact",
+        "jaehyun33@ewha.ac.kr"
+      ]
+    },
+    "person-mue14cazpq7": {
+      "bioEn": "Researching how we can learn better together",
+      "detailEn": [
+        "#Education",
+        "Ph.D. student, Educational Technology, Ewha Womans University | 2024~present",
+        "M.A., Educational Technology, Ewha Womans University | 2021~2023",
+        "B.A., Korean Language and Literature, The Catholic University of Korea | 2011~2014",
+        "#Experience",
+        "EdTech Service Planning & New Business Strategy PM, Education Business Team, LG HelloVision | 2023~2025",
+        "Teacher, Baegam High School, Seoul Metropolitan Office of Education | 2020~2021",
+        "Teacher, Daeil High School, Seoul Metropolitan Office of Education | 2016~2020",
+        "#Awards",
+        "LG AWARDS Customer Empathy Award | LG Corp. | 2025",
+        "Grand Prize, Teaching & Learning Innovation, K-EdTech Contest | Ministry of Education (project team) | 2025",
+        "School Environment of the Year | Korea Education Expo (project team) | 2024",
+        "#Patents",
+        "Problem-solving learning apparatus based on a dashboard to aid learning and its operating method | Application No. 10-2023-0023746 | Inventors: Kyu Yon Lim, Hyejun Kim, Juwon Lee, Eunju Park, Haeun Park | 2023-02-22",
+        "Problem-solving learning apparatus based on prompts to aid learning and its operating method | Application No. 10-2023-0023747 | Inventors: Kyu Yon Lim, Hyejun Kim, Juwon Lee, Eunju Park, Haeun Park | 2023-02-22",
+        "#Research Projects",
+        "Developing and Validating an AI-based System to Support Collaborative Knowledge Building | National Research Foundation of Korea | Principal Investigator | 2026~present",
+        "Training Lifelong & Lifewide Learning Design Experts in the Age of Generative AI | Ewha Womans University | Researcher | 2026",
+        "Developing an Adaptive Learning Support Platform Applying Collaborative Learning Analytics | National Research Foundation of Korea | Researcher | 2024~2025",
+        "Designing a Personalized Instructional Support System for Data-driven Self-regulated Learning Feedback | National Research Foundation of Korea | Researcher | 2022~2023",
+        "Developing Support Materials for AI Communication Use in Kindergartens | Incheon Metropolitan City Office of Education | Researcher | 2021",
+        "Designing an AI-based Personalized Learning Model and Online Platform for SW Education | National Research Foundation of Korea | Researcher | 2021~2023",
+        "#Researcher Profile",
+        "Google Scholar |  https://scholar.google.co.kr/citations?view_op=list_works&hl=ko&hl=ko&user=8c6UkDgAAAAJ",
+        "#Contact",
+        "2weeks1@ewha.ac.kr"
+      ]
+    },
+    "person-mue1lzrlrf6": {
+      "detailEn": [
+        "#Education",
+        "Ph.D. student, Educational Technology, Graduate School, Ewha Womans University | 2026~present",
+        "M.A., Educational Technology (HRD), Graduate School of Education, Ewha Womans University | 2023~2025",
+        "#Experience",
+        "Teacher, Suwon Jamwon Elementary School",
+        "#Research",
+        "Kim, S. Y., & Lim, K. Y. (2025). Analysis of learner responses to an AI-based adaptive learning system: Diagnosing adaptivity through topic modeling. Journal of Educational Information and Media, 31(6), 2597–2627.",
+        "#Research Interests",
+        "Self-regulated learning, learning analytics, gamification"
+      ]
+    },
+    "person-mue1ptx20bl": {
+      "detailEn": [
+        "#Experience",
+        "Center for Major Design and Convergence Support, Kyonggi University | 2024~2026",
+        "Student Success Center, Sungkyunkwan University | 2022~2024",
+        "#Contact",
+        "hyemnnie@ewha.ac.kr"
+      ]
+    },
+    "person-mue1j34yv8k": {
+      "bioEn": "Rereading the gaps, and exploring the steps we take together",
+      "detailEn": [
+        "#Education",
+        "Ph.D. student, Educational Technology, Ewha Womans University | 2026~present",
+        "M.A., Educational Technology, Ewha Womans University | 2016~2018",
+        "B.A., International Office Administration (minor: Business Administration), Ewha Womans University | 2007~2013",
+        "#Experience",
+        "CEO, Hangeoreum Lab | 2024~present",
+        "Merchandiser, GS Home Shopping | 2014~2016",
+        "Overseas Marketer, COEX | 2013",
+        "#Research",
+        "Jung, Y. J., & Lim, K. Y. (2020). A narrative inquiry into college students’ experiences of collaborative problem solving. Journal of Educational Technology, 36(1), 69–104.",
+        "Lim, K. Y., Eun, J. H., Jung, Y. J., & Park, H. N. (2018). An exploratory study for designing learner-centered dashboards: Focusing on learning information. The Journal of Korean Association of Computer Education, 21(3), 35–50.",
+        "#Awards",
+        "Top Prize, Nonprofit Startup Challenge Track, Asan Nanum Foundation | 2024",
+        "Excellence Award, University & Graduate Student Exhibition Planning Contest | 2012",
+        "#Content Production",
+        "Podcast ‘The Power of Gaps’ | 2025~present",
+        "#PR",
+        "“My career break is my career” — her cheerful declaration | OhmyNews | 2025-08-05",
+        "Radio interview as CEO of Hangeoreum Lab | Ulsan MBC | 2025-09-09",
+        "#Contact",
+        "jung.yj@ewha.ac.kr"
+      ]
+    },
+    "person-mue7j0qztyo": {
+      "affiliationEn": "Founder & CEO, Pibu Chingu",
+      "detailEn": [
+        "#About",
+        "Founder and operator of ‘Pibu Chingu,’ a beauty and business platform connecting Korea and Africa",
+        "Plans market entry, distribution, consumer research, and education projects so that Korean beauty brands and innovative products can connect effectively with African markets"
+      ]
+    },
+    "person-mup0xmst4ub": {
+      "nameEn": "Juyeon Kim",
+      "affiliationEn": "Research Professor, Center for Teaching and Learning, Tech University of Korea",
+      "detailEn": [
+        "#About",
+        "A researcher exploring what and how to teach in order to facilitate learning and improve learners’ performance",
+        "#Experience",
+        "Current: Lecturer, Graduate School of Education, Ewha Womans University",
+        "Current: Instructional consultant (Yonsei, Dongguk, Konkuk, Chugye University for the Arts, Semyung, and others)",
+        "Former: Research Professor, Center for Teaching and Learning, Kyung Hee University",
+        "Former: Manager, NE Neungyule",
+        "Former: Senior Associate, Samsung SDS",
+        "#Research Interests",
+        "Enhancing teaching competencies through problem solving, instructional design, AI-based education, and the learning sciences and learning analytics"
+      ]
+    },
+    "person-mue7p0h32jp": {
+      "nameEn": "Youngju Kim",
+      "affiliationEn": "Research Professor, Asian Center for Women’s Studies, Ewha Womans University",
+      "detailEn": [
+        "#About",
+        "Earned her Ph.D. with research on developing a peer feedback system for project-based learning",
+        "As the dedicated faculty member of the Interdisciplinary Program in Asian Women’s Studies at Ewha’s Asian Center for Women’s Studies, she oversees its education and plans and conducts related projects and research, such as ‘Developing a Gender Higher Education Model through a Needs Assessment of Cambodian Universities’ and ‘Developing Gender Mainstreaming Guidelines for International Development Cooperation’",
+        "#Research Interests",
+        "Collaborative learning, peer feedback, development and use of learning systems, educational program development"
+      ]
+    },
+    "person-mue7lhz08aj": {
+      "nameEn": "Jihyun Lee",
+      "affiliationEn": "Senior Consultant, Korea Productivity Center",
+      "detailEn": [
+        "#About",
+        "Develops and runs leadership training for working professionals at the Korea Productivity Center",
+        "#Research Interests",
+        "Collaborative learning, team project-based learning"
+      ]
+    },
+    "alumni-sample": {
+      "nameEn": "Jisoo Choi",
+      "affiliationEn": "Manager, Organizational Development Team, Kia",
+      "detailEn": [
+        "#About",
+        "At Kia’s Yangjae headquarters, she designs and supports organizational culture improvement and change initiatives based on organizational diagnosis data to enhance organizational effectiveness"
+      ]
+    },
+    "person-mundcuz0icn": {
+      "nameEn": "Juhee Eun",
+      "affiliationEn": "Senior Researcher, Korea Institute for Defense Analyses",
+      "detailEn": [
+        "#About",
+        "A researcher interested in designing learning environments that foster lifelong learners’ self-directed learning and growth",
+        "#Research Interests",
+        "Technology-enhanced learning, workplace learning, educational program development"
+      ]
+    },
+    "person-mue0nja9m7m": {
+      "nameEn": "Jiyoung Lim",
+      "affiliationEn": "Professor, Department of Education, Busan National University of Education",
+      "detailEn": [
+        "#About",
+        "A researcher asking what kind of learning we should create with new technologies",
+        "She works to connect the concerns of educational practice to research, and to turn insights from research into better teaching and learning experiences",
+        "#Research Interests",
+        "Technology-based instructional design, AI- and digital-enhanced education, collaborative learning"
+      ]
+    },
+    "person-muf2g7fen4u": {
+      "nameEn": "Sumin Cha",
+      "affiliationEn": "Manager, Talent Development Team, Kyowon Group",
+      "detailEn": [
+        "#About",
+        "Responsible for employee training at a company",
+        "Aims to grow into an HR generalist by expanding her experience beyond training into recruitment, evaluation, and compensation",
+        "#Research Interests",
+        "Learning experience design (LXD), leadership development, organizational development (OD)"
+      ]
+    },
+    "person-mue66891djv": {
+      "nameEn": "Haeun Park",
+      "affiliationEn": "Ph.D. student, Department of Computer Science and Engineering, Korea University",
+      "detailEn": [
+        "#Experience",
+        "Research Associate (contract), Division of Academic Achievement Research, Korea Institute for Curriculum and Evaluation | 2024~2026",
+        "#Research Interests",
+        "Knowledge Tracing, AI in education",
+        "#Researcher Profile",
+        "Google Scholar | https://scholar.google.com/citations?user=VPIUqG8AAAAJ&hl=ko"
+      ]
+    },
+    "person-mukebu3qo1i": {
+      "nameEn": "Eunju Park",
+      "affiliationEn": "Team Lead, Content Strategy Team, Digital Business Division, Chunjae Education",
+      "detailEn": [
+        "#About",
+        "Plans and operates AI-based education services",
+        "#Research Interests",
+        "Learning experience design (LXD), multimodal learning analytics, computer-supported collaborative learning (CSCL)"
+      ]
+    },
+    "person-mujmquwfy5k": {
+      "nameEn": "Hana Park",
+      "affiliationEn": "Research Professor, Center for Major Design and Convergence Support, Kyonggi University",
+      "detailEn": [
+        "#About",
+        "Studies, from an educational technology perspective, how learning and thinking are changing in the age of AI",
+        "#Research Interests",
+        "Collaborative learning, technology-enhanced learning, AI ethics education, cognitive offloading"
+      ]
+    },
+    "person-mue7fnvzf88": {
+      "nameEn": "Dahye Lee",
+      "affiliationEn": "Ph.D. student, Learning, Design, and Technology, The Pennsylvania State University",
+      "detailEn": [
+        "#About",
+        "After teaching English at a secondary school under the Gyeonggi Provincial Office of Education, she earned her M.A. in Educational Technology at her alma mater, Ewha Womans University",
+        "She is now a Ph.D. student in the Learning, Design, and Technology program at The Pennsylvania State University",
+        "Her research focuses on how learners construct shared understanding and meaning in collaborative learning",
+        "#Researcher Profile",
+        "Google Scholar | https://scholar.google.com/citations?user=3z9jJToAAAAJ&hl=ko"
+      ]
+    },
+    "person-mue71g7y55e": {
+      "nameEn": "Myunghwa Jin",
+      "affiliationEn": "Lecturer, Ewha Womans University / University of Seoul",
+      "detailEn": [
+        "#Experience",
+        "Former secondary school teacher, Gyeongsangbuk-do Office of Education",
+        "#Research Interests",
+        "computer-supported collaborative learning (CSCL), adaptive learning, Human-AI collaboration, collaborative learning analytics"
+      ]
+    },
+    "person-mue6sv64kpi": {
+      "nameEn": "Dahyun Kim",
+      "affiliationEn": "Researcher, Korea Institute of Human Resources Development in Science and Technology (KIRD)",
+      "detailEn": [
+        "#About",
+        "Plans and runs education programs that support the growth of science and technology talent",
+        "Dreams of being an educational technologist who gives learners the gift of ‘positive change’",
+        "#Research Interests",
+        "Learning experience design (LXD), computer-supported collaborative learning (CSCL), learning analytics (LA)"
+      ]
+    },
+    "person-mue648lk2gx": {
+      "nameEn": "Hyejun Kim",
+      "affiliationEn": "Lecturer, Ewha Womans University",
+      "detailEn": [
+        "#About",
+        "Studies, with a focus on human–AI collaboration, how people learn and solve problems with AI and the many contexts that shape that process",
+        "She is interested in how learners can collaborate meaningfully with AI while keeping their own judgment and agency",
+        "#Research Interests",
+        "Human–AI collaboration, problem solving, CSCL"
+      ]
+    },
+    "person-mue7boc1zes": {
+      "nameEn": "Yujin Jung",
+      "affiliationEn": "Faculty Support, Center for Teaching and Learning, Chugye University for the Arts",
+      "detailEn": [
+        "#About",
+        "Responsible for faculty support at the Center for Teaching and Learning",
+        "Interested in, and practicing, the work of improving instruction and supporting instructors’ growth from an educational technology perspective"
+      ]
+    }
+  },
+  "projects": {
+    "proj-2024-teacher-ai": {
+      "titleEn": "Designing an Instructional Support System Based on Teacher–AI Collaboration",
+      "funderEn": "Ministry of Education · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in the Humanities and Social Sciences",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Building an instructional support system based on teacher–AI collaboration (TAC) by designing classroom orchestration in which AI monitors the learning process and provides personalized instructional support together with the instructor."
+    },
+    "proj-2023-cla-platform": {
+      "titleEn": "An Adaptive Learning Support Platform Applying Collaborative Learning Analytics",
+      "funderEn": "Ministry of Science and ICT · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in Science and Engineering",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Combined computer-supported collaborative learning (CSCL) and learning analytics to design and develop CLAP, a platform that adaptively supports collaborative learning, and applied it in real classes."
+    },
+    "proj-2021-srl-feedback": {
+      "titleEn": "Designing a Personalized Instructional Support System for Data-driven Self-regulated Learning Feedback",
+      "funderEn": "Ministry of Education · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in the Humanities and Social Sciences",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Designed an instructional support system that helps instructors monitor learners’ states in online learning and provide personalized feedback that fosters self-regulation."
+    },
+    "proj-2020-sw-ai": {
+      "titleEn": "Designing an AI-based Personalized Learning Model and Online Platform for SW Education",
+      "funderEn": "Ministry of Science and ICT · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in Science and Engineering",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Designed 2PCP, a personalized problem-based collaborative learning platform, and applied it to elementary software education, including an AI-based personalization system that supports learning-path recommendations and learning communities."
+    },
+    "proj-2019-digital-literacy": {
+      "titleEn": "Developing a Digital Literacy Education Program for Middle School Students: Applying a Collaborative Problem-Solving Learning Model",
+      "funderEn": "Ministry of Education · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in the Humanities and Social Sciences",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Developed a digital literacy education program for middle school students by applying a collaborative problem-solving learning model."
+    },
+    "proj-2017-coregulation": {
+      "titleEn": "Developing a Co-regulation Measurement Instrument and Personalized Feedback",
+      "funderEn": "Ministry of Education · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in the Humanities and Social Sciences",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Developed a validated scale measuring learners’ regulation strategies in collaborative learning and designed personalized feedback that supports co-regulation."
+    },
+    "proj-2017-dashboard": {
+      "titleEn": "Designing Big Data-based Interactive Dashboards",
+      "funderEn": "Ministry of Science and ICT · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in Science and Engineering",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Integrating educational technology, HCI, information design, and social network analysis, developed B-MdID, an interactive dashboard that provides personalized feedback based on online learning logs, and validated its effects."
+    },
+    "proj-2015-cps-scaffolding": {
+      "titleEn": "Developing Scaffolding to Facilitate Interaction and Social Regulation in Collaborative Problem Solving",
+      "funderEn": "Ministry of Education · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in the Humanities and Social Sciences",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Explored learner interaction in collaborative problem solving, and designed, developed, and validated technology-based scaffolding that facilitates interaction and social regulation."
+    },
+    "proj-2013-visual-feedback": {
+      "titleEn": "Effects of Visual Feedback on Online Interaction Patterns: Using Social Network Analysis",
+      "funderEn": "Ministry of Education · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in the Humanities and Social Sciences",
+      "descriptionEn": "Analyzed the effects of feedback that visualizes online interaction patterns as social networks on learners’ interactions."
+    }
+  },
+  "patents": {
+    "patent-1": {
+      "descriptionEn": "A learning apparatus and operating method that provides learners with a problem and step-by-step question prompts and guides prompt navigation according to learners’ responses, supporting the problem-solving process step by step."
+    },
+    "patent-2": {
+      "descriptionEn": "A learning apparatus and operating method that visualizes learners’ self-assessment of step-by-step question prompts as graphs, helping learners check their own problem-solving process."
+    },
+    "patent-3": {
+      "descriptionEn": "A method and apparatus that monitors a group’s overall activity based on learner interaction in online, non-face-to-face collaborative learning and provides timely, personalized feedback content."
+    },
+    "patent-5": {
+      "descriptionEn": "A method and apparatus that identifies the direction and frequency of interactions among learners, learning materials, and instructors and visualizes them as an interaction network of nodes and links."
+    }
+  },
+  "lablife": {
+    "lablife-mue87xj9dlu": {
+      "captionEn": "Spring 2026 Thesis Defense",
+      "bodyEn": "We took a group photo at the thesis defense of Yujin Jung (center), CoRe Lab’s only graduate of the spring 2026 semester.\nOur advisor, who couldn’t make it that day, joined us via a composited photo.\nWord is that, wisely, we used a photo of her from 12 years ago—and so escaped her wrath😉"
+    },
+    "lablife-muedhhyb7e6": {
+      "captionEn": "Professor’s Birthday Party 2025🎂🎉",
+      "bodyEn": "We celebrated our professor’s birthday together in the multimedia room of the Education Building. We put a banner up on the screen and shared a fig tart. Without a tripod, the photo composition turned out pretty funny—next year we promise to take a prettier one..📸\n\nThe last photo: all of CoRe Lab enthusiastically celebrating her birthday over Zoom!"
+    },
+    "lablife-muedy3v00z7": {
+      "captionEn": "Homecoming Day 2026🏠",
+      "bodyEn": "CoRe Lab alumni joined us for a New Year’s dinner🍽️ See you again soon~"
+    },
+    "lablife-mueefff6jlf": {
+      "captionEn": "KSET Spring Conference 2026",
+      "bodyEn": "On May 9, 2026, the Korean Society for Educational Technology Spring Conference was held at Ewha Womans University.\n\nProf. Kyu Yon Lim received the Outstanding Reviewer Award,\nand Kim et al. (2026) received the Outstanding Poster Encouragement Award for “Research Trends in Responsible AI in Education: A BERTopic-based Topic Modeling Analysis”!! Congratulations~~!!"
+    },
+    "lablife-mueenk4gytg": {
+      "captionEn": "Teacher’s Day 2026",
+      "bodyEn": "CoRe Lab flocked over for Teacher’s Day!! Cute photos taken together in the professor’s office!!💐"
+    },
+    "lablife-mufaw79ffvg": {
+      "captionEn": "Under the Cherry Blossoms at the Education Building, 2024🌸",
+      "bodyEn": "April 9, 2024. The weather was too nice... so we took a shot with our professor—lovelier than the cherry blossoms—in front of the cherry trees by the Education Building... no, two shots~"
+    },
+    "lablife-mufayb6v7fu": {
+      "captionEn": "2024 Year-end Gathering of Students and Alumni",
+      "bodyEn": "On December 26, 2024, CoRe Lab students and alumni came together~! We missed you all so much!!"
+    },
+    "lablife-mufb1ayuga0": {
+      "captionEn": "Wrapping Up Our Science & Engineering Project, 2023",
+      "bodyEn": "Wrapping up three years of NRF science and engineering research that began in 2020—a commemorative photo with the research team on February 23, 2023!! Thank you all for your hard work~~"
+    },
+    "lablife-mufhc35fwhd": {
+      "captionEn": "One Spring Day in 2026.. The Day We Resolved to Join CoRe Lab",
+      "bodyEn": "At CoRe Lab lives the ‘Lim fan club’... fangirling in progress..."
+    },
+    "lablife-muiepdx5kjx": {
+      "captionEn": "Spring & Fall 2024 Thesis Defenses",
+      "bodyEn": "Dahye Lee (M.A.) and Dr. Myunghwa Jin, who graduated in spring 2024, and Dr. Hyejun Kim, who graduated in fall 2024, started a CoRe Lab tradition:\na commemorative photo in front of the professor’s office! Ta-da~🥁!!\n\nTo the three who studied so hard and graduated with wonderful theses—\nwe wish you nothing but bright paths ahead :)\n- All of CoRe Lab."
+    },
+    "lablife-muieubwl8ke": {
+      "captionEn": "KSET Spring Conference 2025",
+      "bodyEn": "At the Korean Society for Educational Technology Spring Conference on May 31, 2025, CoRe Lab’s pride, Dr. Myunghwa Jin, received the Outstanding Doctoral Dissertation Award. 🥳💐"
+    },
+    "lablife-munt1vvfbp9": {
+      "captionEn": "December 2025, First Snow❄️",
+      "bodyEn": "The day the first snow (a blizzard!) fell while Juram & Hyojeong were studying together at the Industry–Academia Cooperation Building.\nA romantic shot with an international student we met for the first time while escaping the snowy path☃️🤳🏻\n\nWe’re also attaching scenes of the campus full of romance on the day of the first snow~"
+    },
+    "lablife-mv26q7je1gz": {
+      "captionEn": "Gazing at the ‘North Star’....🌟",
+      "bodyEn": "I lift my head and gaze at the night sky\nI see a single star shining far away\nAh, when will I ever reach that place?\nWith that star as my guide, I walk this path\nThat star is... the North Star, ‘LIM’"
+    }
+  },
+  "announcements": {
+    "n-mutl7aqwotd": {
+      "textEn": "Oct 16, 3 PM – CoRe Lab Research Meeting"
+    },
+    "n-mutlaat6hdg": {
+      "textEn": "Now accepting applications: Ewha Graduate School, Spring 2027 admission (Sep 30–Oct 14)"
+    },
+    "n-mutlgdh3dzq": {
+      "textEn": "2026 KSET–KAEIM Joint Fall Conference (Nov 13–14)"
+    }
+  },
+  "announcementTypes": {
+    "gen": {
+      "nameEn": "Notice"
+    },
+    "imp": {
+      "nameEn": "Important"
+    },
+    "rec": {
+      "nameEn": "Admissions"
+    },
+    "evt": {
+      "nameEn": "Event"
+    },
+    "t-mutl7mugyfc": {
+      "nameEn": "Schedule"
+    }
+  },
+  "names": {
+    "김윤진": "Yoonjin Kim",
+    "박지우": "Jiwoo Park",
+    "어정인": "Jeongin Eo",
+    "한가형": "Gahyeong Han"
+  },
+  "terms": {
+    "awards": {
+      "우수학위논문상": "Outstanding Dissertation Award",
+      "우수박사학위논문상": "Outstanding Doctoral Dissertation Award",
+      "장려상": "Encouragement Award",
+      "우수포스터 발표상": "Best Poster Presentation Award",
+      "최우수상": "Top Prize",
+      "대상": "Grand Prize",
+      "동상": "Bronze Prize",
+      "우수논문상": "Outstanding Paper Award",
+      "최우수논문상": "Best Paper Award"
+    },
+    "orgs": {
+      "이화여자대학교": "Ewha Womans University",
+      "한국교육공학회": "Korean Society for Educational Technology",
+      "한국교육정보미디어학회": "Korean Association for Educational Information and Media"
+    },
+    "venues": {
+      "교육정보미디어연구": "Journal of Educational Information and Media",
+      "교육공학연구": "Journal of Educational Technology",
+      "학습자중심교과교육연구": "Journal of Learner-Centered Curriculum and Instruction",
+      "컴퓨터교육학회논문지": "The Journal of Korean Association of Computer Education",
+      "컴퓨터교육학회 논문지": "The Journal of Korean Association of Computer Education",
+      "기업교육과인재연구": "Journal of Corporate Education and Talent Research",
+      "기업교육연구": "Journal of Corporate Education",
+      "한국교원교육연구": "The Journal of Korean Teacher Education",
+      "교육문화연구": "Journal of Education & Culture",
+      "체육과학연구": "Korean Journal of Sport Science",
+      "디지털융복합연구": "Journal of Digital Convergence",
+      "한국교육공학회 춘계학술대회": "KSET Spring Conference",
+      "한국교육공학회 춘계학술대회 발표자료집": "Proceedings of the KSET Spring Conference",
+      "한국교육공학회 학술대회 발표자료집": "Proceedings of the KSET Conference",
+      "한국교육공학회 학술대회발표자료집": "Proceedings of the KSET Conference",
+      "한국교육공학회 추계공동학술대회 발표자료집": "Proceedings of the KSET Joint Fall Conference",
+      "교육정보미디어학회-교육공학회 공동추계학술대회": "KAEIM–KSET Joint Fall Conference",
+      "한국교육정보미디어학회·한국교육공학회 추계공동학술대회": "KAEIM–KSET Joint Fall Conference",
+      "한국교육정보미디어학회·한국교육공학회 2020 추계공동학술대회": "KAEIM–KSET 2020 Joint Fall Conference",
+      "한국교육정보미디어학회·한국교육공학회 추계공동학술대회 발표자료집": "Proceedings of the KAEIM–KSET Joint Fall Conference",
+      "한국교육공학회·한국교육정보미디어학회 추계공동학술대회 발표자료집": "Proceedings of the KSET–KAEIM Joint Fall Conference",
+      "한국교육정보미디어학회": "Korean Association for Educational Information and Media (KAEIM)",
+      "한국교육정보미디어학회 학술대회 발표자료집": "Proceedings of the KAEIM Conference",
+      "한국컴퓨터교육학회 학술발표대회논문집": "Proceedings of the Korean Association of Computer Education Conference",
+      "한국교육학회(평생교육학회 분과) 춘계학술대회": "Korean Society for the Study of Education (Lifelong Education Division) Spring Conference",
+      "한국경영정보학회 학술대회": "Korea Society of Management Information Systems Conference",
+      "학지사": "Hakjisa",
+      "교육과학사": "Kyoyookgwahaksa"
+    }
+  }
+}
