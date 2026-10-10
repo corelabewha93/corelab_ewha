@@ -370,7 +370,7 @@ export default function Publications({
   const byYear = useMemo(() => groupByYear(filtered), [filtered])
 
   // 최근 RECENT_YEARS년(가장 최신 연도 기준)만 먼저 보여줍니다.
-  // 검색 중이거나, 개인 연구 실적 화면(embedded)이거나, 최근 연구가 하나도 없으면 전부 보여줍니다.
+  // 검색 중이거나, Book 필터이거나, 개인 연구 실적 화면(embedded)이거나, 최근 연구가 하나도 없으면 전부 보여줍니다.
   const latestYear = useMemo(
     () => Math.max(...pubs.map((p) => Number(p.year)).filter(Number.isFinite)),
     [pubs],
@@ -378,7 +378,9 @@ export default function Publications({
   const isRecent = ([y]) => Number(y) > latestYear - RECENT_YEARS
   const recentGroups = byYear.filter(isRecent)
   const olderGroups = byYear.filter((g) => !isRecent(g))
-  const collapsible = !embedded && !terms.length && recentGroups.length > 0 && olderGroups.length > 0
+  // Book(저역서)은 편수가 적어 접지 않고 모두 보여줍니다.
+  const collapsible =
+    !embedded && filter !== 'book' && !terms.length && recentGroups.length > 0 && olderGroups.length > 0
   const olderCount = olderGroups.reduce((n, [, list]) => n + list.length, 0)
   const olderYears = olderGroups.map(([y]) => Number(y)).filter(Number.isFinite)
   const olderRange = olderYears.length
