@@ -41,7 +41,8 @@ function NotFound() {
 
 export default function App() {
   const { path } = useHashRoute()
-  const Page = ROUTES[path] ?? NotFound
+  // 소식 한 건(/news/소식id)은 News 화면이 열어 보여줍니다.
+  const Page = ROUTES[path] ?? (path.startsWith('/news/') ? ROUTES['/news'] : NotFound)
 
   // 다른 페이지로 넘어가면 맨 위부터 보이게 합니다.
   // (주소 방식은 브라우저가 스크롤을 초기화해주지 않아서, 아래쪽에서 링크를 누르면
