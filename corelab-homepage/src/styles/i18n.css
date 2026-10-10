@@ -67,13 +67,19 @@ html .lang-btn:not(.on):focus-visible {
   opacity: 0.9;
 }
 
-/* PC: 메뉴 맨 오른쪽, 얇은 세로선으로 구분 */
-html .lang-toggle-desktop {
-  margin-left: -0.7rem;
-  padding-left: 1.3rem;
-  border-left: 1px solid rgba(255, 255, 255, 0.22);
-  align-self: center;
-  height: 1.15rem;
+/* PC: 메뉴와 떨어뜨려 상단 바의 오른쪽 끝에 따로 둡니다 (구분선 없이).
+   화면이 좁아 오른쪽 여백이 부족할 때는 메뉴를 그만큼 왼쪽으로 살짝 밀어 겹치지 않게 합니다. */
+@media (min-width: 721px) {
+  html .lang-toggle-desktop {
+    position: absolute;
+    top: 50%;
+    right: 28px;
+    transform: translateY(-50%);
+  }
+  html .site-header .container {
+    /* 680px = (1080px 칸 폭 ÷ 2) + 오른쪽 28px + 버튼 약 65px + 메뉴와의 간격 약 45px */
+    padding-right: clamp(var(--space-3), calc(680px - 50%), 140px);
+  }
 }
 
 html .lang-toggle-mobile {
@@ -172,5 +178,31 @@ html .brand-dept {
   }
   html .site-header .nav {
     gap: 1.6rem;
+  }
+}
+
+/* 영어 화면 수상 배지: 상 이름·수여 기관이 길어 화면 밖으로 나가지 않게
+   - 어디서든 칸 폭을 넘으면 줄을 바꿉니다
+   - 휴대폰에서는 수여 기관을 상 이름 아래 줄에 따로 보여줍니다 */
+html.lang-en .pub-award {
+  max-width: 100%;
+  white-space: normal;
+  line-height: 1.25;
+}
+@media (max-width: 700px) {
+  html.lang-en .pub-award.pub-award-org-badge {
+    display: inline-grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    column-gap: 0.3rem;
+    row-gap: 0.2rem;
+    align-items: center;
+    padding-top: 0.3rem;
+    padding-bottom: 0.3rem;
+  }
+  html.lang-en .pub-award-org-badge .pub-award-org {
+    grid-column: 2;
+    margin-left: 0;
+    padding-left: 0;
+    border-left: 0;
   }
 }
