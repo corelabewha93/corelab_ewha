@@ -1,0 +1,176 @@
+/* =====================================================================
+   한국어 / 영어 전환 (KO · EN 버튼, 영어 화면 다듬기)
+   global.css가 이 파일보다 나중에 불러와지므로, 선택자 앞에 html을 붙여 우선순위를 높였습니다.
+   ===================================================================== */
+
+html .lang-toggle {
+  display: inline-flex;
+  align-items: center;
+  flex: 0 0 auto;
+}
+
+html .lang-btn {
+  position: relative;
+  background: none;
+  border: 0;
+  padding: 0.35rem 0.32rem;
+  color: var(--color-on-primary);
+  opacity: 0.5;
+  font-family: var(--font-sans);
+  font-size: 0.74rem;
+  font-weight: 600;
+  line-height: 1;
+  letter-spacing: 0.09em;
+  cursor: pointer;
+  transition: opacity 0.15s ease;
+  -webkit-tap-highlight-color: transparent;
+}
+
+html .lang-btn + .lang-btn {
+  margin-left: 0.5rem;
+}
+
+/* 두 글자 사이 가운데 점 */
+html .lang-btn + .lang-btn::before {
+  content: '';
+  position: absolute;
+  left: -0.36rem;
+  top: 50%;
+  width: 3px;
+  height: 3px;
+  margin-top: -1.5px;
+  border-radius: 50%;
+  background: currentColor;
+  opacity: 0.55;
+  pointer-events: none;
+}
+
+html .lang-btn.on {
+  opacity: 1;
+  cursor: default;
+}
+
+/* 지금 언어: 금색 밑줄 */
+html .lang-btn.on::after {
+  content: '';
+  position: absolute;
+  left: 0.32rem;
+  right: 0.32rem;
+  bottom: -0.05rem;
+  height: 1.5px;
+  border-radius: 1px;
+  background: var(--hero-gold, #e4d083);
+}
+
+html .lang-btn:not(.on):hover,
+html .lang-btn:not(.on):focus-visible {
+  opacity: 0.9;
+}
+
+/* PC: 메뉴 맨 오른쪽, 얇은 세로선으로 구분 */
+html .lang-toggle-desktop {
+  margin-left: -0.7rem;
+  padding-left: 1.3rem;
+  border-left: 1px solid rgba(255, 255, 255, 0.22);
+  align-self: center;
+  height: 1.15rem;
+}
+
+html .lang-toggle-mobile {
+  display: none;
+}
+
+@media (max-width: 720px) {
+  html .lang-toggle-desktop {
+    display: none;
+  }
+  /* 모바일: 햄버거 버튼 바로 왼쪽에 항상 보이게 */
+  html .lang-toggle-mobile {
+    display: inline-flex;
+    margin-left: auto;
+    margin-right: 0.35rem;
+  }
+  html .lang-toggle-mobile .lang-btn {
+    padding: 0.55rem 0.36rem;
+    font-size: 0.76rem;
+  }
+  html .lang-toggle-mobile .lang-btn.on::after {
+    bottom: 0.25rem;
+    left: 0.36rem;
+    right: 0.36rem;
+  }
+}
+
+/* 영어 화면: 상단 왼쪽 작은 소속 글씨가 길어지므로 살짝 좁게 */
+html.lang-en .brand-dept {
+  letter-spacing: 0.02em;
+}
+
+/* 관리자 편집창: 영문 칸은 연한 하늘색 바탕 + EN 표시로 한글 칸과 구분 */
+html .modal-field-en {
+  background: #f2f8fb;
+  border-left: 3px solid #8cc4eb;
+  border-radius: 0 6px 6px 0;
+  padding: 0.55rem 0.7rem 0.6rem;
+  margin-left: -0.7rem;
+  margin-right: -0.7rem;
+}
+html .en-badge {
+  display: inline-block;
+  margin-right: 0.4rem;
+  padding: 0.05rem 0.38rem;
+  border-radius: 4px;
+  background: #1d5a8f;
+  color: #fff;
+  font-style: normal;
+  font-size: 0.64rem;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  vertical-align: 0.08em;
+}
+
+/* 영어 화면 본문: 영어는 단어 단위로 자연스럽게 줄바꿈하고, 휴대폰에서는 왼쪽 정렬이 더 읽기 좋습니다 */
+html.lang-en .faculty-bio,
+html.lang-en #overview > p:not(.lab-motto-kr):not(.lab-motto-en) {
+  word-break: normal;
+  hyphens: auto;
+  -webkit-hyphens: auto;
+}
+@media (max-width: 700px) {
+  html.lang-en .faculty-bio,
+  html.lang-en #overview > p:not(.lab-motto-kr):not(.lab-motto-en),
+  html.lang-en .news-article-p {
+    text-align: left;
+    hyphens: manual;
+    -webkit-hyphens: manual;
+  }
+  /* 영어 화면 Projects: 지원기관과 사업명이 길어 "|"만 한 줄에 남지 않도록 줄을 나눠 보여줍니다 */
+  html.lang-en .project-line:not(.project-meta) .project-sep {
+    display: none;
+  }
+  html.lang-en .project-line:not(.project-meta) > span:not(.pub-type-tag) {
+    display: block;
+  }
+}
+
+/* 영어 화면 Lab Overview: 영문 모토를 큰 제목으로 */
+html .lab-motto-en-main {
+  letter-spacing: -0.005em;
+}
+
+/* 메뉴 글자가 두 줄로 꺾이지 않게 (예: "Lab Life") */
+html .nav a {
+  white-space: nowrap;
+}
+html .brand-dept {
+  white-space: nowrap;
+}
+/* 태블릿처럼 애매한 폭: 영어 소속 글씨가 길어 메뉴와 부딪히므로 잠시 숨깁니다 */
+@media (min-width: 721px) and (max-width: 940px) {
+  html.lang-en .brand-dept {
+    display: none;
+  }
+  html .site-header .nav {
+    gap: 1.6rem;
+  }
+}
