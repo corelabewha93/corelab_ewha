@@ -2,6 +2,7 @@ import { useEffect } from 'react'
 import { useHashRoute } from './router/useHashRoute'
 import Link from './router/Link'
 import { AdminAuthProvider } from './admin/AdminAuthContext'
+import { LangProvider, useLang } from './i18n/LangContext'
 import Header from './components/Header'
 import Footer from './components/Footer'
 import About from './pages/About'
@@ -16,6 +17,7 @@ import NoticeBanner from './components/NoticeBanner'
 import './styles/justify.css'
 import './styles/motto.css'
 import './styles/polish.css'
+import './styles/i18n.css'
 
 const ROUTES = {
   '/': About,
@@ -26,11 +28,12 @@ const ROUTES = {
 }
 
 function NotFound() {
+  const { tr } = useLang()
   return (
     <div className="page container">
-      <h1 className="section-title">페이지를 찾을 수 없습니다</h1>
+      <h1 className="section-title">{tr('페이지를 찾을 수 없습니다', 'Page not found')}</h1>
       <p>
-        <Link to="/">홈으로 돌아가기</Link>
+        <Link to="/">{tr('홈으로 돌아가기', 'Back to home')}</Link>
       </p>
     </div>
   )
@@ -49,6 +52,7 @@ export default function App() {
 
   return (
     <AdminAuthProvider>
+      <LangProvider>
       <Celebration />
       <LogoJump />
       <NoticeBanner />
@@ -58,6 +62,7 @@ export default function App() {
       </main>
       <Footer />
       <Toaster />
+      </LangProvider>
     </AdminAuthProvider>
   )
 }
