@@ -5,7 +5,8 @@ export default function Link({ to, children, className = '', onClick, active, ..
   const { path } = useHashRoute()
   const targetPath = to.split('?')[0]
   // active를 직접 넘기면(예: 홈 안에서 스크롤 위치로 판단하는 About 메뉴) 그 값을 따릅니다.
-  const isActive = active ?? path === targetPath
+  // "/news/소식id"처럼 한 단계 아래 주소에서도 상단 메뉴(News)가 켜져 있게 합니다.
+  const isActive = active ?? (path === targetPath || (targetPath !== '/' && path.startsWith(`${targetPath}/`)))
   const classes = [className, isActive ? 'active' : ''].filter(Boolean).join(' ')
 
   // 메뉴 닫기처럼 바깥에서 넘겨준 onClick도 함께 실행합니다.

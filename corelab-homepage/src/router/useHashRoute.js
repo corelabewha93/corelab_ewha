@@ -25,6 +25,15 @@ export function withBase(path) {
   return BASE === '/' ? path : `${BASE.replace(/\/$/, '')}${path}`
 }
 
+// GitHub Pages는 "/research"를 "/research/"로 한 번 바꿔 보냅니다 (링크 미리보기용 페이지가 그 폴더에 있어서).
+// 화면은 같으므로, 주소창에서만 끝의 "/"를 조용히 지워 깔끔하게 둡니다.
+if (typeof window !== 'undefined') {
+  const { pathname, search, hash } = window.location
+  if (pathname.length > 1 && pathname.endsWith('/') && pathname !== BASE) {
+    window.history.replaceState(window.history.state, '', pathname.replace(/\/+$/, '') + search + hash)
+  }
+}
+
 function parseLocation() {
   let path = stripBase(window.location.pathname) || '/'
   // 뒤에 "/"가 붙어도(예: "/news/") 같은 페이지로 봅니다.
@@ -68,6 +77,27 @@ export function useQueryTab(path, tabKeys, defaultTab) {
   )
 
   return [current, setTab]
+}
+
+/**
+ * 소식 한 건의 주소: /news/소식id
+ * (예전 주소 /news?id=소식id 도 그대로 열립니다.) 소식마다 주소가 달라야
+ * 카카오톡 등에 붙여 넣었을 때 그 소식의 제목·사진으로 미리보기가 뜹니다 (vite.config.js의 linkPreviewPagesPlugin).
+ */
+export function newsHref(id) {
+  return `/news/${encodeURIComponent(id)}`
+}
+
+/** 지금 주소에서 열려 있는 소식 id (/news/소식id 또는 /news?id=소식id). 없으면 '' */
+export function openNewsId({ path, query }) {
+  if (path.startsWith('/news/')) {
+    try {
+      return decodeURIComponent(path.slice(6))
+    } catch {
+      return path.slice(6)
+    }
+  }
+  return query.id ?? ''
 }
 
 /** 새로고침 없이 주소를 바꿉니다. path는 "/news"나 "/news?id=123"처럼 씁니다. */
