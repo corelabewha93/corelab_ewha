@@ -473,8 +473,9 @@ export default function EditModal({ title, fields, initial = {}, onSave, onDelet
 
         <form onSubmit={handleSubmit}>
           {visibleFields.map((f) => (
-            <div className="modal-field" key={f.name}>
+            <div className={`modal-field${f.en ? ' modal-field-en' : ''}`} key={f.name}>
               <span>
+                {f.en && <em className="en-badge">EN</em>}
                 {f.label}
                 {f.required ? ' *' : ''}
               </span>
