@@ -5,7 +5,7 @@ import { upsertItem, deleteItem, reorderItems } from '../admin/collection'
 import { showToast } from '../admin/toast'
 import { makeId } from '../admin/dataStore'
 import { newsFields } from '../admin/schemas'
-import { useHashRoute, navigate } from '../router/useHashRoute'
+import { useHashRoute, navigate, newsHref, openNewsId } from '../router/useHashRoute'
 import NewsCard from '../components/NewsCard'
 import PageTitle from '../components/PageTitle'
 import Pagination from '../components/Pagination'
@@ -32,7 +32,7 @@ let listScrollY = 0 // 목록에서 글을 누르기 직전 스크롤 위치 (�
 export default function News() {
   const { data, error, loading } = useData('news.json')
   const { token, isAdmin } = useAdminAuth()
-  const { query } = useHashRoute()
+  const route = useHashRoute()
   const [editing, setEditing] = useState(null) // { item|null }
   const [draft, setDraft] = useState(null) // 순서 바꾸기 중일 때: 소식 id 배열
   const [savingOrder, setSavingOrder] = useState(false)
@@ -41,7 +41,7 @@ export default function News() {
 
   // 글을 열면 제목이 보이도록 맨 위로, 목록으로 돌아오면 누르기 전 위치로 되돌립니다.
   // (주소만 바뀌는 이동이라 App의 "페이지 이동 시 맨 위로"가 작동하지 않았습니다.)
-  const openId = query.id
+  const openId = openNewsId(route)
   useEffect(() => {
     if (openId) window.scrollTo({ top: 0, left: 0, behavior: 'instant' })
     else window.scrollTo({ top: listScrollY, left: 0, behavior: 'instant' })
@@ -54,7 +54,11 @@ export default function News() {
     [],
   )
 
-  useDocumentMeta('News', tr('이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.', 'News and activities from CoRe Lab, Ewha Womans University.'))
+  // 소식 한 건을 열면 탭 제목도 그 소식 제목으로
+  const metaRaw = openId ? (data ?? []).find((i) => i.id === openId && !i.hidden) : null
+  const metaItem = metaRaw ? loc(metaRaw, 'news') : null
+  const newsDesc = tr('이화여자대학교 CoRe Lab의 소식과 활동을 전합니다.', 'News and activities from CoRe Lab, Ewha Womans University.')
+  useDocumentMeta(metaItem?.title || 'News', metaItem?.subtitle || newsDesc)
 
   const setPage = (n) => {
     lastPage = n
@@ -80,7 +84,7 @@ export default function News() {
   const pageCount = ordering ? 1 : Math.max(1, Math.ceil(items.length / PAGE_SIZE))
   const curPage = Math.min(page, pageCount)
   const pageItems = ordering ? items : items.slice((curPage - 1) * PAGE_SIZE, curPage * PAGE_SIZE)
-  const openItem = query.id ? items.find((i) => i.id === query.id) : null
+  const openItem = openId ? items.find((i) => i.id === openId) : null
 
   // 소식 "숨기기 / 표시하기" 버튼
   // 값은 관리자 입력창의 "표시 여부" 선택칸과 같은 형식('hidden' 또는 빈 문자열)으로 저장합니다.
@@ -203,7 +207,7 @@ export default function News() {
                   disabled={ordering}
                   onClick={() => {
                     listScrollY = window.scrollY
-                    navigate(`/news?id=${item.id}`)
+                    navigate(newsHref(item.id))
                   }}
                 >
                   <div className="news-list-thumb">

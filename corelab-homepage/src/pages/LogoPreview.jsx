@@ -2,6 +2,7 @@ import { useData } from '../hooks/useData'
 import SafeImage from '../components/SafeImage'
 import CoreLogo from '../components/CoreLogo'
 import Link from '../router/Link'
+import { newsHref } from '../router/useHashRoute'
 import '../styles/logo-preview.css'
 
 /**
@@ -58,7 +59,7 @@ function NewsPreview() {
         {items.map((item) => {
           const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
           return (
-            <Link key={item.id} to={`/news?id=${item.id}`} className="news-preview-card">
+            <Link key={item.id} to={newsHref(item.id)} className="news-preview-card">
               <div className="news-preview-thumb">
                 <SafeImage src={thumb} alt="" fallback={<span />} />
               </div>

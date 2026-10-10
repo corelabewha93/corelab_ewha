@@ -7,7 +7,7 @@ import EditModal from '../components/admin/EditModal'
 import { EditButton } from '../components/admin/AdminControls'
 import SafeImage from '../components/SafeImage'
 import Link from '../router/Link'
-import { useHashRoute } from '../router/useHashRoute'
+import { useHashRoute, newsHref } from '../router/useHashRoute'
 import { scrollToSection } from '../router/scrollToSection'
 import HeroIntro from '../components/HeroIntro'
 import { softHyphen } from '../utils/softHyphen'
@@ -35,7 +35,7 @@ function NewsPreview() {
           const thumb = Array.isArray(item.images) ? item.images[0] : item.images || item.thumbnail
           const it = loc(item, 'news')
           return (
-            <Link key={item.id} to={`/news?id=${item.id}`} className="news-preview-card">
+            <Link key={item.id} to={newsHref(item.id)} className="news-preview-card">
               <div className="news-preview-thumb">
                 <SafeImage src={thumb} alt="" fallback={<span />} />
               </div>
