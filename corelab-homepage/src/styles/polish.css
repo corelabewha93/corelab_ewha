@@ -5,6 +5,7 @@
    3) 휴대폰에서 작은 버튼·링크의 터치 영역 넓히기 (모양은 그대로)
    4) 홈 Latest News: PC에서 최신 소식 4건을 한 줄로
    5) Publications "이전 연구 더보기"
+   6) PC Research·People: 제목·메뉴·연도 고정 위치 맞추기
    (global.css가 이 파일보다 나중에 불러와지므로, 선택자 앞에 html을 붙여 우선순위를 한 단계 높였습니다)
    ===================================================================== */
 
@@ -171,18 +172,48 @@ html .pub-older {
     border-left-color: var(--color-border);
   }
 }
-@media (max-width: 560px) {
+/* 모바일: 버튼을 한 단계 작고 가볍게 */
+@media (max-width: 700px) {
   html .pub-more {
-    gap: 0.7rem;
-    margin-top: 2.2rem;
+    gap: 0.6rem;
+    margin: 1.9rem 0 0.2rem;
   }
   html .pub-more-btn {
-    padding: 0.7rem 1.1rem;
-    gap: 0.55rem;
-    font-size: 0.86rem;
+    padding: 0.46rem 0.9rem;
+    gap: 0.42rem;
+    font-size: 0.78rem;
   }
   html .pub-more-meta {
-    padding-left: 0.55rem;
-    font-size: 0.76rem;
+    padding-left: 0.45rem;
+    font-size: 0.7rem;
+  }
+  html .pub-more-chev {
+    width: 9px;
+    height: 9px;
+  }
+}
+
+/* 6) PC Research·People: 제목 · 왼쪽 메뉴 · 연도가 스크롤해도 처음 자리에서 꼼짝하지 않도록
+   예전에는 제목 띠가 헤더에 딱 붙는 위치(25px 위)에 고정돼서, 스크롤을 시작하면 모두 25px쯤 올라갔다가 멈췄고
+   연도는 메뉴보다 4px 아래에 붙어 살짝 처져 보였습니다.
+   → 고정 위치를 "처음 놓인 자리"와 똑같이 맞추고, 연도도 메뉴 첫 줄과 같은 높이에 붙입니다.
+   (헤더와 제목 띠 사이 틈은 배경색으로 덮어, 그 틈으로 목록이 비쳐 보이지 않게 합니다) */
+@media (min-width: 701px) {
+  html {
+    --pin-top: calc(var(--header-h) + 1px + var(--space-5) - var(--space-3));
+  }
+  html .page-title-pin {
+    top: var(--pin-top);
+    box-shadow: 0 calc(var(--header-h) - var(--pin-top)) 0 var(--color-bg);
+  }
+  html .page-title-pin ~ .tabs-layout .tabs-nav,
+  html .page-title-pin ~ .tabs-layout .pub-author-head {
+    top: calc(var(--pin-top) + var(--title-h, 0px));
+  }
+  html .page-title-pin ~ .tabs-layout .pub-year-title {
+    top: calc(var(--pin-top) + var(--title-h, 0px));
+  }
+  html .page-title-pin ~ .tabs-layout .author-research .pub-year-title {
+    top: calc(var(--pin-top) + var(--title-h, 0px) + var(--author-h, 0px));
   }
 }
