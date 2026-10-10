@@ -2,6 +2,19 @@
  * 관리자 입력창에 나오는 항목들. 항목을 추가/삭제하고 싶으면 여기만 고치면 됩니다.
  */
 
+/**
+ * 영어 화면(오른쪽 위 EN)용 칸. 바로 위 한글 칸과 짝을 이루고, 편집창에서 "EN" 표시와 함께 연한 색으로 보입니다.
+ * 처음에는 초벌 번역(public/data/en.json)이 미리 채워져 있고, 고쳐서 저장하면 그 값이 쓰입니다.
+ * 비워두면 영어 화면에서도 한글이 그대로 보입니다.
+ */
+const enField = (name, label, extra = {}) => ({
+  name,
+  label: `${label} (영문)`,
+  type: 'text',
+  en: true,
+  ...extra,
+})
+
 export const DEGREE_OPTIONS = [
   { value: 'PhD', label: 'PhD (박사)' },
   { value: 'MA', label: 'MA (석사)' },
@@ -24,9 +37,9 @@ export const personFields = [
     name: 'nameEn',
     label: '영어 이름',
     type: 'text',
+    en: true,
     placeholder: '예: Hyejung Hwang',
-    hint: '이름을 누르면 펼쳐지는 팝업에서 한글 이름 아래 작은 글씨로 표시됩니다. 해외 학회 등에 보여줄 때 유용해요.',
-    showIf: (v) => v.category === 'students' || v.category === 'alumni',
+    hint: '영어 화면에서는 이 이름으로 보입니다. 한국어 화면에서는 이름을 누르면 펼쳐지는 팝업에서 한글 이름 아래 작은 글씨로 표시됩니다.',
   },
   { name: 'photo', label: '사진', type: 'image', folder: 'people' },
   { name: 'photoCrop', label: '사진 위치 · 확대', type: 'crop', imageField: 'photo' },
@@ -37,6 +50,7 @@ export const personFields = [
     placeholder: '예: 교수 / 지도교수',
     showIf: (v) => v.category === 'faculty',
   },
+  enField('positionEn', '직책', { placeholder: '예: Professor', showIf: (v) => v.category === 'faculty' }),
   {
     name: 'degree',
     label: '과정',
@@ -52,6 +66,10 @@ export const personFields = [
     placeholder: '예: 이화여자대학교 교육공학과',
     showIf: (v) => v.category === 'faculty',
   },
+  enField('affiliationEn', '소속', {
+    placeholder: '예: Department of Educational Technology, Ewha Womans University',
+    showIf: (v) => v.category === 'faculty',
+  }),
   {
     name: 'affiliation',
     label: '현재 직장 / 직함',
@@ -60,6 +78,10 @@ export const personFields = [
     hint: '이름을 누르면 펼쳐지는 칸에 표시됩니다.',
     showIf: (v) => v.category === 'alumni',
   },
+  enField('affiliationEn', '현재 직장 / 직함', {
+    placeholder: '예: Researcher, Korea Education Research Institute',
+    showIf: (v) => v.category === 'alumni',
+  }),
   {
     name: 'bio',
     label: '소개',
@@ -68,6 +90,7 @@ export const personFields = [
     hint: '교수 프로필에서는 문단형 소개글로, 학생 카드에서는 짧게 보여집니다.',
     showIf: (v) => v.category === 'faculty',
   },
+  enField('bioEn', '소개', { type: 'textarea', rows: 4, showIf: (v) => v.category === 'faculty' }),
   {
     name: 'bio',
     label: '한 줄 소개',
@@ -75,6 +98,7 @@ export const personFields = [
     hint: '이름을 누르면 펼쳐지는 칸 맨 위에 굵게 표시됩니다.',
     showIf: (v) => v.category === 'students' || v.category === 'alumni',
   },
+  enField('bioEn', '한 줄 소개', { showIf: (v) => v.category === 'students' || v.category === 'alumni' }),
   {
     name: 'pubNames',
     label: '논문에 적힌 다른 이름 (선택)',
@@ -117,6 +141,7 @@ export const personFields = [
     placeholder: '예: 교육관 B동 563호',
     showIf: (v) => v.category === 'faculty',
   },
+  enField('officeEn', '연구실 위치', { placeholder: '예: Room 563, Education Building B', showIf: (v) => v.category === 'faculty' }),
   {
     name: 'researchInterests',
     label: '연구관심분야',
@@ -139,6 +164,7 @@ export const personFields = [
     rows: 3,
     showIf: (v) => v.category === 'faculty',
   },
+  enField('educationEn', '학력', { type: 'lines', rows: 3, showIf: (v) => v.category === 'faculty' }),
   {
     name: 'awards',
     label: '교내수상이력',
@@ -147,6 +173,12 @@ export const personFields = [
     rows: 3,
     showIf: (v) => v.category === 'faculty',
   },
+  enField('awardsEn', '교내수상이력', {
+    type: 'lines',
+    rows: 3,
+    hint: '한글 칸과 같은 순서·형식으로 ("내용 | 날짜").',
+    showIf: (v) => v.category === 'faculty',
+  }),
   {
     name: 'career',
     label: '경력',
@@ -155,6 +187,12 @@ export const personFields = [
     rows: 5,
     showIf: (v) => v.category === 'faculty',
   },
+  enField('careerEn', '경력', {
+    type: 'lines',
+    rows: 5,
+    hint: '한글 칸과 같은 순서·형식으로 ("내용 | 날짜").',
+    showIf: (v) => v.category === 'faculty',
+  }),
   {
     name: 'detail',
     label: '상세 이력',
@@ -163,10 +201,17 @@ export const personFields = [
     rows: 8,
     showIf: (v) => v.category !== 'faculty',
   },
+  enField('detailEn', '상세 이력', {
+    type: 'lines',
+    rows: 8,
+    hint: '한글 칸과 같은 방식(#소제목, "글자 | https://링크")으로 적어요.',
+    showIf: (v) => v.category !== 'faculty',
+  }),
 ]
 
 export const newsFields = [
   { name: 'title', label: '제목', type: 'text', required: true },
+  enField('titleEn', '제목'),
   {
     name: 'subtitle',
     label: '소제목 (선택)',
@@ -174,6 +219,7 @@ export const newsFields = [
     placeholder: '예: 2년간 연구비 지원받아',
     hint: '제목 아래에 조금 작게 나오는 부제목입니다. 비워두면 표시되지 않습니다.',
   },
+  enField('subtitleEn', '소제목'),
   { name: 'images', label: '사진 (여러 장 함께 선택 가능)', type: 'image', folder: 'news', multiple: true },
   {
     name: 'imageWidth',
@@ -201,6 +247,11 @@ export const newsFields = [
     hint:
       '기사처럼 자유롭게 적으세요. 문단 사이는 빈 줄로 구분하면 됩니다. 사진을 본문 중간에 넣고 싶으면, 넣고 싶은 위치에 [사진2], [사진3]처럼 한 줄만 따로 적으세요 (숫자는 위에서 선택한 사진 순서, 첫 번째 사진은 이미 대표 사진으로 맨 위에 쓰이니 2번째부터 씁니다). 정렬도 함께 정하고 싶으면 [사진2:왼쪽], [사진2:오른쪽]처럼 뒤에 붙이면 됩니다 (안 쓰면 가운데 정렬). 아무 표시도 안 하면 남은 사진은 글 맨 아래에 모아서 보여줍니다.',
   },
+  enField('bodyEn', '내용', {
+    type: 'paragraphs',
+    rows: 10,
+    hint: '문단 사이는 빈 줄로 구분하고, 사진 표시([사진2] 등)도 한글 내용과 같은 자리에 그대로 적어주세요.',
+  }),
   { name: 'link', label: '관련 링크 (선택)', type: 'text', placeholder: 'https://...' },
   {
     name: 'hidden',
@@ -229,6 +280,7 @@ export const lablifeFields = () => [
     hint: '사진을 누르면 위치와 확대를 조정할 수 있어요.',
   },
   { name: 'caption', label: '제목 · 한 줄 설명', type: 'text', placeholder: '예: 2026 가을 랩 세미나' },
+  enField('captionEn', '제목 · 한 줄 설명', { placeholder: '예: Fall 2026 Lab Seminar' }),
   {
     name: 'body',
     label: '상세 설명 (선택)',
@@ -236,6 +288,7 @@ export const lablifeFields = () => [
     rows: 4,
     hint: '여러 문장으로 자유롭게 적을 수 있어요.',
   },
+  enField('bodyEn', '상세 설명', { type: 'textarea', rows: 4 }),
   { name: 'date', label: '날짜', type: 'month', hint: '최신 날짜가 맨 앞에 나옵니다.' },
 ]
 
@@ -275,12 +328,20 @@ export const publicationFields = [
     required: true,
     hint: '학위논문은 제목 맨 끝에 (석사학위논문) 또는 (박사학위논문)을 붙여주세요. 목록에서 제목과 분리되어 별도 배지로 표시됩니다. 예: "협력학습에서의 조절 전략 연구 (박사학위논문)"',
   },
+  enField('titleEn', '제목', {
+    label: '영문 제목 (선택)',
+    hint: '한글 논문의 공식 영문 제목이 있으면 적어주세요. 영어 화면에서 원제 대신 이 제목이 보입니다. 비워두면 원제 그대로 보여요(학계 관례).',
+  }),
   {
     name: 'venue',
     label: '학술지 / 학회명 / 출판사',
     type: 'text',
     hint: '학술지 이름을 정확히 적으면 SSCI·Scopus·KCI 배지가 자동으로 붙습니다. 저역서는 출판사를 적어주세요.',
   },
+  enField('venueEn', '학술지 / 학회명', {
+    label: '영문 학술지 / 학회명 (선택)',
+    hint: '보통은 비워두세요. 자주 나오는 국내 학술지·학회는 영어 화면에서 공식 영문 이름으로 자동 표시됩니다. 자동 표시가 없거나 틀릴 때만 적으세요.',
+  }),
   {
     name: 'details',
     label: '권(호), 페이지',
@@ -328,6 +389,7 @@ export const PROJECT_MEMBER_ROLES = ['박사후연구원', '학생연구원']
 
 export const projectFields = [
   { name: 'title', label: '과제명', type: 'text', required: true },
+  enField('titleEn', '과제명'),
   {
     name: 'funder',
     label: '지원기관',
@@ -335,7 +397,9 @@ export const projectFields = [
     placeholder: '예: 교육부 · 한국연구재단',
     hint: '부처와 전문기관을 가운데 점( · )으로 이어 적으세요.',
   },
+  enField('funderEn', '지원기관', { placeholder: '예: Ministry of Education · National Research Foundation of Korea' }),
   { name: 'program', label: '사업명', type: 'text', placeholder: '예: 인문사회기초연구사업' },
+  enField('programEn', '사업명', { placeholder: '예: Basic Research Program in the Humanities and Social Sciences' }),
   {
     name: 'scale',
     label: '과제 규모',
@@ -343,6 +407,7 @@ export const projectFields = [
     placeholder: '예: 중견연구',
     hint: '중견연구 · 신진연구 · 우수신진 · 리더연구 등. 사업명 옆에 작은 태그로 표시됩니다.',
   },
+  enField('scaleEn', '과제 규모', { placeholder: '예: Mid-career Research' }),
   { name: 'start', label: '시작', type: 'month' },
   { name: 'end', label: '종료', type: 'month', hint: '비워두면 "진행 중"으로 표시됩니다.' },
   {
@@ -360,11 +425,18 @@ export const projectFields = [
     hint: '과제에 참여했던 "당시"의 신분을 고르세요 (예: 그때 석사과정이었다면 지금 박사여도 "석사과정"). 목록에는 박사후연구원 → 학생연구원 순으로 묶이고, 이름은 가나다순으로 정렬됩니다. (박사·석사·학부 과정은 모두 "학생연구원")',
   },
   { name: 'description', label: '과제 소개 (선택)', type: 'textarea' },
+  enField('descriptionEn', '과제 소개', { type: 'textarea' }),
 ]
 
 export const patentFields = [
   { name: 'title', label: '특허명', type: 'text', required: true },
-  { name: 'titleEn', label: '영문 특허명 (선택)', type: 'text', hint: '한글 특허명 바로 아래에 작게 보입니다.' },
+  {
+    name: 'titleEn',
+    label: '영문 특허명 (선택)',
+    type: 'text',
+    en: true,
+    hint: '한국어 화면에서는 한글 특허명 바로 아래에 작게, 영어 화면에서는 제목으로 보입니다.',
+  },
   { name: 'inventors', label: '발명자', type: 'lines', rows: 2, hint: '한 줄에 한 명씩' },
   { name: 'number', label: '출원/등록 번호', type: 'text' },
   {
@@ -386,6 +458,7 @@ export const patentFields = [
     rows: 3,
     hint: '특허 제목 아래에 그대로 보입니다. 1~2문장으로 간결하게 적으세요.',
   },
+  enField('descriptionEn', '간략한 소개', { type: 'textarea', rows: 3 }),
   {
     name: 'hidden',
     label: '표시 여부',
@@ -401,7 +474,9 @@ export const patentFields = [
 
 export const toolFields = [
   { name: 'name', label: '이름', type: 'text', required: true },
+  enField('nameEn', '이름'),
   { name: 'description', label: '설명', type: 'textarea', rows: 3 },
+  enField('descriptionEn', '설명', { type: 'textarea', rows: 3 }),
   { name: 'image', label: '이미지', type: 'image', folder: 'tools' },
   { name: 'link', label: '링크 (선택)', type: 'text', placeholder: 'https://...' },
   {
@@ -412,11 +487,13 @@ export const toolFields = [
     placeholder: '예: 이 시스템은 2024년 한국연구재단의 지원을 받아 개발되었습니다. (NRF-…)',
     hint: '이 시스템을 만든 연구비 지원 문구입니다. 설명 아래에 작게 표시됩니다.',
   },
+  enField('acknowledgementEn', '사사 표기', { type: 'textarea', rows: 2 }),
   { name: 'tags', label: '태그', type: 'tags', hint: '쉼표로 구분 (예: Learning Analytics, CSCL)' },
 ]
 
 export const siteIntroFields = [
-  { name: 'university', label: '상단 작은 글씨 (현재 미사용)', type: 'text' },
+  { name: 'university', label: '맨 아래 저작권 줄의 소속', type: 'text', hint: '예: 이화여자대학교 교육공학과 임규연 교수 연구실' },
+  enField('universityEn', '맨 아래 저작권 줄의 소속'),
   { name: 'labName', label: '연구실 이름', type: 'text', required: true },
   {
     name: 'labTagline',
@@ -446,11 +523,13 @@ export const siteIntroFields = [
     hint: '메인 화면에서 "CoRe Lab"과 모토 아래에 순서대로 표시됩니다. 한 줄에 하나씩 입력하세요. 1번째 줄 = 대학교(작게), 2번째 줄 = 학과(가장 또렷하게 강조), 3번째 줄부터 = 지도교수 등(작게). 예: Ewha Womans University / Department of Educational Technology / Prof. Kyu Yon Lim',
   },
   { name: 'overview', label: '소개글', type: 'paragraphs', rows: 8, hint: '문단 사이는 빈 줄 하나로 구분하세요.' },
+  enField('overviewEn', '소개글', { type: 'paragraphs', rows: 8, hint: '영어 화면의 Lab Overview 본문입니다. 문단 사이는 빈 줄 하나로 구분하세요.' }),
   { name: 'researchAreas', label: '연구 분야 태그', type: 'lines', hint: '한 줄에 하나씩' },
 ]
 
 export const contactFields = [
   { name: 'address', label: '주소', type: 'text' },
+  enField('addressEn', '주소'),
   { name: 'email', label: '이메일', type: 'text' },
   { name: 'phone', label: '전화번호', type: 'text' },
 ]
