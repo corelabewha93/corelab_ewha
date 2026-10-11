@@ -396,9 +396,9 @@
     },
     {
       "name": "김선영",
-      "photo": "images/people/김선영-mufi9p7k.jpg",
+      "photo": "images/people/김선영-mv40irya.jpg",
       "photoCrop": {
-        "x": 56.5,
+        "x": 48.2,
         "y": 100,
         "zoom": 1
       },
@@ -417,7 +417,21 @@
       ],
       "links": [],
       "id": "person-mue1lzrlrf6",
-      "nameEn": "Sun Young Kim"
+      "nameEn": "Sun Young Kim",
+      "bioEn": "",
+      "pubNames": [],
+      "hideResearch": "",
+      "detailEn": [
+        "#Education",
+        "Ph.D. student, Educational Technology, Graduate School, Ewha Womans University | 2026~present",
+        "M.A., Educational Technology (HRD), Graduate School of Education, Ewha Womans University | 2023~2025",
+        "#Experience",
+        "Teacher, Suwon Jamwon Elementary School",
+        "#Research",
+        "Kim, S. Y., & Lim, K. Y. (2025). Analysis of learner responses to an AI-based adaptive learning system: Diagnosing adaptivity through topic modeling. Journal of Educational Information and Media, 31(6), 2597–2627.",
+        "#Research Interests",
+        "Self-regulated learning, learning analytics, gamification"
+      ]
     },
     {
       "name": "김혜민",
