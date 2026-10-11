@@ -69,7 +69,7 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
               className="patent-title-en"
               style={{
                 margin: '0.1rem 0 0',
-                fontSize: '0.76rem',
+                fontSize: '0.66rem',
                 lineHeight: 1.45,
                 fontStyle: 'italic',
                 color: 'var(--color-text-muted)',

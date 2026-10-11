@@ -439,7 +439,6 @@ export default function Publications({
   // Book(저역서)은 편수가 적어 접지 않고 모두 보여줍니다.
   const collapsible =
     !embedded && filter !== 'book' && !terms.length && recentGroups.length > 0 && olderGroups.length > 0
-  const olderCount = olderGroups.reduce((n, [, list]) => n + list.length, 0)
   const olderYears = olderGroups.map(([y]) => Number(y)).filter(Number.isFinite)
   const olderRange = olderYears.length
     ? `${Math.max(...olderYears)}–${Math.min(...olderYears)}`
@@ -557,7 +556,7 @@ export default function Publications({
               <button type="button" className="pub-more-btn" onClick={() => setShowAll(true)} aria-expanded="false">
                 {tr('이전 연구 더보기', 'Earlier publications')}
                 <span className="pub-more-meta">
-                  {olderRange} · {tr(`${olderCount}편`, `${olderCount}`)}
+                  {olderRange}
                 </span>
                 <Chevron />
               </button>
