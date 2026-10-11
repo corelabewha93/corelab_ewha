@@ -5,34 +5,42 @@ import { useLang } from '../i18n/LangContext'
 
 /**
  * 인트로가 끝난 뒤에도 "함께 배우는 중"이라는 느낌이 남도록, 소속 문구 아래에
- * 처음 장면의 다섯 사람 네트워크를 아주 작고 옅게 남겨 둡니다.
+ * 처음 장면의 사람들(빛)을 아주 작고 옅게 남겨 둡니다.
  *
- * - 8.5초마다 한 사람에게서 생각(빛)이 떠올라 옆 사람에게 차례로 건너가고, 도착한 사람의 링이 차오릅니다.
- *   모두 이어지면 링이 함께 꽉 찼다가, 가운데 사람에게서 빛이 아래로 떨어지며 "아래로 이어집니다"를 알려 줍니다.
- * - 가운데 아래 짧은 선 + 화살표(스크롤 신호)를 누르면 Lab Overview로 내려갑니다.
- * - 동작 줄이기 설정이면 움직이지 않고 옅은 네트워크만 보여줍니다.
+ * - 8.5초마다 한 사람에게서 생각(빛)이 떠올라 이웃에게 차례로 건너가고, 도착한 사람의 링이 차오릅니다.
+ *   모두 이어지면 링이 함께 꽉 찼다가, 빛이 아래 화살표로 떨어지며 "아래로 이어집니다"를 알려 줍니다.
+ * - 화살표를 누르면 Lab Overview로 내려갑니다.
+ * - 동작 줄이기 설정이면 움직이지 않고 옅은 모양만 보여줍니다.
+ *
+ * 모양(SHAPE): 이화(梨花) 배꽃 — 다섯 사람 = 다섯 꽃잎. 점의 자리(단위 좌표), 이어진 선, 생각이 건너가는 순서를 정합니다.
  */
 
 const NS = 'http://www.w3.org/2000/svg'
 const GOLD = '#e4d083'
 const MINT = '#8fe3ea'
+const IVORY = '#fffbea'
 const chalk = (a) => `rgba(245,242,232,${a})`
 
-// 처음 장면(넓은 화면 배치)의 다섯 사람 높이 모양을 그대로 줄여 씁니다.
-const SHAPE_Y = [50, 0, 67, 0, 50]
-const LINKS = [
-  [0, 1],
-  [1, 2],
-  [2, 3],
-  [3, 4],
-  [0, 2],
-  [1, 3],
-  [2, 4],
-]
-const ORIGINS = [2, 0, 4, 1, 3]
+const ring5 = (k, rad = 1, rot = -90) => {
+  const a = ((rot + k * 72) * Math.PI) / 180
+  return [Math.cos(a) * rad, Math.sin(a) * rad]
+}
+
+// 이화(梨花) = 배꽃. 다섯 사람이 다섯 꽃잎이 되고, 모두 이어지면(오각형 + 별 = 모두가 모두와 연결) 꽃이 핍니다.
+const SHAPE = {
+  pts: [0, 1, 2, 3, 4].map((k) => ring5(k)),
+  center: [0, 0],
+  petals: { rx: 0.8, ry: 0.64 }, // 꽃잎: 바깥쪽으로 조금 긴 둥근 잎
+  hideAllBase: true, // 별 모양(모두가 모두와) 선은 꽃이 필 때만 잠깐 보입니다
+  nodeR: 0.78,
+  hop: [0, 1, 2, 3, 4].map((k) => [k, (k + 1) % 5]),
+  all: [0, 1, 2, 3, 4].map((k) => [k, (k + 2) % 5]),
+  origins: [0, 2, 4, 1, 3], // 릴레이가 시작되는 사람(돌아가며)
+  width: { pc: 128, m: 118 },
+}
 
 const PERIOD = 8.5 // 한 번의 릴레이 주기(초)
-const HOP = 0.75 // 옆 사람에게 건너가는 시간
+const HOP = 0.75 // 이웃에게 건너가는 시간
 const FILL = 0.55 // 도착 후 링이 차오르는 시간
 const SOLO = 0.7
 const FADE = 1.8
@@ -47,32 +55,59 @@ const eo = (x) => 1 - Math.pow(1 - x, 3)
 
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
+const shapeOf = () => SHAPE
+
+/** 생각이 출발점에서 각 사람에게 닿기까지 몇 칸인지 (선을 따라) */
+function hopDistances(S, origin) {
+  const n = S.pts.length
+  const d = Array(n).fill(Infinity)
+  d[origin] = 0
+  const q = [origin]
+  while (q.length) {
+    const a = q.shift()
+    S.hop.forEach(([i, j]) => {
+      const b = i === a ? j : j === a ? i : -1
+      if (b >= 0 && d[b] === Infinity) {
+        d[b] = d[a] + 1
+        q.push(b)
+      }
+    })
+  }
+  return d
+}
+
 /** 한 번의 릴레이(시작 후 u초)에서 사람·선마다 얼마나 켜져 있는지 */
-function cycleState(u, origin) {
-  const arr = [0, 1, 2, 3, 4].map((i) => Math.abs(i - origin) * HOP)
-  const allAt = Math.max(...arr) + FILL * 0.6
-  const fadeAt = allAt + 1.9
+function cycleState(S, u, origin) {
+  const dist = hopDistances(S, origin)
+  const arr = dist.map((d) => (Number.isFinite(d) ? d * HOP : Infinity))
+  const finite = arr.filter(Number.isFinite)
+  const allAt = Math.max(...finite) + FILL * 0.6
+  const endAt = allAt
+  const fadeAt = endAt + 1.9
   const fade = 1 - eo(pr(u, fadeAt, FADE))
   const all = eio(pr(u, allAt, 0.35))
   const nodes = arr.map((a) => {
     const f = eio(pr(u, a, FILL))
     return { ring: SOLO * f + (1 - SOLO) * all, ringO: fade * clamp(f * 10), on: eio(pr(u, a + 0.08, 0.3)) * fade }
   })
-  const links = LINKS.map(([i, j], k) => {
-    if (k < 4) {
+  const link = (i, j, start, d, from) => {
+    const p = pr(u, start, d)
+    return { p: eio(p) * (p > 0 ? 1 : 0), fade, from, moving: p > 0 && p < 1, rev: from === j }
+  }
+  const links = [
+    ...S.hop.map(([i, j]) => {
+      if (arr[i] === arr[j]) return link(i, j, allAt - 0.25, 0.4, i) // 같은 때 닿는 두 사람 사이: 마지막에 함께
       const from = arr[i] < arr[j] ? i : j
-      const p = pr(u, arr[from], HOP)
-      return { p: eio(p) * (p > 0 ? 1 : 0), fade, from, moving: p > 0 && p < 1, rev: from === j }
-    }
-    const p = pr(u, allAt - 0.25 + (k - 4) * 0.06, 0.4)
-    return { p: eio(p), fade, from: i, moving: false, rev: false }
-  })
+      return link(i, j, arr[from], HOP, from)
+    }),
+    ...S.all.map(([i, j], k) => ({ ...link(i, j, allAt - 0.25 + k * 0.06, 0.4, i), moving: false })),
+  ]
   const beat = Math.sin(pr(u, allAt + 0.05, 0.42) * Math.PI)
-  const drop = pr(u, allAt + 0.55, DROP)
-  return { nodes, links, beat: beat * fade, drop, active: u >= 0 && u < fadeAt + FADE }
+  const drop = pr(u, endAt + 0.55, DROP)
+  return { nodes, links, all: all * fade, beat: beat * fade, drop, active: u >= 0 && u < fadeAt + FADE }
 }
 
-function build(svg) {
+function build(svg, S) {
   while (svg.firstChild) svg.removeChild(svg.firstChild)
   const mk = (tag, attrs, parent = svg) => {
     const e = document.createElementNS(NS, tag)
@@ -84,26 +119,50 @@ function build(svg) {
   ;[
     ['ha-glow-a', GOLD],
     ['ha-glow-b', MINT],
-    ['ha-glow-w', '#fffbea'],
+    ['ha-glow-w', IVORY],
   ].forEach(([id, c]) => {
     const g = mk('radialGradient', { id }, defs)
     mk('stop', { offset: 0, 'stop-color': c, 'stop-opacity': 0.9 }, g)
     mk('stop', { offset: 1, 'stop-color': c, 'stop-opacity': 0 }, g)
   })
   const root = mk('g', { class: 'hero-ambient-band' })
+  const petalG = mk('g', {}, root)
   const linkG = mk('g', {}, root)
   const nodeG = mk('g', {}, root)
   const fx = mk('g', {}, root)
   const cue = mk('g', {}, root)
 
   const path = (parent, attrs) => mk('path', { fill: 'none', 'stroke-linecap': 'round', ...attrs }, parent)
-  const links = LINKS.map(() => {
-    const base = path(linkG, { stroke: chalk(0.16) })
+  const pairs = [...S.hop, ...S.all]
+  const links = pairs.map((_, k) => {
+    const isAll = k >= S.hop.length
+    const base = path(linkG, { stroke: chalk(isAll && S.hideAllBase ? 0 : 0.16) })
     const tint = path(linkG, { pathLength: 1, 'stroke-dasharray': '1 1', 'stroke-dashoffset': 1, opacity: 0 })
     const pulse = mk('circle', { r: 2.4, fill: '#fff', opacity: 0 }, fx)
     return { base, tint, pulse }
   })
-  const nodes = [0, 1, 2, 3, 4].map((i) => {
+  // 꽃잎: (1) 다섯 잎을 합친 실루엣(겹친 자리가 진해지지 않게 한 묶음으로) + 바깥 테두리만
+  //       (2) 생각이 닿은 사람의 잎만 따로 밝아지는 층
+  let petals = []
+  let petalShape = null
+  if (S.petals) {
+    const mask = mk('mask', { id: 'ha-petal-out', maskUnits: 'userSpaceOnUse' }, defs)
+    mk('rect', { x: -9999, y: -9999, width: 30000, height: 30000, fill: '#fff' }, mask)
+    const maskCut = S.pts.map(() => mk('ellipse', { fill: '#000' }, mask))
+    const outline = mk('g', { mask: 'url(#ha-petal-out)' }, petalG)
+    const outlines = S.pts.map(() => mk('ellipse', { fill: 'none', stroke: chalk(0.3), 'stroke-width': 2 }, outline))
+    const silhouette = mk('g', { opacity: 0.05 }, petalG)
+    const fills = S.pts.map(() => mk('ellipse', { fill: IVORY }, silhouette))
+    petals = S.pts.map(() => mk('ellipse', { fill: IVORY, 'fill-opacity': 0 }, petalG))
+    petalShape = { all: [...maskCut, ...outlines, ...fills, ...petals], outline, silhouette }
+  }
+  const center = S.center
+    ? {
+        glow: mk('circle', { fill: 'url(#ha-glow-a)', opacity: 0 }, petalG),
+        dots: [0, 1, 2, 3, 4].map(() => mk('circle', { fill: GOLD, opacity: 0.3 }, petalG)),
+      }
+    : null
+  const nodes = S.pts.map((_, i) => {
     const color = i % 2 ? MINT : GOLD
     const g = mk('g', {}, nodeG)
     const glow = mk('circle', { fill: `url(#ha-glow-${i % 2 ? 'b' : 'a'})`, opacity: 0 }, g)
@@ -113,16 +172,43 @@ function build(svg) {
     const ping = mk('circle', { fill: 'none', stroke: color, opacity: 0 }, g)
     return { g, glow, track, ring, head, ping, color }
   })
-  // 스크롤 신호: 가운데 사람 아래 짧은 선 + 작은 화살표
+  // 스크롤 신호: 아래 짧은 선 + 작은 화살표
   const cueLine = path(cue, { stroke: chalk(0.22) })
   const cueArrow = path(cue, { stroke: chalk(0.42), 'stroke-linejoin': 'round' })
-  const cueDot = mk('circle', { fill: '#fffbea', opacity: 0 }, cue)
+  const cueDot = mk('circle', { fill: IVORY, opacity: 0 }, cue)
   const cueGlow = mk('circle', { fill: 'url(#ha-glow-w)', opacity: 0 }, cue)
-  return { root, links, nodes, cueLine, cueArrow, cueDot, cueGlow }
+  return { S, root, pairs, links, petals, petalShape, center, nodes, cueLine, cueArrow, cueDot, cueGlow }
 }
 
 /**
- * 화면 높이가 낮은 노트북·휴대폰에서도 작은 네트워크와 화살표가 첫 화면 안에 보이도록,
+ * 모양을 화면 크기에 맞춰 놓습니다 (px). q = 0~1: 화면 높이가 낮을수록 간격·화살표를 줄입니다.
+ * 반환값 need: 소속 문구 아래로 필요한 높이.
+ */
+function layoutShape(S, W, q) {
+  const mobile = W < 560
+  const bw = Math.min(mobile ? W - 72 : W * 0.5, mobile ? S.width.m : S.width.pc)
+  const xs = S.pts.map((p) => p[0])
+  const ys = S.pts.map((p) => p[1])
+  const pad = S.petals.rx
+  let minX = Math.min(...xs) - pad
+  let maxX = Math.max(...xs) + pad
+  let minY = Math.min(...ys) - pad
+  let maxY = Math.max(...ys) + pad
+  const k = (bw / (maxX - minX)) * (0.6 + 0.4 * q)
+  const r = (mobile ? 5 : 6) * S.nodeR * (0.78 + 0.22 * q)
+  const gap = 12 + ((mobile ? 30 : 34) - 12) * q
+  const cueLen = 12 + ((mobile ? 20 : 24) - 12) * q
+  const h = (maxY - minY) * k
+  const top = gap
+  const pts = S.pts.map(([x, y]) => [W / 2 + (x - (minX + maxX) / 2) * k, top + (y - minY) * k])
+  const center = S.center ? [W / 2 + (S.center[0] - (minX + maxX) / 2) * k, top + (S.center[1] - minY) * k] : null
+  const bottom = top + h
+  const cueTop = bottom + 4
+  return { pts, center, r, k, cueTop, cueLen, need: cueTop + cueLen + 14, mobile }
+}
+
+/**
+ * 화면 높이가 낮은 노트북·휴대폰에서도 작은 그림과 화살표가 첫 화면 안에 보이도록,
  * 이름·문구 묶음을 위로 올릴 만큼의 여유(px)를 계산해 .hero-intro의 --ambient-room에 넣습니다.
  * (넉넉한 화면에서는 0이라 지금과 똑같습니다. HeroIntro.jsx가 "CoRe Lab"으로 모이는 순간에 한 번 부릅니다)
  */
@@ -133,12 +219,10 @@ export function fitAmbientRoom(section) {
   const content = section.querySelector('.hero-intro-content')
   if (!aff || !content) return
   const sr = section.getBoundingClientRect()
-  const W = sr.width
-  const mobile = W < 560
-  const bw = mobile ? Math.min(W - 72, 300) : Math.min(W * 0.5, 560)
-  const r = mobile ? 5 : 6
-  const full = (mobile ? 30 : 34) + r * 1.6 + bw * (mobile ? 0.085 : 0.072) + r * 1.7 + 4 + (mobile ? 20 : 24) + 14
-  const avail = window.innerHeight - (aff.getBoundingClientRect().bottom + window.scrollY)
+  const full = layoutShape(shapeOf(), sr.width, 1).need
+  // 첫 화면의 아래 끝 또는 칠판(hero)의 아래 끝 중 더 위쪽까지
+  const limit = Math.min(window.innerHeight, sr.bottom + window.scrollY)
+  const avail = limit - (aff.getBoundingClientRect().bottom + window.scrollY)
   const deficit = full - avail
   if (deficit <= 0) return
   // 칠판 위쪽 여백 안으로는 올라가지 않습니다 (그 이상 올리면 칠판만 길어지므로).
@@ -148,40 +232,35 @@ export function fitAmbientRoom(section) {
   section.style.setProperty('--ambient-room', `${Math.round(room)}px`)
 }
 
-/** 소속 문구 바로 아래에 띠의 자리·크기를 정합니다 (px). */
-function geometry(section) {
+/** 소속 문구 바로 아래에 그림의 자리·크기를 정합니다 (px). */
+function geometry(section, S) {
   const sr = section.getBoundingClientRect()
   const anchor = section.querySelector('.hero-affiliation') || section.querySelector('.hero-intro-content')
   const ar = anchor ? anchor.getBoundingClientRect() : { bottom: sr.top + sr.height * 0.8 }
   const W = sr.width
-  const mobile = W < 560
-  const bw = mobile ? Math.min(W - 72, 300) : Math.min(W * 0.5, 560)
-  const r = mobile ? 5 : 6
-  const sh0 = bw * (mobile ? 0.085 : 0.072) // 띠의 높낮이
-  const gap0 = mobile ? 30 : 34
-  const cue0 = mobile ? 20 : 24
-  // 노트북처럼 화면 높이가 낮으면, 첫 화면 안에 들어오도록 간격·높낮이·화살표 길이를 조금씩 줄입니다.
-  const need = (g, h, c) => g + r * 1.6 + h + r * 1.7 + 4 + c + 10
-  const full = need(gap0, sh0, cue0)
-  const min = need(16, sh0 * 0.7, 12)
-  const avail = window.innerHeight - (ar.bottom + window.scrollY)
-  const q = clamp((avail - min) / (full - min))
-  const sh = sh0 * (0.7 + 0.3 * q)
-  const top = ar.bottom - sr.top + 16 + (gap0 - 16) * q + r * 1.6
-  const x0 = W / 2 - bw / 2
-  const pts = SHAPE_Y.map((y, i) => [x0 + (bw * i) / 4, top + (y / 67) * sh])
-  const cueTop = pts[2][1] + r * 1.7 + 4
-  const cueLen = 12 + (cue0 - 12) * q
-  return { W, H: sr.height, pts, r, cueTop, cueLen, mobile }
+  // 노트북처럼 화면 높이가 낮으면, 첫 화면 안에 들어오도록 간격·크기·화살표 길이를 조금씩 줄입니다.
+  const full = layoutShape(S, W, 1).need
+  const min = layoutShape(S, W, 0).need
+  const limit = Math.min(window.innerHeight, sr.bottom + window.scrollY)
+  const avail = limit - (ar.bottom + window.scrollY)
+  const q = clamp((avail - min) / (full - min || 1))
+  const L = layoutShape(S, W, q)
+  const off = ar.bottom - sr.top
+  const sh = ([x, y]) => [x, y + off]
+  return {
+    W,
+    H: sr.height,
+    pts: L.pts.map(sh),
+    center: L.center ? sh(L.center) : null,
+    k: L.k,
+    r: L.r,
+    cueX: W / 2,
+    cueTop: L.cueTop + off,
+    cueLen: L.cueLen,
+    mobile: L.mobile,
+  }
 }
 
-function quad(A, B, k) {
-  const dx = B[0] - A[0]
-  const dy = B[1] - A[1]
-  const l = Math.hypot(dx, dy) || 1
-  const bend = (k % 2 ? 1 : -1) * l * 0.16
-  return [(A[0] + B[0]) / 2 - (dy / l) * bend, (A[1] + B[1]) / 2 + (dx / l) * bend]
-}
 const trim = (a, b, r) => {
   const dx = b[0] - a[0]
   const dy = b[1] - a[1]
@@ -197,30 +276,70 @@ const onQuad = (A, C, B, w) => {
 
 function place(s, G) {
   const { pts, r } = G
+  const S = s.S
   s.geo = G
+  const mid = G.center ?? [pts.reduce((a, p) => a + p[0], 0) / pts.length, pts.reduce((a, p) => a + p[1], 0) / pts.length]
   s.links.forEach((l, k) => {
-    const [i, j] = LINKS[k]
+    const [i, j] = s.pairs[k]
     const A = trim(pts[i], pts[j], r * 1.9)
     const B = trim(pts[j], pts[i], r * 1.9)
-    const C = quad(A, B, k)
+    const dx = B[0] - A[0]
+    const dy = B[1] - A[1]
+    const len = Math.hypot(dx, dy) || 1
+    let C = [(A[0] + B[0]) / 2, (A[1] + B[1]) / 2]
+    const isHop = k < S.hop.length
+    if (isHop) {
+      // 꽃 바깥쪽으로 살짝 부푼 곡선
+      const ox = C[0] - mid[0]
+      const oy = C[1] - mid[1]
+      const ol = Math.hypot(ox, oy) || 1
+      C = [C[0] + (ox / ol) * len * 0.14, C[1] + (oy / ol) * len * 0.14]
+    }
     const d = `M${A[0].toFixed(1)},${A[1].toFixed(1)} Q${C[0].toFixed(1)},${C[1].toFixed(1)} ${B[0].toFixed(1)},${B[1].toFixed(1)}`
     l.base.setAttribute('d', d)
     l.tint.setAttribute('d', d)
-    l.base.setAttribute('stroke-width', k < 4 ? 1.3 : 1)
-    l.tint.setAttribute('stroke-width', k < 4 ? 1.6 : 1.2)
+    const thin = !isHop
+    l.base.setAttribute('stroke-width', thin ? 0.9 : 1.3)
+    l.tint.setAttribute('stroke-width', thin ? 1.1 : 1.6)
     Object.assign(l, { A, B, C })
   })
+  if (s.petalShape) {
+    const n = S.pts.length
+    s.petalShape.all.forEach((e, idx) => {
+      const i = idx % n
+      const [x, y] = pts[i]
+      const ang = (Math.atan2(y - mid[1], x - mid[0]) * 180) / Math.PI
+      e.setAttribute('cx', x)
+      e.setAttribute('cy', y)
+      e.setAttribute('rx', (S.petals.rx * G.k).toFixed(2))
+      e.setAttribute('ry', (S.petals.ry * G.k).toFixed(2))
+      e.setAttribute('transform', `rotate(${ang.toFixed(1)} ${x} ${y})`)
+    })
+  }
+  if (s.center) {
+    const [cx, cy] = G.center
+    s.center.glow.setAttribute('cx', cx)
+    s.center.glow.setAttribute('cy', cy)
+    s.center.glow.setAttribute('r', G.k * 0.9)
+    s.center.dots.forEach((e, i) => {
+      const [x, y] = ring5(i, G.k * 0.17, -54)
+      e.setAttribute('cx', (cx + x).toFixed(2))
+      e.setAttribute('cy', (cy + y).toFixed(2))
+      e.setAttribute('r', (G.k * 0.06 + 0.6).toFixed(2))
+    })
+  }
   s.nodes.forEach((n, i) => {
     const [x, y] = pts[i]
+    const rr = r
     n.x = x
     n.y = y
-    n.rr = r * 1.6
+    n.rr = rr * 1.6
     ;[n.glow, n.track, n.ring, n.head, n.ping].forEach((e) => {
       e.setAttribute('cx', x)
       e.setAttribute('cy', y)
     })
-    n.glow.setAttribute('r', r * 3.6)
-    n.head.setAttribute('r', r)
+    n.glow.setAttribute('r', rr * 3.6)
+    n.head.setAttribute('r', rr)
     n.head.setAttribute('stroke-width', 1.2)
     n.track.setAttribute('r', n.rr)
     n.ring.setAttribute('r', n.rr)
@@ -229,7 +348,7 @@ function place(s, G) {
     n.ring.setAttribute('stroke-width', 1.9)
     n.ring.setAttribute('transform', `rotate(-90 ${x} ${y})`)
   })
-  const cx = pts[2][0]
+  const cx = G.cueX
   s.cueLine.setAttribute('d', `M${cx},${G.cueTop} L${cx},${G.cueTop + G.cueLen}`)
   s.cueLine.setAttribute('stroke-width', 1.2)
   const ay = G.cueTop + G.cueLen + 3
@@ -248,7 +367,8 @@ export default function HeroAmbient({ animated }) {
     const svg = svgRef.current
     const section = svg?.closest('.hero-intro')
     if (!svg || !section) return undefined
-    const s = build(svg)
+    const S = shapeOf()
+    const s = build(svg, S)
     const t0 = performance.now()
     const now = () => (performance.now() - t0) / 1000
     const showAt = animated ? SHOW_AT : 0.2
@@ -258,20 +378,21 @@ export default function HeroAmbient({ animated }) {
     let visible = true
 
     const relayout = () => {
-      const G = geometry(section)
+      const G = geometry(section, S)
       svg.setAttribute('viewBox', `0 0 ${G.W} ${G.H}`)
       place(s, G)
       const b = btnRef.current
       if (b) {
-        b.style.left = `${G.pts[2][0] - 22}px`
-        b.style.top = `${G.pts[2][1] - G.r * 2}px`
-        b.style.height = `${G.cueTop + G.cueLen + 10 - (G.pts[2][1] - G.r * 2)}px`
+        const top = Math.max(...G.pts.map((p) => p[1])) - G.r * 2
+        b.style.left = `${G.cueX - 22}px`
+        b.style.top = `${top}px`
+        b.style.height = `${G.cueTop + G.cueLen + 10 - top}px`
       }
     }
     relayout()
 
     // 릴레이 순서: 지금 것(cur)과 직전 것(prev, 사라지는 중)을 함께 그립니다.
-    let cur = { start: showAt + FIRST, origin: ORIGINS[0], n: 0 }
+    let cur = { start: showAt + FIRST, origin: S.origins[0], n: 0 }
     let prev = null
 
     const render = (t) => {
@@ -281,10 +402,12 @@ export default function HeroAmbient({ animated }) {
       if (!still && t >= cur.start + PERIOD) {
         prev = cur
         const n = cur.n + 1
-        cur = { start: Math.max(cur.start + PERIOD, t - 0.5), origin: ORIGINS[n % ORIGINS.length], n }
+        cur = { start: Math.max(cur.start + PERIOD, t - 0.5), origin: S.origins[n % S.origins.length], n }
       }
-      const states = still ? [] : [cur, prev].filter(Boolean).map((c) => cycleState(t - c.start, c.origin)).filter((c) => c.active)
+      const states = still ? [] : [cur, prev].filter(Boolean).map((c) => cycleState(S, t - c.start, c.origin)).filter((c) => c.active)
       const mx = (fn) => Math.max(0, ...states.map(fn))
+      const allLit = mx((c) => c.all)
+      const beat = mx((c) => c.beat)
 
       s.nodes.forEach((n, i) => {
         // 링: 가장 또렷한 릴레이의 값 (사라질 때는 길이를 줄이지 않고 흐려지기만)
@@ -297,14 +420,22 @@ export default function HeroAmbient({ animated }) {
           }
         })
         const on = mx((c) => c.nodes[i].on)
-        const beat = mx((c) => c.beat)
         n.ring.style.strokeDasharray = `${ring.toFixed(4)} 1`
         n.ring.setAttribute('opacity', (0.95 * ringO).toFixed(3))
         n.head.setAttribute('fill-opacity', (0.16 + 0.62 * on).toFixed(3))
         n.glow.setAttribute('opacity', (on * 0.55 + beat * 0.3).toFixed(3))
         n.ping.setAttribute('opacity', (beat * 0.45).toFixed(3))
         n.ping.setAttribute('r', (n.rr * (1 + 0.6 * (1 - beat))).toFixed(2))
+        if (s.petals[i]) s.petals[i].setAttribute('fill-opacity', (0.09 * on).toFixed(3))
       })
+      if (s.petalShape) {
+        s.petalShape.silhouette.setAttribute('opacity', (0.05 + 0.07 * allLit).toFixed(3))
+        s.petalShape.outline.setAttribute('opacity', (0.75 + 0.25 * allLit).toFixed(3))
+      }
+      if (s.center) {
+        s.center.glow.setAttribute('opacity', (allLit * 0.7 + beat * 0.25).toFixed(3))
+        s.center.dots.forEach((e) => e.setAttribute('opacity', (0.3 + 0.65 * allLit).toFixed(3)))
+      }
 
       s.links.forEach((l, k) => {
         let best = null
@@ -333,10 +464,13 @@ export default function HeroAmbient({ animated }) {
       const dr = states.find((c) => c.drop > 0 && c.drop < 1)
       if (dr) {
         const d = eio(dr.drop)
-        const y0 = G.pts[2][1] + G.r
+        const src = G.center
+        const x0 = src[0]
+        const y0 = src[1]
+        const x = x0 + (G.cueX - x0) * d
         const y = y0 + (G.cueTop + G.cueLen + 2 - y0) * d
         ;[s.cueDot, s.cueGlow].forEach((e) => {
-          e.setAttribute('cx', G.pts[2][0])
+          e.setAttribute('cx', x.toFixed(1))
           e.setAttribute('cy', y.toFixed(1))
         })
         const o = Math.sin(dr.drop * Math.PI)
