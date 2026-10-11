@@ -8,9 +8,12 @@ import { useEffect, useRef } from 'react'
  *  0.15s~ 다섯 사람이 분필로 빠르게 그려지고, 머리 둘레에는 아직 빈 "참여 링"(옅은 바탕선)만 있음
  *  1.0s~  가운데 친구 머리 위에 분필 전구가 번뜩이며 생각이 떠오르고, 그 친구의 링부터 차오름
  *  1.3s~  생각(빛 알갱이)이 양옆 친구에게 동시에 건너감 → 도착한 친구만 링이 차오르고 머리가 빛남
+ *         생각을 받은 친구 머리 위에는 저마다 다른 반응이 분필로 톡 떠오름 (MARKS):
+ *         ! (아하!) · ? (궁금한 질문) · 말풍선 … (이야기 나누기) · 반짝임 ✦ (생각이 자라남)
  *  1.95s~ 그 친구들이 바깥쪽 친구에게 다시 건넴. 생각이 지나간 선은 보낸 사람의 색(금색·민트)으로 물듦
  *  2.55s~ 대각선 연결이 마저 그어지며 네트워크가 두 색으로 엮임
  *  2.95s~ 모두 연결된 순간: 모든 링이 동시에 꽉 차고, 네트워크가 심장처럼 한 번 "쿵" 뛰며 물결이 퍼짐
+ *         가운데 전구와 네 친구의 반응이 다 같이 한 번 더 반짝 — 모두의 생각이 함께 커지는 순간
  *  3.7s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
  *  6.9s~ "CoRe Lab"이 완성되면 학생들이 작아지며 로고의 두 학습자 점(o 위 · R 위)으로 모여 들어가고,
  *        칠판에는 글자만 남음 (도착 지점은 HeroIntro.jsx가 그리는 로고 점의 실제 화면 위치)
@@ -91,6 +94,8 @@ const ARRIVE = [1.95 + HOP_D, 1.3 + HOP_D, ORIGIN_AT, 1.3 + HOP_D, 1.95 + HOP_D]
 const FILL_D = 0.34 // 도착 후 링이 차오르는 시간
 const SOLO = 0.72 // 혼자 연결됐을 때 링이 차는 정도
 const ALL_AT = 2.95 // 모두 연결 → 모든 링이 동시에 꽉 참 + "쿵"
+// 생각을 받은 친구들의 반응(사람 순서대로, 가운데는 전구): 말풍선 · 느낌표 · (전구) · 물음표 · 반짝임
+const MARKS = ['talk', 'bang', null, 'ask', 'spark']
 const LINKS = [
   [0, 1],
   [1, 2],
@@ -234,7 +239,75 @@ function build(svg, L) {
     // 차오르는 끝에서 반짝이는 점, 다 찼을 때 퍼지는 작은 물결
     const tip = mk('circle', { cx: x, cy: y, r: ringW * 0.62, fill: 'rgba(255,251,236,0.96)', opacity: 0 }, fg)
     const ping = mk('circle', { cx: x, cy: y, r: rr, fill: 'none', stroke: i % 2 ? MINT : GOLD, 'stroke-width': ringW * 0.7, opacity: 0 }, fg)
-    return { head, body, g, fill, ring, ringTrack, tip, ping, rr, fl, fg, x, y }
+    // 반응 표시: 생각을 받은 친구 머리 위에 톡 — 사람과 함께 뛰어오르도록 사람 묶음(fl) 안에 둡니다.
+    let ex = null
+    const type = MARKS[i]
+    if (type) {
+      const color = i % 2 ? MINT : GOLD
+      const u = R * 1.18 // 표시 크기
+      const my = y - R * 2.5 // 표시의 가운데
+      const base = my + u * 0.55 // 톡 커질 때의 기준점(표시 아래쪽)
+      const eg = mk('g', {}, fl)
+      const inner = mk('g', {}, eg)
+      const fillShape = (d) => mk('path', { d, fill: color }, inner)
+      const line = (d, w) => {
+        const e = stroke(mk('path', { d }, inner), w)
+        e.setAttribute('stroke', color)
+        return e
+      }
+      const dot = (cx, cy) => mk('circle', { cx, cy, r: 0, fill: color }, inner)
+      ex = { type, eg, inner, base, tilt: 0, strokes: [], fills: [], dots: [], twinkles: [] }
+      if (type === 'bang') {
+        // 느낌표: 둥근 머리에서 아래로 가늘어지는 통통한 물방울 + 동그란 점
+        const tr = u * 0.2
+        const top = my - u * 0.42
+        ex.fills.push(
+          fillShape(
+            `M${x - tr},${top} A${tr},${tr} 0 0 1 ${x + tr},${top} L${x + u * 0.055},${my + u * 0.16} Q${x},${my + u * 0.23} ${x - u * 0.055},${my + u * 0.16} Z`,
+          ),
+        )
+        ex.dots.push([dot(x, my + u * 0.43), u * 0.12])
+        ex.tilt = -8
+        ex.rays = [-1, 1].map((sd) =>
+          line(`M${x + sd * u * 0.38},${my - u * 0.5} L${x + sd * u * 0.6},${my - u * 0.68}`, L.sw * 0.8),
+        )
+      } else if (type === 'ask') {
+        // 물음표: 둥근 고리 + 점
+        ex.strokes.push(
+          line(
+            `M${x - u * 0.26},${my - u * 0.24} C${x - u * 0.26},${my - u * 0.6} ${x + u * 0.3},${my - u * 0.6} ${x + u * 0.28},${my - u * 0.24} C${x + u * 0.27},${my - u * 0.02} ${x},${my + 0.0 * u} ${x},${my + u * 0.18}`,
+            L.sw * 1.35,
+          ),
+        )
+        ex.dots.push([dot(x, my + u * 0.43), u * 0.115])
+        ex.tilt = 8
+      } else if (type === 'talk') {
+        // 말풍선: 테두리가 그려지고, 안에서 점 세 개가 차례로 톡톡 (이야기 중…)
+        const r = u * 0.3
+        const Lx = x - u * 0.62
+        const Rx = x + u * 0.62
+        const T = my - u * 0.38
+        const B = my + u * 0.3
+        ex.strokes.push(
+          line(
+            `M${x - u * 0.12},${B} H${Rx - r} A${r},${r} 0 0 0 ${Rx},${B - r} V${T + r} A${r},${r} 0 0 0 ${Rx - r},${T} H${Lx + r} A${r},${r} 0 0 0 ${Lx},${T + r} V${B - r} A${r},${r} 0 0 0 ${Lx + r},${B} H${x - u * 0.36} L${x - u * 0.47},${B + u * 0.25} L${x - u * 0.12},${B}`,
+            L.sw * 0.95,
+          ),
+        )
+        ;[-1, 0, 1].forEach((k) => ex.dots.push([dot(x + k * u * 0.27, my - u * 0.04), u * 0.075]))
+      } else if (type === 'spark') {
+        // 반짝임: 큰 별 하나 + 작은 별 둘 (생각이 자라나는 반짝임)
+        const star = (sx, sy, a) =>
+          fillShape(`M${sx},${sy - a} Q${sx},${sy} ${sx + a},${sy} Q${sx},${sy} ${sx},${sy + a} Q${sx},${sy} ${sx - a},${sy} Q${sx},${sy} ${sx},${sy - a} Z`)
+        ex.fills.push(star(x + u * 0.04, my - u * 0.02, u * 0.46))
+        ex.twinkles = [
+          [star(x - u * 0.44, my - u * 0.4, u * 0.18), x - u * 0.44, my - u * 0.4, 0],
+          [star(x + u * 0.46, my + u * 0.32, u * 0.14), x + u * 0.46, my + u * 0.32, 1.7],
+        ]
+        ex.star = [x + u * 0.04, my - u * 0.02]
+      }
+    }
+    return { head, body, g, fill, ring, ringTrack, tip, ping, rr, fl, fg, x, y, ex }
   })
 
   // 분필 전구: 생각이 처음 떠오르는 사람 머리 위에 그려지듯 나타납니다.
@@ -352,18 +425,58 @@ function render(s, t) {
     const tr = b ? `translate(0 ${b.toFixed(2)})` : ''
     f.fl.setAttribute('transform', tr)
     f.fg.setAttribute('transform', tr)
+    // 반응 표시: 생각이 닿는 순간 나타나 톡 커졌다 돌아옴. 모두 이어지면 다 같이 한 번 더 반짝.
+    if (f.ex) {
+      const e = f.ex
+      const appear = eo(pr(t, at - 0.02, 0.24))
+      const pop = 1 + 0.26 * Math.sin(pr(t, at, 0.38) * Math.PI) + 0.22 * Math.sin(pr(t, ALL_AT, 0.42) * Math.PI)
+      const sc = (e.strokes.length ? 1 : appear) * pop
+      e.inner.setAttribute(
+        'transform',
+        `rotate(${e.tilt} ${f.x} ${e.base}) translate(${f.x} ${e.base}) scale(${sc.toFixed(3)}) translate(${-f.x} ${-e.base})`,
+      )
+      e.fills.forEach((el) => el.setAttribute('opacity', appear > 0.01 ? 1 : 0))
+      e.strokes.forEach((el) => draw(el, eio(pr(t, at - 0.02, 0.3))))
+      e.dots.forEach(([el, r], k) => {
+        const st = e.type === 'talk' ? at + 0.3 + k * 0.12 : at + 0.16
+        const dp = pr(t, st, 0.2)
+        // 말풍선 점: 차례로 살짝 들썩이며 "이야기 중…"
+        const wave = e.type === 'talk' && dp >= 1 ? 0.25 * Math.max(0, Math.sin((t - st) * 7)) : 0
+        el.setAttribute('r', (dp > 0 ? r * (1 + 0.4 * Math.sin(dp * Math.PI) + wave) : 0).toFixed(2))
+      })
+      if (e.rays) {
+        const rayO = Math.max(Math.sin(pr(t, at + 0.14, 0.6) * Math.PI), Math.sin(pr(t, ALL_AT, 0.6) * Math.PI))
+        e.rays.forEach((r) => {
+          draw(r, eio(pr(t, at + 0.14, 0.18)))
+          r.style.opacity = rayO.toFixed(3)
+        })
+      }
+      if (e.star) {
+        // 큰 별은 살짝 돌며 나타나고, 작은 별 둘은 번갈아 반짝
+        const rot = -35 * (1 - appear)
+        e.fills[0].setAttribute('transform', `rotate(${rot.toFixed(1)} ${e.star[0]} ${e.star[1]})`)
+        e.twinkles.forEach(([el, cx, cy, ph]) => {
+          const k = pr(t, at + 0.15, 0.25) * (0.55 + 0.45 * Math.abs(Math.sin((t - at) * 4 + ph)))
+          el.setAttribute('transform', `translate(${cx} ${cy}) scale(${k.toFixed(3)}) translate(${-cx} ${-cy})`)
+        })
+      }
+      e.eg.setAttribute('opacity', (1 - eo(pr(t, 3.3, 0.45))).toFixed(3))
+    }
   })
   // 가운데 친구 머리 위 전구: 생각이 "번뜩" 떠오름 → 그 생각이 양쪽 선을 타고 출발
   s.icons.forEach((ic) => {
     const d = eio(pr(t, ORIGIN_AT - 0.12, 0.32))
-    const out = 1 - eo(pr(t, 1.75, 0.35))
+    // 친구들의 느낌표와 함께 모두 이어질 때까지 켜져 있다가, 랩 이름이 나타나기 전에 함께 사라집니다.
+    const out = 1 - eo(pr(t, 3.3, 0.45))
     ic.parts.forEach((e) => {
       draw(e, d)
       e.style.opacity = out
     })
     if (ic.gl) {
       const flick = 0.55 + 0.45 * Math.sin((t - ORIGIN_AT) * 16) * (1 - pr(t, ORIGIN_AT + 0.2, 0.4))
-      ic.gl.setAttribute('opacity', (d > 0.6 ? 0.85 * out * flick : 0).toFixed(3))
+      const calm = 1 - 0.55 * eo(pr(t, 1.7, 0.4)) // 생각을 건넨 뒤에는 은은하게
+      const flash = Math.sin(pr(t, ALL_AT, 0.5) * Math.PI) // 모두 이어지는 순간 다시 반짝
+      ic.gl.setAttribute('opacity', (d > 0.6 ? Math.min(1, 0.85 * flick * calm + 0.6 * flash) * out : 0).toFixed(3))
     }
   })
   // 연결선: 빛 알갱이가 보낸 사람 쪽에서 선을 "그리며" 건너가고, 지나간 자리는 보낸 사람 색으로 물듦
@@ -418,6 +531,7 @@ function converge(s, t, dim0) {
     if (ic.gl) ic.gl.setAttribute('opacity', 0)
   })
   s.figs.forEach((f) => {
+    if (f.ex) f.ex.eg.setAttribute('opacity', 0)
     f.ring.setAttribute('opacity', 0)
     f.ringTrack.setAttribute('opacity', 0)
     f.tip.setAttribute('opacity', 0)
