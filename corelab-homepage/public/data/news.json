@@ -87,7 +87,16 @@
     "link": "",
     "hidden": "",
     "id": "news-munfl7f6252",
-    "createdAt": "2026-09-30T01:33:05.874Z"
+    "createdAt": "2026-09-30T01:33:05.874Z",
+    "titleEn": "Dr. Haejun Kim receives Ewha Graduate School Outstanding Dissertation Award (Fall 2024)",
+    "subtitleEn": "What happens when learners choose their own scaffolding?",
+    "bodyEn": [
+      "Dr. Haejun Kim (advisor: Prof. Kyu Yon Lim), who earned her bachelor’s, master’s, and doctoral degrees in Educational Technology at Ewha, received the Outstanding Dissertation Award from the Ewha Womans University Graduate School for the fall semester of 2024.",
+      "Her dissertation, “Exploring College Learners’ Problem-Solving Performance and Scaffolding Use Behaviors in Programming Problem Solving: Focusing on Shared Control,” began from the concern that over-reliance on AI tools can weaken learner agency. Dr. Kim proposed “scaffolding control” as a way to support problem solving without learners losing ownership, extending the established notion of learner control over sequence, pace, and feedback to scaffolding itself.",
+      "To examine this, she developed mySTEPS, a scaffolding tool for programming problem solving. mySTEPS provides 24 scaffolds across 11 steps, from problem representation to solution design, execution and evaluation, and reflection. The system preselects scaffolds based on problem difficulty, and learners can accept or reject them, add others, and change their choices during problem solving—implementing “shared control” in which the system and the learner divide control.",
+      "Eleven college students solved two programming problems of different difficulty, and Dr. Kim analyzed their behavior by triangulating screen recordings, think-aloud protocols, and interviews. Learners judged whether a scaffold was necessary and useful, and chose scaffolds by considering their own characteristics, the difficulty of the problem, and how the solution was actually unfolding. Even scaffolds chosen beforehand were skipped if they seemed unnecessary mid-task, and added when they became necessary. This decision process looked similar across problem difficulty and solution scores.",
+      "The study offers a theoretical basis for extending the object of control to scaffolding. It also proposes concrete design guidance: let learners control scaffolds whose necessity depends on learner characteristics (such as checking requirements) before problem solving, and scaffolds whose necessity depends on the solution process (such as comparing code) during problem solving."
+    ]
   },
   {
     "title": "진명화 박사, 한국교육공학회 우수박사학위논문상 수상",
