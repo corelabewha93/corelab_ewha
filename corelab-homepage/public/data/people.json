@@ -760,11 +760,20 @@
       ],
       "links": [],
       "id": "person-mue648lk2gx",
-      "nameEn": "",
+      "nameEn": "Haejun Kim",
       "pubNames": [
         "Kim, H. J."
       ],
-      "hideResearch": ""
+      "hideResearch": "",
+      "affiliationEn": "Lecturer, Ewha Womans University",
+      "bioEn": "",
+      "detailEn": [
+        "#About",
+        "Studies, with a focus on human–AI collaboration, how people learn and solve problems with AI and the many contexts that shape that process",
+        "She is interested in how learners can collaborate meaningfully with AI while keeping their own judgment and agency",
+        "#Research Interests",
+        "Human–AI collaboration, problem solving, CSCL"
+      ]
     },
     {
       "name": "정유진",
