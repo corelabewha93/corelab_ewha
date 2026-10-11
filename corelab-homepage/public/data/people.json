@@ -145,11 +145,11 @@
     },
     {
       "name": "이유정",
-      "photo": "images/people/이유정-mue0v9qq.jpg",
+      "photo": "images/people/이유정-mv3ub6bu.jpg",
       "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
+        "x": 49.2,
+        "y": 100,
+        "zoom": 1.21
       },
       "degree": "MA",
       "bio": "",
@@ -162,7 +162,13 @@
       "id": "person-mue0u56rs37",
       "nameEn": "Yujeong Lee",
       "pubNames": [],
-      "hideResearch": "hidden"
+      "hideResearch": "hidden",
+      "bioEn": "",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-03~present",
+        "B.S., Mathematics, Kyung Hee University | 2021~2025"
+      ]
     },
     {
       "id": "hwang-hyejeong",
