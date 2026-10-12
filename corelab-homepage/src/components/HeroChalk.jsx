@@ -9,13 +9,13 @@ import { useEffect, useRef } from 'react'
  *  1.0s~  가운데 친구 머리 위에 분필 전구가 번뜩이며 생각이 떠오르고, 그 친구의 링부터 차오름
  *  1.3s~  생각(빛 알갱이)이 양옆 친구에게 동시에 건너감 → 도착한 친구만 링이 차오르고 머리가 빛남
  *         생각을 받은 친구 머리 위에는 저마다 다른 반응이 분필로 톡 떠오름 (MARKS):
- *         ! (아하!) · ? (궁금한 질문) · 말풍선 … (이야기 나누기) · 반짝임 ✦ (생각이 자라남)
+ *         짧은 토론 대사 말풍선 "Tell me more!" · "But why?" · "What if…?"(분필 손글씨) · 반짝임 ✦
  *  1.95s~ 그 친구들이 바깥쪽 친구에게 다시 건넴. 생각이 지나간 선은 보낸 사람의 색(금색·민트)으로 물듦
  *  2.55s~ 대각선 연결이 마저 그어지며 네트워크가 두 색으로 엮임
  *  2.95s~ 모두 연결된 순간: 모든 링이 동시에 꽉 차고, 네트워크가 심장처럼 한 번 "쿵" 뛰며 물결이 퍼짐
  *         가운데 전구와 네 친구의 반응이 다 같이 한 번 더 반짝 — 모두의 생각이 함께 커지는 순간
- *  3.7s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
- *  6.9s~ "CoRe Lab"이 완성되면 학생들이 작아지며 로고의 두 학습자 점(o 위 · R 위)으로 모여 들어가고,
+ *  4.3s~ 네트워크가 옅어지며 아래쪽 배경으로 내려앉고, 그 위 빈 공간에 랩 이름이 나타남 (HeroIntro.jsx)
+ *  7.5s~ "CoRe Lab"이 완성되면 학생들이 작아지며 로고의 두 학습자 점(o 위 · R 위)으로 모여 들어가고,
  *        칠판에는 글자만 남음 (도착 지점은 HeroIntro.jsx가 그리는 로고 점의 실제 화면 위치)
  *
  * - 매 프레임 필터를 다시 계산하는 SVG 필터 대신, 한 번 만든 분필 결(노이즈) 무늬로 선을 칠해서
@@ -30,13 +30,13 @@ const GOLD = '#e4d083'
 const MINT = '#8fe3ea'
 
 // 시간표(초) — HeroIntro.jsx의 단계 시각과 맞춰져 있습니다.
-export const CHALK_NAME_AT = 3.7 // 이 시각에 랩 이름이 나타나기 시작
-const DIM2_AT = 6.2 // "CoRe Lab" 완성 무렵, 한 번 더 옅어짐
+export const CHALK_NAME_AT = 4.3 // 이 시각에 랩 이름이 나타나기 시작 (대화를 조금 더 오래 보여 주려고 3.7 → 4.3)
+const DIM2_AT = 6.8 // "CoRe Lab" 완성 무렵, 한 번 더 옅어짐
 // "CoRe Lab"이 완성된 뒤, 학생들이 로고의 두 학습자(o 위 · R 위의 점)로 모여 들어가는 구간
-export const CONV_AT = 6.9
+export const CONV_AT = 7.5
 const FLY = 1.0 // 한 사람이 날아가는 데 걸리는 시간
 const STAG = 0.08 // 사람마다 출발 시차
-const END_AT = 10
+const END_AT = 10.6
 
 const clamp = (x) => Math.max(0, Math.min(1, x))
 const pr = (t, s, d) => clamp((t - s) / d)
@@ -55,6 +55,7 @@ const LAYOUTS = {
       [680, 205],
       [860, 255],
     ],
+    sayFont: 25,
     settle: { dy: 50, k: 1 }, // 이름이 나타날 때 네트워크가 내려앉는 정도(아래로, 크기)
   },
   tall: {
@@ -68,6 +69,7 @@ const LAYOUTS = {
       [292, 445],
       [108, 560],
     ],
+    sayFont: 22,
     settle: { dy: 130, k: 0.75 },
   },
 }
@@ -95,7 +97,9 @@ const FILL_D = 0.34 // 도착 후 링이 차오르는 시간
 const SOLO = 0.72 // 혼자 연결됐을 때 링이 차는 정도
 const ALL_AT = 2.95 // 모두 연결 → 모든 링이 동시에 꽉 참 + "쿵"
 // 생각을 받은 친구들의 반응(사람 순서대로, 가운데는 전구): 말풍선 · 느낌표 · (전구) · 물음표 · 반짝임
-const MARKS = ['talk', 'bang', null, 'ask', 'spark']
+// 생각을 받은 친구들의 반응 — 짧은 토론 대사(말풍선)와 기호가 섞여 나옵니다.
+// 가운데(2번)는 전구, 1·3번이 먼저 받고 0·4번이 이어 받습니다.
+const MARKS = [{ say: 'What if…?' }, { say: 'Tell me more!' }, null, { say: 'But why?' }, 'spark']
 const LINKS = [
   [0, 1],
   [1, 2],
@@ -108,6 +112,31 @@ const LINKS = [
 
 // 분필 결: 흰 가루가 고르지 않게 묻은 듯한 작은 노이즈 타일 (한 번만 만듭니다)
 let grainUrl = null
+// 색 분필(금색·민트) 결 — 말풍선 · 기호 · 참여 링 · 연결선이 분필로 칠한 듯 보이게
+const tintCache = {}
+function tintGrain(rgb) {
+  const key = rgb.join(',')
+  if (tintCache[key] !== undefined) return tintCache[key]
+  try {
+    const c = document.createElement('canvas')
+    c.width = c.height = 96
+    const ctx = c.getContext('2d')
+    const img = ctx.createImageData(96, 96)
+    for (let i = 0; i < img.data.length; i += 4) {
+      const r = Math.random()
+      img.data[i] = rgb[0]
+      img.data[i + 1] = rgb[1]
+      img.data[i + 2] = rgb[2]
+      img.data[i + 3] = r < 0.22 ? 25 + r * 180 : 170 + Math.random() * 85
+    }
+    ctx.putImageData(img, 0, 0)
+    tintCache[key] = c.toDataURL('image/png')
+  } catch {
+    tintCache[key] = ''
+  }
+  return tintCache[key]
+}
+
 function chalkGrain() {
   if (grainUrl) return grainUrl
   try {
@@ -146,6 +175,18 @@ function build(svg, L) {
     mk('image', { href: grain, width: 96, height: 96 }, pat)
     paint = 'url(#hc-grain)'
   }
+  // 색 분필: 결 무늬가 있으면 그 무늬로, 없으면 단색으로
+  const chalkOf = { [GOLD]: GOLD, [MINT]: MINT }
+  ;[
+    [GOLD, [228, 208, 131], 'hc-grain-a'],
+    [MINT, [143, 227, 234], 'hc-grain-b'],
+  ].forEach(([key, rgb, id]) => {
+    const url = tintGrain(rgb)
+    if (!url) return
+    const pat = mk('pattern', { id, patternUnits: 'userSpaceOnUse', width: 96, height: 96 }, defs)
+    mk('image', { href: url, width: 96, height: 96 }, pat)
+    chalkOf[key] = `url(#${id})`
+  })
   const grad = (id, color) => {
     const g = mk('radialGradient', { id }, defs)
     mk('stop', { offset: 0, 'stop-color': color, 'stop-opacity': 0.95 }, g)
@@ -245,7 +286,7 @@ function build(svg, L) {
     ringTrack.setAttribute('opacity', 0)
     const ring = mk('circle', { cx: x, cy: y, r: rr, transform: `rotate(-90 ${x} ${y})`, pathLength: 1 }, fg)
     ring.setAttribute('fill', 'none')
-    ring.setAttribute('stroke', i % 2 ? MINT : GOLD)
+    ring.setAttribute('stroke', chalkOf[i % 2 ? MINT : GOLD])
     ring.setAttribute('stroke-width', ringW)
     ring.setAttribute('stroke-linecap', 'round')
     ring.setAttribute('opacity', 0)
@@ -254,7 +295,8 @@ function build(svg, L) {
     const ping = mk('circle', { cx: x, cy: y, r: rr, fill: 'none', stroke: i % 2 ? MINT : GOLD, 'stroke-width': ringW * 0.7, opacity: 0 }, fg)
     // 반응 표시: 생각을 받은 친구 머리 위에 톡 — 사람과 함께 뛰어오르도록 사람 묶음(fl) 안에 둡니다.
     let ex = null
-    const type = MARKS[i]
+    const mark = MARKS[i]
+    const type = mark && mark.say ? 'say' : mark
     if (type) {
       const color = i % 2 ? MINT : GOLD
       const u = R * 1.18 // 표시 크기
@@ -262,15 +304,38 @@ function build(svg, L) {
       const base = my + u * 0.55 // 톡 커질 때의 기준점(표시 아래쪽)
       const eg = mk('g', {}, fl)
       const inner = mk('g', {}, eg)
-      const fillShape = (d) => mk('path', { d, fill: color }, inner)
+      const chalk = chalkOf[color]
+      const fillShape = (d) => mk('path', { d, fill: chalk }, inner)
       const line = (d, w) => {
         const e = stroke(mk('path', { d }, inner), w)
-        e.setAttribute('stroke', color)
+        e.setAttribute('stroke', chalk)
         return e
       }
       const dot = (cx, cy) => mk('circle', { cx, cy, r: 0, fill: color }, inner)
-      ex = { type, eg, inner, base, tilt: 0, strokes: [], fills: [], dots: [], twinkles: [] }
-      if (type === 'bang') {
+      ex = { type, eg, inner, base, tilt: 0, strokes: [], fills: [], dots: [], twinkles: [], texts: [] }
+      if (type === 'say') {
+        // 대사 말풍선: 분필 테두리가 그려지고 안에 짧은 대사가 나타남. 꼬리는 말하는 사람 머리를 가리킴
+        const fs = L.sayFont
+        const w = mark.say.length * fs * 0.42 + fs * 1.3
+        const h = fs * 1.85
+        const r = h * 0.42
+        const Lx = x - w / 2
+        const Rx = x + w / 2
+        const T = my - h * 0.62
+        const B = my + h * 0.38
+        ex.strokes.push(
+          line(
+            `M${x + h * 0.12},${B} H${Rx - r} A${r},${r} 0 0 0 ${Rx},${B - r} V${T + r} A${r},${r} 0 0 0 ${Rx - r},${T} H${Lx + r} A${r},${r} 0 0 0 ${Lx},${T + r} V${B - r} A${r},${r} 0 0 0 ${Lx + r},${B} H${x - h * 0.22} L${x - h * 0.08},${B + h * 0.42} L${x + h * 0.12},${B}`,
+            L.sw * 0.9,
+          ),
+        )
+        // 분필 손글씨(Caveat) — 글자도 분필 결 무늬로 칠합니다
+        const tx = mk('text', { x, y: my - h * 0.12 + fs * 0.34, 'text-anchor': 'middle', 'font-size': fs, class: 'hero-chalk-word hero-chalk-say', opacity: 0 }, inner)
+        tx.style.fill = paint
+        tx.textContent = mark.say
+        ex.texts.push(tx)
+        ex.tilt = [-3, 2, 0, -2, 0][i]
+      } else if (type === 'bang') {
         // 느낌표: 둥근 머리에서 아래로 가늘어지는 통통한 물방울 + 동그란 점
         const tr = u * 0.2
         const top = my - u * 0.42
@@ -326,7 +391,7 @@ function build(svg, L) {
   // 분필 전구: 생각이 처음 떠오르는 사람 머리 위에 그려지듯 나타납니다.
   const colored = (e, color, w) => {
     stroke(e, w)
-    e.setAttribute('stroke', color)
+    e.setAttribute('stroke', chalkOf[color] || color)
     return e
   }
   const iconBulb = (x, y) => {
@@ -374,7 +439,7 @@ function build(svg, L) {
     const from = LINK_PLAN[k][0]
     const tint = mk('path', { d: `M${A[0]},${A[1]} Q${C[0]},${C[1]} ${B[0]},${B[1]}`, pathLength: 1 }, lines)
     tint.setAttribute('fill', 'none')
-    tint.setAttribute('stroke', from % 2 ? MINT : GOLD)
+    tint.setAttribute('stroke', chalkOf[from % 2 ? MINT : GOLD])
     tint.setAttribute('stroke-width', L.sw * 0.95)
     tint.setAttribute('stroke-linecap', 'round')
     tint.setAttribute('opacity', 0.82)
@@ -397,12 +462,12 @@ function draw(e, p) {
 
 function render(s, t) {
   s.smudges.forEach((e, i) =>
-    e.setAttribute('opacity', (0.06 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, CHALK_NAME_AT - 0.1, 0.8)))).toFixed(3)),
+    e.setAttribute('opacity', (0.085 * eo(pr(t, 0.05 + i * 0.12, 0.7)) * (1 - eo(pr(t, CHALK_NAME_AT - 0.1, 0.8)))).toFixed(3)),
   )
   const R = s.L.r
   const hop = (t0, d, amp) => -amp * Math.max(0, Math.sin(pr(t, t0, d) * Math.PI))
   const ringIn = eo(pr(t, 0.5, 0.45))
-  const ringFade = 1 - eo(pr(t, 3.9, 0.6))
+  const ringFade = 1 - eo(pr(t, 4.5, 0.6))
   const all = eio(pr(t, ALL_AT, 0.32)) // 모두 연결된 순간 → 링 100%
   const allPing = pr(t, ALL_AT + 0.22, 0.6)
   s.figs.forEach((f, i) => {
@@ -452,6 +517,7 @@ function render(s, t) {
       )
       e.fills.forEach((el) => el.setAttribute('opacity', appear > 0.01 ? 1 : 0))
       e.strokes.forEach((el) => draw(el, eio(pr(t, at - 0.02, 0.3))))
+      e.texts.forEach((el) => el.setAttribute('opacity', eo(pr(t, at + 0.14, 0.26)).toFixed(3)))
       e.dots.forEach(([el, r], k) => {
         const st = e.type === 'talk' ? at + 0.3 + k * 0.12 : at + 0.16
         const dp = pr(t, st, 0.2)
@@ -475,14 +541,14 @@ function render(s, t) {
           el.setAttribute('transform', `translate(${cx} ${cy}) scale(${k.toFixed(3)}) translate(${-cx} ${-cy})`)
         })
       }
-      e.eg.setAttribute('opacity', (1 - eo(pr(t, 3.3, 0.45))).toFixed(3))
+      e.eg.setAttribute('opacity', (1 - eo(pr(t, 3.9, 0.45))).toFixed(3))
     }
   })
   // 가운데 친구 머리 위 전구: 생각이 "번뜩" 떠오름 → 그 생각이 양쪽 선을 타고 출발
   s.icons.forEach((ic) => {
     const d = eio(pr(t, ORIGIN_AT - 0.12, 0.32))
     // 친구들의 느낌표와 함께 모두 이어질 때까지 켜져 있다가, 랩 이름이 나타나기 전에 함께 사라집니다.
-    const out = 1 - eo(pr(t, 3.3, 0.45))
+    const out = 1 - eo(pr(t, 3.9, 0.45))
     ic.parts.forEach((e) => {
       draw(e, d)
       e.style.opacity = out
