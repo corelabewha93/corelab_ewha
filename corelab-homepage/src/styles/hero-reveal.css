@@ -1,0 +1,101 @@
+/* 메인 인트로 연출 보강 (HeroIntro.jsx)
+   - 시작: 거의 검은 어둠에서 칠판이 서서히 밝아짐
+   - 로고 완성 뒤: 금빛이 한 번 숨 쉬듯 밝아지고, 부제 · 모토 · 소속이 흐릿했다 또렷해지며 차례로 등장 */
+
+/* 이름 위에 로고 완성 선: 가운데에서 양옆으로 그려짐 */
+.hero-fx-reveal .hero-rule {
+  transition: width 1.6s cubic-bezier(0.2, 0.7, 0.2, 1) 1.9s;
+}
+
+.hero-fx-reveal .hero-after > * {
+  opacity: 0;
+  filter: blur(9px);
+  transform: translateY(14px) scale(0.985);
+  transition:
+    opacity 1.5s ease,
+    filter 1.5s ease,
+    transform 1.6s cubic-bezier(0.2, 0.7, 0.2, 1),
+    letter-spacing 1.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero-fx-reveal:not(.hero-phase-done) .hero-after .hero-tagline {
+  letter-spacing: 0.36em;
+}
+
+.hero-fx-reveal:not(.hero-phase-done) .hero-after .hero-affiliation p {
+  letter-spacing: 0.3em;
+}
+
+.hero-fx-reveal.hero-phase-done .hero-after > * {
+  opacity: 1;
+  filter: blur(0);
+  transform: translateY(0) scale(1);
+}
+
+/* 소속 세 줄은 위에서 아래로 한 줄씩 */
+.hero-fx-reveal .hero-affiliation p {
+  opacity: 0;
+  transform: translateY(8px);
+  transition:
+    opacity 1.2s ease,
+    transform 1.3s cubic-bezier(0.2, 0.7, 0.2, 1),
+    letter-spacing 1.8s cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+.hero-fx-reveal.hero-phase-done .hero-affiliation p {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+.hero-fx-reveal.hero-phase-done .hero-affiliation p:nth-child(1) {
+  transition-delay: 3.1s;
+}
+.hero-fx-reveal.hero-phase-done .hero-affiliation p:nth-child(2) {
+  transition-delay: 3.45s;
+}
+.hero-fx-reveal.hero-phase-done .hero-affiliation p:nth-child(3) {
+  transition-delay: 3.8s;
+}
+
+/* 시작: 거의 검은 어둠에서 칠판이 서서히 밝아짐 (인트로가 처음 재생될 때만) */
+.hero-open-dark {
+  position: absolute;
+  inset: 0;
+  z-index: 0;
+  pointer-events: none;
+  background: radial-gradient(ellipse 72% 66% at 50% 48%, rgba(2, 18, 12, 0.4), rgba(1, 8, 5, 0.96));
+  animation: hero-open-dark 4.1s cubic-bezier(0.3, 0.1, 0.2, 1) both;
+}
+
+@keyframes hero-open-dark {
+  0% {
+    opacity: 1;
+  }
+  32% {
+    opacity: 0.82;
+  }
+  100% {
+    opacity: 0;
+  }
+}
+
+/* 로고 완성 직후 금빛이 한 번 숨 쉬듯 밝아졌다 가라앉음 */
+.hero-intro-animated.hero-phase-done .hero-name {
+  animation: hero-breathe 2.8s ease-in-out 2.1s 1 both;
+}
+
+@keyframes hero-breathe {
+  0%,
+  100% {
+    filter: drop-shadow(0 0 0 rgba(228, 208, 131, 0));
+  }
+  45% {
+    filter: drop-shadow(0 0 26px rgba(228, 208, 131, 0.5));
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-open-dark {
+    display: none;
+  }
+}
