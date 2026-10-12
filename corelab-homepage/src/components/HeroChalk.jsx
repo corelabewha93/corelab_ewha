@@ -153,6 +153,15 @@ function build(svg, L) {
   }
   grad('hc-glow-a', GOLD)
   grad('hc-glow-b', MINT)
+  // 몸통에 은은한 입체감(위가 조금 밝고 아래로 사라짐) — 평소엔 분필색, 생각이 닿으면 금색·민트로 물듦
+  const bodyGrad = (id, color, a0, a1) => {
+    const g = mk('linearGradient', { id, x1: 0, y1: 0, x2: 0, y2: 1 }, defs)
+    mk('stop', { offset: 0, 'stop-color': color, 'stop-opacity': a0 }, g)
+    mk('stop', { offset: 1, 'stop-color': color, 'stop-opacity': a1 }, g)
+  }
+  bodyGrad('hc-body', CHALK, 0.2, 0.02)
+  bodyGrad('hc-body-a', GOLD, 0.6, 0.06)
+  bodyGrad('hc-body-b', MINT, 0.6, 0.06)
   const sg = mk('radialGradient', { id: 'hc-smudge' }, defs)
   mk('stop', { offset: 0, 'stop-color': '#fff', 'stop-opacity': 1 }, sg)
   mk('stop', { offset: 1, 'stop-color': '#fff', 'stop-opacity': 0 }, sg)
@@ -220,6 +229,10 @@ function build(svg, L) {
         fl,
       ),
     )
+    const bodyD = `M${x - sw},${sy + sh} C${x - sw},${sy + sh * 0.35} ${x - sw * 0.55},${sy} ${x},${sy} C${x + sw * 0.55},${sy} ${x + sw},${sy + sh * 0.35} ${x + sw},${sy + sh} Z`
+    const bf = mk('g', {}, fg)
+    const bodyBase = mk('path', { d: bodyD, fill: 'url(#hc-body)', opacity: 0 }, bf)
+    const bodyTint = mk('path', { d: bodyD, fill: `url(#hc-body-${i % 2 ? 'b' : 'a'})`, opacity: 0 }, bf)
     const g = mk('circle', { cx: x, cy: y, r: R * 2.1, fill: `url(#hc-glow-${i % 2 ? 'b' : 'a'})`, opacity: 0 }, fg)
     const fill = mk('circle', { cx: x, cy: y, r: R - 3, fill: i % 2 ? MINT : GOLD, opacity: 0 }, fg)
     // 참여 링: 머리 둘레의 원호(얼마나 말했는지). 옅은 바탕 링 위에 색 링이 차오릅니다.
@@ -307,7 +320,7 @@ function build(svg, L) {
         ex.star = [x + u * 0.04, my - u * 0.02]
       }
     }
-    return { head, body, g, fill, ring, ringTrack, tip, ping, rr, fl, fg, x, y, ex }
+    return { head, body, bf, bodyBase, bodyTint, g, fill, ring, ringTrack, tip, ping, rr, fl, fg, x, y, ex }
   })
 
   // 분필 전구: 생각이 처음 떠오르는 사람 머리 위에 그려지듯 나타납니다.
@@ -408,6 +421,8 @@ function render(s, t) {
     const flash = Math.sin(pr(t, ALL_AT, 0.7) * Math.PI)
     f.g.setAttribute('opacity', Math.min(1, on * 0.5 + flash * 0.35).toFixed(3))
     f.fill.setAttribute('opacity', (on * 0.92).toFixed(3))
+    f.bodyBase.setAttribute('opacity', eio(pr(t, 0.45 + i * 0.12, 0.7)).toFixed(3))
+    f.bodyTint.setAttribute('opacity', (on * 0.5).toFixed(3))
     // 차오르는 끝점의 반짝임
     const filling = fp > 0 && fp < 1 ? fp : all > 0 && all < 1 ? all : -1
     const ang = -Math.PI / 2 + v * Math.PI * 2
@@ -584,6 +599,7 @@ function converge(s, t, dim0) {
       f.fg.setAttribute('transform', tr)
       // 몸통 선은 날아가는 동안 옅어지고, 도착하면 머리(빛)도 점 안으로 사라집니다.
       f.body.style.opacity = 1 - eo(pr(t, CONV_AT + i * STAG + 0.15, FLY * 0.6))
+      f.bf.style.opacity = f.body.style.opacity
       f.head.style.opacity = 1 - eo(pr(t, CONV_AT + i * STAG + FLY * 0.5, FLY * 0.5))
       const gone = 1 - eo(pr(t, CONV_AT + i * STAG + FLY - 0.12, 0.16))
       f.g.setAttribute('opacity', (0.55 * gone * (1 - 0.6 * u)).toFixed(3))

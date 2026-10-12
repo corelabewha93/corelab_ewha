@@ -1,6 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HeroChalk, { CHALK_NAME_AT, CONV_AT } from './HeroChalk'
 import HeroScrollCue from './HeroAmbient'
+import '../styles/hero-reveal.css'
 import { LOGO_TRANSFORM, INNER_SCALE, LETTERS, DOT_A, DOT_B, CURVE } from './coreLogoPaths'
 
 /**
@@ -284,8 +285,10 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   let lastPart = null
 
   return (
-    <section className={`hero-intro hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`}>
+    <section className={`hero-intro hero-fx-reveal${animated ? ' hero-intro-animated' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`}>
       <HeroChalk animated={animated} />
+      {/* 처음 재생될 때만: 거의 검은 어둠에서 칠판이 서서히 밝아집니다 (hero-reveal.css) */}
+      {animated && <div className="hero-open-dark" aria-hidden="true" />}
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {words ? (
