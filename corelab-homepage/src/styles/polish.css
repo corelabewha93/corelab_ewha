@@ -217,3 +217,19 @@ html .pub-older {
     top: calc(var(--pin-top) + var(--title-h, 0px) + var(--author-h, 0px));
   }
 }
+
+/* ---------- PC: 왼쪽 메뉴가 페이지 맨 아래에서도 제자리에 ----------
+   목록이 짧은 탭(Projects · Patents 등)에서 맨 아래까지 스크롤하면, 왼쪽 메뉴를 담은 칸이 먼저 끝나서
+   메뉴가 위로 밀려 올라가 "Research" 제목 뒤로 숨던 문제를 고칩니다.
+   메뉴를 담은 칸을 아래 여백(페이지 아래 여백 + 푸터 위 여백)까지 보이지 않게 늘려서,
+   메뉴는 푸터가 실제로 닿을 때까지 그 자리에 고정됩니다. (화면에 보이는 간격·위치는 그대로)
+   목록이 아주 짧거나 비어 있어도 메뉴 높이만큼은 칸이 확보되도록 최소 높이를 둡니다. */
+@media (min-width: 701px) {
+  html .page-title-pin ~ .tabs-layout {
+    margin-bottom: calc(-2 * var(--space-6));
+  }
+  html .page-title-pin ~ .tabs-layout > .tabs-content {
+    padding-bottom: calc(2 * var(--space-6));
+    min-height: calc(2 * var(--space-6) + 12.5rem);
+  }
+}
