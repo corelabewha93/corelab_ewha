@@ -1,4 +1,5 @@
 import { LOGO_TRANSFORM, INNER_SCALE, LETTERS, DOT_A, DOT_B, CURVE } from './coreLogoPaths'
+import '../styles/wordmark.css'
 
 /**
  * CoRe 로고 (정지 이미지) — 메인 화면에서 완성되는 로고와 똑같은 모양·색입니다.

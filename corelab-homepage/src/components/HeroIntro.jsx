@@ -1,5 +1,6 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HeroScrollCue from './HeroAmbient'
+import '../styles/wordmark.css'
 import HeroTrace, { TRACE_RULE } from './HeroTrace'
 import { LOGO_TRANSFORM, INNER_SCALE, LETTERS, DOT_A, DOT_B, CURVE } from './coreLogoPaths'
 

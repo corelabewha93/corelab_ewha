@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import '../styles/wordmark.css'
 import Link from '../router/Link'
 import { useHashRoute } from '../router/useHashRoute'
 import { scrollToSection } from '../router/scrollToSection'
