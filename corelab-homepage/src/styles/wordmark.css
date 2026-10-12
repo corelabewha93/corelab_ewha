@@ -1,20 +1,20 @@
-/* "CoRe Lab" 이름 — 로고 그림 대신 글자(EB Garamond 700)로 씁니다.
+/* "CoRe Lab" 이름 — 로고 그림 대신 글자(Playfair Display)로 씁니다.
    메인 화면의 큰 이름(.hero-wm)과 상단 메뉴의 이름(.brand-wordmark-text)이 같은 글꼴·색을 씁니다.
    CoRe = 금색, Lab = 흰색 */
 @font-face {
-  font-family: 'EB Garamond';
+  font-family: 'Playfair Display';
   font-style: normal;
-  font-weight: 700;
+  font-weight: 500;
   font-display: swap;
-  src: url('../assets/fonts/eb-garamond-latin-700-normal.woff2') format('woff2');
+  src: url('../assets/fonts/playfair-display-latin-700-normal.woff2') format('woff2');
 }
 
 .hero-wm {
   display: inline-flex;
   align-items: baseline;
   gap: 0.22em;
-  font-family: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
-  font-weight: 700;
+  font-family: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
+  font-weight: 500;
   font-size: 1.1em;
   line-height: 1;
   letter-spacing: 0.005em;
@@ -31,9 +31,9 @@
 
 /* 상단 메뉴의 "CoRe Lab" */
 .site-header .brand-wordmark-text {
-  font-family: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
-  font-weight: 700;
-  font-size: 1.78rem;
+  font-family: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
+  font-weight: 500;
+  font-size: 1.7rem;
   letter-spacing: 0.005em;
 }
 
@@ -61,7 +61,7 @@
 
 @media (max-width: 480px) {
   .site-header .brand-wordmark-text {
-    font-size: 1.62rem;
+    font-size: 1.55rem;
   }
 }
 
@@ -73,4 +73,16 @@
 html.hero-intro-playing .site-header .brand-name {
   opacity: 0;
   transition: none;
+}
+
+/* 좁은 화면에서는 큰 이름이 화면 밖으로 나가지 않도록 조금 줄입니다 */
+@media (max-width: 480px) {
+  .hero-wm {
+    font-size: 1em;
+  }
+}
+@media (max-width: 360px) {
+  .hero-wm {
+    font-size: 0.9em;
+  }
 }
