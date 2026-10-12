@@ -122,8 +122,8 @@ export default function Header({ brandLogo = false }) {
           ) : (
             <span className="brand-name">
               {/^\s*CoRe/i.test(labName) ? (
-                <span className="brand-wordmark">
-                  {/* 메인 화면에서 완성되는 CoRe 로고와 같은 모양·색 */}
+                <span className="brand-wordmark brand-wordmark-text">
+                  {/* 메인 화면의 이름과 같은 글꼴·색(wordmark.css) */}
                   <CoreWordmark className="brand-core-logo" />
                   {labRest && <span className="brand-rest">{labRest}</span>}
                 </span>

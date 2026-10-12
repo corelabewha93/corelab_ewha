@@ -1,7 +1,6 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
-import HeroChalk, { CHALK_NAME_AT, CONV_AT } from './HeroChalk'
 import HeroScrollCue from './HeroAmbient'
-import '../styles/hero-reveal.css'
+import HeroTrace, { TRACE_RULE } from './HeroTrace'
 import { LOGO_TRANSFORM, INNER_SCALE, LETTERS, DOT_A, DOT_B, CURVE } from './coreLogoPaths'
 
 /**
@@ -169,6 +168,10 @@ function withMobileBreak(text) {
   )
 }
 
+// 인트로: 흔적 네트워크(SNA → ENA)에서 이름이 태어나는 장면(HeroTrace.jsx). 예전 칠판 장면은 쓰지 않습니다.
+const TRACE = true
+const CHALK_NAME_AT = 3.7 // (예전 칠판 장면의 시간표 — 아래 단계 시각 계산에만 남아 있음)
+const CONV_AT = 6.9
 const REDUCED = typeof window !== 'undefined' && window.matchMedia?.('(prefers-reduced-motion: reduce)').matches
 
 // 단계가 바뀌는 시각(ms) — 앞의 분필 장면(HeroChalk) 뒤에 이어집니다.
@@ -189,12 +192,18 @@ let playedOnce = false
 export default function HeroIntro({ labName = '', tagline = '', affiliation = [], motto = '' }) {
   const words = useMemo(() => splitName(tagline, labName), [tagline, labName])
   const [animated] = useState(() => Boolean(words) && !REDUCED && !playedOnce)
+  // 인트로가 도는 동안 상단 메뉴의 "CoRe Lab"은 첫 화면이 그려지기 전부터 숨겨 둡니다(wordmark.css).
+  useState(() => {
+    if (animated && typeof document !== 'undefined') document.documentElement.classList.add('hero-intro-playing')
+    return null
+  })
 
-  const [phase, setPhase] = useState(animated ? 'chalk' : 'done')
+  const [phase, setPhase] = useState(animated && !TRACE ? 'chalk' : 'done')
   const nameRef = useRef(null)
   const firstRects = useRef(null)
   const [logoBox, setLogoBox] = useState(null)
-  const [logoStage, setLogoStage] = useState(animated ? 0 : 3)
+  const [skipped, setSkipped] = useState(false)
+  const [logoStage, setLogoStage] = useState(animated ? (TRACE ? 1 : 0) : 3)
 
   // 로고의 점·어깨선을 그릴 자리 = 이름 속 "Co" 글자의 왼쪽 위 ~ "Re" 글자의 오른쪽 아래.
   // 글꼴이 늦게 로드되거나 창 크기가 바뀌어도 자리가 어긋나지 않게, 그때마다 다시 잽니다.
@@ -229,6 +238,19 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   // 화면이 처음 열릴 때 한 번만 시간표를 잡습니다.
   useEffect(() => {
     if (!animated) return undefined
+    if (TRACE) {
+      // 인트로가 도는 동안에는 상단 메뉴의 "CoRe Lab"을 숨겨 둡니다(이름이 먼저 공개되지 않게).
+      const root = document.documentElement
+      root.classList.add('hero-intro-playing')
+      const tt = [
+        setTimeout(() => root.classList.remove('hero-intro-playing'), (TRACE_RULE + 0.9) * 1000),
+        setTimeout(() => (playedOnce = true), (TRACE_RULE + 1.6) * 1000),
+      ]
+      return () => {
+        tt.forEach(clearTimeout)
+        root.classList.remove('hero-intro-playing')
+      }
+    }
     const timers = [
       setTimeout(() => setPhase('intro'), T_INTRO),
       setTimeout(() => setPhase('highlight'), T_HIGHLIGHT),
@@ -250,6 +272,14 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     return () => timers.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // 인트로 도중 화면을 누르면 바로 완성된 화면으로 건너뜁니다.
+  const skip = () => {
+    if (!animated || skipped || !TRACE) return
+    playedOnce = true
+    setSkipped(true)
+    document.documentElement.classList.remove('hero-intro-playing')
+  }
 
   // "CoRe Lab" 배치로 바뀐 직후(화면에 그려지기 전), 각 글자를 원래 자리·크기로 되돌려 놓고
   // 새 자리까지 한 번에 부드럽게 미끄러지게 합니다.
@@ -285,13 +315,17 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   let lastPart = null
 
   return (
-    <section className={`hero-intro hero-fx-reveal${animated ? ' hero-intro-animated' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`}>
-      <HeroChalk animated={animated} />
-      {/* 처음 재생될 때만: 거의 검은 어둠에서 칠판이 서서히 밝아집니다 (hero-reveal.css) */}
-      {animated && <div className="hero-open-dark" aria-hidden="true" />}
+    <section className={`hero-intro${animated ? ' hero-intro-animated hero-trace' : ''}${skipped ? ' hero-skipped' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`} onClick={skip}>
+      <HeroTrace animated={animated} skipped={skipped} />
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
-          {words ? (
+          {TRACE ? (
+            // 로고 대신 글자로 쓴 "CoRe Lab" (EB Garamond — wordmark.css)
+            <span className="hero-wm" aria-hidden="true">
+              <span className="hero-wm-core">{(labName.match(/^\s*(CoRe)/i) || [null, labName])[1]}</span>
+              {labName.replace(/^\s*CoRe\s*/i, '') && <span className="hero-wm-lab">{labName.replace(/^\s*CoRe\s*/i, '')}</span>}
+            </span>
+          ) : words ? (
             words.map((w, wi) => {
               const hasKeep = w.pieces.some((p) => p.keep)
               return (
@@ -340,7 +374,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
 
         {/* 로고의 두 학습자 점 + 어깨선. 이름 속 로고 글자("CoRe") 위에 정확히 겹쳐 그립니다.
             보이지 않는 표식(data-hero-dot)은 칠판의 학생들이 날아올 도착 지점입니다. */}
-        {logoBox && (
+        {logoBox && !TRACE && (
           <div
             className="hero-logo-overlay"
             style={{ left: logoBox.left, top: logoBox.top, width: logoBox.width, height: logoBox.height }}
