@@ -1,0 +1,62 @@
+/* "CoRe Lab" 이름 — 로고 그림 대신 글자(EB Garamond 700)로 씁니다.
+   메인 화면의 큰 이름(.hero-wm)과 상단 메뉴의 이름(.brand-wordmark-text)이 같은 글꼴·색을 씁니다.
+   CoRe = 금색, Lab = 흰색 */
+@font-face {
+  font-family: 'EB Garamond';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url('../assets/fonts/eb-garamond-latin-700-normal.woff2') format('woff2');
+}
+
+.hero-wm {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 0.22em;
+  font-family: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.1em;
+  line-height: 1;
+  letter-spacing: 0.005em;
+  white-space: nowrap;
+}
+
+.hero-wm-core {
+  color: var(--hero-gold, #e4d083);
+}
+
+.hero-wm-lab {
+  color: #fff;
+}
+
+/* 상단 메뉴의 "CoRe Lab" */
+.site-header .brand-wordmark-text {
+  font-family: 'EB Garamond', 'Iowan Old Style', Georgia, serif;
+  font-weight: 700;
+  font-size: 1.78rem;
+  letter-spacing: 0.005em;
+}
+
+.core-wordmark-text {
+  color: #e4d083;
+}
+
+.site-header .brand-wordmark-text .brand-rest {
+  margin-left: 0.2em;
+}
+
+@media (max-width: 480px) {
+  .site-header .brand-wordmark-text {
+    font-size: 1.62rem;
+  }
+}
+
+/* 메인 인트로가 도는 동안 상단 메뉴의 이름은 숨겨 두었다가 끝나면 조용히 나타남 */
+.site-header .brand-name {
+  transition: opacity 0.9s cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+html.hero-intro-playing .site-header .brand-name {
+  opacity: 0;
+  transition: none;
+}

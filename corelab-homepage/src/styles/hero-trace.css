@@ -1,0 +1,97 @@
+/* 메인 인트로(HeroTrace.jsx) 뒤에 이어지는 이름 · 부제 · 모토 · 소속의 등장
+   속도 곡선은 하나(cubic-bezier(0.22, 1, 0.36, 1)), 등장은 투명도 + 작은 이동만 씁니다. */
+.hero-intro.hero-trace {
+  --tr-ease: cubic-bezier(0.22, 1, 0.36, 1);
+}
+
+.hero-intro.hero-trace.hero-phase-done .hero-name {
+  animation: hero-tr-rise 1s var(--tr-ease) 5.45s both;
+}
+
+.hero-intro.hero-trace .hero-logo-dot {
+  transition: none;
+}
+
+.hero-intro.hero-trace .hero-logo-clip {
+  transition: none; /* 어깨선은 캔버스의 연결선이 휘어지며 넘겨줌 */
+}
+
+.hero-intro.hero-trace.hero-phase-done .hero-rule {
+  transition: none;
+  width: min(360px, 60%);
+  animation: hero-tr-show 0.3s linear 5.65s both; /* 캔버스의 연결선이 이 가로선으로 바뀜 */
+}
+
+.hero-intro.hero-trace.hero-phase-done .hero-after > * {
+  transition: none;
+  filter: none;
+  animation: hero-tr-in 0.7s var(--tr-ease) both;
+}
+
+.hero-intro.hero-trace.hero-phase-done .hero-after > :nth-child(1) {
+  animation-delay: 6.1s;
+}
+.hero-intro.hero-trace.hero-phase-done .hero-after > :nth-child(2) {
+  animation-delay: 6.18s;
+}
+.hero-intro.hero-trace.hero-phase-done .hero-after > :nth-child(3) {
+  animation-delay: 6.26s;
+}
+
+.hero-intro.hero-trace .hero-affiliation p {
+  transition: none;
+  opacity: 1;
+  transform: none;
+}
+
+@keyframes hero-tr-in {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-tr-rule {
+  from {
+    width: 0;
+  }
+}
+
+.hero-intro.hero-trace.hero-phase-done .hero-scroll-cue {
+  transition: none;
+  animation: hero-tr-in 0.7s var(--tr-ease) 6.6s both;
+}
+
+@keyframes hero-tr-rise {
+  from {
+    opacity: 0;
+    transform: translateY(18px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes hero-tr-show {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+/* 화면을 눌러 건너뛰면: 모든 등장 효과를 끝난 상태로 */
+.hero-intro.hero-trace.hero-skipped *,
+.hero-intro.hero-trace.hero-skipped.hero-phase-done .hero-name {
+  animation-delay: -20s !important;
+}
+
+.hero-intro.hero-trace:not(.hero-skipped) {
+  cursor: pointer;
+}

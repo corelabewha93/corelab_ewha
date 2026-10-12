@@ -1,21 +1,21 @@
 /* 홈 모토("Seeing How We Learn Together") 글꼴:
-   가늘고 단정한 클래식 세리프인 Cormorant Garamond(600, 바른 글씨)로 씁니다.
+   "CoRe Lab" 이름과 같은 집안인 EB Garamond의 이탤릭(500)으로 씁니다.
    .hero-intro .hero-motto 로 적어 기존 .hero-motto 설정보다 우선 적용됩니다.
    (글자 크기는 hero-ambient.css에서 정합니다) */
 @font-face {
-  font-family: 'Cormorant Garamond';
-  font-style: normal;
-  font-weight: 600;
+  font-family: 'EB Garamond';
+  font-style: italic;
+  font-weight: 500;
   font-display: swap;
-  src: url('../assets/fonts/cormorant-garamond-latin-600-normal.woff2') format('woff2');
+  src: url('../assets/fonts/eb-garamond-latin-500-italic.woff2') format('woff2');
 }
 
 .hero-intro .hero-motto {
-  font-family: 'Cormorant Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
-  font-style: normal;
-  font-weight: 600;
+  font-family: 'EB Garamond', 'Iowan Old Style', 'Palatino Linotype', Georgia, serif;
+  font-style: italic;
+  font-weight: 500;
   font-size: clamp(1.45rem, 7.1vw, 3.4rem);
-  letter-spacing: 0.03em;
+  letter-spacing: 0.01em;
   -webkit-text-stroke: 0;
 }
 
