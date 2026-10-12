@@ -27,7 +27,7 @@ function Layer({ d, color }) {
 }
 
 /**
- * "CoRe" — 로고 그림 대신 글자(EB Garamond, wordmark.css)로 씁니다.
+ * "CoRe" — 로고 그림 대신 글자(Playfair Display, wordmark.css)로 씁니다.
  * 아래 그림(SVG) 버전은 쓰지 않지만, 혹시 되돌릴 때를 위해 남겨 둡니다.
  */
 export default function CoreWordmark({ className = '', title = 'CoRe' }) {

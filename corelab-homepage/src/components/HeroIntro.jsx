@@ -321,7 +321,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {TRACE ? (
-            // 로고 대신 글자로 쓴 "CoRe Lab" (EB Garamond — wordmark.css)
+            // 로고 대신 글자로 쓴 "CoRe Lab" (Playfair Display — wordmark.css)
             <span className="hero-wm" aria-hidden="true">
               <span className="hero-wm-core">{(labName.match(/^\s*(CoRe)/i) || [null, labName])[1]}</span>
               {labName.replace(/^\s*CoRe\s*/i, '') && <span className="hero-wm-lab">{labName.replace(/^\s*CoRe\s*/i, '')}</span>}
