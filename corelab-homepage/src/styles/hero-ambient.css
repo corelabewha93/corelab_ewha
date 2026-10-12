@@ -71,9 +71,12 @@ html .hero-scroll-cue {
   cursor: pointer;
   -webkit-tap-highlight-color: transparent;
   opacity: 0;
-  transition: opacity 1.2s ease 3.8s;
+  transition: opacity 0.45s ease;
 }
-html .hero-phase-done .hero-scroll-cue {
+/* 마우스가 가까이 오거나(is-near), 올려놓거나, 키보드로 포커스가 오면 나타남 */
+html .hero-scroll-cue.is-near,
+html .hero-scroll-cue:hover,
+html .hero-scroll-cue:focus-visible {
   opacity: 1;
 }
 html .hero-scroll-cue:hover {

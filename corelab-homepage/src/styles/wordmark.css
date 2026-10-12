@@ -37,12 +37,26 @@
   letter-spacing: 0.005em;
 }
 
-.core-wordmark-text {
+/* 예전 그림(SVG) 로고용 규칙(.core-wordmark: height 1em, vertical-align -0.2em)이
+   글자 CoRe를 Lab보다 아래로 밀어 내리던 것을 되돌립니다 */
+.brand-wordmark.brand-wordmark-text {
+  display: inline-flex;
+  align-items: baseline;
+  padding-top: 0;
+  line-height: 1.1;
+}
+
+.core-wordmark.core-wordmark-text {
+  display: inline;
+  height: auto;
+  vertical-align: baseline;
   color: #e4d083;
 }
 
 .site-header .brand-wordmark-text .brand-rest {
   margin-left: 0.2em;
+  font: inherit;
+  color: #fff;
 }
 
 @media (max-width: 480px) {

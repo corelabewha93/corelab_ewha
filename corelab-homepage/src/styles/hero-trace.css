@@ -61,11 +61,6 @@
   }
 }
 
-.hero-intro.hero-trace.hero-phase-done .hero-scroll-cue {
-  transition: none;
-  animation: hero-tr-in 0.7s var(--tr-ease) 6.6s both;
-}
-
 @keyframes hero-tr-rise {
   from {
     opacity: 0;
