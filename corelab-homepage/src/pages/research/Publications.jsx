@@ -461,15 +461,15 @@ export default function Publications({
     <div className="pubs">
       {!embedded && (
         <dl className="pub-stats">
-          <div>
+          <div className="pub-stat-total">
             <dt>Journal Articles</dt>
             <dd>{stats.journals}</dd>
           </div>
-          <div>
+          <div className="pub-stat-sub-item">
             <dt>KCI</dt>
             <dd>{stats.kci}</dd>
           </div>
-          <div>
+          <div className="pub-stat-sub-item">
             <dt>International</dt>
             <dd>
               {stats.international}
@@ -482,11 +482,11 @@ export default function Publications({
               )}
             </dd>
           </div>
-          <div>
+          <div className="pub-stat-total">
             <dt>Conferences</dt>
             <dd>{stats.conferences}</dd>
           </div>
-          <div>
+          <div className="pub-stat-total">
             <dt>Books</dt>
             <dd>{stats.books}</dd>
           </div>
