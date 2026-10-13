@@ -233,3 +233,20 @@ html .pub-older {
     min-height: calc(2 * var(--space-6) + 12.5rem);
   }
 }
+
+/* 모바일 통계표: Journal Articles · Conferences · Books는 각각 같은 급의 "긴 줄(바)"로,
+   KCI · International은 Journal Articles의 세부 항목으로 바로 아래 두 칸에 둡니다. */
+@media (max-width: 700px) {
+  html .pub-stats > div.pub-stat-total {
+    grid-column: 1 / -1;
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    padding: 0.6rem 0 0.55rem;
+    border-left: none;
+  }
+  html .pub-stats > div.pub-stat-total dd {
+    margin: 0;
+    font-size: 1.25rem;
+  }
+}
