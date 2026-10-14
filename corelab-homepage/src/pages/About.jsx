@@ -14,16 +14,26 @@ import { softHyphen } from '../utils/softHyphen'
 import { useSmartJustify } from '../hooks/useSmartJustify'
 import { useLang, fillSeed } from '../i18n/LangContext'
 
-// 한글 화면의 메인 소속 문구: 영문으로 저장된 세 줄을 한글로 보여 줍니다.
-// (관리자 화면의 "소속 문구(영문)"은 영어 화면용으로 그대로 쓰이고, 목록에 없는 문구는 입력한 그대로 보입니다.)
+// 메인 화면의 소속 문구. 관리자 화면에 영문으로 저장된 세 줄(대학교 / 학과 / 교수)이 기본값 그대로일 때만
+// 화면용 문구로 바꿔 보여 주고, 직접 고쳐 쓴 문구는 입력한 그대로 보입니다.
+//   한글: 이화여자대학교 사범대학 교육공학과 (강조) / 임규연 교수 연구실
+//   영어: Ewha Womans University · College of Education · Educational Technology (강조) / Prof. Kyu Yon Lim's Lab
+const HERO_AFF_DEFAULT = ['ewha womans university', 'department of educational technology', 'prof. kyu yon lim']
 const HERO_AFF_KO = {
   'ewha womans university': '이화여자대학교',
   'department of educational technology': '교육공학과',
   'prof. kyu yon lim': '임규연 교수 연구실',
 }
-const heroAffKo = (line) => HERO_AFF_KO[String(line).trim().toLowerCase()] ?? line
-// 영어 화면: 교수님 줄은 "Prof. Kyu Yon Lim's Lab"으로 (한글의 "임규연 교수 연구실"과 맞춤)
-const heroAffEn = (line) => (String(line).trim().toLowerCase() === 'prof. kyu yon lim' ? "Prof. Kyu Yon Lim's Lab" : line)
+function heroAffiliationFor(en, lines) {
+  const norm = lines.map((l) => String(l).trim().toLowerCase())
+  const isDefault = norm.length === 3 && norm.every((l, i) => l === HERO_AFF_DEFAULT[i])
+  if (isDefault) {
+    return en
+      ? { lines: ['Ewha Womans University · College of Education · Educational Technology', "Prof. Kyu Yon Lim's Lab"], strong: 0 }
+      : { lines: ['이화여자대학교 사범대학 교육공학과', '임규연 교수 연구실'], strong: 0 }
+  }
+  return { lines: en ? lines : lines.map((l, i) => HERO_AFF_KO[norm[i]] ?? l), strong: 1 }
+}
 
 function NewsPreview() {
   const { data } = useData('news.json')
@@ -83,6 +93,8 @@ export default function About() {
   const { labName = '', labTagline = '', mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } =
     loc(data ?? {}, 'site')
 
+  const aff = heroAffiliationFor(en, heroAffiliation)
+
   const handleSave = (values) =>
     saveData(token, 'site.json', (d) => ({ ...d, ...values }), '홈 소개글 수정')
 
@@ -94,7 +106,8 @@ export default function About() {
         <HeroIntro
           labName={labName}
           tagline={labTagline}
-          affiliation={heroAffiliation.map(en ? heroAffEn : heroAffKo)}
+          affiliation={aff.lines}
+          affStrong={aff.strong}
           motto={mottoEn}
         />
 
