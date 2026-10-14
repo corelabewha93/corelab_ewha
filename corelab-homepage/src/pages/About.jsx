@@ -14,6 +14,17 @@ import { softHyphen } from '../utils/softHyphen'
 import { useSmartJustify } from '../hooks/useSmartJustify'
 import { useLang, fillSeed } from '../i18n/LangContext'
 
+// 한글 화면의 메인 소속 문구: 영문으로 저장된 세 줄을 한글로 보여 줍니다.
+// (관리자 화면의 "소속 문구(영문)"은 영어 화면용으로 그대로 쓰이고, 목록에 없는 문구는 입력한 그대로 보입니다.)
+const HERO_AFF_KO = {
+  'ewha womans university': '이화여자대학교',
+  'department of educational technology': '교육공학과',
+  'prof. kyu yon lim': '임규연 교수 연구실',
+}
+const heroAffKo = (line) => HERO_AFF_KO[String(line).trim().toLowerCase()] ?? line
+// 영어 화면: 교수님 줄은 "Prof. Kyu Yon Lim's Lab"으로 (한글의 "임규연 교수 연구실"과 맞춤)
+const heroAffEn = (line) => (String(line).trim().toLowerCase() === 'prof. kyu yon lim' ? "Prof. Kyu Yon Lim's Lab" : line)
+
 function NewsPreview() {
   const { data } = useData('news.json')
   const { tr, loc } = useLang()
@@ -83,7 +94,7 @@ export default function About() {
         <HeroIntro
           labName={labName}
           tagline={labTagline}
-          affiliation={heroAffiliation}
+          affiliation={heroAffiliation.map(en ? heroAffEn : heroAffKo)}
           motto={mottoEn}
         />
 
