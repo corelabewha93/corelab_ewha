@@ -139,3 +139,15 @@ html .hero-scroll-cue svg {
     margin-top: 0.8rem;
   }
 }
+
+/* 한글 화면의 소속 세 줄: 영문처럼 넓은 자간·대문자 변환 없이, 한글에 맞는 간격으로 */
+html:not(.lang-en) .hero-affiliation p {
+  text-transform: none;
+}
+html:not(.lang-en) .hero-aff-univ,
+html:not(.lang-en) .hero-aff-line {
+  letter-spacing: 0.1em;
+}
+html:not(.lang-en) .hero-aff-dept {
+  letter-spacing: 0.08em;
+}
