@@ -151,3 +151,18 @@ html:not(.lang-en) .hero-aff-line {
 html:not(.lang-en) .hero-aff-dept {
   letter-spacing: 0.08em;
 }
+
+/* 영어 화면: 강조 줄이 길어(대학교 · 단과대학 · 학과) 넓은 화면에서는 한 줄에, 좁은 화면에서는 균형 있게 두 줄로 */
+@media (min-width: 561px) {
+  html.lang-en .hero-aff-dept {
+    font-size: clamp(0.88rem, 1.9vw, 1.1rem);
+    letter-spacing: 0.1em;
+    text-wrap: balance;
+  }
+}
+@media (min-width: 1101px) {
+  html.lang-en .hero-aff-dept {
+    font-size: 1.1rem;
+    white-space: nowrap;
+  }
+}
