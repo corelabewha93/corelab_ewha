@@ -166,3 +166,9 @@ html:not(.lang-en) .hero-aff-dept {
     white-space: nowrap;
   }
 }
+
+/* 소속 강조 줄(대학교 · 단과대학 · 학과): 너무 튀지 않게 굵기와 밝기를 한 단계 낮춤 */
+html .hero-aff-dept {
+  font-weight: 500;
+  color: rgba(255, 255, 255, 0.8);
+}
