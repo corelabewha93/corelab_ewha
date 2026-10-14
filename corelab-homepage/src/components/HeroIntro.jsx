@@ -190,7 +190,7 @@ const T_LOGO_CURVE = (CONV_AT + 1.4) * 1000
 // 사이트 안에서 홈으로 다시 돌아왔을 때는 인트로를 반복하지 않습니다.
 let playedOnce = false
 
-export default function HeroIntro({ labName = '', tagline = '', affiliation = [], motto = '' }) {
+export default function HeroIntro({ labName = '', tagline = '', affiliation = [], motto = '', affStrong = 1 }) {
   const words = useMemo(() => splitName(tagline, labName), [tagline, labName])
   const [animated] = useState(() => Boolean(words) && !REDUCED && !playedOnce)
   // 인트로가 도는 동안 상단 메뉴의 "CoRe Lab"은 첫 화면이 그려지기 전부터 숨겨 둡니다(wordmark.css).
@@ -307,7 +307,8 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
 
   // 소속 문구는 순서대로: 대학교 → 학과(강조) → 지도교수. 정식 이름과 같은 줄은 빼서 두 번 보이지 않게 합니다.
   const lines = affiliation.filter((l) => l && l.trim().toLowerCase() !== tagline.trim().toLowerCase())
-  const affClass = (i) => (i === 0 ? 'hero-aff-univ' : i === 1 ? 'hero-aff-dept' : 'hero-aff-line')
+  // affStrong = 가장 또렷하게 강조할 줄의 번호(기본: 2번째 줄 = 학과)
+  const affClass = (i) => (i === affStrong ? 'hero-aff-dept' : i === 0 ? 'hero-aff-univ' : 'hero-aff-line')
 
   // 모바일: 정식 이름(부제)을 두 줄로 나눌 자리
   const taglineBreak = words ? mobileBreak(words.map((w) => w.pieces.map((p) => p.text).join(''))) : -1
@@ -431,7 +432,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
             <div className="hero-affiliation">
               {lines.map((line, i) => (
                 <p key={i} className={affClass(i)}>
-                  {i === 1 ? withMobileBreak(line) : line}
+                  {i === affStrong && line.trim().split(/\s+/).length > 3 ? withMobileBreak(line) : line}
                 </p>
               ))}
             </div>
