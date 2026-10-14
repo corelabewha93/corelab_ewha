@@ -62,28 +62,17 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
       ? { name: author.name, isExcluded, onToggle: (item) => onToggleExclude(item, dataKey, author.name) }
       : null
 
-  // 건수는 "제외된 항목"을 빼고 셉니다. (관리자 화면에도 방문자와 같은 숫자가 보입니다)
+  // 화면에는 건수(숫자)를 표시하지 않습니다. "제외된 항목"을 빼고 0건인지만 판단합니다.
   const counted = (list) => list.filter((p) => !isExcluded(p))
 
   // 0건인 종류는 요약·목록 모두에서 뺍니다.
   const sections = [
-    { key: 'publications', title: 'Publications', count: counted(pubs).length, shown: pubs.length },
-    { key: 'theses', title: 'Dissertations', count: counted(theses).length, shown: theses.length },
-    { key: 'projects', title: 'Projects', count: projects.length, shown: projects.length },
-    { key: 'patents', title: 'Patents', count: counted(patents).length, shown: patents.length },
+    { key: 'publications', title: 'Publications', shown: pubs.length },
+    { key: 'theses', title: 'Dissertations', shown: theses.length },
+    { key: 'projects', title: 'Projects', shown: projects.length },
+    { key: 'patents', title: 'Patents', shown: patents.length },
   ].filter((s) => s.shown > 0)
   const total = counted(pubs).length + counted(theses).length + counted(patents).length + projects.length
-
-  // 상단 요약: "논문 5"처럼 뭉뚱그리지 않고 학술지 / 학회 발표 / 저역서 / 학위논문을 나눠서 셉니다.
-  const countType = (t) => counted(pubs).filter((p) => p.type === t).length
-  const summary = [
-    [tr('학술지 논문', 'Journal articles'), countType('journal')],
-    [tr('학회 발표', 'Conference papers'), countType('conference')],
-    [tr('저역서', 'Books'), countType('book')],
-    [tr('학위논문', 'Dissertations'), counted(theses).length],
-    [tr('연구과제', 'Projects'), projects.length],
-    [tr('특허', 'Patents'), counted(patents).length],
-  ].filter(([, n]) => n > 0)
 
   return (
     <div className="author-research">
@@ -92,11 +81,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
           <p className="pub-author-eyebrow">Research Output</p>
           <h2 className="pub-author-name">
             {author.displayName || author.name}
-            <span className="pub-author-count">{tr(`${total}건`, `${total} ${total === 1 ? 'item' : 'items'}`)}</span>
           </h2>
-          {summary.length > 0 && (
-            <p className="pub-author-breakdown">{summary.map(([l, n]) => `${l} ${n}`).join(' · ')}</p>
-          )}
         </div>
         <button type="button" className="pub-author-clear" onClick={onClear}>
           {tr('전체 연구 실적 보기', 'View all research')}
@@ -117,7 +102,6 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
           {sections.length > 1 && (
             <h3 className="author-section-title">
               {s.title}
-              <span className="author-section-count">{s.count}</span>
             </h3>
           )}
           {s.key === 'publications' && (
