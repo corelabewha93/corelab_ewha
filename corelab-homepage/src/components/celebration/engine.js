@@ -40,9 +40,9 @@ const THEMES = {
     confetti: ['#e4d083', '#f5f2e8', '#8fe3ea', '#f28b82', '#f7b6c8', '#b9a6f0', '#ffd166'],
     floaters: ['#e4d083', '#8fe3ea', '#f28b82', '#b9a6f0', '#f7b6c8', '#7fd6a2'],
     petals: false,
-    titleColor: '#e4d083',
+    titleColor: '#e8c97a',
     titleGlow: 'rgba(228,208,131,.45)',
-    subAccent: '#e4d083',
+    subAccent: '#e8c97a',
     bannerBg: 'linear-gradient(90deg,#d8c264,#f3e8ae 50%,#d8c264)',
     bannerText: '#0b3d2a',
     btnBg: '#0b4a30',
@@ -366,7 +366,7 @@ export function startCelebration(ev, options = {}) {
     ctx.translate(x, y)
     ctx.globalAlpha = a
     ctx.fillStyle = '#fff6c8'
-    ctx.shadowColor = '#e4d083'
+    ctx.shadowColor = '#e8c97a'
     ctx.shadowBlur = 10 * S
     ctx.beginPath()
     for (let i = 0; i < 8; i++) {
