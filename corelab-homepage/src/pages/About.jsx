@@ -1,18 +1,16 @@
-import { useEffect, useRef, useState } from 'react'
+import { Fragment, useEffect, useRef, useState } from 'react'
 import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { saveData } from '../admin/dataStore'
 import { siteIntroFields } from '../admin/schemas'
-import EditModal from '../components/admin/EditModal'
+import EditModal from '../components/admin/LazyEditModal'
 import { EditButton } from '../components/admin/AdminControls'
 import SafeImage from '../components/SafeImage'
 import Link from '../router/Link'
 import { useHashRoute, newsHref } from '../router/useHashRoute'
 import { scrollToSection } from '../router/scrollToSection'
 import HeroIntro from '../components/HeroIntro'
-import { softHyphen } from '../utils/softHyphen'
 import { fixLabName, fixLabNameDeep } from '../utils/labName'
-import { useSmartJustify } from '../hooks/useSmartJustify'
 import { useLang, fillSeed } from '../i18n/LangContext'
 
 // 메인 화면의 소속 문구. 관리자 화면에 영문으로 저장된 세 줄(대학교 / 학과 / 교수)이 기본값 그대로일 때만
@@ -78,7 +76,7 @@ export default function About() {
   const { en, tr, loc, seedOf } = useLang()
   const ready = !(loading && !data)
   const overviewRef = useRef(null)
-  useSmartJustify(overviewRef, ':scope > p:not(.lab-motto-kr):not(.lab-motto-en)', [ready, data?.overview, en])
+  // (모바일 양쪽 정렬 다듬기 훅은 모바일을 왼쪽 정렬로 바꾸면서 쓰지 않습니다)
 
   // 다른 페이지에서 About을 눌러 들어오면(/?section=overview) Lab Overview로 내려갑니다.
   // (페이지가 바뀔 때 App이 맨 위로 올리는 동작이 끝난 뒤에 이동하도록 잠깐 기다립니다.)
@@ -125,23 +123,28 @@ export default function About() {
                 <p className="lab-motto-kr lab-motto-en-main">{mottoEn || mottoKr}</p>
               </div>
             ) : (
+              // 한국어 화면: 한글 모토만 (영문 모토는 위 메인 화면에 이미 있어 반복하지 않음)
               <div className="lab-motto">
-                {mottoKr && <p className="lab-motto-kr">{mottoKr}</p>}
-                {mottoEn && <p className="lab-motto-en">{mottoEn}</p>}
+                <p className="lab-motto-kr">{mottoKr || mottoEn}</p>
               </div>
             ))}
 
           {overview.map((paragraph, i) => (
-            <p key={i}>{en ? paragraph : softHyphen(paragraph)}</p>
+            <p key={i}>{paragraph}</p>
           ))}
 
           {researchAreas.length > 0 && (
-            <div style={{ marginTop: '1.5rem' }}>
-              {researchAreas.map((area) => (
-                <span key={area} className="tag" style={{ marginBottom: '0.4rem' }}>
-                  {area}
-                </span>
-              ))}
+            // 연구 키워드: 칩 대신 가운뎃점으로 이은 한 줄 (키워드 하나는 중간에서 줄이 바뀌지 않고,
+            // 줄이 바뀐 자리의 맨 앞 가운뎃점은 보이지 않게 숨깁니다 — polish.css)
+            <div className="lab-keywords">
+              <div className="lab-keywords-in">
+                {researchAreas.map((area, i) => (
+                  <Fragment key={area}>
+                    {i > 0 && ' '}
+                    <span className="lab-keyword">{area}</span>
+                  </Fragment>
+                ))}
+              </div>
             </div>
           )}
         </section>
