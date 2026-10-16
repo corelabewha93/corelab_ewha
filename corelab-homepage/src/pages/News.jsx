@@ -189,18 +189,6 @@ export default function News() {
       {ordering && (
         <p className="reorder-banner">◀ ▶ 버튼으로 순서를 바꾼 뒤, 오른쪽 아래 “순서 저장”을 눌러주세요. (앞쪽일수록 위에 보입니다)</p>
       )}
-      {items.length > 0 && !ordering && (
-        // 목록 요약: 전체 건수와 현재 페이지 — 소식이 10개를 넘으면 아래 페이지 번호로 넘어갑니다
-        <p className="news-list-summary" aria-live="polite">
-          {en ? `${items.length} ${items.length === 1 ? 'post' : 'posts'}` : `전체 ${items.length}건`}
-          {pageCount > 1 && (
-            <span className="news-list-page">
-              {' · '}
-              {en ? `Page ${curPage} of ${pageCount}` : `${curPage} / ${pageCount} 페이지`}
-            </span>
-          )}
-        </p>
-      )}
       {items.length === 0 ? (
         <p className="empty-state">{tr('등록된 소식이 없습니다.', 'No news yet.')}</p>
       ) : (
