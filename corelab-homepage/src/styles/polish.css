@@ -250,3 +250,56 @@ html .pub-older {
     font-size: 1.25rem;
   }
 }
+
+/* 특허 등록번호 줄 ("등록번호 제 10-2218973호 (등록일 2021년 2월 17일)") */
+html .patent-number {
+  margin: 0.2rem 0 0;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+  font-variant-numeric: tabular-nums;
+}
+
+/* 석사학위논문 배지 — 회색 대신 연한 민트(모토·사이트 보조색 계열). 박사는 금색 그대로 (교수님 요청) */
+html .pub-type-tag-ma {
+  color: #1f6f7a;
+  background: #e6f6f8;
+  border-color: #b9e2e8;
+}
+
+/* News 목록 요약("전체 12건 · 1 / 2 페이지")과 또렷한 페이지 번호 */
+html .news-list-summary {
+  margin: -0.4rem 0 0.9rem;
+  font-size: 0.82rem;
+  color: var(--color-text-muted);
+}
+html .pagination {
+  margin-top: var(--space-5);
+  padding-top: var(--space-3);
+  border-top: 1px solid var(--color-border);
+}
+html .page-btn {
+  border-color: var(--color-border);
+  color: var(--color-text);
+  font-weight: 500;
+}
+html .page-btn.page-arrow {
+  border-color: transparent;
+}
+html .page-btn.active {
+  border-color: var(--color-primary);
+}
+
+/* Lab Life 사진 크게 보기: 과하게 커지지 않도록 한 단계 작게 (교수님 피드백) */
+html .lightbox-card {
+  --lb-photo-h: min(40vh, 350px);
+  width: min(88vw, calc(var(--lb-photo-h) * 1.25 + var(--lb-pad) * 2));
+}
+
+/* 일부 모바일 브라우저(삼성 인터넷 등)가 숫자를 전화번호 링크로 바꿔 밑줄을 긋는 것을 막습니다 */
+html .person-detail a[href^="tel:"],
+html .person-card a[href^="tel:"],
+html .faculty-profile a[href^="tel:"] {
+  color: inherit;
+  text-decoration: none;
+  pointer-events: none;
+}

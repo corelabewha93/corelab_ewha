@@ -22,7 +22,7 @@
 }
 
 .hero-wm-core {
-  color: var(--hero-gold, #e4d083);
+  color: var(--hero-gold, #e8c97a);
 }
 
 .hero-wm-lab {
@@ -50,7 +50,7 @@
   display: inline;
   height: auto;
   vertical-align: baseline;
-  color: #e4d083;
+  color: #e8c97a;
 }
 
 .site-header .brand-wordmark-text .brand-rest {

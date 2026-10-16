@@ -153,7 +153,7 @@ h1.section-title {
    → ③ 나머지 글자가 접혀 사라지며 "CoRe Lab" 완성 → ④ 부제 · 모토 · 소속이 차례로 등장.
    단계(.hero-phase-intro → highlight → collapse → done)는 HeroIntro.jsx가 시간에 맞춰 바꿔 줍니다. ---------- */
 .hero-intro {
-  --hero-gold: #e4d083;
+  --hero-gold: #e8c97a; /* 따뜻한 금색 (교수님 피드백 반영, 살구빛 쪽으로 한 단계) */
   position: relative;
   width: 100vw;
   margin-left: calc(50% - 50vw);
