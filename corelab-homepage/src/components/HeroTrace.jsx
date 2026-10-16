@@ -88,12 +88,14 @@ function layout(s) {
   s.wide = wide
   const m = Math.min(W, H)
   if (wide) {
-    const w = Math.min(W * 0.24, 290)
+    // 모둠과 카드가 한눈에 들어오도록 화면 가운데에 모아 둡니다 (아주 넓은 화면에서도 퍼지지 않게 기준 폭 U를 씁니다)
+    const U = Math.min(W, 1400)
+    const w = Math.min(U * 0.23, 290)
     const h = Math.min(H * 0.36, 250)
-    s.card = { x: W * 0.69 - w / 2, y: H * 0.48 - h / 2, w, h }
-    const gx = [W * 0.19, W * 0.37, W * 0.2, W * 0.38]
+    s.card = { x: W / 2 + U * 0.15 - w / 2, y: H * 0.48 - h / 2, w, h }
+    const gx = [-0.205, -0.075, -0.195, -0.065]
     const gy = [H * 0.3, H * 0.38, H * 0.63, H * 0.7]
-    s.centers = gx.map((x, i) => [x, gy[i]])
+    s.centers = gx.map((x, i) => [W / 2 + x * U, gy[i]])
     s.seat = m * 0.07
     s.hs = Math.max(3.6, Math.min(5.4, m / 140)) // 머리 반지름
   } else {
@@ -342,7 +344,7 @@ function draw(ctx, s, t) {
     // 점등된 모둠 둘레의 고리
     if (hotU > 0.01) {
       const c = s.centers[HOT_GROUP]
-      ;[1.9, 2.5].forEach((k, i) => {
+      ;[1.9, 2.25].forEach((k, i) => {
         const u = ease(pr(t, HOT + i * 0.18, 0.7))
         if (u <= 0) return
         ctx.strokeStyle = rgba(GOLD, (i ? 0.2 : 0.45) * u * srcFade)
