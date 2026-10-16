@@ -181,13 +181,14 @@ export function AwardBadge({ award, org = '' }) {
   )
 }
 
-/** 저역서 종류 배지 문구: 직접 적은 문구(bookRole) > 옮긴이 있으면 번역서 > 저서 */
-const BOOK_ROLE_EN = { 저서: 'Book', 번역서: 'Translation', '저서 (챕터 저술)': 'Book chapter', 공저: 'Co-authored book', 편저: 'Edited book' }
+/** 저역서 종류 배지 문구: 직접 적은 문구(bookRole) > 옮긴이 있으면 번역서 > 저서
+ *  배지는 Conference · KCI 등 다른 배지와 맞춰 한국어 화면에서도 영어로 씁니다 (데이터는 한글 그대로). */
+const BOOK_ROLE_EN = { 저서: 'Book', 번역서: 'Translation', '저서 (챕터 저술)': 'Book Chapter', '저서(챕터 저술)': 'Book Chapter', 공저: 'Co-authored Book', 편저: 'Edited Book' }
 const THESIS_EN = { 석사학위논문: "Master's thesis", 박사학위논문: 'Doctoral dissertation' }
 
-function bookRoleOf(pub, en = false) {
+function bookRoleOf(pub) {
   const ko = pub.bookRole?.trim() ? pub.bookRole.trim() : (pub.translators?.length ?? 0) > 0 ? '번역서' : '저서'
-  return en ? BOOK_ROLE_EN[ko] ?? ko : ko
+  return BOOK_ROLE_EN[ko] ?? ko
 }
 
 /** 영어 화면: 한글 학술지·학회 이름은 en.json의 영문 이름으로 (관리자가 적은 영문 칸이 있으면 그것을 우선) */
