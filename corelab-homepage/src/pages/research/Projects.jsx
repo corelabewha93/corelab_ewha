@@ -1,7 +1,7 @@
 import { EditButton } from '../../components/admin/AdminControls'
 import { PROJECT_MEMBER_ROLES } from '../../admin/schemas'
 import FocusNames from './FocusNames'
-import { withStudentRoster } from './studentRoster'
+import { rosteredMembers, STUDENT_ROLES } from './studentRoster'
 import { useLang } from '../../i18n/LangContext'
 
 const ROLE_EN = { 박사후연구원: 'Postdoctoral Researchers', 학생연구원: 'Student Researchers' }
@@ -33,7 +33,6 @@ function formatWon(n) {
 }
 
 /** 예전에 입력된 박사과정·석사과정·학부연구생은 모두 "학생연구원"으로 묶어 보여줍니다. */
-const STUDENT_ROLES = new Set(['박사과정', '석사과정', '학부연구생', '학생연구원'])
 
 /** 참여연구진을 박사후연구원 → 학생연구원 순으로 묶고, 각 묶음 안에서 이름을 가나다순으로 돌려줍니다. */
 function groupMembers(members = []) {
@@ -75,9 +74,7 @@ export default function Projects({ items = [], onEdit, focus = null }) {
         const sy = proj.start?.slice(0, 4)
         const ey = proj.end?.slice(0, 4)
         const years = yearsOf(proj.start, proj.end)
-        const groups = groupMembers(
-          withStudentRoster(proj.id, Array.isArray(proj.members) ? proj.members : [], (r) => STUDENT_ROLES.has(r)),
-        )
+        const groups = groupMembers(rosteredMembers(proj))
         return (
           <section key={proj.id} className="pub-year-group project-group">
             <h3 className="pub-year-title project-years">

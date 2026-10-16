@@ -37,3 +37,11 @@ export function withStudentRoster(projectId, members = [], isStudentRole) {
   const students = roster.filter((n) => !taken.has(n)).map((name) => ({ name, role: '학생연구원' }))
   return [...others, ...students]
 }
+
+/** 예전에 입력된 박사과정·석사과정·학부연구생은 모두 "학생연구원"으로 봅니다. */
+export const STUDENT_ROLES = new Set(['박사과정', '석사과정', '학부연구생', '학생연구원'])
+
+/** 화면에 보이는 참여연구진 그대로(학생연구원 명단 적용 후)를 돌려줍니다. 개인별 연구실적 모아보기도 이 명단을 씁니다. */
+export function rosteredMembers(proj) {
+  return withStudentRoster(proj?.id, Array.isArray(proj?.members) ? proj.members : [], (r) => STUDENT_ROLES.has(r))
+}

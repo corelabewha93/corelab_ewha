@@ -3,6 +3,7 @@ import Publications from './Publications'
 import Theses from './Theses'
 import Patents from './Patents'
 import Projects from './Projects'
+import { rosteredMembers } from './studentRoster'
 import { makeFocus, includesFocus } from './authorMatch'
 import { useAdminAuth } from '../../admin/AdminAuthContext'
 import { useLang } from '../../i18n/LangContext'
@@ -53,7 +54,7 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
       theses: all.filter((p) => p.type === 'other' && mine(p) && show(p)),
       patents: (data.patents ?? []).filter((p) => includesFocus(p.inventors, focus) && show(p)),
       // 연구과제: 참여연구진에 이름이 있는 과제. (교수님은 모든 과제의 연구책임자라 따로 표기하지 않습니다.)
-      projects: (data.projects ?? []).filter((p) => includesFocus((p.members ?? []).map((m) => m.name), focus)),
+      projects: (data.projects ?? []).filter((p) => includesFocus(rosteredMembers(p).map((m) => m.name), focus)),
     }
   }, [data, focus, isAdmin, author.name])
 
