@@ -364,3 +364,14 @@ html .faculty-profile a[href^="tel:"] {
   text-decoration: none;
   pointer-events: none;
 }
+
+/* 홈 여백 정리 (B안): 섹션 간격은 한 가지 리듬으로, 푸터 위는 적당히 */
+html .page-home .section { margin-bottom: 0; }
+html .page-home #overview { padding-bottom: 88px; }
+html .page-home { padding-bottom: 88px; }
+html .page-home #overview .section-title { margin-bottom: 24px; }
+html .page-home #overview .lab-motto { padding-top: 0; padding-bottom: 28px; margin-bottom: 28px; }
+@media (max-width: 700px) {
+  html .page-home #overview { padding-bottom: 56px; }
+  html .page-home { padding-bottom: 56px; }
+}
