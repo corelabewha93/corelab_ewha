@@ -6,7 +6,7 @@
 
 /* 이름은 점 글자와 같은 자리에서 제자리 페이드인 — 점 글자가 선명한 글자로 바뀌는 순간이 이어지도록 위치 이동은 없음 */
 .hero-intro.hero-trace.hero-phase-done .hero-name {
-  animation: hero-tr-show 0.7s ease-out 4.4s both;
+  animation: hero-tr-show 0.6s linear 4.25s both;
 }
 
 .hero-intro.hero-trace .hero-logo-dot {
