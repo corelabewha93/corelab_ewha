@@ -3,8 +3,8 @@ import { useData } from '../hooks/useData'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { saveData } from '../admin/dataStore'
 import { contactFields } from '../admin/schemas'
-import AdminLoginModal from './AdminLoginModal'
-import EditModal from './admin/EditModal'
+import AdminLoginModal from './LazyAdminLoginModal'
+import EditModal from './admin/LazyEditModal'
 import { useLang, fillSeed } from '../i18n/LangContext'
 
 export default function Footer() {
