@@ -259,17 +259,29 @@ html .patent-number {
   font-variant-numeric: tabular-nums;
 }
 
-/* 학위논문 배지 — 박사는 금색(조금 더 진하게), 석사는 연보라. 수상 배지처럼 담백한 세로 그라데이션만 씁니다(반짝임 없음). */
+/* 학위논문·수상 배지 — 랩 브랜드색으로 위계를 만듭니다.
+   박사 = 딥그린 바탕 + 금 글씨(가장 무겁고 눈에 띔) · 석사 = 연초록 · 수상 = 금색(트로피). 아이콘 없이 색만. */
 html .pub-type-tag-phd {
-  color: #7a5a08;
-  background: linear-gradient(180deg, #fdf1c6 0%, #f7e2a0 100%);
-  border-color: #e0c164;
+  color: #f7e6a6;
+  background: linear-gradient(180deg, #0b5a38 0%, #00462a 100%);
+  border-color: #00462a;
+  font-weight: 700;
 }
 
 html .pub-type-tag-ma {
-  color: #5a3fa0;
-  background: linear-gradient(180deg, #f6f3ff 0%, #e8e1fb 100%);
-  border-color: #c9bdee;
+  color: #1e6b46;
+  background: #e8f4ed;
+  border-color: #bcdccb;
+}
+
+html .pub-award.pub-award-org-badge {
+  color: #8a6a12;
+  background: linear-gradient(180deg, #fdf6dd 0%, #f7ebc2 100%);
+  border-color: #e3cf8a;
+}
+
+html .pub-award.pub-award-org-badge svg {
+  color: #b8912a;
 }
 
 /* News 목록 요약("전체 12건 · 1 / 2 페이지")과 또렷한 페이지 번호 */
