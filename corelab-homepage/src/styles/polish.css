@@ -262,7 +262,7 @@ html .patent-number {
 /* 학위논문·수상 배지 — 랩 브랜드색으로 위계를 만듭니다.
    박사 = 딥그린 바탕 + 금 글씨(가장 무겁고 눈에 띔) · 석사 = 연초록 · 수상 = 금색(트로피). 아이콘 없이 색만. */
 html .pub-type-tag-phd {
-  color: #f7e6a6;
+  color: #f6c945;
   background: linear-gradient(180deg, #0b5a38 0%, #00462a 100%);
   border-color: #00462a;
   font-weight: 700;
