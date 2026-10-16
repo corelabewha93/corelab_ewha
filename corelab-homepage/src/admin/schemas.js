@@ -499,7 +499,7 @@ export const siteIntroFields = [
     name: 'labTagline',
     label: '연구실 정식 이름 (영문)',
     type: 'text',
-    placeholder: '예: Collaborative Research Learning Lab',
+    placeholder: '예: Collaborative Learning Research Lab',
     hint: '메인 화면 인트로에서 이 이름이 세로로 쌓여 먼저 나타나고, 약자(연구실 이름)에 쓰이는 글자(Co · Re · Lab)만 남아 "CoRe Lab"으로 합쳐집니다. 약자의 글자가 이 이름의 단어 첫 부분(Co-llaborative, Re-search, Lab)에 있어야 모션이 됩니다.',
   },
   {
