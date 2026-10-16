@@ -2,27 +2,27 @@ import { useEffect, useRef } from 'react'
 import '../styles/hero-trace.css'
 
 /**
- * 메인 인트로 — "함께 이야기하는 모둠 → 대화가 기록되는 카드 → 도움이 필요한 순간 → CoRe Lab" (약 6초, 글자 없이)
+ * 메인 인트로 — "함께 이야기하는 모둠 → 대화가 기록되는 카드 → 도움이 필요한 순간 → CoRe Lab" (약 5초, 글자 없이)
  *
- *  0–1.0s    짙은 녹색 위에 학습자(머리 + 어깨 실루엣)들이 흩어져 나타남
- *  0.8–2.0s  학습자들이 네 명씩 모둠으로 모여 앉음
- *  1.6–2.2s  점으로 만든 카드가 열림 (모둠마다 한 줄, 글자 없음)
- *  2.0–4.4s  모둠 안에서 말이 오감(학습자 사이를 건너가는 작은 빛).
+ *  0–0.9s    짙은 녹색 위에 학습자(머리 + 어깨 실루엣)들이 흩어져 나타남
+ *  0.7–1.8s  학습자들이 네 명씩 모둠으로 모여 앉음
+ *  1.45–2.0s 점으로 만든 카드가 열림 (모둠마다 한 줄, 글자 없음)
+ *  1.75–3.55s 모둠 안에서 말이 오감(학습자 사이를 건너가는 작은 빛).
  *            말 한마디마다 작은 점이 카드의 그 모둠 줄로 날아가 기록되고, 기록은 왼쪽으로 흘러감
- *  3.2s~     한 모둠의 대화가 거세짐 → 3.55s 그 줄이 금색으로 점등 → 맨 위로 올라오고,
+ *  2.5s~     한 모둠의 대화가 거세짐 → 2.75s 그 줄이 금색으로 점등 → 맨 위로 올라오고,
  *            그 모둠 학습자들도 금빛으로 바뀌며 고리가 퍼짐 (다른 모둠은 옅어짐)
- *  4.45–5.3s 모든 점이 흘러가 "CoRe Lab" 글자 모양(CoRe 금색 · Lab 흰색)으로 모이고,
+ *  3.6–4.45s 모든 점이 흘러가 "CoRe Lab" 글자 모양(CoRe 금색 · Lab 흰색)으로 모이고,
  *            금색 줄의 점들은 이름 아래 가로선 자리로 모임
- *  5.3–5.9s  점 글자가 같은 자리에서 선명한 글자(HeroIntro의 실제 이름)로 바뀜 (위치 이동 없음)
+ *  4.45–5.1s 점 글자가 같은 자리에서 선명한 글자(HeroIntro의 실제 이름)로 바뀜 (위치 이동 없음)
  *  이후      부제 · 모토 · 소속은 CSS(hero-trace.css)가 띄움
  * 글자 자리는 화면에 그려진 실제 이름(.hero-wm)의 기준선을 직접 재서 정합니다.
  * 모든 움직임의 속도 곡선은 하나: cubic-bezier(0.22, 1, 0.36, 1)
  */
 
-const END = 6.0
+const END = 5.15
 // 바깥(HeroIntro · hero-trace.css)과 맞춘 시각(초)
-export const TRACE_RULE = 5.4
-export const TRACE_LAND = 5.2
+export const TRACE_RULE = 4.55
+export const TRACE_LAND = 4.35
 
 const IVORY = [245, 242, 232]
 const MINT = [143, 227, 234]
@@ -63,16 +63,16 @@ function rng(seed) {
 
 // ── 시간표(초) ──
 const APPEAR = 0.0
-const GATHER = 0.8
-const CARD_IN = 1.6
-const TALK_FROM = 1.9
-const TALK_TO = 4.4
-const SURGE = 3.2 // 한 모둠의 대화가 잦아지기 시작
-const HOT = 3.55 // 그 줄이 금색으로 점등
-const LIFT = 3.85 // 맨 위로 올라옴
-const FLOW = 4.45 // 글자로 흘러감
+const GATHER = 0.7
+const CARD_IN = 1.45
+const TALK_FROM = 1.75
+const TALK_TO = 3.55
+const SURGE = 2.5 // 한 모둠의 대화가 잦아지기 시작
+const HOT = 2.75 // 그 줄이 금색으로 점등
+const LIFT = 3.05 // 맨 위로 올라옴
+const FLOW = 3.6 // 글자로 흘러감
 const FLOW_DUR = 0.75
-const FADE_OUT = 5.3
+const FADE_OUT = 4.45
 
 const GROUPS = 4
 const PER_GROUP = 4
