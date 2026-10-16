@@ -13,13 +13,14 @@ import '../styles/hero-trace.css'
  *            그 모둠 학습자들도 금빛으로 바뀌며 고리가 퍼짐 (다른 모둠은 옅어짐)
  *  3.6–4.45s 모든 점이 흘러가 "CoRe Lab" 글자 모양(CoRe 금색 · Lab 흰색)으로 모이고,
  *            금색 줄의 점들은 이름 아래 가로선 자리로 모임
- *  4.45–5.1s 점 글자가 같은 자리에서 선명한 글자(HeroIntro의 실제 이름)로 바뀜 (위치 이동 없음)
+ *  4.3–4.85s 점이 조금 커지며 글자 면을 채우고, 그 아래에서 실제 이름이 서서히 나타남.
+ *            실제 글자가 다 나타난 뒤에 점을 거두므로 중간에 꺼지거나 깜빡이지 않음 (위치 이동 없음)
  *  이후      부제 · 모토 · 소속은 CSS(hero-trace.css)가 띄움
  * 글자 자리는 화면에 그려진 실제 이름(.hero-wm)의 기준선을 직접 재서 정합니다.
  * 모든 움직임의 속도 곡선은 하나: cubic-bezier(0.22, 1, 0.36, 1)
  */
 
-const END = 5.15
+const END = 5.05
 // 바깥(HeroIntro · hero-trace.css)과 맞춘 시각(초)
 export const TRACE_RULE = 4.55
 export const TRACE_LAND = 4.35
@@ -72,7 +73,8 @@ const HOT = 2.75 // 그 줄이 금색으로 점등
 const LIFT = 3.05 // 맨 위로 올라옴
 const FLOW = 3.6 // 글자로 흘러감
 const FLOW_DUR = 0.75
-const FADE_OUT = 4.45
+const SWELL = 4.3 // 점이 살짝 커지며 글자 면을 메움 (실제 글자가 그 아래에서 서서히 나타남)
+const FADE_OUT = 4.8 // 실제 글자가 완전히 나타난 뒤에야 점을 거둠 → 꺼졌다 켜지는 순간이 없음
 
 const GROUPS = 4
 const PER_GROUP = 4
@@ -322,7 +324,7 @@ function makeParticles(s, t0) {
 function draw(ctx, s, t) {
   const { W, H } = s
   ctx.clearRect(0, 0, W, H)
-  const fadeAll = 1 - ease(pr(t, FADE_OUT, 0.55))
+  const fadeAll = 1 - pr(t, FADE_OUT, 0.12)
   if (fadeAll <= 0.002) return
   const srcFade = 1 - ease(pr(t, FLOW, 0.4))
   const hotU = ease(pr(t, HOT, 0.6))
@@ -445,6 +447,7 @@ function draw(ctx, s, t) {
   // 글자로 흘러가는 점
   if (t >= FLOW && s.parts) {
     const rad = Math.max(1.05, s.name.step * 0.34)
+    const swell = ease(pr(t, SWELL, 0.5))
     s.parts.forEach((p) => {
       const u = ease(pr(t, FLOW + p.delay, FLOW_DUR))
       if (u <= 0) return
@@ -455,7 +458,7 @@ function draw(ctx, s, t) {
       if (a <= 0.003) return
       ctx.fillStyle = rgba(mix(p.from, p.to, u), a)
       ctx.beginPath()
-      ctx.arc(x, y, lerp(1.6, p.rule ? rad * 0.9 : rad, u), 0, Math.PI * 2)
+      ctx.arc(x, y, lerp(1.6, p.rule ? rad * 0.9 : rad, u) * (1 + 0.85 * swell), 0, Math.PI * 2)
       ctx.fill()
     })
   }
