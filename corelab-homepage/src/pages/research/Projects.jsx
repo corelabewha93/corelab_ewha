@@ -1,6 +1,7 @@
 import { EditButton } from '../../components/admin/AdminControls'
 import { PROJECT_MEMBER_ROLES } from '../../admin/schemas'
 import FocusNames from './FocusNames'
+import { withStudentRoster } from './studentRoster'
 import { useLang } from '../../i18n/LangContext'
 
 const ROLE_EN = { 박사후연구원: 'Postdoctoral Researchers', 학생연구원: 'Student Researchers' }
@@ -45,7 +46,12 @@ function groupMembers(members = []) {
       names: members
         .filter((m) => m.name && labelOf(m.role) === role)
         .map((m) => m.name)
-        .sort((x, y) => x.localeCompare(y, 'ko')),
+        .sort((x, y) => {
+          // 한글 이름 가나다순, 영문 이름(외국인 연구원)은 맨 뒤
+          const hx = /[가-힣]/.test(x)
+          const hy = /[가-힣]/.test(y)
+          return hx === hy ? x.localeCompare(y, 'ko') : hx ? -1 : 1
+        }),
     }))
     .filter((g) => g.names.length > 0)
 }
@@ -69,7 +75,9 @@ export default function Projects({ items = [], onEdit, focus = null }) {
         const sy = proj.start?.slice(0, 4)
         const ey = proj.end?.slice(0, 4)
         const years = yearsOf(proj.start, proj.end)
-        const groups = groupMembers(Array.isArray(proj.members) ? proj.members : [])
+        const groups = groupMembers(
+          withStudentRoster(proj.id, Array.isArray(proj.members) ? proj.members : [], (r) => STUDENT_ROLES.has(r)),
+        )
         return (
           <section key={proj.id} className="pub-year-group project-group">
             <h3 className="pub-year-title project-years">
