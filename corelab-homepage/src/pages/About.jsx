@@ -11,6 +11,7 @@ import { useHashRoute, newsHref } from '../router/useHashRoute'
 import { scrollToSection } from '../router/scrollToSection'
 import HeroIntro from '../components/HeroIntro'
 import { softHyphen } from '../utils/softHyphen'
+import { fixLabName, fixLabNameDeep } from '../utils/labName'
 import { useSmartJustify } from '../hooks/useSmartJustify'
 import { useLang, fillSeed } from '../i18n/LangContext'
 
@@ -90,8 +91,11 @@ export default function About() {
   if (loading && !data) return <div className="page container">{tr('불러오는 중...', 'Loading...')}</div>
   if (error) return <div className="page container error-state">{error}</div>
 
-  const { labName = '', labTagline = '', mottoKr, mottoEn, heroAffiliation = [], overview = [], researchAreas = [] } =
+  const { labName = '', labTagline: rawTagline = '', mottoKr, mottoEn, heroAffiliation = [], overview: rawOverview = [], researchAreas = [] } =
     loc(data ?? {}, 'site')
+  // 정식 영문명은 교수님 확정안("Collaborative Learning Research Lab")으로 보이게 합니다 (labName.js)
+  const labTagline = fixLabName(rawTagline)
+  const overview = fixLabNameDeep(rawOverview)
 
   const aff = heroAffiliationFor(en, heroAffiliation)
 
