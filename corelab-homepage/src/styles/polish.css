@@ -259,11 +259,19 @@ html .patent-number {
   font-variant-numeric: tabular-nums;
 }
 
-/* 석사학위논문 배지 — 회색 대신 연한 민트(모토·사이트 보조색 계열). 박사는 금색 그대로 (교수님 요청) */
+/* 학위논문 배지 — 박사는 금빛(가장 빛나게), 석사는 연보라(은은한 광택). 수상 배지(청록)와 색이 겹치지 않게 했습니다. */
+html .pub-type-tag-phd {
+  color: #7a5a08;
+  background: linear-gradient(135deg, #fff3c4 0%, #f6dd8a 45%, #fff0b8 60%, #efd274 100%);
+  border-color: #d9b84e;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.85), 0 0 7px rgba(230, 190, 70, 0.5);
+}
+
 html .pub-type-tag-ma {
-  color: #1f6f7a;
-  background: #e6f6f8;
-  border-color: #b9e2e8;
+  color: #5a3fa0;
+  background: linear-gradient(135deg, #f5f1ff 0%, #e1d8fa 50%, #f5f1ff 70%, #d8ccf5 100%);
+  border-color: #bdaee8;
+  box-shadow: inset 0 1px 0 rgba(255, 255, 255, 0.9), 0 0 5px rgba(140, 115, 220, 0.28);
 }
 
 /* News 목록 요약("전체 12건 · 1 / 2 페이지")과 또렷한 페이지 번호 */
