@@ -4,8 +4,9 @@
   --tr-ease: cubic-bezier(0.22, 1, 0.36, 1);
 }
 
+/* 이름은 점 글자와 같은 자리에서 제자리 페이드인 — 점 글자가 선명한 글자로 바뀌는 순간이 이어지도록 위치 이동은 없음 */
 .hero-intro.hero-trace.hero-phase-done .hero-name {
-  animation: hero-tr-rise 1s var(--tr-ease) 3.4s both;
+  animation: hero-tr-show 0.8s ease-out 3.5s both;
 }
 
 .hero-intro.hero-trace .hero-logo-dot {
