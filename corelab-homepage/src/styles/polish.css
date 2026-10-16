@@ -9,17 +9,60 @@
    (global.css가 이 파일보다 나중에 불러와지므로, 선택자 앞에 html을 붙여 우선순위를 한 단계 높였습니다)
    ===================================================================== */
 
-/* 1) 소프트 하이픈(softHyphen.js)은 모바일에서만 줄바꿈 지점으로 씁니다. PC는 그대로. */
-@media (min-width: 701px) {
-  html #overview > p:not(.lab-motto-kr):not(.lab-motto-en) {
-    hyphens: none;
-    -webkit-hyphens: none;
-  }
+/* 1) 본문 정렬: PC는 양쪽 정렬, 휴대폰은 왼쪽 정렬 + 하이픈 없음 (단어가 "Re-search"처럼 잘리지 않게) */
+html #overview > p:not(.lab-motto-kr):not(.lab-motto-en),
+html .faculty-bio,
+html .news-article-p {
+  hyphens: none;
+  -webkit-hyphens: none;
 }
 @media (max-width: 700px) {
-  html #overview > p:not(.lab-motto-kr):not(.lab-motto-en) {
-    hyphens: manual;
-    -webkit-hyphens: manual;
+  html #overview > p:not(.lab-motto-kr):not(.lab-motto-en),
+  html .faculty-bio,
+  html .news-article-p {
+    text-align: left;
+    text-justify: auto;
+    word-break: keep-all;
+    overflow-wrap: break-word;
+    letter-spacing: normal;
+  }
+}
+
+/* 1-1) Lab Overview 연구 키워드: 칩 대신 가운뎃점으로 이은 한 줄 */
+html .lab-keywords {
+  margin: 1.6rem 0 0;
+  padding-top: 1.1rem;
+  border-top: 1px solid var(--color-border);
+  font-size: 0.86rem;
+  line-height: 1.9;
+  font-weight: 500;
+  color: var(--color-primary);
+  letter-spacing: 0.005em;
+}
+html .lab-keywords {
+  overflow: hidden;
+}
+/* 키워드마다 앞에 가운뎃점을 두고, 왼쪽으로 그 폭만큼 당겨 잘라 내면
+   각 줄 맨 앞 키워드의 가운뎃점만 가려집니다(줄이 어디서 바뀌어도 줄 첫머리에 점이 남지 않음) */
+html .lab-keywords-in {
+  margin-left: -0.95em;
+}
+html .lab-keyword {
+  white-space: nowrap;
+}
+html .lab-keyword::before {
+  content: '·';
+  display: inline-block;
+  width: 0.95em;
+  text-align: center;
+  transform: translateX(-0.13em); /* 앞의 띄어쓰기 폭만큼 당겨 점 양옆 간격을 같게 */
+  color: var(--color-accent, #45a2bc);
+  font-weight: 700;
+}
+@media (max-width: 700px) {
+  html .lab-keywords {
+    font-size: 0.82rem;
+    line-height: 1.85;
   }
 }
 
