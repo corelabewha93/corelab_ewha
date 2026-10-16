@@ -3,6 +3,29 @@ import { useAdminAuth } from '../../admin/AdminAuthContext'
 import FocusNames from './FocusNames'
 import { useLang } from '../../i18n/LangContext'
 
+/**
+ * 등록번호 표기 — 특허청 13자리 번호(예: 1022189730000)나 "10-2218973"을
+ * "등록번호 제 10-2218973호 (등록일 2021년 2월 17일)" 형식으로 보여 줍니다 (교수님 요청).
+ */
+function patentNumber(number = '', date = '', en = false) {
+  const raw = String(number).replace(/\s/g, '')
+  let core = ''
+  const m13 = raw.match(/^(\d{2})(\d{7})\d{4}$/) // 1022189730000 → 10-2218973
+  if (m13) core = `${m13[1]}-${m13[2]}`
+  else {
+    const m = raw.match(/(\d{2})-?(\d{7})/)
+    if (m) core = `${m[1]}-${m[2]}`
+  }
+  if (!core) return ''
+  const d = /^\d{4}-\d{2}-\d{2}$/.test(date) ? date.split('-').map(Number) : null
+  if (en) {
+    const dateEn = d ? ` (registered ${new Date(d[0], d[1] - 1, d[2]).toLocaleDateString('en-US', { year: 'numeric', month: 'long', day: 'numeric' })})` : ''
+    return `Registration No. ${core}${dateEn}`
+  }
+  const dateKo = d ? ` (등록일 ${d[0]}년 ${d[1]}월 ${d[2]}일)` : ''
+  return `등록번호 제 ${core}호${dateKo}`
+}
+
 const STATUS_LABELS = {
   registered: '등록',
   pending: '출원',
@@ -64,25 +87,11 @@ export default function Patents({ items = [], onEdit, onToggleHidden, focus = nu
               <span className="badge badge-hidden">{authorTool.name} 실적에서 제외됨 · 관리자에게만 보임</span>
             )}
           </div>
-          {!en && pat.titleEn && (
-            <p
-              className="patent-title-en"
-              style={{
-                margin: '0.1rem 0 0',
-                fontSize: '0.66rem',
-                lineHeight: 1.45,
-                fontStyle: 'italic',
-                color: 'var(--color-text-muted)',
-              }}
-            >
-              {pat.titleEn}
-            </p>
-          )}
+          {/* 영어 제목은 한글 화면에서 보이지 않습니다 (교수님 요청). 영어 화면에서는 제목 자리에 쓰입니다. */}
           <div className="pub-venue">
             <FocusNames names={pat.inventors ?? []} focus={focus} />
-            {pat.number ? ` · ${pat.number}` : ''}
-            {pat.country ? ` (${pat.country})` : ''}
           </div>
+          {patentNumber(pat.number, pat.date, en) && <p className="patent-number">{patentNumber(pat.number, pat.date, en)}</p>}
           {pat.description && <p className="patent-desc">{pat.description}</p>}
         </div>
         )

@@ -119,26 +119,24 @@ export default function Projects({ items = [], onEdit, focus = null }) {
                 ) : null}
               </p>
 
-              {groups.length > 0 && (
-                <div className="project-members">
-                  <span className="project-members-label">{tr('참여연구진', 'Research Team')}</span>
-                  <span className="project-members-list">
+              {/* 연구책임자(임규연 교수)는 모든 과제에 공통이라 참여연구진 앞에 항상 표시합니다 (교수님 요청) */}
+              <div className="project-members">
+                <span className="project-members-label">{tr('참여연구진', 'Research Team')}</span>
+                <span className="project-members-list">
+                  <span className="project-members-group project-members-pi">
+                    <span className="project-members-role">{tr('연구책임자', 'Principal Investigator')}</span>
+                    <FocusNames names={[tr('임규연', 'Kyu Yon Lim')]} focus={focus} />
+                  </span>
                     {groups.map((g) => (
                       <span key={g.role} className="project-members-group">
                         <span className="project-members-role">{en ? ROLE_EN[g.role] ?? g.role : g.role}</span>
                         <FocusNames names={g.names} focus={focus} />
                       </span>
                     ))}
-                  </span>
-                </div>
-              )}
+                </span>
+              </div>
 
-              {proj.description && (
-                <>
-                  <p className="project-desc-label">{tr('과제 소개', 'About the project')}</p>
-                  <p className="project-desc">{proj.description}</p>
-                </>
-              )}
+              {/* 과제 소개 문장은 화면에서 뺍니다 (교수님 요청). 데이터는 관리자 화면에 그대로 남아 있습니다. */}
             </div>
           </section>
         )

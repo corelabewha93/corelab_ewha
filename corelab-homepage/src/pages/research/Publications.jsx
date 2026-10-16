@@ -129,6 +129,8 @@ export function SearchBox({ value, onChange, placeholder }) {
 
 /** 등재 등급 배지 — 해당하는 등급을 모두 나란히 (예: SSCI · SCIE · Scopus) */
 function IndexBadges({ indexes }) {
+  // SCIE 배지는 보이지 않게 (교수님 요청). 통계 숫자(SSCI·Scopus)에는 영향 없습니다.
+  indexes = indexes.filter((ix) => ix.toUpperCase() !== 'SCIE')
   if (!indexes.length) return null
   return (
     <span className="pub-index-badges">
@@ -224,9 +226,17 @@ function detailsEn(text = '') {
 }
 
 function stripSaleStatus(text = '') {
+  // 도서: 절판/품절 표시와 함께, 총 쪽수("422쪽", "372p")와 챕터 쪽범위("pp. 1-18")도 화면에서는 뺍니다 (교수님 요청).
   return text
     .split('·')
-    .map((part) => part.replace(/\(?\s*(절판|품절)\s*\)?/g, '').trim())
+    .map((part) =>
+      part
+        .replace(/\(?\s*(절판|품절)\s*\)?/g, '')
+        .replace(/\b(?:pp?\.\s*)\d+\s*[-–~]\s*\d+\b/gi, '')
+        .replace(/(?:^|\s)\d{1,4}\s*(?:쪽|페이지|pages?|p\.?)(?=$|[\s,;)])/gi, '')
+        .replace(/^[\s,;]+|[\s,;]+$/g, '')
+        .trim(),
+    )
     .filter(Boolean)
     .join(' · ')
 }
