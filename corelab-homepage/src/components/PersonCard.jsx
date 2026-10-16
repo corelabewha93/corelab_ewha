@@ -26,13 +26,27 @@ function splitHistoryLine(line) {
   return { label: line.slice(0, idx).trim(), date: line.slice(idx + 1).trim() }
 }
 
+/**
+ * 교수님 박사 학력의 세부전공 표기 — 교수님 요청: "Instructional Systems" 대신 학과명
+ * "Department of Learning and Performance Systems"로. 관리자 화면에 예전 표기가 남아 있어도 화면에서는 학과명으로 보이고,
+ * 관리자 화면에서 고쳐 저장하면 이 함수는 아무것도 바꾸지 않습니다.
+ */
+const PSU_DEPT = 'Department of Learning and Performance Systems'
+function fixEducationLine(line) {
+  if (typeof line !== 'string' || !/Instructional\s+Systems?/i.test(line)) return line
+  return line
+    .replace(/\(\s*Instructional\s+Systems?\s*\)/i, `(${PSU_DEPT})`)
+    .replace(/Ph\.?\s*D\.?\s+in\s+Instructional\s+Systems?/i, `Ph.D., ${PSU_DEPT}`)
+    .replace(/Instructional\s+Systems?/i, PSU_DEPT)
+}
+
 /** 교수 프로필: 사진 + 이름 + 연락처 + 소개 + 연구관심분야를 한 화면에 바로 보여줍니다. */
 function FacultyProfile({ person: raw, onEdit, reorder }) {
   const { tr, loc } = useLang()
   const person = loc(raw, 'people')
   const contactLines = [person.email, person.office, person.phone].filter(Boolean)
   const interests = Array.isArray(person.researchInterests) ? person.researchInterests : []
-  const education = Array.isArray(person.education) ? person.education : []
+  const education = (Array.isArray(person.education) ? person.education : []).map(fixEducationLine)
   const career = Array.isArray(person.career) ? person.career : []
   const awards = Array.isArray(person.awards) ? person.awards : []
   const hasHistory = education.length > 0 || career.length > 0 || awards.length > 0

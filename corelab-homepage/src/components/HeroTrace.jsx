@@ -20,13 +20,19 @@ import '../styles/hero-trace.css'
  * 모든 움직임의 속도 곡선은 하나: cubic-bezier(0.22, 1, 0.36, 1)
  */
 
-export const TRACE_LAND = 5.3
-export const TRACE_RULE = TRACE_LAND + 0.4 // 연결선이 이름 아래 가로선으로 다 바뀐 시각
-const END = TRACE_RULE + 0.2
+// 재생 속도 — 교수님 피드백("로딩 기다리는 느낌")으로 전체를 약 7초 → 약 4.4초로 줄였습니다.
+// 아래 시간표(초)는 그대로 두고, 실제로는 SPEED배 빠르게 재생합니다.
+const SPEED = 1.6
+const LAND_T = 5.3 // (시간표 기준) 두 코드가 가로선 양 끝에 착지
+const RULE_T = LAND_T + 0.4 // (시간표 기준) 연결선이 이름 아래 가로선으로 다 바뀜
+const END = RULE_T + 0.2
+// 바깥(HeroIntro·CSS)에서 쓰는 실제 초
+export const TRACE_LAND = LAND_T / SPEED // ≈ 3.31s
+export const TRACE_RULE = RULE_T / SPEED // ≈ 3.56s
 
 const IVORY = [245, 242, 232]
 const MINT = [143, 227, 234]
-const GOLD = [228, 208, 131]
+const GOLD = [232, 201, 122]
 
 function bez(x1, y1, x2, y2) {
   const cx = 3 * x1
@@ -99,7 +105,7 @@ const CO = [
   [1, 4, 4.38],
   [2, 4, 4.44],
 ]
-const GATHER = [4.7, TRACE_LAND]
+const GATHER = [4.7, LAND_T]
 
 function layoutBox(s) {
   const { W, H } = s
@@ -189,7 +195,7 @@ function draw(ctx, s, t) {
       ctx.fill()
     })
   }
-  caption(ctx, s, 'SOCIAL NETWORK  ·  WHO LEARNS WITH WHOM', ease(pr(t, 0.75, 0.5)) * (1 - ease(pr(t, SNA_OUT - 0.1, 0.35))))
+  caption(ctx, s, 'WHO LEARNS WITH WHOM', ease(pr(t, 0.75, 0.5)) * (1 - ease(pr(t, SNA_OUT - 0.1, 0.35))))
 
   // ───── ② ENA ─────
   if (t >= ENA_IN - 0.2) {
@@ -236,7 +242,7 @@ function draw(ctx, s, t) {
       }
       return fold(p)
     })
-    const landed = t >= TRACE_LAND
+    const landed = t >= LAND_T
     Object.entries(w).forEach(([key, val], n) => {
       const [a, b] = key.split('-').map(Number)
       const bridge = key === '1-2' // 두 학습자를 잇는 선 → 로고의 어깨선이 됨
@@ -256,12 +262,12 @@ function draw(ctx, s, t) {
       if (appear <= 0) return
       const p = CP[i]
       const lands = tg && LAND[i] !== undefined
-      if (lands && t >= TRACE_RULE) return
+      if (lands && t >= RULE_T) return
       let r = (3.2 + 1.5 * Math.sqrt(nodeW[i])) * (0.4 + 0.6 * k)
       let col = IVORY
       let al = appear * fade
       if (lands) {
-        al = appear * (1 - ease(pr(t, TRACE_LAND, TRACE_RULE - TRACE_LAND)))
+        al = appear * (1 - ease(pr(t, LAND_T, RULE_T - LAND_T)))
         r = lerp(3.2 + 1.5 * Math.sqrt(nodeW[i]), 3.4, g)
         col = LAND[i] ? MINT : IVORY
       }
@@ -301,11 +307,11 @@ function draw(ctx, s, t) {
       ctx.arc(cen[0], cen[1], 2.2, 0, Math.PI * 2)
       ctx.fill()
     }
-    caption(ctx, s, 'EPISTEMIC NETWORK  ·  HOW IDEAS CONNECT', ease(pr(t, ENA_IN + 0.2, 0.5)) * (1 - ease(pr(t, GATHER[0] - 0.1, 0.35))))
+    caption(ctx, s, 'HOW IDEAS CONNECT', ease(pr(t, ENA_IN + 0.2, 0.5)) * (1 - ease(pr(t, GATHER[0] - 0.1, 0.35))))
 
     // ③ 두 점을 잇던 연결선이 양옆으로 늘어나 이름 아래의 가로선이 됨
-    if (landed && t < TRACE_RULE && tg && s.rule) {
-      const u = ease(pr(t, TRACE_LAND, TRACE_RULE - TRACE_LAND))
+    if (landed && t < RULE_T && tg && s.rule) {
+      const u = ease(pr(t, LAND_T, RULE_T - LAND_T))
       const R = s.rule
       const x0 = lerp(tg[0].x, R.x0, u)
       const x1 = lerp(tg[1].x, R.x1, u)
@@ -356,7 +362,7 @@ export default function HeroTrace({ animated, skipped = false }) {
     const t0 = performance.now()
     let raf = 0
     const tick = () => {
-      const t = (performance.now() - t0) / 1000
+      const t = ((performance.now() - t0) / 1000) * SPEED
       if (!s.targets) {
         const hr = cv.getBoundingClientRect()
         // 착지 자리 = 이름 아래 가는 가로선(.hero-rule)의 양 끝 근처

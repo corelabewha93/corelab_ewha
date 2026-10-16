@@ -233,7 +233,7 @@ function heroSurprise(px, py, reduced) {
   const burst = reduced
     ? []
     : [...Array(12)].map((_, i) => ({
-        e: add(makeStar(fs * 0.34 * (0.6 + rnd() * 0.7), ['#fff6c8', '#e4d083', '#8fe3ea', '#f5f2e8'][i % 4])),
+        e: add(makeStar(fs * 0.34 * (0.6 + rnd() * 0.7), ['#fff6c8', '#e8c97a', '#8fe3ea', '#f5f2e8'][i % 4])),
         a: (i / 12) * Math.PI * 2 + rnd() * 0.4,
         d: h1r.height * (0.7 + rnd() * 0.7),
       }))

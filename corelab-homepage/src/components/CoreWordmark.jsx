@@ -9,7 +9,7 @@ import '../styles/wordmark.css'
  * 글자 높이·기준선이 딱 맞도록 메인 화면(HeroIntro.jsx)과 같은 기준으로 그립니다.
  */
 
-const GOLD = '#e4d083'
+const GOLD = '#e8c97a'
 const IVORY = '#f5f2e8'
 const MINT = '#8fe3ea'
 
