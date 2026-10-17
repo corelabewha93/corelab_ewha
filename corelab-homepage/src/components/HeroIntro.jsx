@@ -137,7 +137,7 @@ function LogoLayer({ d, color }) {
 /**
  * 모바일에서 두 줄로 나눌 자리(몇 번째 단어 뒤)를 고릅니다.
  * 윗줄이 아랫줄보다 조금 짧은 "사다리꼴" 모양(윗줄 ≈ 전체의 40%)이 되도록 합니다.
- * 예: "Seeing How / We Learn Together", "COLLABORATIVE / RESEARCH LEARNING LAB"
+ * 예: "Exploring How / We Learn Together", "COLLABORATIVE / RESEARCH LEARNING LAB"
  */
 function mobileBreak(wordList) {
   const lens = wordList.map((w) => w.length)
