@@ -224,13 +224,41 @@
         "hwang.et@ewha.ac.kr"
       ],
       "photoCrop": {
-        "x": 18.1,
-        "y": 97.1,
-        "zoom": 11
+        "x": 19.2,
+        "y": 100,
+        "zoom": 1
       },
       "links": [],
       "nameEn": "Hye Jung Hwang",
-      "pubNames": []
+      "pubNames": [],
+      "bioEn": "Looking around for blind spots",
+      "hideResearch": "",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-09~present",
+        "B.A., Educational Technology, Ewha Womans University | 2016~2022",
+        "#Experience",
+        "Contributing Reporter, Editorial Department, Women’s News | 2026~present",
+        "Sports Reporter, Sports Seoul | 2022~2024",
+        "Intern Reporter, Newsis | 2021",
+        "Data Entry Assistant, Department of Clinical Pharmacology, Seoul National University College of Medicine | 2018",
+        "#Awards",
+        "Baseball Journalist of the Quarter (Q2) | Korea Baseball Writers Association | 2024-07",
+        "Sports Journalist of the Quarter (Q2) | Korea Sports Press Union | 2024-07",
+        "Baseball Journalist of the Year | Korea Baseball Writers Association | 2024-03",
+        "#Content Production & Advisory",
+        "Documentary ‘Covering the Women’s Pro Baseball League (WPBL)’ | Women’s News | 2026",
+        "Documentary ‘Michyeotdaedo: Women’s Baseball’ | SBS | 2025",
+        "Entertainment show ‘Queen of Baseball’ | Channel A | 2025",
+        "#Portfolio",
+        "Hye Jung Hwang Portfolio | https://et16.netlify.app/",
+        "#Research Interests",
+        "Everything that isn’t ‘education,’ everything that doesn’t use ‘AI’",
+        "Yet still, finding what goes unseen beneath words that have grown stale",
+        "Spatial cognition, metacognition, learning analytics",
+        "#Contact",
+        "hwang.et@ewha.ac.kr"
+      ]
     },
     {
       "name": "임연서",
