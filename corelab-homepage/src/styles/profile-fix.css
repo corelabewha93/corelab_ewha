@@ -18,3 +18,61 @@ html body .faculty-history-col .edu-univ {
   line-height: 1.45;
   color: #34433a;
 }
+
+/* 3) 연락처 · 연구관심분야: 두 칸 모두 같은 작은 제목 + 같은 줄 간격으로 맞춰, 붕 떠 보이지 않게 */
+html body .faculty-meta {
+  align-items: start;
+  gap: 1.4rem var(--space-4);
+  padding: 1.15rem 0 1.25rem;
+}
+/* PC: 아래 학력 · 교내수상이력과 같은 두 칸, 같은 간격이라 세로선이 맞음 */
+@media (min-width: 701px) {
+  html body .faculty-meta {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+html body .faculty-contact-col,
+html body .faculty-interests {
+  flex: 1 1 220px;
+  min-width: 0;
+}
+html body .faculty-contact-col .faculty-meta-label,
+html body .faculty-interests .faculty-meta-label {
+  display: block;
+  margin: 0 0 0.6rem;
+  font-size: 0.75rem;
+  letter-spacing: 0.04em;
+  color: var(--color-text-muted);
+}
+html body .faculty-contact-col .faculty-contact {
+  flex: none;
+  min-width: 0;
+  gap: 0.3rem;
+  font-size: 0.92rem;
+  line-height: 1.55;
+}
+html body .faculty-contact-col .faculty-scholar {
+  margin-top: 0.35rem;
+}
+html body .faculty-interests > div {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+html body .faculty-interests .tag {
+  margin: 0;
+}
+
+@media (max-width: 700px) {
+  html body .faculty-meta {
+    flex-direction: column;
+    gap: 1.15rem;
+    padding: 1rem 0 1.1rem;
+  }
+  html body .faculty-contact-col,
+  html body .faculty-interests {
+    flex: none;
+    width: 100%;
+  }
+}
