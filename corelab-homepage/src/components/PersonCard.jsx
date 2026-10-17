@@ -88,7 +88,10 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
     if (bioOpen) return undefined
     const el = bioRef.current
     if (!el) return undefined
-    const check = () => setBioLong(el.scrollHeight > el.clientHeight + 2)
+    const first = el.querySelector('p')
+    const check = () => setBioLong(
+      el.querySelectorAll('p').length > 1 || (first ? first.scrollHeight > first.clientHeight + 2 : false),
+    )
     check()
     document.fonts?.ready?.then(check)
     window.addEventListener('resize', check)
@@ -123,9 +126,11 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
 
         {person.bio && (
           <>
-            <p ref={bioRef} className={`faculty-bio${bioOpen ? '' : ' is-clamped'}`}>
-              {person.bio}
-            </p>
+            <div ref={bioRef} className={`faculty-bio${bioOpen ? '' : ' is-clamped'}`}>
+              {String(person.bio).split(/\n+/).map((t) => t.trim()).filter(Boolean).map((t, i) => (
+                <p key={i} className="faculty-bio-p">{t}</p>
+              ))}
+            </div>
             {(bioLong || bioOpen) && (
               <button type="button" className="faculty-bio-toggle" onClick={() => setBioOpen((v) => !v)} aria-expanded={bioOpen}>
                 {bioOpen ? tr('접기 ▴', 'Show less ▴') : tr('더 보기 ▾', 'Read more ▾')}
