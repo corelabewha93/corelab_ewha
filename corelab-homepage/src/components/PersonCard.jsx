@@ -60,14 +60,13 @@ function EducationLine({ line }) {
   const parsed = parseEducation(line)
   if (!parsed) return line
   return (
-    <>
-      <span className="edu-univ">{parsed.univ}</span>
-      <span className="edu-deg">
-        <b>{parsed.degree}</b>
-        <span className="edu-sep" aria-hidden="true">·</span>
-        {parsed.dept}
+    <span className="edu-row">
+      <b className="edu-degree">{parsed.degree}</b>
+      <span className="edu-main">
+        <span className="edu-univ">{parsed.univ}</span>
+        <span className="edu-dept">{parsed.dept}</span>
       </span>
-    </>
+    </span>
   )
 }
 
