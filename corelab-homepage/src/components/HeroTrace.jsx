@@ -403,8 +403,6 @@ function draw(ctx, s, t) {
   const spW = ctx.measureText(' ').width
   const iVis = pr(t, T.learn[0], T.learn[0] + 0.15)
   const erased = smooth(t, T.rub[0], T.rub[1])
-  const iGap = 1 - smooth(t, T.rub[1], T.rub[1] + 0.22)
-  const slotOpen = smooth(t, T.rub[1], T.write[0] + 0.1)
   const we = pr(t, T.write[0], T.write[1])
 
   // 묶음별 타이핑 진행
@@ -435,22 +433,16 @@ function draw(ctx, s, t) {
 
   const pos = {} // 손이 따라갈 자리
   s.lines.forEach((line, li) => {
+    // 모든 단어의 자리는 "완성된 문장" 기준으로 처음부터 고정입니다.
+    // 그래서 "I Learn"이 먼저 최종 자리에 나타나고, 나중에 나오는 글자 · "We"가 들어와도 다른 글자는 움직이지 않습니다.
     const items = line.map((r) => {
-      if (r.grp === 'we') {
-        const w = (wI * Math.min(1, iVis * 1.5) * Math.max(iGap, 0)) + wWe * slotOpen
-        return { r, w, we: true }
-      }
-      const sh = shown(r)
-      return { r, sh, w: sh ? sh.w : 0 }
+      if (r.grp === 'we') return { r, w: wWe, we: true }
+      return { r, sh: shown(r), w: ctx.measureText(r.w).width }
     })
-    // 보이는 단어들 사이에만 띄어쓰기
     let total = 0
-    let prev = false
-    items.forEach((it) => {
-      const vis = it.w > 0.5
-      it.gap = vis && prev ? spW : 0
+    items.forEach((it, i) => {
+      it.gap = i > 0 ? spW : 0
       total += it.gap + it.w
-      if (vis) prev = true
     })
     const y = s.startBase(li) + (s.endBase(li) - s.startBase(li)) * move
     let x = s.cx - total / 2
@@ -460,12 +452,13 @@ function draw(ctx, s, t) {
       const finalA = 0.9 // 실제 모토의 투명도(rgba(255,255,255,.9))와 맞춤
       const a = 1 - (1 - finalA) * white
       if (it.we) {
-        const xI = x
-        if (it.w > 0.5 || erased < 1) {
+        // "I"는 "We" 자리의 오른쪽 끝에 붙여 두어, 처음에는 "I Learn"이 자연스럽게 읽히고 "We"가 들어올 왼쪽 자리는 비워 둡니다.
+        const xWe = x
+        const xI = x + (wWe - wI)
+        if (erased < 1) {
           ctx.fillStyle = rgba(mixW(COL.A, white), (1 - erased) * iVis)
           ctx.fillText('I', xI, y)
         }
-        const xWe = x + wI * Math.max(iGap, 0) * Math.min(1, iVis * 1.5)
         if (we > 0) {
           ctx.save()
           ctx.beginPath()
