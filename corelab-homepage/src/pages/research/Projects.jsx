@@ -130,12 +130,16 @@ export default function Projects({ items = [], onEdit, focus = null }) {
                 <span className="project-members-list">
                   <span className="project-members-group project-members-pi">
                     <span className="project-members-role">{tr('연구책임자', 'Principal Investigator')}</span>
-                    <FocusNames names={[tr('임규연', 'Kyu Yon Lim')]} focus={focus} />
+                    <span className="project-members-names">
+                      <FocusNames names={[tr('임규연', 'Kyu Yon Lim')]} focus={focus} />
+                    </span>
                   </span>
                     {groups.map((g) => (
                       <span key={g.role} className="project-members-group">
                         <span className="project-members-role">{en ? ROLE_EN[g.role] ?? g.role : g.role}</span>
-                        <FocusNames names={g.names} focus={focus} />
+                        <span className="project-members-names">
+                          <FocusNames names={g.names} focus={focus} />
+                        </span>
                       </span>
                     ))}
                 </span>
