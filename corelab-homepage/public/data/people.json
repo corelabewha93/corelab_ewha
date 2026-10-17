@@ -209,9 +209,9 @@
       "name": "임연서",
       "photo": "images/people/im-yeonseo-p1017.jpg",
       "photoCrop": {
-        "x": 40,
-        "y": 38,
-        "zoom": 1.7
+        "x": 37.6,
+        "y": 70.2,
+        "zoom": 1.47
       },
       "degree": "MA",
       "bio": "",
@@ -228,7 +228,17 @@
       "id": "person-mue0fxe71xi",
       "nameEn": "Yeonseo Im",
       "pubNames": [],
-      "hideResearch": "hidden"
+      "hideResearch": "hidden",
+      "bioEn": "",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-09~present",
+        "B.A., Educational Technology, Ewha Womans University | 2022~2026",
+        "#Experience",
+        "Intern, Change Solutions Division, Root Consulting | 2025",
+        "#Contact",
+        "imys@ewha.ac.kr"
+      ]
     },
     {
       "name": "김재현",
