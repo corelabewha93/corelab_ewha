@@ -389,10 +389,10 @@ html .faculty-history-col .edu-degree {
 html .faculty-history-col .edu-main { display: block; min-width: 0; }
 html .faculty-history-col .edu-univ {
   display: block;
-  font-size: 0.9rem;
-  font-weight: 600;
+  font-size: 0.86rem;
+  font-weight: 500;
   line-height: 1.45;
-  color: var(--color-text);
+  color: #34433a;
 }
 html .faculty-history-col .edu-dept {
   display: block;
@@ -423,3 +423,11 @@ html .faculty-history-col .edu-dept {
 @media (max-width: 700px) {
   html.lang-en .project-members-group { grid-template-columns: 7.2rem 1fr; }
 }
+
+/* Google Scholar 링크: 연락처 바로 아래에 붙여, 오른쪽 연구관심분야 높이만큼 비어 보이던 틈을 없앰 */
+html .faculty-contact .faculty-scholar {
+  display: block;
+  margin: 0.15rem 0 0;
+  line-height: 1.5;
+}
+html .faculty-contact .faculty-scholar a { font-size: 0.85rem; }

@@ -20,7 +20,16 @@
   mask-size: 100% 230%;
   -webkit-mask-repeat: no-repeat;
   mask-repeat: no-repeat;
-  animation: hero-tr-rise-mask 0.9s var(--tr-ease) 4.35s both;
+  /* 방문자 차례가 끝나기 전에는 숨겨 둠(= 솟아오르기 시작 상태) */
+  -webkit-mask-position: 0 0%;
+  mask-position: 0 0%;
+  transform: translateY(14px);
+}
+
+/* 아래 등장 시간표는 인트로가 시작된 순간(HeroTrace가 문장을 쓰기 시작하는 때)을 0으로 한 시각입니다.
+   문장이 모토 자리에 내려앉는 5.6~6.4초에 맞춰: 이름이 솟아오름 5.75 → 가로선 5.9 → 부제 6.2 → 모토(캔버스 문장을 이어받음) 6.4 → 소속 6.5 */
+.hero-intro.hero-trace.hero-go.hero-phase-done .hero-name {
+  animation: hero-tr-rise-mask 0.9s var(--tr-ease) 5.75s both;
 }
 
 @keyframes hero-tr-rise-mask {
@@ -48,23 +57,34 @@
 .hero-intro.hero-trace.hero-phase-done .hero-rule {
   transition: none;
   width: min(360px, 60%);
-  animation: hero-tr-show 0.2s linear 4.55s both;
+  opacity: 0;
+}
+.hero-intro.hero-trace.hero-go.hero-phase-done .hero-rule {
+  animation: hero-tr-show 0.3s linear 5.9s both;
 }
 
 .hero-intro.hero-trace.hero-phase-done .hero-after > * {
   transition: none;
   filter: none;
+  opacity: 0;
+  transform: translateY(8px);
+}
+.hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > * {
   animation: hero-tr-in 0.7s var(--tr-ease) both;
 }
 
-.hero-intro.hero-trace.hero-phase-done .hero-after > :nth-child(1) {
-  animation-delay: 4.85s;
+.hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > :nth-child(1) {
+  animation-delay: 6.2s;
 }
+/* 모토: 캔버스에서 내려앉은 문장과 같은 자리 · 같은 모양이라, 바로 그 자리에서 이어받음(움직임 · 번짐 없음) */
 .hero-intro.hero-trace.hero-phase-done .hero-after > :nth-child(2) {
-  animation-delay: 4.97s;
+  transform: none;
 }
-.hero-intro.hero-trace.hero-phase-done .hero-after > :nth-child(3) {
-  animation-delay: 5.09s;
+.hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > :nth-child(2) {
+  animation: hero-tr-show 0.12s linear 6.4s both;
+}
+.hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > :nth-child(3) {
+  animation-delay: 6.5s;
 }
 
 .hero-intro.hero-trace .hero-affiliation p {
