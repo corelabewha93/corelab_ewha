@@ -372,13 +372,29 @@ html .page-home #overview .lab-motto { padding-top: 0; padding-bottom: 28px; mar
   html .page-home { padding-bottom: 56px; }
 }
 
-/* 교수님 학력: 대학명 한 줄, 그 아래 "학위 · 전공" (학위는 굵은 초록, 전공은 옅은 회색) */
-html .faculty-history-col .edu-univ { display: block; }
-html .faculty-history-col .edu-deg {
+/* 교수님 학력: 학위(작은 초록 글씨) → 대학명(굵게) → 학과(옅은 회색) 세 단계로 위계를 나눔 */
+html .faculty-history-col .edu-row { display: block; }
+html .faculty-history-col .edu-degree {
   display: block;
-  margin-top: 2px;
-  font-size: 0.86rem;
-  color: var(--color-text-muted);
+  margin-bottom: 0.1rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
 }
-html .faculty-history-col .edu-deg b { font-weight: 600; color: var(--color-primary); }
-html .faculty-history-col .edu-sep { margin: 0 0.45em; color: #9bb5a6; }
+html .faculty-history-col .edu-main { display: block; min-width: 0; }
+html .faculty-history-col .edu-univ {
+  display: block;
+  font-size: 0.9rem;
+  font-weight: 600;
+  line-height: 1.45;
+  color: var(--color-text);
+}
+html .faculty-history-col .edu-dept {
+  display: block;
+  margin-top: 0.1rem;
+  font-size: 0.8rem;
+  line-height: 1.5;
+  color: #5d6a62;
+  text-wrap: balance;
+}
