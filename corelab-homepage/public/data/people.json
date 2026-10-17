@@ -136,10 +136,10 @@
     },
     {
       "name": "카잉",
-      "photo": "images/people/카잉-mufi591f.jpg",
+      "photo": "images/people/카잉-mvc9jrj2.jpg",
       "photoCrop": {
-        "x": 53.7,
-        "y": 68.5,
+        "x": 43.9,
+        "y": 48.8,
         "zoom": 1.31
       },
       "degree": "MA",
@@ -161,7 +161,21 @@
       "id": "person-mue0kdsk1o4",
       "nameEn": "Khine Myat Noe Lwin",
       "pubNames": [],
-      "hideResearch": "hidden"
+      "hideResearch": "hidden",
+      "bioEn": "",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2025-09~present",
+        "B.A., Korean Language, Yangon University of Foreign Languages | 2017~2024",
+        "#Experience",
+        "Planning Department, BNK Financial Myanmar Branch | 2024~2025",
+        "Korean language instructor | 2021~2025",
+        "#Awards",
+        "Runner-up, Quiz on Korea, Korean Finals | 2023",
+        "Winner, Quiz on Korea, Myanmar Preliminaries | 2023",
+        "#Contact",
+        "khinemyatnoe27@ewha.ac.kr"
+      ]
     },
     {
       "name": "이유정",
