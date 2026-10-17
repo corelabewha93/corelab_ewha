@@ -728,12 +728,12 @@
     },
     {
       "name": "박은주",
-      "nameEn": "",
+      "nameEn": "Eunju Park",
       "photo": "images/people/박은주-mukebrk6.jpg",
       "photoCrop": {
-        "x": 58,
-        "y": 50.3,
-        "zoom": 16
+        "x": 52.8,
+        "y": 91.6,
+        "zoom": 1.06
       },
       "degree": "MA",
       "affiliation": "(주)천재교과서 디지털사업부문 콘텐츠전략팀 팀장",
@@ -745,7 +745,16 @@
         "#관심분야",
         "학습경험설계(LXD), 멀티모달 학습분석, 컴퓨터기반협력학습(CSCL)"
       ],
-      "id": "person-mukebu3qo1i"
+      "id": "person-mukebu3qo1i",
+      "affiliationEn": "Team Lead, Content Strategy Team, Digital Business Division, Chunjae Education",
+      "bioEn": "",
+      "hideResearch": "",
+      "detailEn": [
+        "#About",
+        "Plans and operates AI-based education services",
+        "#Research Interests",
+        "Learning experience design (LXD), multimodal learning analytics, computer-supported collaborative learning (CSCL)"
+      ]
     },
     {
       "name": "박하나",
