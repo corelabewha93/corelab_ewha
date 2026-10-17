@@ -573,7 +573,8 @@ export default function HeroTrace({ animated, skipped = false, onGo }) {
     }
     // 모토 글꼴이 준비된 뒤에 시계를 시작합니다(늦어도 1.2초). 그래야 문장 폭 · 자리가 정확합니다.
     const fontReady = Promise.race([
-      document.fonts?.load?.('italic 500 40px "EB Garamond"') ?? Promise.resolve(),
+      // 글꼴 파일을 못 받아 와도(폰 네트워크 문제 등) 인트로가 멈추지 않게 실패는 무시
+      (document.fonts?.load?.('italic 500 40px "EB Garamond"') ?? Promise.resolve()).catch(() => {}),
       new Promise((r) => setTimeout(r, 1200)),
     ])
     fontReady.then(() => {

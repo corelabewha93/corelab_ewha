@@ -114,7 +114,10 @@ export default function Header({ brandLogo = false }) {
     <header className="site-header" ref={headerRef}>
       <div className="container">
         <Link to="/" className="brand" onClick={onLogoClick} active={false}>
-          <span className="brand-dept">{tr('이화여자대학교 교육공학과', 'Ewha Womans University · Educational Technology')}</span>
+          <span className="brand-dept">
+            <span className="bd-long">{tr('이화여자대학교 교육공학과', 'Ewha Womans University · Educational Technology')}</span>
+            <span className="bd-short">{tr('이화여자대학교 교육공학과', 'Ewha · Educational Technology')}</span>
+          </span>
           {brandLogo ? (
             <span className="brand-name brand-name-logo">
               <CoreLogo tone="dark" className="brand-logo-mark" title="CoRe" />
