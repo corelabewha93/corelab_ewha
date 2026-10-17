@@ -76,3 +76,53 @@ html body .faculty-interests .tag {
     width: 100%;
   }
 }
+
+/* 4) 연락처 줄의 라벨(이메일·연구실·전화)과 소개글 "더 보기" — PC에서는 둘 다 보이지 않고 기존 모양 그대로 */
+html body .faculty-contact-k { display: none; }
+html body .faculty-bio-toggle { display: none; }
+
+@media (max-width: 700px) {
+  /* 소개글: 5줄만 보이고 "더 보기"로 펼침 */
+  html body .faculty-bio.is-clamped {
+    display: -webkit-box;
+    -webkit-line-clamp: 5;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  html body .faculty-bio-toggle {
+    display: block;
+    margin: -0.35rem 0 0.9rem;
+    padding: 0.3rem 0;
+    border: 0;
+    background: none;
+    font-family: inherit;
+    font-size: 0.85rem;
+    font-weight: 600;
+    line-height: 1.4;
+    color: var(--color-primary);
+    cursor: pointer;
+  }
+  /* 연락처: 라벨 + 값 줄, 가는 선이 오른쪽 끝까지 이어져 오른쪽이 비어 보이지 않게 */
+  html body .faculty-contact-col .faculty-contact {
+    width: 100%;
+    gap: 0;
+    align-items: stretch;
+  }
+  html body .faculty-contact-col .faculty-contact > li:not(.faculty-scholar) {
+    display: grid;
+    grid-template-columns: 4.2rem minmax(0, 1fr);
+    gap: 0.5rem;
+    align-items: baseline;
+    padding: 0.55rem 0;
+    border-bottom: 1px solid var(--color-border);
+  }
+  html body .faculty-contact-k {
+    display: inline;
+    font-size: 0.74rem;
+    letter-spacing: 0.03em;
+    color: var(--color-text-muted);
+  }
+  html body .faculty-contact-col .faculty-scholar {
+    margin-top: 0.7rem;
+  }
+}
