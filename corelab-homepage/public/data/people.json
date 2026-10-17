@@ -3,7 +3,7 @@
     {
       "id": "lim-gyuyeon",
       "name": "임규연",
-      "photo": "images/people/임규연-mudyry6x.jpg",
+      "photo": "images/people/임규연-mvc0yo6y.jpg",
       "position": "교수",
       "bio": "임규연은 이화여자대학교 사범대학 교육공학과 교수로, 협력학습과 학습분석학, 자기조절학습, 학습경험설계(LXD)를 연구한다. 학습자들이 함께 배우는 과정에서 일어나는 상호작용과 참여, 조절을 데이터로 포착하고, 이를 교수자와 학습자가 직접 볼 수 있는 대시보드와 적응적 학습지원 체제로 설계하는 데 관심을 두고 있다. 한국연구재단 인문사회·이공 분야 과제를 연구책임자로 수행해 왔으며, 온라인 학습 대시보드(2017-2019)와 개별화학습(2020-2022) 연구에 이어 현재 협력학습분석학 기반 적응적 학습지원 플랫폼(2023-2026)과 교수자-AI 협력 기반 교수지원 체제(2024-2027) 연구를 이끌고 있다. 최근에는 교사-AI 협력, 교수자 대시보드와 교실 오케스트레이션, 생성형 AI와 책임 있는 AI의 교육적 활용으로 연구를 넓히고 있다. 2014년 이화여자대학교 강의우수교수상, 2022년 교육대학원 강의우수상을 수상했으며, 2025년부터 교무처부처장(교육)과 교육혁신센터장을 맡고 있다.",
       "affiliation": "이화여자대학교 교육공학과",
@@ -36,6 +36,26 @@
       "awards": [
         "강의우수교수상 | 2014",
         "교육대학원 강의우수상 | 2022"
+      ],
+      "nameEn": "Kyu Yon Lim",
+      "positionEn": "Professor",
+      "affiliationEn": "Department of Educational Technology, Ewha Womans University",
+      "bioEn": "Kyu Yon Lim is a Professor in the Department of Educational Technology, College of Education, Ewha Womans University. Her research focuses on collaborative learning, learning analytics, self-regulated learning, and learning experience design (LXD). She is interested in capturing the interaction, participation, and regulation that unfold as learners learn together, and in turning that data into dashboards and adaptive learning-support systems that instructors and learners can see for themselves. As principal investigator of research grants from the National Research Foundation of Korea in both the humanities and social sciences and in science and engineering, she led projects on dashboards for online learning (2017–2019) and personalized learning (2020–2022), and now leads work on an adaptive learning-support platform based on collaborative learning analytics (2023–2026) and an instructional-support system built on teacher–AI collaboration (2024–2027). Her recent work extends to teacher–AI collaboration, instructor dashboards and classroom orchestration, and the educational use of generative and responsible AI. Since 2025 she has served as Associate Dean of Academic Affairs (Education) and Director of the Center for Teaching and Learning Innovation. She received Ewha’s Excellence in Teaching Award in 2014 and the Graduate School of Education Excellence in Teaching Award in 2022.",
+      "officeEn": "Room 563, Education Building B",
+      "educationEn": [
+        "Ph.D. in Instructional Systems, The Pennsylvania State University"
+      ],
+      "awardsEn": [
+        "Excellence in Teaching Award, Ewha Womans University | 2014",
+        "Excellence in Teaching Award, Graduate School of Education | 2022"
+      ],
+      "careerEn": [
+        "Associate Dean of Academic Affairs (Education) | 2025-02~2027-01",
+        "Director, Center for Teaching and Learning Innovation | 2025-02~2027-01",
+        "Director of Teacher Education | 2020-02~2020-07",
+        "Director, Center for Teaching and Learning Innovation | 2020-08~2022-07",
+        "Chair, Department of Educational Technology | 2014-02~2018-01",
+        "Program Director, Interdisciplinary Program in Multimedia | 2014-02~2018-01"
       ]
     }
   ],
