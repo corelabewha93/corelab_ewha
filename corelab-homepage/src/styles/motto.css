@@ -28,3 +28,24 @@
     font-size: clamp(1.9rem, 10vw, 2.6rem);
   }
 }
+
+/* 모토 색: 이화 민트 기반 소프트 톤 #58B8A2 (글꼴·이탤릭·크기·위치는 그대로).
+   인트로에서는 캔버스가 흰색으로 써 내려온 문장을 같은 자리에서 이어받은 뒤,
+   1.2초에 걸쳐 흰색 → 민트로 조용히 물듭니다. */
+.hero-intro .hero-motto {
+  color: #58b8a2;
+}
+@keyframes hero-motto-tint {
+  from { color: rgba(255, 255, 255, 0.9); }
+  to   { color: #58b8a2; }
+}
+html .hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > :nth-child(2).hero-motto {
+  animation: hero-tr-show 0.12s linear 6.4s both, hero-motto-tint 1.2s ease 6.4s both;
+}
+
+/* 하단 학교 마크(영문 병기 버전): 영문 글씨가 읽히도록 이전(54px)보다 크게 */
+html body .footer-emblem {
+  height: 88px;
+  width: auto;
+  margin-bottom: var(--space-3);
+}
