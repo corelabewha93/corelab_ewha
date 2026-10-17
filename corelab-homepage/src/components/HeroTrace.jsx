@@ -12,7 +12,7 @@ import '../styles/hero-trace.css'
  *  5.3–6.4s   문장이 흰색으로 모이며 모토 자리로 내려앉음 → 그 위로 CoRe Lab이 솟아오름(CSS)
  *  6.4s       캔버스의 문장 = 실제 모토(.hero-motto)가 같은 자리에서 이어받음. 캔버스는 지우고 멈춤
  *
- * 손은 "학습자"입니다. 통통한 어린아이 손을 흰 선으로만 그리고, 소매 끝 띠만 학습자 색(금 · 하늘 · 장밋빛)으로 칠합니다.
+ * 손은 "학습자"입니다. 흰 선으로만 그리고, 소매 끝 띠만 학습자 색(금 · 하늘 · 장밋빛)으로 칠합니다.
  * 문장은 화면에 실제로 그려진 모토(.hero-motto)의 글꼴 · 크기 · 줄바꿈을 그대로 읽어 씁니다
  * (관리자가 모토를 바꿔도 "We"가 들어 있으면 같은 연출, 없으면 손 없이 문장만 써서 내려앉습니다).
  * 클릭 건너뛰기 · 재방문 · 동작 줄이기는 HeroIntro.jsx가 처리합니다(이 경우 캔버스는 그리지 않음).
@@ -114,55 +114,53 @@ function finger(spine, w0, w1) {
   return P
 }
 
-// ---- 어린아이 손: 마디 없이 매끈한 한 덩어리(손가락 · 엄지가 손등과 이어진 하나의 윤곽) ----
-// 쓰는 손(연필끝 = 원점, 연필은 +x)
-const WRITE = {
-  arm: { a: [[206, -16], [290, -46]], b: [[206, 24], [290, 42]], cuff: [206, -20, 206, 28] },
-  all: [
-    { k: 'blob', p: [[116, -26], [146, -34], [178, -28], [204, -14], [208, 6], [198, 24], [172, 34], [142, 36], [116, 30], [104, 16], [100, 4], [104, -12]] },
-    { k: 'f', p: [[132, -20], [106, -27], [80, -23], [60, -14], [46, -6]], w: [24, 15] }, // 검지
-    { k: 'f', p: [[150, 22], [122, 24], [94, 17], [72, 9], [56, 4]], w: [26, 16] }, // 엄지
-  ],
-  detail: [[[112, 8], [122, 16], [138, 19]], [[110, 22], [122, 28], [140, 30]]],
-}
+// 쓰는 손(연필끝 = 원점, 연필은 +x) — 엄지 쪽에서 본 가늘고 긴 손. 뒤 → 앞 순서
+const WRITE = [
+  { k: 'arm', a: [[204, -24], [300, -62]], b: [[204, 32], [300, 52]], cuff: [204, -28, 204, 36] },
+  { k: 'blob', p: [[124, -30], [150, -38], [178, -34], [202, -22], [208, 4], [200, 26], [178, 34], [150, 34], [128, 28], [116, 10], [116, -12]] },
+  { k: 'f', p: [[126, 34], [110, 40], [98, 40], [90, 34]], w: [13, 9] },
+  { k: 'f', p: [[128, 26], [110, 30], [96, 28], [88, 22]], w: [14, 10] },
+  { k: 'f', p: [[124, 14], [102, 18], [82, 14], [64, 8]], w: [15, 9] },
+  { k: 'pencil' },
+  { k: 'f', p: [[152, 26], [124, 24], [96, 16], [72, 8], [54, 3]], w: [17, 9] },
+  { k: 'f', p: [[124, -26], [100, -31], [76, -25], [56, -15], [44, -6]], w: [15, 9] },
+]
 // 가리키는 손(검지 끝 = 원점, 손목은 +x)
-const POINT = {
-  arm: { a: [[150, 0], [230, -28]], b: [[148, 44], [228, 64]], cuff: [150, -4, 148, 48] },
-  all: [
-    { k: 'blob', p: [[74, -10], [106, -18], [136, -14], [152, 4], [150, 34], [130, 50], [100, 54], [78, 46], [66, 28], [68, 6]] },
-    { k: 'f', p: [[96, 4], [64, 3], [32, 0], [0, 0]], w: [24, 17] }, // 검지
-    { k: 'f', p: [[96, -6], [84, -22], [78, -32]], w: [22, 16] }, // 엄지
-  ],
-  detail: [[[72, 22], [84, 26], [98, 26]], [[72, 36], [84, 40], [98, 40]]],
-}
+const POINT = [
+  { k: 'arm', a: [[170, -6], [258, -40]], b: [[168, 50], [256, 70]], cuff: [170, -10, 168, 54] },
+  { k: 'blob', p: [[100, -12], [128, -22], [158, -20], [176, 0], [174, 32], [152, 50], [122, 54], [100, 46], [90, 28], [92, 4]] },
+  { k: 'f', p: [[118, 44], [100, 48], [88, 44], [84, 36]], w: [14, 10] },
+  { k: 'f', p: [[116, 30], [98, 34], [84, 30], [80, 22]], w: [14, 10] },
+  { k: 'f', p: [[112, 16], [94, 20], [82, 16], [78, 8]], w: [14, 10] },
+  { k: 'f', p: [[110, -14], [98, -28], [90, -36], [88, -46]], w: [15, 9] },
+  { k: 'f', p: [[110, -4], [84, -4], [52, -3], [24, 0], [0, 0]], w: [16, 9] },
+]
 let HANDS = null
 function buildHands() {
-  const bake = (list) =>
+  const prep = (list) =>
     list.map((p) => {
-      if (p.k === 'blob') return pathFrom(crPts(p.p, 10, true))
-      if (p.k === 'el') {
-        const P = new Path2D()
-        P.ellipse(p.e[0], p.e[1], p.e[2], p.e[3], p.e[4], 0, Math.PI * 2)
-        return P
+      if (p.k === 'blob') return { ...p, P: pathFrom(crPts(p.p, 10, true)) }
+      if (p.k === 'f') return { ...p, P: finger(p.p, p.w[0], p.w[1]) }
+      if (p.k === 'pencil') {
+        const body = new Path2D()
+        body.rect(12, -4, 112, 8)
+        const cap = new Path2D()
+        cap.roundRect(0, -4, 11, 8, 3)
+        const wood = new Path2D()
+        wood.moveTo(0, 0)
+        wood.lineTo(12, -4)
+        wood.lineTo(12, 4)
+        wood.closePath()
+        const lead = new Path2D()
+        lead.moveTo(0, 0)
+        lead.lineTo(3.4, -1.2)
+        lead.lineTo(3.4, 1.2)
+        lead.closePath()
+        return { ...p, body, cap, wood, lead }
       }
-      return finger(p.p, p.w[0], p.w[1])
+      return p
     })
-  const prep = (h) => ({ arm: h.arm, all: bake(h.all), detail: h.detail.map((d) => pathFrom(crPts(d, 10, false), false)) })
-  const body = new Path2D()
-  body.rect(12, -4.5, 112, 9)
-  const cap = new Path2D()
-  cap.roundRect(0, -4.5, 11, 9, 3)
-  const wood = new Path2D()
-  wood.moveTo(0, 0)
-  wood.lineTo(12, -4.5)
-  wood.lineTo(12, 4.5)
-  wood.closePath()
-  const lead = new Path2D()
-  lead.moveTo(0, 0)
-  lead.lineTo(3.6, -1.3)
-  lead.lineTo(3.6, 1.3)
-  lead.closePath()
-  HANDS = { write: prep(WRITE), point: prep(POINT), pencil: { body, cap, wood, lead } }
+  HANDS = { write: prep(WRITE), point: prep(POINT) }
 }
 
 function eraseFill(ctx, P) {
@@ -173,107 +171,61 @@ function eraseFill(ctx, P) {
   ctx.restore()
 }
 
-/** 조각들의 "합친 윤곽": 굵은 선으로 모두 긋고 안쪽을 지워, 겹친 자리의 마디 선 없이 바깥 윤곽만 남깁니다(안쪽 = 손 아래 글자도 가려짐). */
-function unionOutline(ctx, paths) {
-  if (!paths.length) return
-  ctx.save()
-  ctx.lineJoin = 'round'
-  ctx.lineWidth = 2.5
-  ctx.strokeStyle = 'rgba(255,255,255,0.92)'
-  paths.forEach((P) => ctx.stroke(P))
-  ctx.globalCompositeOperation = 'destination-out'
-  ctx.fillStyle = '#000'
-  paths.forEach((P) => ctx.fill(P))
-  ctx.restore()
-}
-
-/** 손 하나를 "완전히 또렷하게" 그립니다. kind: 'point' | 'eraser' | 'pencil' */
-function paintHand(ctx, kind, x, y, sc, rot, col, flipY) {
-  if (!HANDS) buildHands()
-  const H = kind === 'point' ? HANDS.point : HANDS.write
-  ctx.save()
-  ctx.translate(x, y)
-  ctx.rotate(rot)
-  ctx.scale(sc, flipY ? -sc : sc)
-  ctx.lineJoin = 'round'
-  ctx.lineCap = 'round'
-  // 팔: 소매 끝 띠(학습자 색) + 옅어지는 두 줄
-  ;[H.arm.a, H.arm.b].forEach((e) => {
-    const g = ctx.createLinearGradient(e[0][0], e[0][1], e[1][0], e[1][1])
-    g.addColorStop(0, 'rgba(255,255,255,0.8)')
-    g.addColorStop(1, 'rgba(255,255,255,0)')
-    ctx.strokeStyle = g
-    ctx.lineWidth = 1.4
-    ctx.beginPath()
-    ctx.moveTo(e[0][0], e[0][1])
-    ctx.lineTo(e[1][0], e[1][1])
-    ctx.stroke()
-  })
-  ctx.strokeStyle = rgba(col, 0.95)
-  ctx.lineWidth = 3.4
-  ctx.beginPath()
-  ctx.moveTo(H.arm.cuff[0], H.arm.cuff[1])
-  ctx.lineTo(H.arm.cuff[2], H.arm.cuff[3])
-  ctx.stroke()
-  if (kind !== 'point') {
-    const pc = HANDS.pencil
-    ctx.lineWidth = 1.3
-    ctx.strokeStyle = rgba(col, 0.95)
-    eraseFill(ctx, pc.body)
-    ctx.stroke(pc.body)
-    if (kind === 'eraser') {
-      eraseFill(ctx, pc.cap)
-      ctx.stroke(pc.cap)
-    } else {
-      eraseFill(ctx, pc.wood)
-      ctx.stroke(pc.wood)
-      ctx.fillStyle = 'rgba(255,255,255,0.95)'
-      ctx.fill(pc.lead)
-    }
-  }
-  unionOutline(ctx, H.all)
-  ctx.lineWidth = 1.1
-  ctx.strokeStyle = 'rgba(255,255,255,0.5)'
-  H.detail.forEach((P) => ctx.stroke(P))
-  ctx.restore()
-}
-
-/** 손이 놓인 자리의 글자를 가립니다(alpha만큼). */
-function eraseUnder(ctx, kind, x, y, sc, rot, flipY, alpha) {
-  const H = kind === 'point' ? HANDS.point : HANDS.write
-  ctx.save()
-  ctx.translate(x, y)
-  ctx.rotate(rot)
-  ctx.scale(sc, flipY ? -sc : sc)
-  ctx.globalAlpha = alpha
-  ctx.globalCompositeOperation = 'destination-out'
-  ctx.fillStyle = '#000'
-  H.all.forEach((P) => ctx.fill(P))
-  if (kind !== 'point') {
-    ctx.fill(HANDS.pencil.body)
-    ctx.fill(kind === 'eraser' ? HANDS.pencil.cap : HANDS.pencil.wood)
-  }
-  ctx.restore()
-}
-
-/**
- * 손을 그립니다. 나타나거나 사라지는 중(alpha < 1)에는 따로 그린 그림을 투명도로 얹어,
- * 윤곽이 겹쳐 비치는 일(마디처럼 보임) 없이 부드럽게 나타나고 사라지게 합니다.
- */
-function drawHand(ctx, s, kind, x, y, sc, rot, col, flipY, alpha) {
+/** kind: 'point' | 'eraser' | 'pencil'. 손 아래의 글자는 가려지고(손이 위에 놓임) 윤곽만 흰 선으로 그립니다. */
+function drawHand(ctx, kind, x, y, sc, rot, col, flipY, alpha) {
   if (alpha <= 0.003) return
   if (!HANDS) buildHands()
-  if (alpha >= 0.999 || !s.off) {
-    paintHand(ctx, kind, x, y, sc, rot, col, flipY)
-    return
-  }
-  eraseUnder(ctx, kind, x, y, sc, rot, flipY, alpha)
-  s.off.clearRect(0, 0, s.W, s.H)
-  paintHand(s.off, kind, x, y, sc, rot, col, flipY)
+  const pieces = kind === 'point' ? HANDS.point : HANDS.write
   ctx.save()
+  ctx.translate(x, y)
+  ctx.rotate(rot)
+  ctx.scale(sc, flipY ? -sc : sc)
   ctx.globalAlpha = alpha
-  ctx.setTransform(1, 0, 0, 1, 0, 0)
-  ctx.drawImage(s.offCv, 0, 0)
+  ctx.lineJoin = 'round'
+  ctx.lineCap = 'round'
+  pieces.forEach((p) => {
+    if (p.k === 'arm') {
+      ;[p.a, p.b].forEach((e) => {
+        const g = ctx.createLinearGradient(e[0][0], e[0][1], e[1][0], e[1][1])
+        g.addColorStop(0, 'rgba(255,255,255,0.8)')
+        g.addColorStop(1, 'rgba(255,255,255,0)')
+        ctx.strokeStyle = g
+        ctx.lineWidth = 1.4
+        ctx.beginPath()
+        ctx.moveTo(e[0][0], e[0][1])
+        ctx.lineTo(e[1][0], e[1][1])
+        ctx.stroke()
+      })
+      // 소매 끝 띠 = 이 손의 학습자 색
+      ctx.strokeStyle = rgba(col, 0.95)
+      ctx.lineWidth = 3.4
+      ctx.beginPath()
+      ctx.moveTo(p.cuff[0], p.cuff[1])
+      ctx.lineTo(p.cuff[2], p.cuff[3])
+      ctx.stroke()
+      return
+    }
+    if (p.k === 'pencil') {
+      ctx.lineWidth = 1.3
+      ctx.strokeStyle = rgba(col, 0.95)
+      eraseFill(ctx, p.body)
+      ctx.stroke(p.body)
+      if (kind === 'eraser') {
+        eraseFill(ctx, p.cap)
+        ctx.stroke(p.cap)
+      } else {
+        eraseFill(ctx, p.wood)
+        ctx.stroke(p.wood)
+        ctx.fillStyle = 'rgba(255,255,255,0.95)'
+        ctx.fill(p.lead)
+      }
+      return
+    }
+    eraseFill(ctx, p.P)
+    ctx.lineWidth = 1.5
+    ctx.strokeStyle = 'rgba(255,255,255,0.92)'
+    ctx.stroke(p.P)
+  })
   ctx.restore()
 }
 
@@ -514,20 +466,20 @@ function draw(ctx, s, t) {
   {
     const k = inOut(...T.point)
     const tap = Math.sin(Math.PI * pr(t, 2.2, 2.6)) * 4
-    drawHand(ctx, s, 'point', xI + wI * 0.1 - tap * 0.5 - (1 - k) * 60 * sc, y + fs * 0.12 + tap * 0.5 + (1 - k) * 60 * sc, sc, Math.PI * 0.74, COL.A, true, k)
+    drawHand(ctx, 'point', xI + wI * 0.1 - tap * 0.5 - (1 - k) * 60 * sc, y + fs * 0.12 + tap * 0.5 + (1 - k) * 60 * sc, sc, Math.PI * 0.74, COL.A, true, k)
   }
   // 2) 하늘빛 손이 지우개로 "I"를 지움
   {
     const k = inOut(...T.eraser)
     const rub = t > T.rub[0] && t < T.rub[1] ? Math.sin((t - T.rub[0]) * 30) * 6 * sc : 0
-    drawHand(ctx, s, 'eraser', xI + wI / 2 + rub + (1 - k) * 70 * sc, y - fs * 0.3 + (1 - k) * 70 * sc, sc * 0.92, Math.PI * 0.34, COL.B, true, k)
+    drawHand(ctx, 'eraser', xI + wI / 2 + rub + (1 - k) * 70 * sc, y - fs * 0.3 + (1 - k) * 70 * sc, sc, Math.PI * 0.34, COL.B, true, k)
   }
   // 3) 장밋빛 손이 연필로 "We"를 씀
   {
     const k = inOut(...T.pencil)
     const bob = t > T.write[0] && t < T.write[1] ? Math.sin((t - T.write[0]) * 26) * 2.6 * sc : 0
     const tipX = xWe + wWe * we
-    drawHand(ctx, s, 'pencil', tipX + (1 - k) * 70 * sc, y - fs * 0.22 + bob - (1 - k) * 70 * sc, sc * 0.92, -0.72, COL.C, false, k)
+    drawHand(ctx, 'pencil', tipX + (1 - k) * 70 * sc, y - fs * 0.22 + bob - (1 - k) * 70 * sc, sc, -0.72, COL.C, false, k)
   }
 }
 
@@ -556,11 +508,6 @@ export default function HeroTrace({ animated, skipped = false, onGo }) {
       cv.width = Math.round(s.W * dpr)
       cv.height = Math.round(s.H * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      s.offCv = s.offCv || document.createElement('canvas')
-      s.offCv.width = cv.width
-      s.offCv.height = cv.height
-      s.off = s.offCv.getContext('2d')
-      s.off.setTransform(dpr, 0, 0, dpr, 0, 0)
       ok = layout(ctx, s, host, cv)
     }
     const onResize = () => size()

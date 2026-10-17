@@ -1,7 +1,7 @@
 import { Fragment, useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import HeroScrollCue from './HeroAmbient'
 import '../styles/wordmark.css'
-import HeroTrace, { TRACE_RULE } from './HeroTrace'
+import HeroTrace, { TRACE_RULE, GATHER_AT } from './HeroTrace'
 import { LOGO_TRANSFORM, INNER_SCALE, LETTERS, DOT_A, DOT_B, CURVE } from './coreLogoPaths'
 
 /**
@@ -169,7 +169,7 @@ function withMobileBreak(text) {
   )
 }
 
-// 인트로: 흔적 네트워크(SNA → ENA)에서 이름이 태어나는 장면(HeroTrace.jsx). 예전 칠판 장면은 쓰지 않습니다.
+// 인트로: "I"에서 "We"로 함께 고쳐 쓰는 모토 한 문장(HeroTrace.jsx). 예전 칠판 장면은 쓰지 않습니다.
 const TRACE = true
 const CHALK_NAME_AT = 3.7 // (예전 칠판 장면의 시간표 — 아래 단계 시각 계산에만 남아 있음)
 const CONV_AT = 6.9
@@ -204,6 +204,8 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   const firstRects = useRef(null)
   const [logoBox, setLogoBox] = useState(null)
   const [skipped, setSkipped] = useState(false)
+  // 캔버스(HeroTrace)가 문장을 쓰기 시작하는 순간 true — 이름 · 가로선 · 부제 · 모토 등장 시간표(hero-trace.css)가 이 순간부터 흐릅니다.
+  const [go, setGo] = useState(false)
   const [logoStage, setLogoStage] = useState(animated ? (TRACE ? 1 : 0) : 3)
 
   // 로고의 점·어깨선을 그릴 자리 = 이름 속 "Co" 글자의 왼쪽 위 ~ "Re" 글자의 오른쪽 아래.
@@ -243,12 +245,10 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
       // 인트로가 도는 동안에는 상단 메뉴의 "CoRe Lab"을 숨겨 둡니다(이름이 먼저 공개되지 않게).
       const root = document.documentElement
       root.classList.add('hero-intro-playing')
-      const tt = [
-        setTimeout(() => root.classList.remove('hero-intro-playing'), (TRACE_RULE + 0.9) * 1000),
-        setTimeout(() => (playedOnce = true), (TRACE_RULE + 1.6) * 1000),
-      ]
+      // 안전장치: 어떤 이유로든 "모이기" 신호가 오지 않으면 11초에 이어서 보여줍니다.
+      const fallback = setTimeout(() => setGo(true), 11000)
       return () => {
-        tt.forEach(clearTimeout)
+        clearTimeout(fallback)
         root.classList.remove('hero-intro-playing')
       }
     }
@@ -273,6 +273,17 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     return () => timers.forEach(clearTimeout)
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
+
+  // 시작 뒤 TRACE_RULE(가로선이 나타나는 때)까지 지나면 메뉴의 이름 공개 · 재방문 표시도 그에 맞춥니다.
+  useEffect(() => {
+    if (!animated || !TRACE || !go) return undefined
+    const root = document.documentElement
+    const tt = [
+      setTimeout(() => root.classList.remove('hero-intro-playing'), (TRACE_RULE - GATHER_AT + 0.9) * 1000),
+      setTimeout(() => (playedOnce = true), (TRACE_RULE - GATHER_AT + 1.6) * 1000),
+    ]
+    return () => tt.forEach(clearTimeout)
+  }, [animated, go])
 
   // 인트로 도중 화면을 누르면 바로 완성된 화면으로 건너뜁니다.
   const skip = () => {
@@ -317,8 +328,8 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   let lastPart = null
 
   return (
-    <section className={`hero-intro${animated ? ' hero-intro-animated hero-trace' : ''}${skipped ? ' hero-skipped' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`} onClick={skip}>
-      <HeroTrace animated={animated} skipped={skipped} />
+    <section className={`hero-intro${animated ? ' hero-intro-animated hero-trace' : ''}${skipped ? ' hero-skipped' : ''}${go || skipped ? ' hero-go' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`} onClick={skip}>
+      <HeroTrace animated={animated} skipped={skipped} onGo={() => setGo(true)} />
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {TRACE ? (
