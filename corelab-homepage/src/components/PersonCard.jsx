@@ -5,6 +5,7 @@ import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 import { navigate, withBase } from '../router/useHashRoute'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { useLang } from '../i18n/LangContext'
+import '../styles/profile-fix.css'
 
 /** 사진을 넣지 않은(또는 사진을 못 불러온) 사람에게 자동으로 보여줄 이화 심벌 기본 사진 */
 const DEFAULT_PHOTO = 'images/people/default-ewha.jpg'
@@ -104,13 +105,20 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
 
         {person.bio && <p className="faculty-bio">{person.bio}</p>}
 
-        {(contactLines.length > 0 || interests.length > 0) && (
+        {(contactLines.length > 0 || interests.length > 0 || person.scholarLink) && (
           <div className="faculty-meta">
-            {contactLines.length > 0 && (
+            {(contactLines.length > 0 || person.scholarLink) && (
               <ul className="faculty-contact">
                 {contactLines.map((line, i) => (
                   <li key={i}>{line}</li>
                 ))}
+                {person.scholarLink && (
+                  <li className="faculty-scholar">
+                    <a href={person.scholarLink} target="_blank" rel="noreferrer">
+                      Google Scholar →
+                    </a>
+                  </li>
+                )}
               </ul>
             )}
             {interests.length > 0 && (
@@ -126,14 +134,6 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
               </div>
             )}
           </div>
-        )}
-
-        {person.scholarLink && (
-          <p className="faculty-scholar">
-            <a href={person.scholarLink} target="_blank" rel="noreferrer">
-              Google Scholar →
-            </a>
-          </p>
         )}
 
         {hasHistory && (
