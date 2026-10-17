@@ -40,6 +40,37 @@ function fixEducationLine(line) {
     .replace(/Instructional\s+Systems?/i, PSU_DEPT)
 }
 
+/**
+ * 학력 한 줄을 "대학명 / 학위 · 전공"으로 나눠 보여줍니다(화면 표시용 — 관리자 데이터는 그대로).
+ * 지원하는 입력: "대학명 Ph.D. (전공)", "Ph.D., 전공, 대학명". 어느 형식에도 맞지 않으면 원문 그대로 보여줍니다.
+ */
+const DEGREE = '(?:Ph\\.?\\s*D\\.?|Ed\\.?\\s*D\\.?|M\\.?\\s*S\\.?|M\\.?\\s*A\\.?|B\\.?\\s*S\\.?|B\\.?\\s*A\\.?|박사|석사|학사)'
+const EDU_UNIV_FIRST = new RegExp(`^(.+?)\\s+(${DEGREE})\\s*\\(([^()]+)\\)\\s*$`, 'i')
+const EDU_DEGREE_FIRST = new RegExp(`^(${DEGREE})\\s*,\\s*(.+?)\\s*,\\s*([^,]+)$`, 'i')
+function parseEducation(line) {
+  if (typeof line !== 'string') return null
+  const t = line.trim()
+  let m = t.match(EDU_UNIV_FIRST)
+  if (m) return { univ: m[1].trim(), degree: m[2].trim(), dept: m[3].trim() }
+  m = t.match(EDU_DEGREE_FIRST)
+  if (m) return { univ: m[3].trim(), degree: m[1].trim(), dept: m[2].trim() }
+  return null
+}
+function EducationLine({ line }) {
+  const parsed = parseEducation(line)
+  if (!parsed) return line
+  return (
+    <>
+      <span className="edu-univ">{parsed.univ}</span>
+      <span className="edu-deg">
+        <b>{parsed.degree}</b>
+        <span className="edu-sep" aria-hidden="true">·</span>
+        {parsed.dept}
+      </span>
+    </>
+  )
+}
+
 /** 교수 프로필: 사진 + 이름 + 연락처 + 소개 + 연구관심분야를 한 화면에 바로 보여줍니다. */
 function FacultyProfile({ person: raw, onEdit, reorder }) {
   const { tr, loc } = useLang()
@@ -113,7 +144,9 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
                 <h4>{tr('학력', 'Education')}</h4>
                 <ul>
                   {education.map((line, i) => (
-                    <li key={i}>{line}</li>
+                    <li key={i}>
+                      <EducationLine line={line} />
+                    </li>
                   ))}
                 </ul>
               </div>
