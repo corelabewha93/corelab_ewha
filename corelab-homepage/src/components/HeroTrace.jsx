@@ -10,7 +10,7 @@ import '../styles/hero-trace.css'
  *  2.8–3.6s  공동 지식구축: 모두가 받은 조각들이 가운데로 모여 하나의 고리를 이룸
  *            (세 사람의 조각이 다 모여야 원이 닫힘 — 색은 섞이지 않고 그대로 남음)
  *  3.6–3.9s  공유된 이해: 틈이 닫히며 고리가 완성되고, 잔잔한 물결이 한 번 퍼짐
- *  3.95–4.55s 고리가 위에서부터 열리며 이름 아래 가로선으로 펼쳐짐 → 그 선 위로 CoRe Lab이 솟아오름(CSS)
+ *  3.95–4.55s 고리가 위에서부터 열리며 이름 아래 가로선으로 펼쳐지고, 색은 조용히 흰색으로 모임 → 그 선 위로 CoRe Lab이 솟아오름(CSS)
  *  이후      부제 · 모토 · 소속이 차례로(CSS). 캔버스는 지우고 계산을 멈춤
  *
  * 자리는 화면에 실제로 그려진 가로선(.hero-rule)을 기준으로 잡습니다(글꼴 · 화면 크기가 바뀌어도 맞음).
@@ -53,7 +53,7 @@ const GATHER = 2.75 // 조각들이 가운데로 모이기 시작
 const CLOSE = 3.62 // 고리가 닫힘
 const UNROLL = 3.95 // 고리가 펼쳐져 가로선으로
 const UNROLL_DUR = 0.6
-const OUT = 4.6 // 캔버스의 선을 거둠(진짜 가로선은 TRACE_RULE에 이미 나타나 있음)
+const OUT = 4.6 // 캔버스의 선을 거둠(진짜 흰색 가로선은 TRACE_RULE에 이미 나타나 있음)
 
 function bez(x1, y1, x2, y2) {
   const cx = 3 * x1
@@ -191,12 +191,15 @@ function draw(ctx, s, t) {
     const rr = r0 + (R - r0) * mv
     const cc = dir + dc * mv
     const sp = span0 + (span1 - span0) * mv
-    ctx.strokeStyle = rgba(col, 0.96 * outA)
+    // 펼쳐지는 동안 각자의 색이 조용히 흰색으로 모여, 마지막 가로선은 하얀 한 줄로 끝남
+    const white = ease(pr(t, UNROLL + 0.05, UNROLL_DUR * 0.9))
+    const lineCol = [col[0] + (255 - col[0]) * white, col[1] + (255 - col[1]) * white, col[2] + (255 - col[2]) * white]
+    ctx.strokeStyle = rgba(lineCol, (0.96 - 0.11 * white) * outA)
     ctx.lineWidth = (4 + 0.8 * mv) * kk * (1 - 0.58 * unroll)
     ctx.lineCap = unroll > 0.85 ? 'butt' : 'round'
     const glow = Math.sin(Math.PI * clamp(close * 0.5 + unroll * 0.5)) * (1 - unroll)
     if (glow > 0.01) {
-      ctx.shadowColor = rgba(col, 0.55 * glow)
+      ctx.shadowColor = rgba(lineCol, 0.55 * glow)
       ctx.shadowBlur = 12 * glow
     }
     ctx.beginPath()
