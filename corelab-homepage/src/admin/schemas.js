@@ -513,7 +513,7 @@ export const siteIntroFields = [
     name: 'mottoEn',
     label: '랩 모토 (영문)',
     type: 'text',
-    placeholder: '예: Seeing How We Learn Together',
+    placeholder: '예: Exploring How We Learn Together',
     hint: '메인 화면 인트로에서 "CoRe Lab"이 완성된 뒤 부제 아래에 표시되고, Lab Overview에서는 한글 모토 아래 함께 표시됩니다. 비워두면 메인 화면에서는 나오지 않습니다.',
   },
   {
