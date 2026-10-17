@@ -375,3 +375,14 @@ html .page-home #overview .lab-motto { padding-top: 0; padding-bottom: 28px; mar
   html .page-home #overview { padding-bottom: 56px; }
   html .page-home { padding-bottom: 56px; }
 }
+
+/* 교수님 학력: 대학명 한 줄, 그 아래 "학위 · 전공" (학위는 굵은 초록, 전공은 옅은 회색) */
+html .faculty-history-col .edu-univ { display: block; }
+html .faculty-history-col .edu-deg {
+  display: block;
+  margin-top: 2px;
+  font-size: 0.86rem;
+  color: var(--color-text-muted);
+}
+html .faculty-history-col .edu-deg b { font-weight: 600; color: var(--color-primary); }
+html .faculty-history-col .edu-sep { margin: 0 0.45em; color: #9bb5a6; }
