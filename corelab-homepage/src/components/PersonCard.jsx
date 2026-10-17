@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useRef, useState } from 'react'
 import SafeImage from './SafeImage'
 import { EditButton } from './admin/AdminControls'
 import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
@@ -75,7 +75,25 @@ function EducationLine({ line }) {
 function FacultyProfile({ person: raw, onEdit, reorder }) {
   const { tr, loc } = useLang()
   const person = loc(raw, 'people')
-  const contactLines = [person.email, person.office, person.phone].filter(Boolean)
+  const contactLines = [
+    { k: tr('이메일', 'Email'), v: person.email },
+    { k: tr('연구실', 'Office'), v: person.office },
+    { k: tr('전화', 'Phone'), v: person.phone },
+  ].filter((c) => c.v)
+  // 모바일: 소개글이 길면 5줄만 보여주고 "더 보기"로 펼침(PC는 항상 전체)
+  const bioRef = useRef(null)
+  const [bioOpen, setBioOpen] = useState(false)
+  const [bioLong, setBioLong] = useState(false)
+  useEffect(() => {
+    if (bioOpen) return undefined
+    const el = bioRef.current
+    if (!el) return undefined
+    const check = () => setBioLong(el.scrollHeight > el.clientHeight + 2)
+    check()
+    document.fonts?.ready?.then(check)
+    window.addEventListener('resize', check)
+    return () => window.removeEventListener('resize', check)
+  }, [bioOpen, person.bio])
   const interests = Array.isArray(person.researchInterests) ? person.researchInterests : []
   const education = (Array.isArray(person.education) ? person.education : []).map(fixEducationLine)
   const career = Array.isArray(person.career) ? person.career : []
@@ -103,7 +121,18 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
 
         <div className="faculty-rule" />
 
-        {person.bio && <p className="faculty-bio">{person.bio}</p>}
+        {person.bio && (
+          <>
+            <p ref={bioRef} className={`faculty-bio${bioOpen ? '' : ' is-clamped'}`}>
+              {person.bio}
+            </p>
+            {(bioLong || bioOpen) && (
+              <button type="button" className="faculty-bio-toggle" onClick={() => setBioOpen((v) => !v)} aria-expanded={bioOpen}>
+                {bioOpen ? tr('접기 ▴', 'Show less ▴') : tr('더 보기 ▾', 'Read more ▾')}
+              </button>
+            )}
+          </>
+        )}
 
         {(contactLines.length > 0 || interests.length > 0 || person.scholarLink) && (
           <div className="faculty-meta">
@@ -111,8 +140,11 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
               <div className="faculty-contact-col">
                 <span className="faculty-meta-label">{tr('연락처', 'Contact')}</span>
                 <ul className="faculty-contact">
-                  {contactLines.map((line, i) => (
-                    <li key={i}>{line}</li>
+                  {contactLines.map((c, i) => (
+                    <li key={i}>
+                      <span className="faculty-contact-k">{c.k}</span>
+                      <span className="faculty-contact-v">{c.v}</span>
+                    </li>
                   ))}
                   {person.scholarLink && (
                     <li className="faculty-scholar">
