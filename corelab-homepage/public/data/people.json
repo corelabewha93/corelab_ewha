@@ -676,7 +676,7 @@
       "photoCrop": {
         "x": 53.7,
         "y": 43.5,
-        "zoom": 16
+        "zoom": 1
       },
       "degree": "MA",
       "affiliation": "교원그룹 인재개발팀 매니저",
@@ -689,7 +689,19 @@
         "학습경험설계(LXD), 리더십개발, 조직개발(OD)"
       ],
       "links": [],
-      "id": "person-muf2g7fen4u"
+      "id": "person-muf2g7fen4u",
+      "nameEn": "Sumin Cha",
+      "affiliationEn": "Manager, Talent Development Team, Kyowon Group",
+      "bioEn": "",
+      "pubNames": [],
+      "hideResearch": "",
+      "detailEn": [
+        "#About",
+        "Responsible for employee training at a company",
+        "Aims to grow into an HR generalist by expanding her experience beyond training into recruitment, evaluation, and compensation",
+        "#Research Interests",
+        "Learning experience design (LXD), leadership development, organizational development (OD)"
+      ]
     },
     {
       "name": "박하은",
