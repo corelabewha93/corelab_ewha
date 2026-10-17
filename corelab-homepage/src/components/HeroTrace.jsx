@@ -2,32 +2,58 @@ import { useEffect, useRef } from 'react'
 import '../styles/hero-trace.css'
 
 /**
- * 메인 인트로 — "함께 이야기하는 모둠 → 대화가 기록되는 카드 → 도움이 필요한 순간 → CoRe Lab" (약 5초, 글자 없이)
+ * 메인 인트로 — From Interaction to Shared Understanding (약 5초, 장면 안에는 글자 없음)
  *
- *  0–0.9s    짙은 녹색 위에 학습자(머리 + 어깨 실루엣)들이 흩어져 나타남
- *  0.7–1.8s  학습자들이 네 명씩 모둠으로 모여 앉음
- *  1.45–2.0s 점으로 만든 카드가 열림 (모둠마다 한 줄, 글자 없음)
- *  1.75–3.55s 모둠 안에서 말이 오감(학습자 사이를 건너가는 작은 빛).
- *            말 한마디마다 작은 점이 카드의 그 모둠 줄로 날아가 기록되고, 기록은 왼쪽으로 흘러감
- *  2.5s~     한 모둠의 대화가 거세짐 → 2.75s 그 줄이 금색으로 점등 → 맨 위로 올라오고,
- *            그 모둠 학습자들도 금빛으로 바뀌며 고리가 퍼짐 (다른 모둠은 옅어짐)
- *  3.6–4.45s 모든 점이 흘러가 "CoRe Lab" 글자 모양(CoRe 금색 · Lab 흰색)으로 모이고,
- *            금색 줄의 점들은 이름 아래 가로선 자리로 모임
- *  4.3–4.85s 점이 조금 커지며 글자 면을 채우고, 그 아래에서 실제 이름이 서서히 나타남.
- *            실제 글자가 다 나타난 뒤에 점을 거두므로 중간에 꺼지거나 깜빡이지 않음 (위치 이동 없음)
- *  이후      부제 · 모토 · 소속은 CSS(hero-trace.css)가 띄움
- * 글자 자리는 화면에 그려진 실제 이름(.hero-wm)의 기준선을 직접 재서 정합니다.
- * 모든 움직임의 속도 곡선은 하나: cubic-bezier(0.22, 1, 0.36, 1)
+ *  0.1–1.0s  개별 생각: 세 학습자(금 · 하늘 · 장밋빛)가 차례로 나타남
+ *  0.95–2.9s 상호작용: 한 사람이 생각(작은 빛)을 보내면, 받은 사람 둘레에 "보낸 사람 색"의 조각이 생김.
+ *            주고받기가 이어질수록 각자의 둘레에 다른 사람들의 생각 조각이 쌓임
+ *  2.8–3.6s  공동 지식구축: 모두가 받은 조각들이 가운데로 모여 하나의 고리를 이룸
+ *            (세 사람의 조각이 다 모여야 원이 닫힘 — 색은 섞이지 않고 그대로 남음)
+ *  3.6–3.9s  공유된 이해: 틈이 닫히며 고리가 완성되고, 잔잔한 물결이 한 번 퍼짐
+ *  3.95–4.55s 고리가 위에서부터 열리며 이름 아래 가로선으로 펼쳐짐 → 그 선 위로 CoRe Lab이 솟아오름(CSS)
+ *  이후      부제 · 모토 · 소속이 차례로(CSS). 캔버스는 지우고 계산을 멈춤
+ *
+ * 자리는 화면에 실제로 그려진 가로선(.hero-rule)을 기준으로 잡습니다(글꼴 · 화면 크기가 바뀌어도 맞음).
+ * 클릭 건너뛰기 · 재방문 · 동작 줄이기는 HeroIntro.jsx가 처리합니다(이 경우 캔버스는 그리지 않음).
  */
 
-const END = 5.05
-// 바깥(HeroIntro · hero-trace.css)과 맞춘 시각(초)
+const END = 4.8
+// 바깥(HeroIntro · hero-trace.css)과 맞춘 시각(초): 진짜 가로선이 나타나는 때
 export const TRACE_RULE = 4.55
-export const TRACE_LAND = 4.35
+export const TRACE_LAND = 4.55
 
-const IVORY = [245, 242, 232]
-const MINT = [143, 227, 234]
-const GOLD = [232, 201, 122]
+// 진한 초록 위에서 서로 또렷이 구분되면서도 차분한 세 색
+const COL = {
+  A: [233, 196, 106], // 금
+  B: [120, 196, 214], // 하늘
+  C: [228, 164, 170], // 장밋빛(배꽃)
+}
+
+// 학습자: 고리 중심에서의 위치(px, 배율 k를 곱함)와 나타나는 시각
+const NODES = [
+  { id: 'A', x: -215, y: -70, t: 0.1 },
+  { id: 'B', x: 185, y: -105, t: 0.3 },
+  { id: 'C', x: 30, y: 135, t: 0.5 },
+]
+// 주고받기: [보내는 사람, 받는 사람, 출발 시각] — 답이 돌아오는 순서
+const EX = [
+  ['A', 'B', 0.95],
+  ['B', 'A', 1.35],
+  ['B', 'C', 1.55],
+  ['C', 'A', 1.85],
+  ['A', 'C', 2.05],
+  ['C', 'B', 2.25],
+]
+// 받은 조각이 들어갈 고리의 자리(시계 방향 6칸) — 금 · 하늘 · 장밋빛이 번갈아 놓임
+// (펼친 가로선의 색 순서는 왼쪽부터 장밋빛 · 하늘 · 금 · 장밋빛 · 하늘 · 금 = hero-trace.css와 같음)
+const SLOT = { 'A>B': 0, 'B>A': 1, 'C>A': 2, 'A>C': 3, 'B>C': 4, 'C>B': 5 }
+
+const PULSE = 0.42 // 생각 하나가 건너가는 시간
+const GATHER = 2.75 // 조각들이 가운데로 모이기 시작
+const CLOSE = 3.62 // 고리가 닫힘
+const UNROLL = 3.95 // 고리가 펼쳐져 가로선으로
+const UNROLL_DUR = 0.6
+const OUT = 4.6 // 캔버스의 선을 거둠(진짜 가로선은 TRACE_RULE에 이미 나타나 있음)
 
 function bez(x1, y1, x2, y2) {
   const cx = 3 * x1
@@ -51,417 +77,180 @@ function bez(x1, y1, x2, y2) {
     return sy(Math.max(0, Math.min(1, t)))
   }
 }
-const ease = bez(0.22, 1, 0.36, 1)
+const ease = bez(0.22, 1, 0.36, 1) // 사이트 전체와 같은 속도 곡선(등장)
+const inOut = bez(0.45, 0, 0.25, 1) // 이동용(천천히 출발 → 부드럽게 도착)
 const clamp = (x) => Math.max(0, Math.min(1, x))
 const pr = (t, s, d) => clamp((t - s) / d)
-const lerp = (a, b, u) => a + (b - a) * u
-const mix = (c1, c2, u) => [lerp(c1[0], c2[0], u), lerp(c1[1], c2[1], u), lerp(c1[2], c2[2], u)]
-const rgba = (c, a) => `rgba(${Math.round(c[0])},${Math.round(c[1])},${Math.round(c[2])},${a})`
-function rng(seed) {
-  let s = seed
-  return () => (s = (s * 16807) % 2147483647) / 2147483647
+const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${Math.max(0, Math.min(1, a))})`
+const TAU = Math.PI * 2
+
+function quadPoint(a, b, bend, u) {
+  const mx = (a[0] + b[0]) / 2
+  const my = (a[1] + b[1]) / 2
+  const dx = b[0] - a[0]
+  const dy = b[1] - a[1]
+  const c = [mx - dy * bend, my + dx * bend]
+  const v = 1 - u
+  return [v * v * a[0] + 2 * v * u * c[0] + u * u * b[0], v * v * a[1] + 2 * v * u * c[1] + u * u * b[1]]
 }
 
-// ── 시간표(초) ──
-const APPEAR = 0.0
-const GATHER = 0.7
-const CARD_IN = 1.45
-const TALK_FROM = 1.75
-const TALK_TO = 3.55
-const SURGE = 2.5 // 한 모둠의 대화가 잦아지기 시작
-const HOT = 2.75 // 그 줄이 금색으로 점등
-const LIFT = 3.05 // 맨 위로 올라옴
-const FLOW = 3.6 // 글자로 흘러감
-const FLOW_DUR = 0.75
-const SWELL = 4.3 // 점이 살짝 커지며 글자 면을 메움 (실제 글자가 그 아래에서 서서히 나타남)
-const FADE_OUT = 4.8 // 실제 글자가 완전히 나타난 뒤에야 점을 거둠 → 꺼졌다 켜지는 순간이 없음
-
-const GROUPS = 4
-const PER_GROUP = 4
-const DUST = 24
-const HOT_GROUP = 1
-const HOP = 0.34 // 말 한마디가 건너가는 시간
-const SEND = 0.55 // 기록 점이 카드까지 날아가는 시간
-const SCROLL_S = 2.4 // 기록이 카드 오른쪽 끝에서 왼쪽 끝까지 흘러가는 시간
-
-function layout(s) {
+/** 화면 크기와 실제 가로선 자리를 재서 장면의 좌표를 정합니다. */
+function layout(s, cvRect, ruleEl) {
   const { W, H } = s
-  const wide = W / H >= 0.85
-  s.wide = wide
-  const m = Math.min(W, H)
-  if (wide) {
-    // 모둠과 카드가 한눈에 들어오도록 화면 가운데에 모아 둡니다 (아주 넓은 화면에서도 퍼지지 않게 기준 폭 U를 씁니다)
-    const U = Math.min(W, 1400)
-    const w = Math.min(U * 0.23, 290)
-    const h = Math.min(H * 0.36, 250)
-    s.card = { x: W / 2 + U * 0.15 - w / 2, y: H * 0.48 - h / 2, w, h }
-    const gx = [-0.205, -0.075, -0.195, -0.065]
-    const gy = [H * 0.3, H * 0.38, H * 0.63, H * 0.7]
-    s.centers = gx.map((x, i) => [W / 2 + x * U, gy[i]])
-    s.seat = m * 0.07
-    s.hs = Math.max(3.6, Math.min(5.4, m / 140)) // 머리 반지름
-  } else {
-    const w = Math.min(W * 0.84, 340)
-    const h = Math.min(H * 0.22, 150)
-    s.card = { x: W / 2 - w / 2, y: H * 0.71 - h / 2, w, h }
-    const gx = [W * 0.27, W * 0.7, W * 0.3, W * 0.72]
-    const gy = [H * 0.17, H * 0.24, H * 0.42, H * 0.49]
-    s.centers = gx.map((x, i) => [x, gy[i]])
-    s.seat = m * 0.095
-    s.hs = Math.max(2.8, Math.min(4, m / 110))
-  }
-}
-
-function build(s) {
-  const r = rng(11)
-  // 학습자: 모둠마다 네 명, 원탁에 둘러앉듯 네 자리
-  s.learners = []
-  for (let g = 0; g < GROUPS; g++) {
-    for (let k = 0; k < PER_GROUP; k++) {
-      const a = -Math.PI / 2 + Math.PI / 4 + (k * Math.PI) / 2 + (r() - 0.5) * 0.35
-      const d = s.seat * (0.85 + r() * 0.25)
-      s.learners.push({
-        g,
-        k,
-        hx: 30 + r() * (s.W - 60),
-        hy: 40 + r() * (s.H - 80),
-        sx: s.centers[g][0] + Math.cos(a) * d,
-        sy: s.centers[g][1] + Math.sin(a) * d * 0.8,
-        ph: r() * 6.28,
-        tone: r() > 0.5 ? MINT : IVORY,
-        delay: r() * 0.55,
-      })
+  const wide = W / H >= 0.85 && W >= 620
+  s.k = wide ? Math.max(0.75, Math.min(1.05, Math.min(W, 1500) / 1366)) : Math.max(0.52, Math.min(0.75, (W / 390) * 0.58))
+  let rx = W / 2
+  let ry = H * 0.5
+  let rw = Math.min(360, W * 0.6)
+  if (ruleEl) {
+    const r = ruleEl.getBoundingClientRect()
+    if (r.width > 0 || r.height > 0) {
+      rx = r.left - cvRect.left + r.width / 2
+      ry = r.top - cvRect.top + r.height / 2
+      if (r.width > 0) rw = r.width
     }
   }
-  s.dust = Array.from({ length: DUST }, () => ({
-    x: 20 + r() * (s.W - 40),
-    y: 20 + r() * (s.H - 40),
-    r: 0.9 + r() * 1.2,
-    ph: r() * 6.28,
-    delay: r() * 0.8,
-  }))
-  // 대화: [모둠, 말한 사람, 들은 사람, 시각, 길이(기록 점 개수)]
-  const rt = rng(29)
-  s.talk = []
-  // 카드가 열릴 때 이미 쌓여 있던 앞선 기록(카드에만 보임) — 빈 카드가 아니라 "진행 중인 기록"으로 읽히게
-  for (let g = 0; g < GROUPS; g++) {
-    let t = CARD_IN - SCROLL_S - SEND + rt() * 0.2
-    while (t < TALK_FROM - SEND) {
-      s.talk.push({ g, from: 0, to: 1, t, w: 1 + Math.floor(rt() * 3), hist: true })
-      t += 0.2 + rt() * 0.18
-    }
-  }
-  for (let g = 0; g < GROUPS; g++) {
-    let t = TALK_FROM + rt() * 0.35
-    while (t < TALK_TO) {
-      const hot = g === HOT_GROUP && t > SURGE
-      const from = Math.floor(rt() * PER_GROUP)
-      const to = (from + 1 + Math.floor(rt() * (PER_GROUP - 1))) % PER_GROUP
-      s.talk.push({ g, from, to, t, w: hot ? 2 + Math.floor(rt() * 4) : 1 + Math.floor(rt() * 3) })
-      t += hot ? 0.07 + rt() * 0.05 : 0.2 + rt() * 0.18
-    }
-  }
-}
-
-function learnerPos(s, L, t) {
-  const drift = (6 * Math.min(s.W, s.H)) / 700
-  const hx = L.hx + Math.sin(t * 0.9 + L.ph) * drift
-  const hy = L.hy + Math.cos(t * 0.8 + L.ph * 1.3) * drift
-  const u = ease(pr(t, GATHER + L.delay * 0.6, 1.1))
-  return [lerp(hx, L.sx + Math.sin(t * 1.3 + L.ph) * 0.8, u), lerp(hy, L.sy + Math.cos(t * 1.2 + L.ph) * 0.8, u)]
-}
-
-/** 학습자 실루엣(머리 + 어깨). (x, y) = 머리 가운데 */
-function person(ctx, x, y, h, col, a) {
-  if (a <= 0.003) return
-  ctx.fillStyle = rgba(col, a)
-  ctx.beginPath()
-  ctx.arc(x, y, h, 0, Math.PI * 2)
-  ctx.fill()
-  ctx.beginPath()
-  ctx.ellipse(x, y + h * 3.1, h * 2.05, h * 1.75, 0, Math.PI, Math.PI * 2)
-  ctx.fill()
-}
-
-/** 실루엣을 이루는 점 자리들 (글자로 흘러갈 때의 출발점) */
-function personPoints(x, y, h) {
-  const pts = [[x, y]]
-  for (let k = 0; k < 5; k++) {
-    const a = Math.PI + (Math.PI * (k + 0.5)) / 5
-    pts.push([x + Math.cos(a) * h * 1.6, y + h * 3.1 + Math.sin(a) * h * 1.3])
-  }
-  return pts
-}
-
-function rowGeom(s) {
-  const C = s.card
-  const padX = Math.max(14, C.w * 0.08)
-  const rowH = C.h / GROUPS
-  return { C, padX, rowH, inX: C.x + C.w - padX, outX: C.x + padX, gap: Math.min(6.5, rowH / 6.4) }
-}
-function rowSlot(g, t) {
-  const lift = ease(pr(t, LIFT, 0.5))
-  if (g === HOT_GROUP) return lerp(HOT_GROUP, 0, lift)
-  if (g === 0) return lerp(0, 1, lift)
-  return g
-}
-
-/** 카드에 기록된 점들 (도착한 말 한마디마다 한 칸, 왼쪽으로 흘러감) */
-function cardDots(s, t) {
-  const R = rowGeom(s)
-  const speed = (R.inX - R.outX) / SCROLL_S
-  const hotU = ease(pr(t, HOT, 0.6))
-  const out = []
-  s.talk.forEach((e) => {
-    const arrive = e.t + SEND
-    if (t < arrive) return
-    const x = R.inX - (t - arrive) * speed
-    if (x < R.outX - 4) return
-    const edge = clamp((x - R.outX + 4) / 14) * clamp((t - arrive) / 0.12)
-    const hot = e.g === HOT_GROUP
-    const cy = R.C.y + rowSlot(e.g, t) * R.rowH + R.rowH / 2
-    const col = hot ? mix(IVORY, GOLD, hotU) : IVORY
-    const a = (hot ? 1 : lerp(0.85, 0.35, hotU)) * edge
-    for (let k = 0; k < e.w; k++) {
-      out.push({ x, y: cy + (k - (e.w - 1) / 2) * R.gap, r: hot ? lerp(1.5, 2, hotU) : 1.5, col, a, hot })
-    }
-  })
-  return out
-}
-
-/** 화면의 실제 이름(.hero-wm)에서 글자 모양을 이루는 점 자리를 구합니다. 기준선은 직접 재서 맞춥니다. */
-function sampleName(s, hr) {
-  const wm = document.querySelector('.hero-intro .hero-wm')
-  const ruleEl = document.querySelector('.hero-intro .hero-rule')
-  if (!wm || !ruleEl) return null
-  const parts = Array.from(wm.querySelectorAll('.hero-wm-core, .hero-wm-lab'))
-  if (!parts.length) return null
-  const rr = ruleEl.getBoundingClientRect()
-  if (!rr.width) return null
-  const off = document.createElement('canvas')
-  off.width = Math.max(1, Math.round(s.W))
-  off.height = Math.max(1, Math.round(s.H))
-  const ox = off.getContext('2d', { willReadFrequently: true })
-  let fs = 0
-  parts.forEach((el, i) => {
-    const cs = getComputedStyle(el)
-    fs = parseFloat(cs.fontSize) || fs
-    // 글자 기준선 = 높이 0짜리 표식을 글자 줄에 끼워 넣어 잰 자리
-    const probe = document.createElement('span')
-    probe.style.cssText = 'display:inline-block;width:0;height:0;vertical-align:baseline'
-    el.appendChild(probe)
-    const base = probe.getBoundingClientRect().top
-    probe.remove()
-    const r = el.getBoundingClientRect()
-    ox.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
-    try {
-      ox.letterSpacing = cs.letterSpacing === 'normal' ? '0px' : cs.letterSpacing
-    } catch {
-      /* 글자 간격 미지원 브라우저 */
-    }
-    ox.textBaseline = 'alphabetic'
-    ox.fillStyle = i === 0 ? '#f00' : '#0f0'
-    ox.fillText(el.textContent, r.left - hr.left, base - hr.top)
-  })
-  const step = Math.max(3, Math.min(5, Math.round(fs / 30)))
-  const data = ox.getImageData(0, 0, off.width, off.height).data
-  const pts = []
-  for (let y = 0; y < off.height; y += step) {
-    for (let x = 0; x < off.width; x += step) {
-      const i = (y * off.width + x) * 4
-      if (data[i + 3] > 140) pts.push({ x: x + 0.5, y: y + 0.5, gold: data[i] > data[i + 1] })
-    }
-  }
-  if (pts.length < 40) return null
-  const rule = []
-  const x0 = rr.left - hr.left
-  const x1 = rr.right - hr.left
-  const y = rr.top + rr.height / 2 - hr.top
-  const n = Math.max(24, Math.round((x1 - x0) / (step * 1.4)))
-  for (let k = 0; k < n; k++) rule.push({ x: lerp(x0, x1, k / (n - 1)), y })
-  return { pts, rule, step }
-}
-
-/** 지금 화면의 점들을 출발점으로, 글자 · 가로선 자리로 보내는 입자를 만듭니다. */
-function makeParticles(s, t0) {
-  const r = rng(5)
-  const src = { text: [], rule: [] }
-  const tHot = ease(pr(t0, HOT, 0.6))
-  s.learners.forEach((L) => {
-    const [x, y] = learnerPos(s, L, t0)
-    const hot = L.g === HOT_GROUP
-    personPoints(x, y, s.hs).forEach(([px, py]) =>
-      (hot ? src.rule : src.text).push({ x: px, y: py, col: hot ? mix(L.tone, GOLD, tHot) : L.tone }),
-    )
-  })
-  cardDots(s, t0).forEach((d) => (d.hot ? src.rule : src.text).push({ x: d.x, y: d.y, col: d.col }))
-  s.dust.forEach((d) => src.text.push({ x: d.x, y: d.y, col: IVORY }))
-  const make = (targets, pool, isRule) =>
-    targets.map((tg, k) => {
-      const from = pool[Math.floor(r() * pool.length)] || pool[k % pool.length]
-      const sx = from.x + (r() - 0.5) * 5
-      const sy = from.y + (r() - 0.5) * 5
-      const dxm = tg.x - sx
-      const dym = tg.y - sy
-      const dist = Math.hypot(dxm, dym) || 1
-      const bend = (r() > 0.5 ? 1 : -1) * dist * (0.1 + r() * 0.18)
-      return {
-        sx,
-        sy,
-        tx: tg.x,
-        ty: tg.y,
-        cx: (sx + tg.x) / 2 - (dym / dist) * bend,
-        cy: (sy + tg.y) / 2 + (dxm / dist) * bend,
-        delay: (isRule ? 0.08 : 0.02) + 0.18 * clamp(tg.x / s.W) + r() * 0.1,
-        from: from.col,
-        to: isRule ? GOLD : tg.gold ? GOLD : IVORY,
-        rule: isRule,
-      }
-    })
-  s.parts = [...make(s.name.pts, src.text, false), ...make(s.name.rule, src.rule, true)]
+  s.R = 68 * s.k // 공동의 고리 반지름
+  s.NR = Math.max(8, 13 * s.k) // 학습자 반지름
+  s.lineY = ry
+  s.lineW = rw
+  s.cx = rx
+  s.cy = ry - s.R // 고리의 아랫부분이 가로선 자리에 닿도록
 }
 
 function draw(ctx, s, t) {
-  const { W, H } = s
+  const { W, H, k, R, NR, cx, cy } = s
   ctx.clearRect(0, 0, W, H)
-  const fadeAll = 1 - pr(t, FADE_OUT, 0.12)
-  if (fadeAll <= 0.002) return
-  const srcFade = 1 - ease(pr(t, FLOW, 0.4))
-  const hotU = ease(pr(t, HOT, 0.6))
-  const h = s.hs
+  const kk = Math.max(k, 0.8)
+  const idx = (id) => NODES.findIndex((n) => n.id === id)
 
-  // 배경의 아주 옅은 먼지 점
-  s.dust.forEach((d) => {
-    const a = 0.22 * ease(pr(t, APPEAR + d.delay, 0.8)) * lerp(1, 0.4, hotU) * srcFade
-    if (a <= 0.003) return
-    ctx.fillStyle = rgba(IVORY, a)
-    ctx.beginPath()
-    ctx.arc(d.x + Math.sin(t * 0.7 + d.ph) * 4, d.y + Math.cos(t * 0.6 + d.ph) * 4, d.r, 0, Math.PI * 2)
-    ctx.fill()
+  const gather = inOut(pr(t, GATHER, 0.85))
+  const nodeFade = 1 - ease(pr(t, 3.9, 0.45))
+  const pathFade = 1 - ease(pr(t, 2.7, 0.6))
+  const P = NODES.map((n) => {
+    const a = ease(pr(t, n.t, 0.7))
+    const sc = 1 - 0.14 * gather // 모일 때 한 걸음 가까이
+    return [cx + n.x * k * sc, cy + n.y * k * sc + (1 - a) * 10 * k, a]
   })
 
-  if (srcFade > 0.003) {
-    const P = s.learners.map((L) => learnerPos(s, L, t))
-
-    // 점등된 모둠 둘레의 고리
-    if (hotU > 0.01) {
-      const c = s.centers[HOT_GROUP]
-      ;[1.9, 2.25].forEach((k, i) => {
-        const u = ease(pr(t, HOT + i * 0.18, 0.7))
-        if (u <= 0) return
-        ctx.strokeStyle = rgba(GOLD, (i ? 0.2 : 0.45) * u * srcFade)
-        ctx.lineWidth = 1
-        ctx.beginPath()
-        ctx.arc(c[0], c[1] + h * 1.4, s.seat * k * (0.75 + 0.25 * u), 0, Math.PI * 2)
-        ctx.stroke()
-      })
+  // ── 주고받은 길: 생각이 건너간 자리에 옅은 곡선이 남음 ──
+  ctx.lineCap = 'round'
+  EX.forEach(([f, to, t0]) => {
+    const u = pr(t, t0, PULSE)
+    if (u <= 0 || pathFade <= 0) return
+    const a = P[idx(f)]
+    const b = P[idx(to)]
+    const col = COL[f]
+    const bend = f < to ? 0.14 : -0.14
+    const arrived = pr(t, t0 + PULSE, 0.6)
+    ctx.strokeStyle = rgba(col, (0.18 + 0.2 * (1 - arrived)) * pathFade)
+    ctx.lineWidth = 1.1 * kk
+    const m = inOut(u)
+    ctx.beginPath()
+    for (let i = 0; i <= 30; i++) {
+      const q = quadPoint(a, b, bend, 0.07 + 0.86 * m * (i / 30))
+      if (i) ctx.lineTo(q[0], q[1])
+      else ctx.moveTo(q[0], q[1])
     }
+    ctx.stroke()
+    if (u < 1) {
+      const q = quadPoint(a, b, bend, 0.07 + 0.86 * m)
+      ctx.fillStyle = rgba(col, 1)
+      ctx.shadowColor = rgba(col, 0.55)
+      ctx.shadowBlur = 8
+      ctx.beginPath()
+      ctx.arc(q[0], q[1], 3.8 * kk, 0, TAU)
+      ctx.fill()
+      ctx.shadowBlur = 0
+    }
+  })
 
-    // 말 한마디: 말한 사람 → 들은 사람으로 건너가는 작은 빛, 그리고 카드로 날아가는 기록 점
-    const R = rowGeom(s)
-    s.talk.forEach((e) => {
-      if (e.hist) return
-      const a0 = P[e.g * PER_GROUP + e.from]
-      const b0 = P[e.g * PER_GROUP + e.to]
-      const hot = e.g === HOT_GROUP
-      const col = hot ? mix(MINT, GOLD, hotU) : MINT
-      const dim = hot ? 1 : lerp(1, 0.45, hotU)
-      const u = pr(t, e.t, HOP)
-      if (u > 0 && u < 1) {
-        // 두 사람을 잇는 옅은 선(대화가 오가는 중) + 건너가는 빛
-        ctx.strokeStyle = rgba(col, 0.28 * Math.sin(u * Math.PI) * dim * srcFade)
-        ctx.lineWidth = 1
-        ctx.beginPath()
-        ctx.moveTo(a0[0], a0[1])
-        ctx.lineTo(b0[0], b0[1])
-        ctx.stroke()
-        const k = ease(u)
-        const lift = -Math.sin(u * Math.PI) * s.seat * 0.18
-        ctx.fillStyle = rgba(col, 0.95 * Math.sin(u * Math.PI) * dim * srcFade)
-        ctx.beginPath()
-        ctx.arc(lerp(a0[0], b0[0], k), lerp(a0[1], b0[1], k) + lift, h * 0.72, 0, Math.PI * 2)
-        ctx.fill()
+  // ── 받은 생각의 조각 → 가운데로 모여 하나의 고리 → 펼쳐져 가로선 ──
+  const close = inOut(pr(t, CLOSE, 0.25))
+  const unroll = inOut(pr(t, UNROLL, UNROLL_DUR))
+  const outA = 1 - pr(t, OUT, 0.15)
+  const GAP = 7 // 닫히기 전 조각 사이 틈(도)
+  EX.forEach(([f, to, t0], i) => {
+    const arr = t0 + PULSE
+    const g = ease(pr(t, arr, 0.3))
+    if (g <= 0) return
+    const col = COL[f]
+    const b = P[idx(to)]
+    const a = P[idx(f)]
+    const dir = Math.atan2(a[1] - b[1], a[0] - b[0]) // 보낸 사람 쪽을 향한 조각
+    const mv = inOut(pr(t, GATHER + 0.05 + i * 0.07, 0.7))
+    const r0 = NR + 10 * k
+    const span0 = ((80 * Math.PI) / 180) * g
+    const span1 = ((60 - GAP * (1 - close)) * Math.PI) / 180
+    const c1 = -Math.PI / 2 + ((SLOT[`${f}>${to}`] + 0.5) * Math.PI) / 3
+    let dc = c1 - dir
+    while (dc > Math.PI) dc -= TAU
+    while (dc < -Math.PI) dc += TAU
+    const ox = b[0] + (cx - b[0]) * mv
+    const oy = b[1] + (cy - b[1]) * mv
+    const rr = r0 + (R - r0) * mv
+    const cc = dir + dc * mv
+    const sp = span0 + (span1 - span0) * mv
+    ctx.strokeStyle = rgba(col, 0.96 * outA)
+    ctx.lineWidth = (4 + 0.8 * mv) * kk * (1 - 0.58 * unroll)
+    ctx.lineCap = unroll > 0.85 ? 'butt' : 'round'
+    const glow = Math.sin(Math.PI * clamp(close * 0.5 + unroll * 0.5)) * (1 - unroll)
+    if (glow > 0.01) {
+      ctx.shadowColor = rgba(col, 0.55 * glow)
+      ctx.shadowBlur = 12 * glow
+    }
+    ctx.beginPath()
+    for (let j = 0; j <= 24; j++) {
+      const ang = cc - sp / 2 + (sp * j) / 24
+      let x = ox + Math.cos(ang) * rr
+      let y = oy + Math.sin(ang) * rr
+      if (unroll > 0) {
+        // 고리의 맨 위를 끊어, 양쪽이 바닥을 따라 펼쳐지듯 가로선으로
+        let phi = ang - Math.PI / 2
+        while (phi <= -Math.PI) phi += TAU
+        while (phi > Math.PI) phi -= TAU
+        const lx = cx - (phi / Math.PI) * (s.lineW / 2)
+        x += (lx - x) * unroll
+        y += (s.lineY - y) * unroll
       }
-      const v = pr(t, e.t, SEND)
-      if (v > 0 && v < 1 && t > CARD_IN) {
-        const k = ease(v)
-        const ty = R.C.y + rowSlot(e.g, t) * R.rowH + R.rowH / 2
-        const mx = lerp(a0[0], R.inX, 0.5)
-        const my = Math.min(a0[1], ty) - s.seat * 0.6
-        const q = 1 - k
-        const x = q * q * a0[0] + 2 * q * k * mx + k * k * R.inX
-        const y = q * q * a0[1] + 2 * q * k * my + k * k * ty
-        ctx.fillStyle = rgba(col, 0.55 * Math.sin(v * Math.PI) * dim * srcFade)
-        ctx.beginPath()
-        ctx.arc(x, y, 1.6, 0, Math.PI * 2)
-        ctx.fill()
-      }
-    })
+      if (j) ctx.lineTo(x, y)
+      else ctx.moveTo(x, y)
+    }
+    ctx.stroke()
+    ctx.shadowBlur = 0
+  })
 
-    // 학습자 실루엣
-    s.learners.forEach((L, i) => {
-      const appear = ease(pr(t, APPEAR + L.delay, 0.7))
-      let col = L.tone
-      let a = appear * 0.92
-      if (L.g === HOT_GROUP) col = mix(L.tone, GOLD, hotU)
-      else a *= lerp(1, 0.42, hotU)
-      // 말하는 순간 살짝 밝아짐
-      const speaking = s.talk.some((e) => !e.hist && e.g === L.g && e.from === L.k && t >= e.t - 0.05 && t < e.t + 0.18)
-      person(ctx, P[i][0], P[i][1], h, speaking ? mix(col, [255, 255, 255], 0.5) : col, a * srcFade)
-    })
-  }
-
-  // 점 카드 — 모둠마다 한 줄, 글자 없음
-  const cardA = ease(pr(t, CARD_IN, 0.6)) * srcFade
-  if (cardA > 0.003) {
-    const C = s.card
-    ctx.fillStyle = `rgba(255,255,255,${0.05 * cardA})`
-    ctx.strokeStyle = rgba(GOLD, (0.32 + 0.48 * hotU) * cardA)
+  // 고리가 완성되는 순간: 잔잔한 물결 한 번
+  const wave = pr(t, CLOSE + 0.1, 0.6)
+  if (wave > 0 && wave < 1) {
+    ctx.strokeStyle = `rgba(255,248,232,${0.32 * (1 - wave)})`
     ctx.lineWidth = 1
     ctx.beginPath()
-    ctx.roundRect(C.x, C.y, C.w, C.h, 8)
-    ctx.fill()
+    ctx.arc(cx, cy, R + 8 * k + 44 * k * ease(wave), 0, TAU)
     ctx.stroke()
-    // 줄 바탕의 옅은 점선 (기록이 쌓일 자리)
-    const R = rowGeom(s)
-    for (let g = 0; g < GROUPS; g++) {
-      const cy = C.y + rowSlot(g, t) * R.rowH + R.rowH / 2
-      ctx.fillStyle = rgba(IVORY, 0.12 * cardA)
-      for (let x = R.outX; x <= R.inX + 0.5; x += 9) ctx.fillRect(x - 0.5, cy - 0.5, 1, 1)
-    }
-    cardDots(s, t).forEach((d) => {
-      ctx.fillStyle = rgba(d.col, d.a * cardA)
-      ctx.beginPath()
-      ctx.arc(d.x, d.y, d.r, 0, Math.PI * 2)
-      ctx.fill()
-    })
-    if (hotU > 0.02) {
-      const slot = rowSlot(HOT_GROUP, t)
-      ctx.strokeStyle = rgba(GOLD, 0.85 * hotU * cardA)
-      ctx.beginPath()
-      ctx.roundRect(C.x + 6, C.y + slot * R.rowH + 4, C.w - 12, R.rowH - 8, 6)
-      ctx.stroke()
-    }
   }
 
-  // 글자로 흘러가는 점
-  if (t >= FLOW && s.parts) {
-    const rad = Math.max(1.05, s.name.step * 0.34)
-    const swell = ease(pr(t, SWELL, 0.5))
-    s.parts.forEach((p) => {
-      const u = ease(pr(t, FLOW + p.delay, FLOW_DUR))
-      if (u <= 0) return
-      const v = 1 - u
-      const x = v * v * p.sx + 2 * v * u * p.cx + u * u * p.tx
-      const y = v * v * p.sy + 2 * v * u * p.cy + u * u * p.ty
-      const a = clamp(u * 6) * (p.rule ? 0.85 : 0.95) * fadeAll
-      if (a <= 0.003) return
-      ctx.fillStyle = rgba(mix(p.from, p.to, u), a)
-      ctx.beginPath()
-      ctx.arc(x, y, lerp(1.6, p.rule ? rad * 0.9 : rad, u) * (1 + 0.85 * swell), 0, Math.PI * 2)
-      ctx.fill()
-    })
-  }
+  // ── 학습자 ──
+  NODES.forEach((n, i) => {
+    const [x, y, a] = P[i]
+    const al = a * nodeFade
+    if (al <= 0.003) return
+    const col = COL[n.id]
+    const recv = EX.some(([, to, t0]) => to === n.id && t >= t0 + PULSE && t < t0 + PULSE + 0.25)
+    const send = EX.some(([f, , t0]) => f === n.id && t >= t0 - 0.05 && t < t0 + 0.2)
+    const r = NR * (recv ? 1.1 : send ? 1.05 : 1)
+    const halo = ctx.createRadialGradient(x, y, 0, x, y, r * 2.5)
+    halo.addColorStop(0, rgba(col, 0.22 * al))
+    halo.addColorStop(1, rgba(col, 0))
+    ctx.fillStyle = halo
+    ctx.beginPath()
+    ctx.arc(x, y, r * 2.5, 0, TAU)
+    ctx.fill()
+    ctx.fillStyle = rgba(col, al)
+    ctx.beginPath()
+    ctx.arc(x, y, r, 0, TAU)
+    ctx.fill()
+  })
 }
 
 export default function HeroTrace({ animated, skipped = false }) {
@@ -474,7 +263,8 @@ export default function HeroTrace({ animated, skipped = false }) {
     }
     const ctx = cv.getContext('2d')
     const host = cv.parentElement
-    const s = { W: 0, H: 0, name: null, parts: null }
+    const ruleEl = host.querySelector('.hero-rule')
+    const s = { W: 0, H: 0 }
     const size = () => {
       s.W = host.clientWidth || window.innerWidth
       s.H = host.clientHeight || window.innerHeight
@@ -482,29 +272,14 @@ export default function HeroTrace({ animated, skipped = false }) {
       cv.width = Math.round(s.W * dpr)
       cv.height = Math.round(s.H * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
-      layout(s)
-      build(s)
-      s.name = null
-      s.parts = null
     }
     size()
     const t0 = performance.now()
     let raf = 0
-    let fontsReady = !document.fonts
-    document.fonts?.ready?.then(() => {
-      fontsReady = true
-      s.name = null
-      s.parts = null
-    })
     const tick = () => {
       const t = (performance.now() - t0) / 1000
-      // 글자 자리는 글꼴이 준비된 뒤, 점들이 흘러 나가기 전에 잽니다(창 크기가 바뀌면 다시).
-      if (!s.name && fontsReady && t > FLOW - 1.2) {
-        s.name = sampleName(s, cv.getBoundingClientRect())
-        s.parts = null
-      }
-      if (s.name && !s.parts && t >= FLOW) makeParticles(s, t)
-      // 글자 자리를 못 재면(글꼴 로드 실패 등) 점들은 조용히 사라지고 실제 이름이 나타납니다.
+      // 글꼴이 늦게 들어와 이름 높이(= 가로선 자리)가 바뀌어도 따라가도록, 펼쳐질 때까지 매번 다시 잽니다.
+      if (t < UNROLL + UNROLL_DUR || s.R === undefined) layout(s, cv.getBoundingClientRect(), ruleEl)
       draw(ctx, s, t)
       if (t < END) raf = requestAnimationFrame(tick)
       else ctx.clearRect(0, 0, s.W, s.H)
