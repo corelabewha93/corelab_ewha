@@ -363,11 +363,11 @@
     },
     {
       "name": "김혜민",
-      "photo": "images/people/김혜민-mufiapxv.jpg",
+      "photo": "images/people/김혜민-mvc248cf.jpg",
       "photoCrop": {
         "x": 100,
-        "y": 12.6,
-        "zoom": 1
+        "y": 14.8,
+        "zoom": 1.15
       },
       "degree": "PhD",
       "bio": "",
@@ -380,7 +380,17 @@
       ],
       "links": [],
       "id": "person-mue1ptx20bl",
-      "nameEn": "Hyemin Kim"
+      "nameEn": "Hyemin Kim",
+      "bioEn": "",
+      "pubNames": [],
+      "hideResearch": "",
+      "detailEn": [
+        "#Experience",
+        "Center for Major Design and Convergence Support, Kyonggi University | 2024~2026",
+        "Student Success Center, Sungkyunkwan University | 2022~2024",
+        "#Contact",
+        "hyemnnie@ewha.ac.kr"
+      ]
     },
     {
       "name": "정윤주",
