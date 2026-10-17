@@ -12,7 +12,6 @@ import People from './pages/People'
 import LabLife from './pages/LabLife'
 import { Toaster } from './components/admin/AdminControls'
 import Celebration from './components/Celebration'
-import LogoJump from './components/LogoJump'
 import NoticeBanner from './components/NoticeBanner'
 import './styles/justify.css'
 import './styles/motto.css'
@@ -55,7 +54,6 @@ export default function App() {
     <AdminAuthProvider>
       <LangProvider>
       <Celebration />
-      <LogoJump />
       <NoticeBanner />
       <Header />
       <main>
