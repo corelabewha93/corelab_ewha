@@ -77,18 +77,23 @@ html body .faculty-interests .tag {
   }
 }
 
+/* 3-1) 소개글 문단: 들여쓰기 없이 문단 사이에 작은 여백만 */
+html body .faculty-bio .faculty-bio-p { margin: 0 0 0.8rem; }
+html body .faculty-bio .faculty-bio-p:last-child { margin-bottom: 0; }
+
 /* 4) 연락처 줄의 라벨(이메일·연구실·전화)과 소개글 "더 보기" — PC에서는 둘 다 보이지 않고 기존 모양 그대로 */
 html body .faculty-contact-k { display: none; }
 html body .faculty-bio-toggle { display: none; }
 
 @media (max-width: 700px) {
   /* 소개글: 5줄만 보이고 "더 보기"로 펼침 */
-  html body .faculty-bio.is-clamped {
+  html body .faculty-bio.is-clamped > .faculty-bio-p:first-child {
     display: -webkit-box;
     -webkit-line-clamp: 5;
     -webkit-box-orient: vertical;
     overflow: hidden;
   }
+  html body .faculty-bio.is-clamped > .faculty-bio-p:not(:first-child) { display: none; }
   html body .faculty-bio-toggle {
     display: block;
     margin: -0.35rem 0 0.9rem;
