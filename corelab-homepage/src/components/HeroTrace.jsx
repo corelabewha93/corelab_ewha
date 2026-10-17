@@ -2,262 +2,541 @@ import { useEffect, useRef } from 'react'
 import '../styles/hero-trace.css'
 
 /**
- * 메인 인트로 — From Interaction to Shared Understanding (약 5초, 장면 안에는 글자 없음)
+ * 메인 인트로 — "I"에서 "We"로, 함께 고쳐 쓰는 한 문장 (약 6.5초)
  *
- *  0.1–1.0s  개별 생각: 세 학습자(금 · 하늘 · 장밋빛)가 차례로 나타남
- *  0.95–2.9s 상호작용: 한 사람이 생각(작은 빛)을 보내면, 받은 사람 둘레에 "보낸 사람 색"의 조각이 생김.
- *            주고받기가 이어질수록 각자의 둘레에 다른 사람들의 생각 조각이 쌓임
- *  2.8–3.6s  공동 지식구축: 모두가 받은 조각들이 가운데로 모여 하나의 고리를 이룸
- *            (세 사람의 조각이 다 모여야 원이 닫힘 — 색은 섞이지 않고 그대로 남음)
- *  3.6–3.9s  공유된 이해: 틈이 닫히며 고리가 완성되고, 잔잔한 물결이 한 번 퍼짐
- *  3.95–4.55s 고리가 위에서부터 열리며 이름 아래 가로선으로 펼쳐지고, 색은 조용히 흰색으로 모임 → 그 선 위로 CoRe Lab이 솟아오름(CSS)
- *  이후      부제 · 모토 · 소속이 차례로(CSS). 캔버스는 지우고 계산을 멈춤
+ *  0.3–1.75s  문장이 한 줄씩 써짐: "… Learn" → "Seeing How"  (가운데에는 "I")
+ *  1.75–3.0s  금빛 손이 "I"를 가리킴
+ *  2.4–4.0s   하늘빛 손이 연필 뒤쪽 지우개로 "I"를 지움 (지우개 가루)
+ *  3.6–4.9s   장밋빛 손이 연필로 "We"를 씀
+ *  4.7–5.25s  "Together"가 이어짐
+ *  5.3–6.4s   문장이 흰색으로 모이며 모토 자리로 내려앉음 → 그 위로 CoRe Lab이 솟아오름(CSS)
+ *  6.4s       캔버스의 문장 = 실제 모토(.hero-motto)가 같은 자리에서 이어받음. 캔버스는 지우고 멈춤
  *
- * 자리는 화면에 실제로 그려진 가로선(.hero-rule)을 기준으로 잡습니다(글꼴 · 화면 크기가 바뀌어도 맞음).
+ * 손은 "학습자"입니다. 통통한 어린아이 손을 흰 선으로만 그리고, 소매 끝 띠만 학습자 색(금 · 하늘 · 장밋빛)으로 칠합니다.
+ * 문장은 화면에 실제로 그려진 모토(.hero-motto)의 글꼴 · 크기 · 줄바꿈을 그대로 읽어 씁니다
+ * (관리자가 모토를 바꿔도 "We"가 들어 있으면 같은 연출, 없으면 손 없이 문장만 써서 내려앉습니다).
  * 클릭 건너뛰기 · 재방문 · 동작 줄이기는 HeroIntro.jsx가 처리합니다(이 경우 캔버스는 그리지 않음).
  */
 
-const END = 4.8
-// 바깥(HeroIntro · hero-trace.css)과 맞춘 시각(초): 진짜 가로선이 나타나는 때
-export const TRACE_RULE = 4.55
-export const TRACE_LAND = 4.55
+const END = 6.6
+// 바깥(HeroIntro · hero-trace.css)과 맞춘 시각(초)
+export const TRACE_RULE = 5.9 // 이름 아래 흰 가로선이 나타나는 때
+export const GATHER_AT = 0 // 캔버스 시계가 시작되는 순간 = HeroIntro의 "시작" 신호
+const SWAP = 6.4 // 캔버스 문장 → 실제 모토로 바뀌는 때
 
-// 진한 초록 위에서 서로 또렷이 구분되면서도 차분한 세 색
 const COL = {
   A: [233, 196, 106], // 금
   B: [120, 196, 214], // 하늘
   C: [228, 164, 170], // 장밋빛(배꽃)
 }
 
-// 학습자: 고리 중심에서의 위치(px, 배율 k를 곱함)와 나타나는 시각
-const NODES = [
-  { id: 'A', x: -215, y: -70, t: 0.1 },
-  { id: 'B', x: 185, y: -105, t: 0.3 },
-  { id: 'C', x: 30, y: 135, t: 0.5 },
-]
-// 주고받기: [보내는 사람, 받는 사람, 출발 시각] — 답이 돌아오는 순서
-const EX = [
-  ['A', 'B', 0.95],
-  ['B', 'A', 1.35],
-  ['B', 'C', 1.55],
-  ['C', 'A', 1.85],
-  ['A', 'C', 2.05],
-  ['C', 'B', 2.25],
-]
-// 받은 조각이 들어갈 고리의 자리(시계 방향 6칸) — 금 · 하늘 · 장밋빛이 번갈아 놓임
-// (펼친 가로선의 색 순서는 왼쪽부터 장밋빛 · 하늘 · 금 · 장밋빛 · 하늘 · 금 = hero-trace.css와 같음)
-const SLOT = { 'A>B': 0, 'B>A': 1, 'C>A': 2, 'A>C': 3, 'B>C': 4, 'C>B': 5 }
-
-const PULSE = 0.42 // 생각 하나가 건너가는 시간
-const GATHER = 2.75 // 조각들이 가운데로 모이기 시작
-const CLOSE = 3.62 // 고리가 닫힘
-const UNROLL = 3.95 // 고리가 펼쳐져 가로선으로
-const UNROLL_DUR = 0.6
-const OUT = 4.6 // 캔버스의 선을 거둠(진짜 흰색 가로선은 TRACE_RULE에 이미 나타나 있음)
-
-function bez(x1, y1, x2, y2) {
-  const cx = 3 * x1
-  const bx = 3 * (x2 - x1) - cx
-  const ax = 1 - cx - bx
-  const cy = 3 * y1
-  const by = 3 * (y2 - y1) - cy
-  const ay = 1 - cy - by
-  const sx = (t) => ((ax * t + bx) * t + cx) * t
-  const sy = (t) => ((ay * t + by) * t + cy) * t
-  const dx = (t) => (3 * ax * t + 2 * bx) * t + cx
-  return (x) => {
-    if (x <= 0) return 0
-    if (x >= 1) return 1
-    let t = x
-    for (let i = 0; i < 6; i++) {
-      const d = dx(t)
-      if (Math.abs(d) < 1e-6) break
-      t -= (sx(t) - x) / d
-    }
-    return sy(Math.max(0, Math.min(1, t)))
-  }
+const T = {
+  learn: [0.3, 0.9],
+  sh: [1.0, 1.75],
+  point: [1.75, 3.0],
+  eraser: [2.4, 4.0],
+  rub: [2.8, 3.8],
+  pencil: [3.6, 4.9],
+  write: [3.95, 4.6],
+  tog: [4.7, 5.25],
+  white: [5.3, 5.7],
+  move: [5.6, 6.4],
 }
-const ease = bez(0.22, 1, 0.36, 1) // 사이트 전체와 같은 속도 곡선(등장)
-const inOut = bez(0.45, 0, 0.25, 1) // 이동용(천천히 출발 → 부드럽게 도착)
+
 const clamp = (x) => Math.max(0, Math.min(1, x))
-const pr = (t, s, d) => clamp((t - s) / d)
-const rgba = (c, a) => `rgba(${c[0]},${c[1]},${c[2]},${Math.max(0, Math.min(1, a))})`
-const TAU = Math.PI * 2
+const ease = (x) => (1 - Math.cos(Math.PI * clamp(x))) / 2
+const easeOut = (x) => 1 - Math.pow(1 - clamp(x), 3)
+const pr = (t, a, b) => clamp((t - a) / (b - a))
+const smooth = (t, a, b) => ease(pr(t, a, b))
+const rgba = (c, a) => `rgba(${c[0] | 0},${c[1] | 0},${c[2] | 0},${Math.max(0, Math.min(1, a))})`
+const mixW = (c, w) => [c[0] + (255 - c[0]) * w, c[1] + (255 - c[1]) * w, c[2] + (255 - c[2]) * w]
 
-function quadPoint(a, b, bend, u) {
-  const mx = (a[0] + b[0]) / 2
-  const my = (a[1] + b[1]) / 2
-  const dx = b[0] - a[0]
-  const dy = b[1] - a[1]
-  const c = [mx - dy * bend, my + dx * bend]
-  const v = 1 - u
-  return [v * v * a[0] + 2 * v * u * c[0] + u * u * b[0], v * v * a[1] + 2 * v * u * c[1] + u * u * b[1]]
-}
-
-/** 화면 크기와 실제 가로선 자리를 재서 장면의 좌표를 정합니다. */
-function layout(s, cvRect, ruleEl) {
-  const { W, H } = s
-  const wide = W / H >= 0.85 && W >= 620
-  s.k = wide ? Math.max(0.75, Math.min(1.05, Math.min(W, 1500) / 1366)) : Math.max(0.52, Math.min(0.75, (W / 390) * 0.58))
-  let rx = W / 2
-  let ry = H * 0.5
-  let rw = Math.min(360, W * 0.6)
-  if (ruleEl) {
-    const r = ruleEl.getBoundingClientRect()
-    if (r.width > 0 || r.height > 0) {
-      rx = r.left - cvRect.left + r.width / 2
-      ry = r.top - cvRect.top + r.height / 2
-      if (r.width > 0) rw = r.width
+// ───────────────────────── 손 (흰 선 드로잉) ─────────────────────────
+// 모든 손의 "닿는 점"이 (0,0). 연필은 +x 방향. Catmull-Rom 곡선으로 한 호흡의 윤곽을 만듭니다.
+function crPts(pts, n = 10, closed = false) {
+  const out = []
+  const m = pts.length
+  const g = (i) => (closed ? pts[((i % m) + m) % m] : pts[Math.max(0, Math.min(m - 1, i))])
+  const segs = closed ? m : m - 1
+  for (let i = 0; i < segs; i++) {
+    const p0 = g(i - 1)
+    const p1 = g(i)
+    const p2 = g(i + 1)
+    const p3 = g(i + 2)
+    for (let k = 0; k < n; k++) {
+      const u = k / n
+      const u2 = u * u
+      const u3 = u2 * u
+      const f = (a) =>
+        0.5 * (2 * p1[a] + (-p0[a] + p2[a]) * u + (2 * p0[a] - 5 * p1[a] + 4 * p2[a] - p3[a]) * u2 + (-p0[a] + 3 * p1[a] - 3 * p2[a] + p3[a]) * u3)
+      out.push([f(0), f(1)])
     }
   }
-  s.R = 68 * s.k // 공동의 고리 반지름
-  s.NR = Math.max(8, 13 * s.k) // 학습자 반지름
-  s.lineY = ry
-  s.lineW = rw
-  s.cx = rx
-  s.cy = ry - s.R // 고리의 아랫부분이 가로선 자리에 닿도록
+  if (!closed) out.push(pts[m - 1])
+  return out
+}
+function pathFrom(pts, closed = true) {
+  const P = new Path2D()
+  pts.forEach((q, i) => (i ? P.lineTo(q[0], q[1]) : P.moveTo(q[0], q[1])))
+  if (closed) P.closePath()
+  return P
+}
+// 끝으로 갈수록 가늘어지는 손가락
+function finger(spine, w0, w1) {
+  const sp = crPts(spine, 12, false)
+  const n = sp.length
+  const L = []
+  const R = []
+  for (let i = 0; i < n; i++) {
+    const a = sp[Math.max(0, i - 1)]
+    const b = sp[Math.min(n - 1, i + 1)]
+    let dx = b[0] - a[0]
+    let dy = b[1] - a[1]
+    const l = Math.hypot(dx, dy) || 1
+    dx /= l
+    dy /= l
+    const wd = (w0 + (w1 - w0) * (i / (n - 1))) / 2
+    L.push([sp[i][0] - dy * wd, sp[i][1] + dx * wd])
+    R.push([sp[i][0] + dy * wd, sp[i][1] - dx * wd])
+  }
+  const P = new Path2D()
+  L.forEach((q, i) => (i ? P.lineTo(q[0], q[1]) : P.moveTo(q[0], q[1])))
+  const e = sp[n - 1]
+  const pe = sp[n - 2]
+  const ang = Math.atan2(e[1] - pe[1], e[0] - pe[0])
+  P.arc(e[0], e[1], w1 / 2, ang - Math.PI / 2, ang + Math.PI / 2)
+  for (let i = n - 1; i >= 0; i--) P.lineTo(R[i][0], R[i][1])
+  const s0 = sp[0]
+  const s1 = sp[1]
+  const a0 = Math.atan2(s1[1] - s0[1], s1[0] - s0[0])
+  P.arc(s0[0], s0[1], w0 / 2, a0 + Math.PI / 2, a0 + Math.PI * 1.5)
+  P.closePath()
+  return P
+}
+
+// ---- 어린아이 손: 마디 없이 매끈한 한 덩어리(손가락 · 엄지가 손등과 이어진 하나의 윤곽) ----
+// 쓰는 손(연필끝 = 원점, 연필은 +x)
+const WRITE = {
+  arm: { a: [[206, -16], [290, -46]], b: [[206, 24], [290, 42]], cuff: [206, -20, 206, 28] },
+  all: [
+    { k: 'blob', p: [[116, -26], [146, -34], [178, -28], [204, -14], [208, 6], [198, 24], [172, 34], [142, 36], [116, 30], [104, 16], [100, 4], [104, -12]] },
+    { k: 'f', p: [[132, -20], [106, -27], [80, -23], [60, -14], [46, -6]], w: [24, 15] }, // 검지
+    { k: 'f', p: [[150, 22], [122, 24], [94, 17], [72, 9], [56, 4]], w: [26, 16] }, // 엄지
+  ],
+  detail: [[[112, 8], [122, 16], [138, 19]], [[110, 22], [122, 28], [140, 30]]],
+}
+// 가리키는 손(검지 끝 = 원점, 손목은 +x)
+const POINT = {
+  arm: { a: [[150, 0], [230, -28]], b: [[148, 44], [228, 64]], cuff: [150, -4, 148, 48] },
+  all: [
+    { k: 'blob', p: [[74, -10], [106, -18], [136, -14], [152, 4], [150, 34], [130, 50], [100, 54], [78, 46], [66, 28], [68, 6]] },
+    { k: 'f', p: [[96, 4], [64, 3], [32, 0], [0, 0]], w: [24, 17] }, // 검지
+    { k: 'f', p: [[96, -6], [84, -22], [78, -32]], w: [22, 16] }, // 엄지
+  ],
+  detail: [[[72, 22], [84, 26], [98, 26]], [[72, 36], [84, 40], [98, 40]]],
+}
+let HANDS = null
+function buildHands() {
+  const bake = (list) =>
+    list.map((p) => {
+      if (p.k === 'blob') return pathFrom(crPts(p.p, 10, true))
+      if (p.k === 'el') {
+        const P = new Path2D()
+        P.ellipse(p.e[0], p.e[1], p.e[2], p.e[3], p.e[4], 0, Math.PI * 2)
+        return P
+      }
+      return finger(p.p, p.w[0], p.w[1])
+    })
+  const prep = (h) => ({ arm: h.arm, all: bake(h.all), detail: h.detail.map((d) => pathFrom(crPts(d, 10, false), false)) })
+  const body = new Path2D()
+  body.rect(12, -4.5, 112, 9)
+  const cap = new Path2D()
+  cap.roundRect(0, -4.5, 11, 9, 3)
+  const wood = new Path2D()
+  wood.moveTo(0, 0)
+  wood.lineTo(12, -4.5)
+  wood.lineTo(12, 4.5)
+  wood.closePath()
+  const lead = new Path2D()
+  lead.moveTo(0, 0)
+  lead.lineTo(3.6, -1.3)
+  lead.lineTo(3.6, 1.3)
+  lead.closePath()
+  HANDS = { write: prep(WRITE), point: prep(POINT), pencil: { body, cap, wood, lead } }
+}
+
+function eraseFill(ctx, P) {
+  ctx.save()
+  ctx.globalCompositeOperation = 'destination-out'
+  ctx.fillStyle = '#000'
+  ctx.fill(P)
+  ctx.restore()
+}
+
+/** 조각들의 "합친 윤곽": 굵은 선으로 모두 긋고 안쪽을 지워, 겹친 자리의 마디 선 없이 바깥 윤곽만 남깁니다(안쪽 = 손 아래 글자도 가려짐). */
+function unionOutline(ctx, paths) {
+  if (!paths.length) return
+  ctx.save()
+  ctx.lineJoin = 'round'
+  ctx.lineWidth = 2.5
+  ctx.strokeStyle = 'rgba(255,255,255,0.92)'
+  paths.forEach((P) => ctx.stroke(P))
+  ctx.globalCompositeOperation = 'destination-out'
+  ctx.fillStyle = '#000'
+  paths.forEach((P) => ctx.fill(P))
+  ctx.restore()
+}
+
+/** 손 하나를 "완전히 또렷하게" 그립니다. kind: 'point' | 'eraser' | 'pencil' */
+function paintHand(ctx, kind, x, y, sc, rot, col, flipY) {
+  if (!HANDS) buildHands()
+  const H = kind === 'point' ? HANDS.point : HANDS.write
+  ctx.save()
+  ctx.translate(x, y)
+  ctx.rotate(rot)
+  ctx.scale(sc, flipY ? -sc : sc)
+  ctx.lineJoin = 'round'
+  ctx.lineCap = 'round'
+  // 팔: 소매 끝 띠(학습자 색) + 옅어지는 두 줄
+  ;[H.arm.a, H.arm.b].forEach((e) => {
+    const g = ctx.createLinearGradient(e[0][0], e[0][1], e[1][0], e[1][1])
+    g.addColorStop(0, 'rgba(255,255,255,0.8)')
+    g.addColorStop(1, 'rgba(255,255,255,0)')
+    ctx.strokeStyle = g
+    ctx.lineWidth = 1.4
+    ctx.beginPath()
+    ctx.moveTo(e[0][0], e[0][1])
+    ctx.lineTo(e[1][0], e[1][1])
+    ctx.stroke()
+  })
+  ctx.strokeStyle = rgba(col, 0.95)
+  ctx.lineWidth = 3.4
+  ctx.beginPath()
+  ctx.moveTo(H.arm.cuff[0], H.arm.cuff[1])
+  ctx.lineTo(H.arm.cuff[2], H.arm.cuff[3])
+  ctx.stroke()
+  if (kind !== 'point') {
+    const pc = HANDS.pencil
+    ctx.lineWidth = 1.3
+    ctx.strokeStyle = rgba(col, 0.95)
+    eraseFill(ctx, pc.body)
+    ctx.stroke(pc.body)
+    if (kind === 'eraser') {
+      eraseFill(ctx, pc.cap)
+      ctx.stroke(pc.cap)
+    } else {
+      eraseFill(ctx, pc.wood)
+      ctx.stroke(pc.wood)
+      ctx.fillStyle = 'rgba(255,255,255,0.95)'
+      ctx.fill(pc.lead)
+    }
+  }
+  unionOutline(ctx, H.all)
+  ctx.lineWidth = 1.1
+  ctx.strokeStyle = 'rgba(255,255,255,0.5)'
+  H.detail.forEach((P) => ctx.stroke(P))
+  ctx.restore()
+}
+
+/** 손이 놓인 자리의 글자를 가립니다(alpha만큼). */
+function eraseUnder(ctx, kind, x, y, sc, rot, flipY, alpha) {
+  const H = kind === 'point' ? HANDS.point : HANDS.write
+  ctx.save()
+  ctx.translate(x, y)
+  ctx.rotate(rot)
+  ctx.scale(sc, flipY ? -sc : sc)
+  ctx.globalAlpha = alpha
+  ctx.globalCompositeOperation = 'destination-out'
+  ctx.fillStyle = '#000'
+  H.all.forEach((P) => ctx.fill(P))
+  if (kind !== 'point') {
+    ctx.fill(HANDS.pencil.body)
+    ctx.fill(kind === 'eraser' ? HANDS.pencil.cap : HANDS.pencil.wood)
+  }
+  ctx.restore()
+}
+
+/**
+ * 손을 그립니다. 나타나거나 사라지는 중(alpha < 1)에는 따로 그린 그림을 투명도로 얹어,
+ * 윤곽이 겹쳐 비치는 일(마디처럼 보임) 없이 부드럽게 나타나고 사라지게 합니다.
+ */
+function drawHand(ctx, s, kind, x, y, sc, rot, col, flipY, alpha) {
+  if (alpha <= 0.003) return
+  if (!HANDS) buildHands()
+  if (alpha >= 0.999 || !s.off) {
+    paintHand(ctx, kind, x, y, sc, rot, col, flipY)
+    return
+  }
+  eraseUnder(ctx, kind, x, y, sc, rot, flipY, alpha)
+  s.off.clearRect(0, 0, s.W, s.H)
+  paintHand(s.off, kind, x, y, sc, rot, col, flipY)
+  ctx.save()
+  ctx.globalAlpha = alpha
+  ctx.setTransform(1, 0, 0, 1, 0, 0)
+  ctx.drawImage(s.offCv, 0, 0)
+  ctx.restore()
+}
+
+// ───────────────────────── 화면 읽기 · 문장 배치 ─────────────────────────
+/** transform(등장 효과의 이동)을 빼고 요소의 원래 자리를 돌려줍니다. */
+function restRect(el, cvRect) {
+  const r = el.getBoundingClientRect()
+  let ty = 0
+  let tx = 0
+  const tf = getComputedStyle(el).transform
+  if (tf && tf !== 'none') {
+    const m = new DOMMatrixReadOnly(tf)
+    tx = m.e
+    ty = m.f
+  }
+  return { left: r.left - cvRect.left - tx, top: r.top - cvRect.top - ty, width: r.width, height: r.height }
+}
+
+/** 모토 속 단어들이 화면에서 몇 번째 줄에 놓이는지(모바일의 두 줄 모토 포함)를 읽습니다. */
+function readWords(el, dy) {
+  const words = []
+  const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+  let node = walker.nextNode()
+  while (node) {
+    const re = /\S+/g
+    let m = re.exec(node.data)
+    while (m) {
+      const rg = document.createRange()
+      rg.setStart(node, m.index)
+      rg.setEnd(node, m.index + m[0].length)
+      const rc = rg.getClientRects()[0]
+      words.push({ w: m[0], top: (rc ? rc.top : 0) - dy })
+      m = re.exec(node.data)
+    }
+    node = walker.nextNode()
+  }
+  const tops = []
+  words.forEach((w) => {
+    if (!tops.some((t) => Math.abs(t - w.top) < 4)) tops.push(w.top)
+  })
+  tops.sort((a, b) => a - b)
+  words.forEach((w) => {
+    w.line = tops.findIndex((t) => Math.abs(t - w.top) < 4)
+  })
+  return words
+}
+
+/** 화면 크기 · 글꼴이 정해진 뒤 한 번(창 크기가 바뀌면 다시) 장면의 자리를 잽니다. */
+function layout(ctx, s, host, cv) {
+  const cvRect = cv.getBoundingClientRect()
+  const mottoEl = host.querySelector('.hero-motto')
+  const nameEl = host.querySelector('.hero-name')
+  if (!mottoEl || !nameEl) return false
+  const cs = getComputedStyle(mottoEl)
+  const fs = parseFloat(cs.fontSize) || 56
+  s.fs = fs
+  s.font = `italic 500 ${fs}px "EB Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif`
+  s.ls = parseFloat(cs.letterSpacing) || 0
+  ctx.font = s.font
+  if ('letterSpacing' in ctx) ctx.letterSpacing = `${s.ls}px`
+  const mt = ctx.measureText('Hg')
+  const asc = mt.fontBoundingBoxAscent || fs * 0.95
+  const desc = mt.fontBoundingBoxDescent || fs * 0.3
+  const lhRaw = parseFloat(cs.lineHeight)
+  const LH = Number.isFinite(lhRaw) ? lhRaw : asc + desc
+  s.LH = LH
+
+  const mr = restRect(mottoEl, cvRect)
+  // 화면에 그려진 모토 줄의 위치(등장 효과의 이동분은 뺌). 줄 안 글자 영역의 위쪽 = 이 값, 기준선 = 이 값 + 글꼴 ascent
+  const dy = mottoEl.getBoundingClientRect().top - mr.top
+  const words = readWords(mottoEl, dy)
+  const lines = []
+  words.forEach((w) => {
+    ;(lines[w.line] = lines[w.line] || []).push(w)
+  })
+  const weIdx = words.findIndex((w) => w.w === 'We')
+  s.hasWe = weIdx >= 0
+  const roles = words.map((w, i) => {
+    if (!s.hasWe) return { ...w, grp: 'tog', gi: i }
+    if (i < weIdx) return { ...w, grp: 'sh', gi: i }
+    if (i === weIdx) return { ...w, grp: 'we', gi: 0 }
+    if (i === weIdx + 1) return { ...w, grp: 'learn', gi: 0 }
+    return { ...w, grp: 'tog', gi: i - weIdx - 2 }
+  })
+  s.lines = lines.map((_, li) => roles.filter((w) => w.line === li))
+  s.nLines = s.lines.length
+  s.groups = {}
+  roles.forEach((r) => {
+    ;(s.groups[r.grp] = s.groups[r.grp] || []).push(r)
+  })
+
+  const nr = restRect(nameEl, cvRect)
+  const lineTops = lines.map((ln) => Math.min(...ln.map((w) => w.top)))
+  const pitch = lineTops.length > 1 ? lineTops[1] - lineTops[0] : LH
+  s.endBase = (i) => lineTops[i] + asc
+  const y0 = nr.top + nr.height * 0.62
+  s.startBase = (i) => y0 + (i - (s.nLines - 1) / 2) * pitch
+  s.cx = mr.left + mr.width / 2
+  s.sc = (0.85 * fs) / 58
+  return true
+}
+
+/** 단어 묶음(grp)에 타이핑 진행을 나눠 줍니다: 단어별로 지금 보이는 글자 수(소수 = 마지막 글자가 나타나는 중) */
+function typedCount(group, p) {
+  const total = group.reduce((a, w) => a + w.w.length + 1, 0) - 1
+  let left = p * total
+  return group.map((w) => {
+    const n = Math.max(0, Math.min(w.w.length, left))
+    left -= w.w.length + 1
+    return n
+  })
 }
 
 function draw(ctx, s, t) {
-  const { W, H, k, R, NR, cx, cy } = s
+  const { W, H, fs } = s
   ctx.clearRect(0, 0, W, H)
-  const kk = Math.max(k, 0.8)
-  const idx = (id) => NODES.findIndex((n) => n.id === id)
+  ctx.font = s.font
+  if ('letterSpacing' in ctx) ctx.letterSpacing = `${s.ls}px`
+  ctx.textBaseline = 'alphabetic'
+  const G = s.groups
+  const white = smooth(t, T.white[0], T.white[1])
+  const move = smooth(t, T.move[0], T.move[1])
+  const hands = s.hasWe
 
-  const gather = inOut(pr(t, GATHER, 0.85))
-  const nodeFade = 1 - ease(pr(t, 3.9, 0.45))
-  const pathFade = 1 - ease(pr(t, 2.7, 0.6))
-  const P = NODES.map((n) => {
-    const a = ease(pr(t, n.t, 0.7))
-    const sc = 1 - 0.14 * gather // 모일 때 한 걸음 가까이
-    return [cx + n.x * k * sc, cy + n.y * k * sc + (1 - a) * 10 * k, a]
+  const wI = ctx.measureText('I').width
+  const wWe = ctx.measureText('We').width
+  const spW = ctx.measureText(' ').width
+  const iVis = pr(t, T.learn[0], T.learn[0] + 0.15)
+  const erased = smooth(t, T.rub[0], T.rub[1])
+  const iGap = 1 - smooth(t, T.rub[1], T.rub[1] + 0.22)
+  const slotOpen = smooth(t, T.rub[1], T.write[0] + 0.1)
+  const we = pr(t, T.write[0], T.write[1])
+
+  // 묶음별 타이핑 진행
+  const prog = {
+    sh: pr(t, ...T.sh),
+    learn: pr(t, ...T.learn),
+    tog: pr(t, ...T.tog),
+  }
+  if (!s.hasWe) prog.tog = pr(t, T.learn[0], T.sh[1])
+  const cnt = {}
+  Object.keys(G).forEach((g) => {
+    if (g === 'we') return
+    cnt[g] = typedCount(G[g], prog[g] ?? 0)
   })
 
-  // ── 주고받은 길: 생각이 건너간 자리에 옅은 곡선이 남음 ──
-  ctx.lineCap = 'round'
-  EX.forEach(([f, to, t0]) => {
-    const u = pr(t, t0, PULSE)
-    if (u <= 0 || pathFade <= 0) return
-    const a = P[idx(f)]
-    const b = P[idx(to)]
-    const col = COL[f]
-    const bend = f < to ? 0.14 : -0.14
-    const arrived = pr(t, t0 + PULSE, 0.6)
-    ctx.strokeStyle = rgba(col, (0.18 + 0.2 * (1 - arrived)) * pathFade)
-    ctx.lineWidth = 1.1 * kk
-    const m = inOut(u)
-    ctx.beginPath()
-    for (let i = 0; i <= 30; i++) {
-      const q = quadPoint(a, b, bend, 0.07 + 0.86 * m * (i / 30))
-      if (i) ctx.lineTo(q[0], q[1])
-      else ctx.moveTo(q[0], q[1])
-    }
-    ctx.stroke()
-    if (u < 1) {
-      const q = quadPoint(a, b, bend, 0.07 + 0.86 * m)
-      ctx.fillStyle = rgba(col, 1)
-      ctx.shadowColor = rgba(col, 0.55)
-      ctx.shadowBlur = 8
-      ctx.beginPath()
-      ctx.arc(q[0], q[1], 3.8 * kk, 0, TAU)
-      ctx.fill()
-      ctx.shadowBlur = 0
-    }
-  })
-
-  // ── 받은 생각의 조각 → 가운데로 모여 하나의 고리 → 펼쳐져 가로선 ──
-  const close = inOut(pr(t, CLOSE, 0.25))
-  const unroll = inOut(pr(t, UNROLL, UNROLL_DUR))
-  const outA = 1 - pr(t, OUT, 0.15)
-  const GAP = 7 // 닫히기 전 조각 사이 틈(도)
-  EX.forEach(([f, to, t0], i) => {
-    const arr = t0 + PULSE
-    const g = ease(pr(t, arr, 0.3))
-    if (g <= 0) return
-    const col = COL[f]
-    const b = P[idx(to)]
-    const a = P[idx(f)]
-    const dir = Math.atan2(a[1] - b[1], a[0] - b[0]) // 보낸 사람 쪽을 향한 조각
-    const mv = inOut(pr(t, GATHER + 0.05 + i * 0.07, 0.7))
-    const r0 = NR + 10 * k
-    const span0 = ((80 * Math.PI) / 180) * g
-    const span1 = ((60 - GAP * (1 - close)) * Math.PI) / 180
-    const c1 = -Math.PI / 2 + ((SLOT[`${f}>${to}`] + 0.5) * Math.PI) / 3
-    let dc = c1 - dir
-    while (dc > Math.PI) dc -= TAU
-    while (dc < -Math.PI) dc += TAU
-    const ox = b[0] + (cx - b[0]) * mv
-    const oy = b[1] + (cy - b[1]) * mv
-    const rr = r0 + (R - r0) * mv
-    const cc = dir + dc * mv
-    const sp = span0 + (span1 - span0) * mv
-    // 펼쳐지는 동안 각자의 색이 조용히 흰색으로 모여, 마지막 가로선은 하얀 한 줄로 끝남
-    const white = ease(pr(t, UNROLL + 0.05, UNROLL_DUR * 0.9))
-    const lineCol = [col[0] + (255 - col[0]) * white, col[1] + (255 - col[1]) * white, col[2] + (255 - col[2]) * white]
-    ctx.strokeStyle = rgba(lineCol, (0.96 - 0.11 * white) * outA)
-    ctx.lineWidth = (4 + 0.8 * mv) * kk * (1 - 0.58 * unroll)
-    ctx.lineCap = unroll > 0.85 ? 'butt' : 'round'
-    const glow = Math.sin(Math.PI * clamp(close * 0.5 + unroll * 0.5)) * (1 - unroll)
-    if (glow > 0.01) {
-      ctx.shadowColor = rgba(lineCol, 0.55 * glow)
-      ctx.shadowBlur = 12 * glow
-    }
-    ctx.beginPath()
-    for (let j = 0; j <= 24; j++) {
-      const ang = cc - sp / 2 + (sp * j) / 24
-      let x = ox + Math.cos(ang) * rr
-      let y = oy + Math.sin(ang) * rr
-      if (unroll > 0) {
-        // 고리의 맨 위를 끊어, 양쪽이 바닥을 따라 펼쳐지듯 가로선으로
-        let phi = ang - Math.PI / 2
-        while (phi <= -Math.PI) phi += TAU
-        while (phi > Math.PI) phi -= TAU
-        const lx = cx - (phi / Math.PI) * (s.lineW / 2)
-        x += (lx - x) * unroll
-        y += (s.lineY - y) * unroll
-      }
-      if (j) ctx.lineTo(x, y)
-      else ctx.moveTo(x, y)
-    }
-    ctx.stroke()
-    ctx.shadowBlur = 0
-  })
-
-  // 고리가 완성되는 순간: 잔잔한 물결 한 번
-  const wave = pr(t, CLOSE + 0.1, 0.6)
-  if (wave > 0 && wave < 1) {
-    ctx.strokeStyle = `rgba(255,248,232,${0.32 * (1 - wave)})`
-    ctx.lineWidth = 1
-    ctx.beginPath()
-    ctx.arc(cx, cy, R + 8 * k + 44 * k * ease(wave), 0, TAU)
-    ctx.stroke()
+  const colOf = (grp) => (grp === 'sh' ? COL.B : grp === 'we' ? COL.C : s.hasWe ? COL.A : COL.B)
+  const shown = (r) => {
+    if (r.grp === 'we') return null
+    const n = cnt[r.grp][r.gi]
+    if (n <= 0) return null
+    const f = Math.floor(n)
+    const txt = r.w.slice(0, f)
+    const part = f < r.w.length ? r.w[f] : ''
+    const frac = n - f
+    const w = ctx.measureText(txt).width + (part ? ctx.measureText(part).width * frac : 0)
+    return { txt, part, frac, w }
   }
 
-  // ── 학습자 ──
-  NODES.forEach((n, i) => {
-    const [x, y, a] = P[i]
-    const al = a * nodeFade
-    if (al <= 0.003) return
-    const col = COL[n.id]
-    const recv = EX.some(([, to, t0]) => to === n.id && t >= t0 + PULSE && t < t0 + PULSE + 0.25)
-    const send = EX.some(([f, , t0]) => f === n.id && t >= t0 - 0.05 && t < t0 + 0.2)
-    const r = NR * (recv ? 1.1 : send ? 1.05 : 1)
-    const halo = ctx.createRadialGradient(x, y, 0, x, y, r * 2.5)
-    halo.addColorStop(0, rgba(col, 0.22 * al))
-    halo.addColorStop(1, rgba(col, 0))
-    ctx.fillStyle = halo
-    ctx.beginPath()
-    ctx.arc(x, y, r * 2.5, 0, TAU)
-    ctx.fill()
-    ctx.fillStyle = rgba(col, al)
-    ctx.beginPath()
-    ctx.arc(x, y, r, 0, TAU)
-    ctx.fill()
+  const pos = {} // 손이 따라갈 자리
+  s.lines.forEach((line, li) => {
+    const items = line.map((r) => {
+      if (r.grp === 'we') {
+        const w = (wI * Math.min(1, iVis * 1.5) * Math.max(iGap, 0)) + wWe * slotOpen
+        return { r, w, we: true }
+      }
+      const sh = shown(r)
+      return { r, sh, w: sh ? sh.w : 0 }
+    })
+    // 보이는 단어들 사이에만 띄어쓰기
+    let total = 0
+    let prev = false
+    items.forEach((it) => {
+      const vis = it.w > 0.5
+      it.gap = vis && prev ? spW : 0
+      total += it.gap + it.w
+      if (vis) prev = true
+    })
+    const y = s.startBase(li) + (s.endBase(li) - s.startBase(li)) * move
+    let x = s.cx - total / 2
+    items.forEach((it) => {
+      x += it.gap
+      const c = mixW(colOf(it.r.grp), white)
+      const finalA = 0.9 // 실제 모토의 투명도(rgba(255,255,255,.9))와 맞춤
+      const a = 1 - (1 - finalA) * white
+      if (it.we) {
+        const xI = x
+        if (it.w > 0.5 || erased < 1) {
+          ctx.fillStyle = rgba(mixW(COL.A, white), (1 - erased) * iVis)
+          ctx.fillText('I', xI, y)
+        }
+        const xWe = x + wI * Math.max(iGap, 0) * Math.min(1, iVis * 1.5)
+        if (we > 0) {
+          ctx.save()
+          ctx.beginPath()
+          ctx.rect(xWe - 2, y - fs, wWe * we + 2, fs * 1.4)
+          ctx.clip()
+          ctx.fillStyle = rgba(mixW(COL.C, white), a)
+          ctx.fillText('We', xWe, y)
+          ctx.restore()
+        }
+        pos.xI = xI
+        pos.xWe = xWe
+        pos.y = y
+      } else if (it.sh) {
+        ctx.fillStyle = rgba(c, a)
+        ctx.fillText(it.sh.txt, x, y)
+        if (it.sh.part && it.sh.frac > 0) {
+          ctx.fillStyle = rgba(c, a * it.sh.frac)
+          ctx.fillText(it.sh.part, x + ctx.measureText(it.sh.txt).width, y)
+        }
+      }
+      x += it.w
+    })
   })
+
+  if (!hands || pos.y === undefined) return
+  const { xI, xWe, y } = pos
+  const sc = s.sc
+  const inOut = (a, b, e = 0.35) => Math.min(easeOut(pr(t, a, a + e)), 1 - ease(pr(t, b - e, b)))
+
+  // 지우개 가루
+  if (t > T.rub[0] && t < T.rub[1] + 0.7) {
+    for (let i = 0; i < 12; i++) {
+      const st = T.rub[0] + i * 0.08
+      const u = pr(t, st, st + 0.6)
+      if (u <= 0 || u >= 1) continue
+      const px = xI + wI / 2 + (((i * 37) % 17) - 8) * 1.2 + u * (i % 2 ? 1 : -1) * 10
+      const py = y + 4 + u * u * 34
+      ctx.fillStyle = `rgba(250,246,236,${0.75 * (1 - u)})`
+      ctx.beginPath()
+      ctx.arc(px, py, 1.6, 0, Math.PI * 2)
+      ctx.fill()
+    }
+  }
+
+  // 1) 금빛 손이 "I"를 가리킴
+  {
+    const k = inOut(...T.point)
+    const tap = Math.sin(Math.PI * pr(t, 2.2, 2.6)) * 4
+    drawHand(ctx, s, 'point', xI + wI * 0.1 - tap * 0.5 - (1 - k) * 60 * sc, y + fs * 0.12 + tap * 0.5 + (1 - k) * 60 * sc, sc, Math.PI * 0.74, COL.A, true, k)
+  }
+  // 2) 하늘빛 손이 지우개로 "I"를 지움
+  {
+    const k = inOut(...T.eraser)
+    const rub = t > T.rub[0] && t < T.rub[1] ? Math.sin((t - T.rub[0]) * 30) * 6 * sc : 0
+    drawHand(ctx, s, 'eraser', xI + wI / 2 + rub + (1 - k) * 70 * sc, y - fs * 0.3 + (1 - k) * 70 * sc, sc * 0.92, Math.PI * 0.34, COL.B, true, k)
+  }
+  // 3) 장밋빛 손이 연필로 "We"를 씀
+  {
+    const k = inOut(...T.pencil)
+    const bob = t > T.write[0] && t < T.write[1] ? Math.sin((t - T.write[0]) * 26) * 2.6 * sc : 0
+    const tipX = xWe + wWe * we
+    drawHand(ctx, s, 'pencil', tipX + (1 - k) * 70 * sc, y - fs * 0.22 + bob - (1 - k) * 70 * sc, sc * 0.92, -0.72, COL.C, false, k)
+  }
 }
 
-export default function HeroTrace({ animated, skipped = false }) {
+export default function HeroTrace({ animated, skipped = false, onGo }) {
   const ref = useRef(null)
+  const goRef = useRef(onGo)
+  useEffect(() => {
+    goRef.current = onGo
+  })
   useEffect(() => {
     const cv = ref.current
     if (!cv || !animated || skipped) {
@@ -266,8 +545,10 @@ export default function HeroTrace({ animated, skipped = false }) {
     }
     const ctx = cv.getContext('2d')
     const host = cv.parentElement
-    const ruleEl = host.querySelector('.hero-rule')
     const s = { W: 0, H: 0 }
+    let ok = false
+    let raf = 0
+    let cancelled = false
     const size = () => {
       s.W = host.clientWidth || window.innerWidth
       s.H = host.clientHeight || window.innerHeight
@@ -275,23 +556,44 @@ export default function HeroTrace({ animated, skipped = false }) {
       cv.width = Math.round(s.W * dpr)
       cv.height = Math.round(s.H * dpr)
       ctx.setTransform(dpr, 0, 0, dpr, 0, 0)
+      s.offCv = s.offCv || document.createElement('canvas')
+      s.offCv.width = cv.width
+      s.offCv.height = cv.height
+      s.off = s.offCv.getContext('2d')
+      s.off.setTransform(dpr, 0, 0, dpr, 0, 0)
+      ok = layout(ctx, s, host, cv)
     }
-    size()
-    const t0 = performance.now()
-    let raf = 0
+    const onResize = () => size()
+    let t0 = 0
+    let went = false
     const tick = () => {
+      if (cancelled) return
       const t = (performance.now() - t0) / 1000
-      // 글꼴이 늦게 들어와 이름 높이(= 가로선 자리)가 바뀌어도 따라가도록, 펼쳐질 때까지 매번 다시 잽니다.
-      if (t < UNROLL + UNROLL_DUR || s.R === undefined) layout(s, cv.getBoundingClientRect(), ruleEl)
-      draw(ctx, s, t)
+      if (!went) {
+        went = true
+        goRef.current?.()
+      }
+      if (ok && t < SWAP + 0.1) draw(ctx, s, t)
+      else ctx.clearRect(0, 0, s.W, s.H)
       if (t < END) raf = requestAnimationFrame(tick)
       else ctx.clearRect(0, 0, s.W, s.H)
     }
-    raf = requestAnimationFrame(tick)
-    window.addEventListener('resize', size)
+    // 모토 글꼴이 준비된 뒤에 시계를 시작합니다(늦어도 1.2초). 그래야 문장 폭 · 자리가 정확합니다.
+    const fontReady = Promise.race([
+      document.fonts?.load?.('italic 500 40px "EB Garamond"') ?? Promise.resolve(),
+      new Promise((r) => setTimeout(r, 1200)),
+    ])
+    fontReady.then(() => {
+      if (cancelled) return
+      size()
+      t0 = performance.now()
+      raf = requestAnimationFrame(tick)
+    })
+    window.addEventListener('resize', onResize)
     return () => {
+      cancelled = true
       cancelAnimationFrame(raf)
-      window.removeEventListener('resize', size)
+      window.removeEventListener('resize', onResize)
     }
   }, [animated, skipped])
   return <canvas ref={ref} className="hero-chalk hero-trace-canvas" aria-hidden="true" />
