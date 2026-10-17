@@ -695,9 +695,9 @@
       "name": "박하은",
       "photo": "images/people/박하은-mue6665g.jpg",
       "photoCrop": {
-        "x": 53.1,
-        "y": 64.3,
-        "zoom": 18
+        "x": 54.1,
+        "y": 67.8,
+        "zoom": 1.07
       },
       "degree": "MA",
       "affiliation": "고려대학교 컴퓨터학과 박사과정",
@@ -712,9 +712,19 @@
       ],
       "links": [],
       "id": "person-mue66891djv",
-      "nameEn": "",
+      "nameEn": "Haeun Park",
       "pubNames": [],
-      "hideResearch": ""
+      "hideResearch": "",
+      "affiliationEn": "Ph.D. student, Department of Computer Science and Engineering, Korea University",
+      "bioEn": "",
+      "detailEn": [
+        "#Experience",
+        "Research Associate (contract), Division of Academic Achievement Research, Korea Institute for Curriculum and Evaluation | 2024~2026",
+        "#Research Interests",
+        "Knowledge Tracing, AI in education",
+        "#Researcher Profile",
+        "Google Scholar | https://scholar.google.com/citations?user=VPIUqG8AAAAJ&hl=ko"
+      ]
     },
     {
       "name": "박은주",
