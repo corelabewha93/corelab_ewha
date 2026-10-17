@@ -1,0 +1,20 @@
+/* 교수님 소개(PersonCard.jsx가 직접 불러옴 — polish.css가 예전 파일로 바뀌어도 이 규칙은 유지됩니다) */
+
+/* 1) Google Scholar 링크: 연락처 바로 아래 (오른쪽 연구관심분야 높이만큼 비던 틈 없음) */
+html body .faculty-contact .faculty-scholar {
+  display: block;
+  margin: 0.15rem 0 0;
+  line-height: 1.5;
+}
+html body .faculty-contact .faculty-scholar a {
+  font-size: 0.85rem;
+}
+
+/* 2) 학력: 대학명이 튀지 않게 — 굵기 500 · 조금 작게 · 한 단계 옅은 글자색 */
+html body .faculty-history-col .edu-univ {
+  display: block;
+  font-size: 0.86rem;
+  font-weight: 500;
+  line-height: 1.45;
+  color: #34433a;
+}
