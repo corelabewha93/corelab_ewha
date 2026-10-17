@@ -44,9 +44,9 @@
       "name": "윤이슬",
       "photo": "images/people/윤이슬-mufi5jmk.jpg",
       "photoCrop": {
-        "x": 47.6,
-        "y": 30.8,
-        "zoom": 2.22
+        "x": 46.2,
+        "y": 34,
+        "zoom": 1.94
       },
       "degree": "MA",
       "bio": "",
@@ -56,7 +56,14 @@
       ],
       "links": [],
       "id": "person-mue0s3a1gna",
-      "nameEn": "I Seul Yun"
+      "nameEn": "I Seul Yun",
+      "bioEn": "",
+      "pubNames": [],
+      "hideResearch": "",
+      "detailEn": [
+        "#Research Interests",
+        "HAC, CSCL"
+      ]
     },
     {
       "name": "전효정",
