@@ -131,3 +131,17 @@ html body .faculty-bio-toggle { display: none; }
     margin-top: 0.7rem;
   }
 }
+
+/* 5) PC 학력: 학과(Department…) 줄이 대학명(University) 줄의 폭 안에서 자연스럽게 이어지도록
+   — 학과 줄이 대학명보다 길게 삐져나오거나 짧게 끊겨 어설퍼 보이던 것을 정리 */
+@media (min-width: 701px) {
+  html body .faculty-history-col .edu-main {
+    width: fit-content;
+    max-width: 100%;
+  }
+  html body .faculty-history-col .edu-dept {
+    width: 0;
+    min-width: 100%;
+    text-wrap: wrap;
+  }
+}
