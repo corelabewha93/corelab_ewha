@@ -57,7 +57,7 @@ export function useDocumentMeta(title, description) {
       document.title = en ? SITE_NAME_EN : SITE_NAME
       setMeta('description', en ? DEFAULT_DESCRIPTION_EN : DEFAULT_DESCRIPTION)
       setMetaProperty('og:title', 'CoRe Lab | 이화여자대학교 교육공학과')
-      setMetaProperty('og:description', 'Exploring How We Learn Together — 함께 배우는 과정을 데이터로 포착하고 시각화하는 임규연 교수 연구실입니다.')
+      setMetaProperty('og:description', '함께 배우는 과정을 들여다보는 임규연 교수 연구실입니다.')
       setMeta('twitter:title', 'CoRe Lab | 이화여자대학교 교육공학과')
       setMeta('twitter:description', 'Exploring How We Learn Together — Collaborative Learning Research Lab')
     }
