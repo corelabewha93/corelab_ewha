@@ -1,0 +1,126 @@
+/* Systems & Tools: 시스템 하나 = 한 줄 전체 카드 (Tools.jsx) */
+html body .tools-list {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-4);
+}
+
+html body .tool-feature {
+  position: relative;
+  padding: 1.6rem 1.7rem 1.5rem;
+}
+
+html body .tool-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 1rem;
+  flex-wrap: wrap;
+}
+
+html body .tool-name {
+  margin: 0;
+  font-size: 1.2rem;
+  font-weight: 700;
+  line-height: 1.35;
+  color: var(--color-text);
+}
+
+html body .tool-link {
+  flex: none;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--color-accent, #45a2bc);
+  white-space: nowrap;
+}
+
+html body .tool-devs {
+  margin: 0.45rem 0 0;
+  font-size: 0.88rem;
+  color: #34433a;
+}
+
+html body .tool-devs-k {
+  margin-right: 0.55rem;
+  font-size: 0.74rem;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  color: var(--color-primary);
+}
+
+html body .tool-source {
+  margin: 0.15rem 0 0;
+  font-size: 0.8rem;
+  color: #6b766f;
+}
+
+html body .tool-desc {
+  margin: 0.9rem 0 0;
+  font-size: 0.93rem;
+  line-height: 1.75;
+  color: var(--color-text);
+  word-break: keep-all;
+}
+
+html body .tool-figs {
+  display: grid;
+  gap: 1rem;
+  margin-top: 1.2rem;
+}
+
+html body .tool-figs-2 {
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+}
+
+html body .tool-fig {
+  margin: 0;
+  min-width: 0;
+}
+
+html body .tool-fig a {
+  display: block;
+  aspect-ratio: 15 / 8; /* 플랫폼 화면 비율(약 1.87:1)에 맞춰 잘리지 않게 */
+  overflow: hidden;
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  border-radius: var(--radius);
+  background: #f4f5f4;
+}
+
+html body .tool-fig img {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+  transition: transform 0.25s ease;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  html body .tool-fig a:hover img {
+    transform: scale(1.02);
+  }
+}
+
+html body .tool-fig figcaption {
+  margin-top: 0.45rem;
+  font-size: 0.78rem;
+  line-height: 1.5;
+  color: #6b766f;
+  word-break: keep-all;
+}
+
+html body .tool-tags {
+  margin-top: 0.9rem;
+}
+
+@media (max-width: 700px) {
+  html body .tool-feature {
+    padding: 1.2rem 1.1rem 1.1rem;
+  }
+  html body .tool-name {
+    font-size: 1.08rem;
+  }
+  html body .tool-figs-2 {
+    grid-template-columns: 1fr;
+  }
+}
