@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState } from 'react'
+import { useEffect, useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
 import { getIndexes } from './journalIndex'
 import { normalizeName } from './authorMatch'
@@ -448,15 +448,52 @@ export default function Publications({
     })
   }
 
+  // PC: 필터(All · Journal · Conference · Book)와 검색칸 줄을 스크롤해도 제목 아래에 고정합니다.
+  // 그 높이(--pubbar-h)를 알려 주면 연도(2026 …)가 그 바로 아래에 붙고,
+  // 실제로 고정된 동안에만 아래쪽에 얇은 선을 그어 목록과 구분합니다(개인 연구 실적 화면은 제외).
+  const barRef = useRef(null)
+  const hasPubs = pubs.length > 0
+  useEffect(() => {
+    const el = barRef.current
+    if (embedded || !el) return undefined
+    const root = document.documentElement
+    const set = () => root.style.setProperty('--pubbar-h', `${Math.round(el.getBoundingClientRect().height)}px`)
+    let raf = 0
+    const check = () => {
+      raf = 0
+      const top = parseFloat(getComputedStyle(el).top) || 0
+      el.classList.toggle('is-stuck', window.scrollY > 0 && el.getBoundingClientRect().top <= top + 0.5)
+    }
+    const onScroll = () => {
+      if (!raf) raf = requestAnimationFrame(check)
+    }
+    set()
+    check()
+    let ro = null
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(set)
+      ro.observe(el)
+    }
+    window.addEventListener('scroll', onScroll, { passive: true })
+    window.addEventListener('resize', onScroll)
+    return () => {
+      if (ro) ro.disconnect()
+      if (raf) cancelAnimationFrame(raf)
+      window.removeEventListener('scroll', onScroll)
+      window.removeEventListener('resize', onScroll)
+      root.style.removeProperty('--pubbar-h')
+    }
+  }, [embedded, hasPubs])
+
   if (pubs.length === 0) return <p className="empty-state">{tr('등록된 논문이 없습니다.', 'No publications yet.')}</p>
 
   const presentTypes = new Set(pubs.map((p) => p.type))
   return (
-    <div className="pubs">
+    <div className={`pubs${embedded ? '' : ' pubs-pinned'}`}>
       {/* 실적 숫자(Journal Articles·KCI·…) 요약은 교수님 요청으로 뺌 (2026-10) */}
 
       {pubs.length > 0 && (
-        <div className="pub-toolbar">
+        <div className={`pub-toolbar${embedded ? '' : ' pub-toolbar-pin'}`} ref={barRef}>
           <div className="filter-row">
             {FILTERS.filter((f) => f.key === 'all' || presentTypes.has(f.key)).map((f) => (
               <button
