@@ -79,7 +79,6 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
     <div className="author-research">
       <div className="pub-author-head" ref={headRef}>
         <div>
-          <p className="pub-author-eyebrow">Research Output</p>
           <h2 className="pub-author-name">
             {author.displayName || author.name}
           </h2>
