@@ -3500,7 +3500,7 @@
     },
     {
       "id": "proj-2023-cla-platform",
-      "title": "협력학습 분석학(Collaborative Learning Analytics)을 적용한 적응적 학습지원 플랫폼",
+      "title": "협력학습 분석학(Collaborative Learning Analytics)을 적용한 적응적 학습지원 플랫폼 개발",
       "funder": "과학기술정보통신부 · 한국연구재단",
       "program": "개인기초연구사업",
       "scale": "중견연구",
@@ -3533,7 +3533,12 @@
           "role": "학생연구원"
         }
       ],
-      "description": "컴퓨터지원협력학습(CSCL)과 학습분석학을 접목해 협력학습을 적응적으로 지원하는 플랫폼(CLAP)을 설계·개발하고, 실제 수업에 적용했다."
+      "description": "컴퓨터지원협력학습(CSCL)과 학습분석학을 접목해 협력학습을 적응적으로 지원하는 플랫폼(CLAP)을 설계·개발하고, 실제 수업에 적용했다.",
+      "titleEn": "Development of an Adaptive Learning Support Platform Applying Collaborative Learning Analytics",
+      "funderEn": "Ministry of Science and ICT · National Research Foundation of Korea",
+      "programEn": "Basic Research Program in Science and Engineering",
+      "scaleEn": "Mid-career Research",
+      "descriptionEn": "Combined computer-supported collaborative learning (CSCL) and learning analytics to design and develop CLAP, a platform that adaptively supports collaborative learning, and applied it in real classes."
     },
     {
       "id": "proj-2021-srl-feedback",
