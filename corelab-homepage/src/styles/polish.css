@@ -586,3 +586,8 @@ html .faculty-contact .faculty-scholar a { font-size: 0.85rem; }
     color: var(--color-text);
   }
 }
+
+/* 연구 실적 모아보기 머리말: "Research Output" 글자를 뺀 뒤 이름 위 여백 정리 (교수님 피드백, 2026-10-21) */
+html body .pub-author-head .pub-author-name {
+  margin-top: 0;
+}
