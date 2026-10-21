@@ -24,6 +24,10 @@ export default function Tools({ items = [], onEdit }) {
           [tool.image, tool.imageCaption],
           [tool.image2, tool.image2Caption],
         ].filter(([src]) => src)
+        // 관련 과제 및 연구: 개발 배경(source) 한 줄 + 관련 과제(related, 줄마다 하나)
+        const related = [tool.source, ...String(tool.related ?? '').split('\n')]
+          .map((line) => (line ?? '').trim())
+          .filter(Boolean)
         return (
           <article key={tool.id} className="card tool-feature admin-item">
             <EditButton onClick={() => onEdit(raw)} />
@@ -41,7 +45,16 @@ export default function Tools({ items = [], onEdit }) {
                 {tool.developers}
               </p>
             )}
-            {tool.source && <p className="tool-source">{tool.source}</p>}
+            {related.length > 0 && (
+              <div className="tool-related">
+                <h4 className="tool-related-title">{tr('관련 과제 및 연구', 'Related Projects & Research')}</h4>
+                <ul className="tool-related-list">
+                  {related.map((line, i) => (
+                    <li key={i}>{line}</li>
+                  ))}
+                </ul>
+              </div>
+            )}
             {tool.description && <p className="tool-desc">{tool.description}</p>}
             {figs.length > 0 && (
               <div className={`tool-figs tool-figs-${figs.length}`}>

@@ -22,8 +22,12 @@ const TOOLS_SEED = [
     image2Caption: '적응적 피드백 화면 — 인지적 참여 수준 · 참여도와 참여 균등성 · 상호작용 정도',
     image2CaptionEn: 'Adaptive feedback — cognitive engagement, participation and equality, interaction',
     link: 'https://scola.pages.dev/',
-    source: '진명화(2024) 박사학위논문에서 개발',
-    sourceEn: 'Developed in Myunghwa Jin’s doctoral dissertation (2024)',
+    source: '진명화(2024) 박사학위논문',
+    sourceEn: 'Myunghwa Jin (2024), doctoral dissertation',
+    related:
+      '2023–2026 협력학습 분석학(Collaborative Learning Analytics)을 적용한 적응적 학습지원 플랫폼 개발 (과학기술정보통신부·한국연구재단 개인기초연구사업)',
+    relatedEn:
+      '2023–2026 Development of an Adaptive Learning Support Platform Applying Collaborative Learning Analytics (Ministry of Science and ICT · National Research Foundation of Korea, Individual Basic Research Program)',
     tags: ['CSCL', 'Learning Analytics', 'Adaptive Feedback'],
   },
 ]
