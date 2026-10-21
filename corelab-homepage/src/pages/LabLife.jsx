@@ -153,57 +153,63 @@ export default function LabLife() {
           const multi = photos.length > 1
           return (
             <div className="lightbox-overlay" onClick={closeLightbox}>
-              <div className="lightbox-card" onClick={(e) => e.stopPropagation()}>
+              <div
+                className={`lightbox-card${view(selected).caption || view(selected).body ? ' has-text' : ''}`}
+                onClick={(e) => e.stopPropagation()}
+              >
                 <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label={tr('닫기', 'Close')}>
                   ×
                 </button>
 
-                <div className="lightbox-photo-frame">
-                  <SafeImage
-                    src={photos[photoIdx]?.src}
-                    alt={view(selected).caption ?? ''}
-                    fallback={<span />}
-                    loading="eager"
-                    imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
-                  />
+                {/* 사진(+점)은 썸네일 크기로 작게, 글은 PC에서 오른쪽 넓은 칸에 읽기 좋게 놓입니다 */}
+                <div className="lightbox-media">
+                  <div className="lightbox-photo-frame">
+                    <SafeImage
+                      src={photos[photoIdx]?.src}
+                      alt={view(selected).caption ?? ''}
+                      fallback={<span />}
+                      loading="eager"
+                      imgStyle={cropToStyle(normalizeCrop({ photoCrop: photos[photoIdx]?.crop }))}
+                    />
+                    {multi && (
+                      <>
+                        <button
+                          type="button"
+                          className="lightbox-nav lightbox-nav-prev"
+                          onClick={() => setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)}
+                          aria-label={tr('이전 사진', 'Previous photo')}
+                        >
+                          <span className="lightbox-nav-icon">‹</span>
+                        </button>
+                        <button
+                          type="button"
+                          className="lightbox-nav lightbox-nav-next"
+                          onClick={() => setPhotoIdx((i) => (i + 1) % photos.length)}
+                          aria-label={tr('다음 사진', 'Next photo')}
+                        >
+                          <span className="lightbox-nav-icon">›</span>
+                        </button>
+                        <span className="lightbox-counter">
+                          {photoIdx + 1} / {photos.length}
+                        </span>
+                      </>
+                    )}
+                  </div>
+
                   {multi && (
-                    <>
-                      <button
-                        type="button"
-                        className="lightbox-nav lightbox-nav-prev"
-                        onClick={() => setPhotoIdx((i) => (i - 1 + photos.length) % photos.length)}
-                        aria-label={tr('이전 사진', 'Previous photo')}
-                      >
-                        <span className="lightbox-nav-icon">‹</span>
-                      </button>
-                      <button
-                        type="button"
-                        className="lightbox-nav lightbox-nav-next"
-                        onClick={() => setPhotoIdx((i) => (i + 1) % photos.length)}
-                        aria-label={tr('다음 사진', 'Next photo')}
-                      >
-                        <span className="lightbox-nav-icon">›</span>
-                      </button>
-                      <span className="lightbox-counter">
-                        {photoIdx + 1} / {photos.length}
-                      </span>
-                    </>
+                    <div className="lightbox-dots">
+                      {photos.map((_, i) => (
+                        <button
+                          key={i}
+                          type="button"
+                          className={`lightbox-dot${i === photoIdx ? ' active' : ''}`}
+                          onClick={() => setPhotoIdx(i)}
+                          aria-label={tr(`${i + 1}번째 사진`, `Photo ${i + 1}`)}
+                        />
+                      ))}
+                    </div>
                   )}
                 </div>
-
-                {multi && (
-                  <div className="lightbox-dots">
-                    {photos.map((_, i) => (
-                      <button
-                        key={i}
-                        type="button"
-                        className={`lightbox-dot${i === photoIdx ? ' active' : ''}`}
-                        onClick={() => setPhotoIdx(i)}
-                        aria-label={tr(`${i + 1}번째 사진`, `Photo ${i + 1}`)}
-                      />
-                    ))}
-                  </div>
-                )}
 
                 {(view(selected).caption || view(selected).body) && (
                   <div className="lightbox-text">
