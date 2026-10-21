@@ -238,23 +238,64 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logoStage >= 1])
 
-  // PC: 영문 풀네임(COLLABORATIVE … LAB)의 좌우 폭을 위의 "CoRe Lab"과 맞춥니다(글자 간격만 조절).
+  // PC: 영문 풀네임(COLLABORATIVE … LAB)의 왼쪽 끝(C)과 오른쪽 끝(B)을
+  // 위의 "CoRe Lab"에서 눈에 보이는 글자 끝선(C의 왼쪽 끝, b의 오른쪽 끝)에 맞춥니다.
+  // 글상자가 아니라 실제 글자 모양(잉크) 기준이라 글꼴이 달라도 선이 어긋나지 않습니다.
   // 모바일(600px 미만)은 두 줄로 나뉘므로 원래 간격 그대로 둡니다.
   const taglineRef = useRef(null)
   useEffect(() => {
     const tg = taglineRef.current
     const wm = tg?.closest('.hero-intro-content')?.querySelector('.hero-wm')
     if (!tg || !wm) return undefined
+    const canvas = document.createElement('canvas')
+    const ctx = canvas.getContext('2d')
+    // 요소 안의 첫 글자/마지막 글자의 "눈에 보이는" 좌우 끝(px, 화면 기준)
+    const ink = (el) => {
+      const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+      const nodes = []
+      while (walker.nextNode()) if (walker.currentNode.nodeValue.trim()) nodes.push(walker.currentNode)
+      if (!nodes.length) return null
+      const edge = (node, idx) => {
+        const range = document.createRange()
+        range.setStart(node, idx)
+        range.setEnd(node, idx + 1)
+        const rect = range.getBoundingClientRect()
+        const cs = getComputedStyle(node.parentElement)
+        let ch = node.nodeValue[idx]
+        if (cs.textTransform === 'uppercase') ch = ch.toUpperCase()
+        ctx.font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
+        return { left: rect.left, m: ctx.measureText(ch) }
+      }
+      const fn = nodes[0]
+      const ln = nodes[nodes.length - 1]
+      const fi = fn.nodeValue.search(/\S/)
+      const li = ln.nodeValue.search(/\S\s*$/)
+      const f = edge(fn, fi)
+      const l = edge(ln, li)
+      return { l: f.left - f.m.actualBoundingBoxLeft, r: l.left + l.m.actualBoundingBoxRight }
+    }
     const fit = () => {
       tg.style.letterSpacing = ''
+      tg.style.position = ''
+      tg.style.left = ''
       if (window.innerWidth < 600) return
-      const target = wm.offsetWidth
-      const n = tg.textContent.length
-      if (!target || !n) return
+      const w = ink(wm)
+      if (!w) return
+      const n = tg.textContent.trim().length
+      if (n < 3) return
       let ls = parseFloat(getComputedStyle(tg).letterSpacing) || 0
-      for (let i = 0; i < 4; i++) {
-        ls += (target - tg.offsetWidth) / n
-        tg.style.letterSpacing = `${Math.max(0, ls).toFixed(2)}px`
+      for (let i = 0; i < 6; i++) {
+        const t = ink(tg)
+        if (!t) return
+        ls += (w.r - w.l - (t.r - t.l)) / (n - 1)
+        tg.style.letterSpacing = `${Math.max(0, ls).toFixed(3)}px`
+      }
+      const t = ink(tg)
+      if (!t) return
+      const shift = w.l - t.l
+      if (Math.abs(shift) > 0.05) {
+        tg.style.position = 'relative'
+        tg.style.left = `${shift.toFixed(2)}px`
       }
     }
     fit()
@@ -265,7 +306,10 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
       ro = new ResizeObserver(fit)
       ro.observe(wm)
     }
+    // 인트로 연출이 끝난 뒤에도 한 번 더 확인합니다.
+    const late = setTimeout(fit, 9000)
     return () => {
+      clearTimeout(late)
       window.removeEventListener('resize', fit)
       if (ro) ro.disconnect()
     }
