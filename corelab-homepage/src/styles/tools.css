@@ -48,10 +48,34 @@ html body .tool-devs-k {
   color: var(--color-primary);
 }
 
-html body .tool-source {
-  margin: 0.15rem 0 0;
+html body .tool-related {
+  margin: 0.85rem 0 0;
+}
+
+html body .tool-related-title {
+  margin: 0 0 0.3rem;
   font-size: 0.8rem;
-  color: #6b766f;
+  font-weight: 700;
+  letter-spacing: 0.01em;
+  color: var(--color-primary);
+}
+
+html body .tool-related-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+
+html body .tool-related-list li {
+  margin: 0;
+  font-size: 0.84rem;
+  line-height: 1.65;
+  color: #5a645e;
+  word-break: keep-all;
+}
+
+html body .tool-related-list li + li {
+  margin-top: 0.15rem;
 }
 
 html body .tool-desc {
