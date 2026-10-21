@@ -350,10 +350,18 @@ html .page-btn.active {
   border-color: var(--color-primary);
 }
 
-/* Lab Life 사진 크게 보기: 과하게 커지지 않도록 한 단계 작게 (교수님 피드백) */
+/* Lab Life 사진 크게 보기: 목록 썸네일과 비슷한 크기로 작게 (교수님 최종 피드백)
+   PC 사진 폭 ≈ 245px(썸네일 246px), 모바일은 너무 작아지지 않게 폭 ≈ 250px */
 html .lightbox-card {
-  --lb-photo-h: min(40vh, 350px);
+  --lb-pad: 14px;
+  --lb-photo-h: 196px;
   width: min(88vw, calc(var(--lb-photo-h) * 1.25 + var(--lb-pad) * 2));
+  border-radius: 20px;
+}
+html .lightbox-card .lightbox-caption { font-size: 0.92rem; }
+html .lightbox-card .lightbox-body { font-size: 0.8rem; line-height: 1.55; }
+@media (max-width: 719px) {
+  html .lightbox-card { --lb-pad: 12px; --lb-photo-h: 200px; }
 }
 
 /* 일부 모바일 브라우저(삼성 인터넷 등)가 숫자를 전화번호 링크로 바꿔 밑줄을 긋는 것을 막습니다 */

@@ -49,3 +49,31 @@ html body .footer-emblem {
   width: auto;
   margin-bottom: var(--space-3);
 }
+
+/* 홈 요소 줄이기 (교수님 최종 피드백, C안)
+   ① 모토: 이탤릭을 빼고 "CoRe Lab"과 같은 글꼴(Playfair Display 500)로 통일. 색(#58B8A2)은 그대로
+   ② 한글 소속 두 줄: 같은 색으로
+   ③ 영문 풀네임(COLLABORATIVE … LAB): PC에서 "CoRe Lab"과 좌우 폭을 맞춤(글자 간격은 HeroIntro.jsx가 계산) */
+html body .hero-intro .hero-motto {
+  font-family: 'Playfair Display', 'Iowan Old Style', Georgia, serif;
+  font-style: normal;
+  font-weight: 500;
+  letter-spacing: 0;
+  font-size: clamp(1.5rem, 6.4vw, 3.2rem);
+}
+@media (max-width: 560px) {
+  html body .hero-intro .hero-motto {
+    font-size: clamp(1.6rem, 7.8vw, 2.1rem);
+  }
+}
+html body .hero-intro .hero-affiliation p {
+  color: rgba(255, 255, 255, 0.8);
+}
+@media (min-width: 600px) {
+  html body .hero-intro .hero-tagline {
+    display: table;
+    margin-left: auto;
+    margin-right: auto;
+    white-space: nowrap;
+  }
+}
