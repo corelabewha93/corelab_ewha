@@ -1,6 +1,6 @@
 import { useMemo, useRef, useState } from 'react'
 import { EditButton } from '../../components/admin/AdminControls'
-import { getIndexes, INTERNATIONAL } from './journalIndex'
+import { getIndexes } from './journalIndex'
 import { normalizeName } from './authorMatch'
 import { useLang } from '../../i18n/LangContext'
 
@@ -408,23 +408,6 @@ export default function Publications({
   // 학위논문(other)은 Theses 탭에서 따로 보여줍니다.
   const pubs = useMemo(() => items.filter((p) => p.type !== 'other'), [items])
 
-  // 상단 통계: 학술지 논문을 "International(Scopus 이상, SSCI 포함)"과 "KCI"로 겹치지 않게 나눠 셉니다.
-  // (SSCI 학술지는 Scopus에도 들어가므로 따로따로 세면 실적이 부풀려 보입니다.)
-  const stats = useMemo(() => {
-    const journals = pubs.filter((p) => p.type === 'journal')
-    const isIntl = (p) => getIndexes(p).some((i) => INTERNATIONAL.has(i))
-    const intl = journals.filter(isIntl)
-    return {
-      journals: journals.length,
-      international: intl.length,
-      ssci: intl.filter((p) => getIndexes(p).includes('SSCI')).length,
-      scopus: intl.filter((p) => getIndexes(p).includes('Scopus')).length,
-      kci: journals.filter((p) => !isIntl(p)).length,
-      conferences: pubs.filter((p) => p.type === 'conference').length,
-      books: pubs.filter((p) => p.type === 'book').length,
-    }
-  }, [pubs])
-
   const filtered = useMemo(
     () =>
       pubs.filter((p) => {
@@ -470,39 +453,7 @@ export default function Publications({
   const presentTypes = new Set(pubs.map((p) => p.type))
   return (
     <div className="pubs">
-      {!embedded && (
-        <dl className="pub-stats">
-          <div className="pub-stat-total">
-            <dt>Journal Articles</dt>
-            <dd>{stats.journals}</dd>
-          </div>
-          <div className="pub-stat-sub-item">
-            <dt>KCI</dt>
-            <dd>{stats.kci}</dd>
-          </div>
-          <div className="pub-stat-sub-item">
-            <dt>International</dt>
-            <dd>
-              {stats.international}
-              {(stats.ssci > 0 || stats.scopus > 0) && (
-                <small className="pub-stats-sub">
-                  {[stats.ssci > 0 && `SSCI ${stats.ssci}`, stats.scopus > 0 && `Scopus ${stats.scopus}`]
-                    .filter(Boolean)
-                    .join(' · ')}
-                </small>
-              )}
-            </dd>
-          </div>
-          <div className="pub-stat-total">
-            <dt>Conferences</dt>
-            <dd>{stats.conferences}</dd>
-          </div>
-          <div className="pub-stat-total">
-            <dt>Books</dt>
-            <dd>{stats.books}</dd>
-          </div>
-        </dl>
-      )}
+      {/* 실적 숫자(Journal Articles·KCI·…) 요약은 교수님 요청으로 뺌 (2026-10) */}
 
       {pubs.length > 0 && (
         <div className="pub-toolbar">
