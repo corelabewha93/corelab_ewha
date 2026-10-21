@@ -238,6 +238,39 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [logoStage >= 1])
 
+  // PC: 영문 풀네임(COLLABORATIVE … LAB)의 좌우 폭을 위의 "CoRe Lab"과 맞춥니다(글자 간격만 조절).
+  // 모바일(600px 미만)은 두 줄로 나뉘므로 원래 간격 그대로 둡니다.
+  const taglineRef = useRef(null)
+  useEffect(() => {
+    const tg = taglineRef.current
+    const wm = tg?.closest('.hero-intro-content')?.querySelector('.hero-wm')
+    if (!tg || !wm) return undefined
+    const fit = () => {
+      tg.style.letterSpacing = ''
+      if (window.innerWidth < 600) return
+      const target = wm.offsetWidth
+      const n = tg.textContent.length
+      if (!target || !n) return
+      let ls = parseFloat(getComputedStyle(tg).letterSpacing) || 0
+      for (let i = 0; i < 4; i++) {
+        ls += (target - tg.offsetWidth) / n
+        tg.style.letterSpacing = `${Math.max(0, ls).toFixed(2)}px`
+      }
+    }
+    fit()
+    document.fonts?.ready?.then(fit)
+    window.addEventListener('resize', fit)
+    let ro = null
+    if (typeof ResizeObserver !== 'undefined') {
+      ro = new ResizeObserver(fit)
+      ro.observe(wm)
+    }
+    return () => {
+      window.removeEventListener('resize', fit)
+      if (ro) ro.disconnect()
+    }
+  }, [])
+
   // 화면이 처음 열릴 때 한 번만 시간표를 잡습니다.
   useEffect(() => {
     if (!animated) return undefined
@@ -418,7 +451,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
 
         <div className="hero-after">
           {tagline && (
-            <p className="hero-tagline">
+            <p className="hero-tagline" ref={taglineRef}>
               {words
                 ? words.map((w, wi) => (
                     <Fragment key={wi}>

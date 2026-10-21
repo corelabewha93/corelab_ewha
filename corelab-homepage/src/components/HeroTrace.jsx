@@ -330,7 +330,8 @@ function layout(ctx, s, host, cv) {
   const cs = getComputedStyle(mottoEl)
   const fs = parseFloat(cs.fontSize) || 56
   s.fs = fs
-  s.font = `italic 500 ${fs}px "EB Garamond", "Iowan Old Style", "Palatino Linotype", Georgia, serif`
+  // 실제 모토의 글꼴(모양 · 굵기 · 글꼴 이름)을 그대로 읽어 씀 — CSS에서 글꼴을 바꿔도 캔버스 문장과 어긋나지 않음
+  s.font = `${cs.fontStyle} ${cs.fontWeight} ${fs}px ${cs.fontFamily}`
   s.ls = parseFloat(cs.letterSpacing) || 0
   ctx.font = s.font
   if ('letterSpacing' in ctx) ctx.letterSpacing = `${s.ls}px`
@@ -574,7 +575,10 @@ export default function HeroTrace({ animated, skipped = false, onGo }) {
     // 모토 글꼴이 준비된 뒤에 시계를 시작합니다(늦어도 1.2초). 그래야 문장 폭 · 자리가 정확합니다.
     const fontReady = Promise.race([
       // 글꼴 파일을 못 받아 와도(폰 네트워크 문제 등) 인트로가 멈추지 않게 실패는 무시
-      (document.fonts?.load?.('italic 500 40px "EB Garamond"') ?? Promise.resolve()).catch(() => {}),
+      Promise.all([
+        document.fonts?.load?.('500 40px "Playfair Display"'),
+        document.fonts?.load?.('italic 500 40px "EB Garamond"'),
+      ]).catch(() => {}),
       new Promise((r) => setTimeout(r, 1200)),
     ])
     fontReady.then(() => {
