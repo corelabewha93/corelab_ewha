@@ -5,6 +5,7 @@ import { cropToStyle, normalizeCrop } from '../admin/photoCrop'
 import { navigate, withBase } from '../router/useHashRoute'
 import { useAdminAuth } from '../admin/AdminAuthContext'
 import { useLang } from '../i18n/LangContext'
+import SoftJustify from './SoftJustify'
 import '../styles/profile-fix.css'
 
 /** 사진을 넣지 않은(또는 사진을 못 불러온) 사람에게 자동으로 보여줄 이화 심벌 기본 사진 */
@@ -128,7 +129,7 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
           <>
             <div ref={bioRef} className={`faculty-bio${bioOpen ? '' : ' is-clamped'}`}>
               {String(person.bio).split(/\n+/).map((t) => t.trim()).filter(Boolean).map((t, i) => (
-                <p key={i} className="faculty-bio-p">{t}</p>
+                <SoftJustify key={i} className="faculty-bio-p" text={t} />
               ))}
             </div>
             {(bioLong || bioOpen) && (

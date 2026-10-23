@@ -1,4 +1,5 @@
 import SafeImage from './SafeImage'
+import SoftJustify from './SoftJustify'
 import { useLang } from '../i18n/LangContext'
 
 // 본문 중간에 사진을 넣고 싶을 때 쓰는 표시: [사진2], [사진2:왼쪽], [사진2:오른쪽] ...
@@ -72,9 +73,7 @@ export default function NewsCard({ item: raw }) {
           )
         }
         return (
-          <p key={i} className="news-article-p">
-            {paragraph}
-          </p>
+          <SoftJustify key={i} className="news-article-p" text={String(paragraph)} />
         )
       })}
 
