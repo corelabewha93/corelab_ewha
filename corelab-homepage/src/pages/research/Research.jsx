@@ -170,7 +170,7 @@ export default function Research() {
         Research
       </PageTitle>
 
-      <div className="tabs-layout">
+      <div className={`tabs-layout${authorFilter ? ' is-author' : ''}`}>
         {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
         <Tabs
           tabs={TABS}
