@@ -153,15 +153,11 @@ export default function LabLife() {
           const multi = photos.length > 1
           return (
             <div className="lightbox-overlay" onClick={closeLightbox}>
-              <div
-                className={`lightbox-card${view(selected).caption || view(selected).body ? ' has-text' : ''}`}
-                onClick={(e) => e.stopPropagation()}
-              >
+              <div className="lightbox-card" onClick={(e) => e.stopPropagation()}>
                 <button type="button" className="lightbox-close" onClick={closeLightbox} aria-label={tr('닫기', 'Close')}>
                   ×
                 </button>
 
-                {/* 사진(+점)은 썸네일 크기로 작게, 글은 PC에서 오른쪽 넓은 칸에 읽기 좋게 놓입니다 */}
                 <div className="lightbox-media">
                   <div className="lightbox-photo-frame">
                     <SafeImage
@@ -213,6 +209,9 @@ export default function LabLife() {
 
                 {(view(selected).caption || view(selected).body) && (
                   <div className="lightbox-text">
+                    {/^\d{4}-\d{2}/.test(selected.date ?? '') && (
+                      <p className="lightbox-date">{selected.date.replace(/-/g, '.')}</p>
+                    )}
                     {view(selected).caption && <p className="lightbox-caption">{view(selected).caption}</p>}
                     {view(selected).body && <p className="lightbox-body">{view(selected).body}</p>}
                   </div>
