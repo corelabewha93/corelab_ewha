@@ -3801,7 +3801,7 @@
       "status": "registered",
       "date": "2026-10-13",
       "country": "KR",
-      "hidden": "hidden",
+      "hidden": "",
       "titleEn": "APPARATUS AND METHOD FOR LEARNING PROBLEM SOLVING BASED ON DASHBOARD TO AID LEARNING",
       "description": "학습자가 각 단계를 마칠 때마다 스스로 평가한 성취 수준을 그래프로 시각화하고, 강점·보완점 설명과 전문가의 행동 분포, 학습자가 겪은 오류의 유형별 빈도를 함께 보여줘 자신의 문제해결 과정을 여러 각도에서 점검하도록 돕는 학습장치 및 그 동작방법",
       "descriptionEn": "A learning apparatus and operating method that visualizes learners’ self-assessment of step-by-step question prompts as graphs, helping learners check their own problem-solving process."
