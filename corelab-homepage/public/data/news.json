@@ -1,6 +1,6 @@
 [
   {
-    "title": "임규연 교수 연구팀, 문제해결 학습 지원 기술 특허 2건 등록결정",
+    "title": "임규연 교수 연구팀, 문제해결 학습 지원 기술 특허 2건 등록",
     "subtitle": "프로그래밍 문제해결 학습 과정을 11개 스텝으로 나눠 프롬프트 순차 제공",
     "images": [
       "images/news/news-1790174916012-mue7x9kc.jpg",
@@ -24,7 +24,21 @@
     "link": "",
     "id": "news-mue7umbwyms",
     "createdAt": "2026-09-23T14:46:32.588Z",
-    "hidden": "hidden"
+    "hidden": "hidden",
+    "titleEn": "Prof. Kyu Yon Lim’s team secures two patents for problem-solving learning support technology",
+    "subtitleEn": "Breaking programming problem solving into 11 steps with sequential prompts",
+    "bodyEn": [
+      "A research team led by Professor Kyu Yon Lim (CoRe Lab), Department of Educational Technology, College of Education, Ewha Womans University, received decisions to grant two patents on technologies that support problem-solving learning on September 15, 2026.",
+      "The two patents are “Problem-solving learning apparatus based on prompts to aid learning and its operating method” and “Problem-solving learning apparatus based on a dashboard to aid learning and its operating method.”",
+      "The team focused on a gap left by existing learning support tools. Most tools supported only early stages such as understanding the problem or making a plan, and even those covering the whole process did not adequately support evaluation, reflection, and improvement after a solution had been produced.",
+      "Visualization tools, likewise, tended simply to display information about programming activity; few treated programming as a problem-solving process and helped learners check their own understanding, analysis, and evaluation of the problem.",
+      "The two patents fill this gap. While the prompt-based technology guides learners sequentially through the entire problem-solving process, the dashboard-based technology turns the data accumulated along the way back into information that learners can read.",
+      "The prompt-based technology divides programming problem solving into six steps of planning before coding, two steps of carrying out the coding, and three steps of reflecting after coding, and provides the cognitive and metacognitive prompts needed at each step. What learners write at one step carries over to the next, so the flow from planning to execution to reflection is built into the interface.",
+      "[사진2]",
+      "The dashboard-based technology visualizes, as a graph, the achievement level learners rate for themselves after each step, and adds explanations grouped into strengths and areas for improvement. Experts’ actual behavior distributions and the frequency of each type of error learners encountered are also presented, so learners can examine their problem-solving process from several angles.",
+      "[사진3]",
+      "The inventors are Professor Kyu Yon Lim, Dr. Hyejun Kim, Juwon Lee (Ph.D. candidate), Eunju Park (M.A.), and Haeun Park (M.A.). Both patents result from the mid-career research project “Designing an AI-based Personalized Learning Model and Online Platform for SW Education,” supported for three years from 2020 by the Ministry of Science and ICT and the National Research Foundation of Korea under the Basic Research Program in Science and Engineering."
+    ]
   },
   {
     "id": "2026-09-sample-news",
