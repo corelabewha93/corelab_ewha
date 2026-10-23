@@ -350,20 +350,21 @@ html .page-btn.active {
   border-color: var(--color-primary);
 }
 
-/* Lab Life 사진 크게 보기 (2026-10-23: 가로로 긴 상자 → 세로 카드)
-   - 사진은 목록 썸네일 정도 크기(폭 280px, 5:4)로 작게 — 교수님 요청
-   - 카드는 좁은 세로형(폭 320px): 사진 → 점 → 날짜 · 제목 → 본문. 글자 크기는 줄이지 않고 읽기 편하게 */
+/* Lab Life 사진 크게 보기 (2026-10-23 "갤러리 액자")
+   - 사진은 목록 썸네일 정도(폭 280px, 5:4)로 작게 — 교수님 요청. 흰 액자 테두리를 둘러 일부러 작게 건 사진처럼 보이게
+   - 카드는 연한 아이보리 바탕에 폭 480px: 액자 사진 → 점 → 날짜 · 제목(가운데) → 가는 선 → 본문 */
 html body .lightbox-overlay {
   background: rgba(12, 20, 16, 0.58);
   backdrop-filter: blur(3px);
   -webkit-backdrop-filter: blur(3px);
 }
 html body .lightbox-card {
-  --lb-pad: 20px;
-  width: min(92vw, 320px);
+  --lb-pad: 30px;
+  width: min(92vw, 480px);
   max-height: 88vh;
-  padding: var(--lb-pad) var(--lb-pad) 1.6rem;
+  padding: var(--lb-pad);
   display: block;
+  background: #f7f6f2;
   border-top: none;
   border-radius: 22px;
   box-shadow: 0 24px 60px rgba(0, 0, 0, 0.28), 0 2px 8px rgba(0, 0, 0, 0.08);
@@ -372,55 +373,64 @@ html body .lightbox-media {
   min-width: 0;
 }
 html body .lightbox-photo-frame {
-  border-radius: 14px;
+  width: min(280px, calc(100% - 20px));
+  margin: 10px auto 0;
+  border-radius: 0;
+  background: #e9e8e3;
+  box-shadow: 0 0 0 10px #fff, 0 8px 22px rgba(0, 0, 0, 0.14);
 }
 html body .lightbox-dots {
-  margin-top: 0.7rem;
+  margin-top: 1.7rem;
 }
 html body .lightbox-close {
-  top: calc(var(--lb-pad) + 6px);
-  right: calc(var(--lb-pad) + 6px);
+  top: 14px;
+  right: 14px;
+  width: 2rem;
+  height: 2rem;
+  background: #fff;
+  box-shadow: 0 1px 4px rgba(0, 0, 0, 0.14);
+  color: #4a524d;
 }
 html body .lightbox-text {
-  margin-top: 1.1rem;
-  padding: 0 0.25rem;
+  margin-top: 1.3rem;
+  padding: 0 0.3rem;
   border-top: none;
-  text-align: left;
+  text-align: center;
 }
 html body .lightbox-date {
   margin: 0 0 0.35rem;
   font-size: 0.78rem;
   font-weight: 600;
-  letter-spacing: 0.06em;
+  letter-spacing: 0.07em;
   color: #8a918c;
 }
 html body .lightbox-caption {
   margin: 0;
-  font-size: 1.25rem;
+  font-size: 1.3rem;
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: -0.015em;
   color: var(--color-primary);
   word-break: keep-all;
 }
-/* 제목 아래 짧은 포인트 선 */
-html body .lightbox-caption::after {
-  content: '';
-  display: block;
-  width: 1.5rem;
-  height: 2px;
-  margin: 0.7rem 0 0.8rem;
-  border-radius: 2px;
-  background: var(--color-accent, #45a2bc);
-}
 html body .lightbox-body {
-  margin: 0;
+  margin: 1rem 0 0;
+  padding-top: 1rem;
+  border-top: 1px solid #e2e0d8;
+  text-align: left;
   font-size: 0.94rem;
   line-height: 1.85;
   color: #3d4641;
 }
-html body .lightbox-caption + .lightbox-body {
-  margin-top: 0;
+@media (max-width: 480px) {
+  html body .lightbox-card {
+    --lb-pad: 22px;
+    padding-top: 44px; /* 닫기 버튼이 액자 모서리를 가리지 않게 윗줄을 비워 둡니다 */
+  }
+  html body .lightbox-close {
+    top: 10px;
+    right: 10px;
+  }
 }
 
 /* 일부 모바일 브라우저(삼성 인터넷 등)가 숫자를 전화번호 링크로 바꿔 밑줄을 긋는 것을 막습니다 */
