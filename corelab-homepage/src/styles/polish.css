@@ -611,3 +611,24 @@ html body .pub-toolbar > .pub-search:only-child {
   }
 }
 
+
+/* =====================================================================
+   모바일 양쪽 정렬: 띄어쓰기가 산만하지 않게 (SoftJustify.jsx와 함께 동작)
+   - 어절은 쪼개지 않고(keep-all) 단어 사이로만 정렬합니다. → 단어와 단어 사이가 또렷하게 구분됩니다.
+   - 한 줄의 단어 간격이 지나치게 벌어질 것 같은 곳만, 컴포넌트가 긴 어절 하나를 글자 사이에서 끊도록 열어 줍니다.
+   - 글자 사이 정렬(inter-character)은 아이폰 사파리에서 지원되지 않아 쓰지 않습니다.
+   ===================================================================== */
+@media (max-width: 700px) {
+  html #overview > p.sj:not(.lab-motto-kr):not(.lab-motto-en),
+  html .faculty-bio .faculty-bio-p.sj,
+  html .news-article-p.sj {
+    text-align: justify;
+    text-align-last: left;
+    text-justify: inter-word;
+    word-break: keep-all;
+    line-break: strict;
+    overflow-wrap: break-word;
+    text-wrap: wrap;
+    letter-spacing: normal;
+  }
+}
