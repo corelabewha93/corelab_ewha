@@ -10,8 +10,8 @@
     "imageWidth": 600,
     "imageAlign": "center",
     "body": [
-      "이화여자대학교 사범대학 교육공학과 임규연 교수 연구팀(CoRe Lab)이 문제해결 학습을 지원하는 기술 두 건에 대해 2026년 9월 15일 특허 등록결정을 받았다.",
-      "등록결정을 받은 특허는 ‘학습 지원을 위한 프롬프트에 기반하는 문제해결 학습장치 및 그 동작방법'과 '학습 지원을 위한 대시보드에 기반하는 문제해결 학습장치 및 그 동작방법’ 두 건이다.",
+      "이화여자대학교 사범대학 교육공학과 임규연 교수 연구팀(CoRe Lab)이 문제해결 학습을 지원하는 기술 두 건에 대해 2026년 10월 13일 특허를 받았다.",
+      "등록된 특허는 ‘학습 지원을 위한 프롬프트에 기반하는 문제해결 학습장치 및 그 동작방법'과 '학습 지원을 위한 대시보드에 기반하는 문제해결 학습장치 및 그 동작방법’ 두 건이다.",
       "연구팀이 주목한 것은 기존 학습 지원 도구들이 남겨둔 공백이었다. 대다수 도구는 문제 이해나 계획 수립 같은 앞단의 일부 단계만을 지원했고, 전 과정을 다루는 경우에도 해결안 도출 이후의 평가와 성찰, 개선까지는 충분히 뒷받침하지 못했다.",
       "시각화 도구 역시 프로그래밍 수행 정보 자체를 보여주는 데 그칠 뿐, 프로그래밍을 하나의 문제해결 과정으로 바라보며 학습자가 자신의 문제 이해와 분석, 평가를 점검하도록 돕는 시도는 드물었다.",
       "두 특허는 이 빈 자리를 메운다. 프롬프트 기반 기술이 문제해결의 전 과정을 순차적으로 안내한다면, 대시보드 기반 기술은 그 과정에서 쌓인 데이터를 학습자가 읽을 수 있는 정보로 되돌려준다.",
@@ -19,17 +19,17 @@
       "[사진2]",
       "대시보드 기반 기술은 학습자가 각 스텝을 마칠 때마다 스스로 평가한 성취 수준을 그래프로 시각화하고 강점과 보완점 영역으로 나눠 설명을 덧붙인다. 여기에 전문가의 실제 행동 분포와 학습자가 겪은 오류의 유형별 빈도가 함께 제시돼, 자신의 문제해결 과정을 여러 각도에서 점검할 수 있다.",
       "[사진3]",
-      "이번 발명에는 임규연 교수를 비롯해 김혜준 박사, 이주원 박사과정(수료), 박은주 석사, 박하은 석사가 참여했다. 두 특허는 2020년부터 3년간 진행된 과학기술정보통신부와 한국연구재단이 지원하는 이공분야기초연구사업 중견연구 ‘SW교육을 위한 AI기반 개별화학습 모형 및 온라인 플랫폼 설계’의 성과다."
+      "이번 발명에는 임규연 교수를 비롯해 김혜준 박사, 이주원 박사과정, 박은주 석사, 박하은 석사가 참여했다. 두 특허는 2020년부터 3년간 진행된 과학기술정보통신부와 한국연구재단이 지원하는 이공분야기초연구사업 중견연구 ‘SW교육을 위한 AI기반 개별화학습 모형 및 온라인 플랫폼 설계’의 성과다."
     ],
     "link": "",
     "id": "news-mue7umbwyms",
     "createdAt": "2026-09-23T14:46:32.588Z",
-    "hidden": "hidden",
+    "hidden": "",
     "titleEn": "Prof. Kyu Yon Lim’s team secures two patents for problem-solving learning support technology",
     "subtitleEn": "Breaking programming problem solving into 11 steps with sequential prompts",
     "bodyEn": [
-      "A research team led by Professor Kyu Yon Lim (CoRe Lab), Department of Educational Technology, College of Education, Ewha Womans University, received decisions to grant two patents on technologies that support problem-solving learning on September 15, 2026.",
-      "The two patents are “Problem-solving learning apparatus based on prompts to aid learning and its operating method” and “Problem-solving learning apparatus based on a dashboard to aid learning and its operating method.”",
+      "A research team led by Professor Kyu Yon Lim (CoRe Lab), Department of Educational Technology, College of Education, Ewha Womans University, received decisions to grant two patents on technologies that support problem-solving learning on September 15, 2026, and the patents were formally registered on October 13, 2026.",
+      "The two registered patents are “Problem-solving learning apparatus based on prompts to aid learning and its operating method” and “Problem-solving learning apparatus based on a dashboard to aid learning and its operating method.”",
       "The team focused on a gap left by existing learning support tools. Most tools supported only early stages such as understanding the problem or making a plan, and even those covering the whole process did not adequately support evaluation, reflection, and improvement after a solution had been produced.",
       "Visualization tools, likewise, tended simply to display information about programming activity; few treated programming as a problem-solving process and helped learners check their own understanding, analysis, and evaluation of the problem.",
       "The two patents fill this gap. While the prompt-based technology guides learners sequentially through the entire problem-solving process, the dashboard-based technology turns the data accumulated along the way back into information that learners can read.",
