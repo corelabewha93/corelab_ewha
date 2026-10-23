@@ -603,3 +603,11 @@ html body .pub-toolbar > .pub-search:only-child {
   }
 }
 
+/* 모바일 개인 실적 화면: 위쪽 메뉴(Publications · Dissertations …)와 이름 아래 종류 버튼이 같은 이름으로 겹쳐 보여서,
+   이 화면에서는 위쪽 메뉴를 감춥니다. (이름 옆 "전체 연구 실적 보기"를 누르면 원래 메뉴로 돌아갑니다. PC는 그대로) */
+@media (max-width: 700px) {
+  html body .tabs-layout.is-author > .tabs-nav {
+    display: none;
+  }
+}
+
