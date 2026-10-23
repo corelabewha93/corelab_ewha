@@ -10,6 +10,7 @@ import Link from '../router/Link'
 import { useHashRoute, newsHref } from '../router/useHashRoute'
 import { scrollToSection } from '../router/scrollToSection'
 import HeroIntro from '../components/HeroIntro'
+import SoftJustify from '../components/SoftJustify'
 import { fixLabName, fixLabNameDeep } from '../utils/labName'
 import { useLang, fillSeed } from '../i18n/LangContext'
 
@@ -130,7 +131,7 @@ export default function About() {
             ))}
 
           {overview.map((paragraph, i) => (
-            <p key={i}>{paragraph}</p>
+            <SoftJustify key={i} text={String(paragraph)} />
           ))}
 
           {researchAreas.length > 0 && (
