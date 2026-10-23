@@ -1,4 +1,4 @@
-import { useEffect, useLayoutEffect, useMemo, useRef } from 'react'
+import { useEffect, useLayoutEffect, useMemo, useRef, useState } from 'react'
 import Publications from './Publications'
 import Theses from './Theses'
 import Patents from './Patents'
@@ -18,6 +18,11 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
   const { tr } = useLang()
   const focus = useMemo(() => makeFocus(author.aliases), [author])
   const headRef = useRef(null)
+  // 보고 있는 종류: all · journal · conference · book · theses · projects · patents
+  // (다른 사람의 모아보기로 바뀌면 자동으로 All로 돌아갑니다)
+  const [sel, setSel] = useState({ name: author.name, key: 'all' })
+  const view = sel.name === author.name ? sel.key : 'all'
+  const setView = (key) => setSel({ name: author.name, key })
 
   // PC: 이름 머리말은 스크롤해도 제목 아래에 고정됩니다. 그 높이(--author-h)를 알려 주면
   // 연도가 머리말 바로 아래에 붙습니다.
@@ -75,6 +80,25 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
   ].filter((s) => s.shown > 0)
   const total = counted(pubs).length + counted(theses).length + counted(patents).length + projects.length
 
+  // 이 사람에게 있는 종류만 버튼으로 만듭니다. 종류가 하나뿐이면 버튼 줄은 생략합니다.
+  const kinds = [
+    ...['journal', 'conference', 'book']
+      .filter((t) => pubs.some((p) => p.type === t))
+      .map((t) => ({ key: t, label: t[0].toUpperCase() + t.slice(1) })),
+    ...(theses.length > 0 ? [{ key: 'theses', label: 'Dissertations' }] : []),
+    ...(projects.length > 0 ? [{ key: 'projects', label: 'Projects' }] : []),
+    ...(patents.length > 0 ? [{ key: 'patents', label: 'Patents' }] : []),
+  ]
+  const showKinds = kinds.length >= 2
+  const current = showKinds && kinds.some((k) => k.key === view) ? view : 'all'
+  const pubFilter = ['journal', 'conference', 'book'].includes(current) ? current : 'all'
+  const only = current !== 'all' // 한 종류만 골랐을 때: 그 종류만 보여줍니다.
+  const visible = sections.filter((s) => {
+    if (!only) return true
+    if (pubFilter !== 'all') return s.key === 'publications'
+    return s.key === current
+  })
+
   return (
     <div className="author-research">
       <div className="pub-author-head" ref={headRef}>
@@ -96,10 +120,27 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
 
       {total === 0 && <p className="empty-state">{tr('아직 등록된 연구 실적이 없습니다.', 'No research output yet.')}</p>}
 
-      {sections.map((s) => (
+      {showKinds && (
+        <div className="author-kinds" role="tablist" aria-label={tr('실적 종류', 'Type of output')}>
+          {[{ key: 'all', label: 'All' }, ...kinds].map((k) => (
+            <button
+              key={k.key}
+              type="button"
+              role="tab"
+              aria-selected={current === k.key}
+              className={`filter-chip${current === k.key ? ' active' : ''}`}
+              onClick={() => setView(k.key)}
+            >
+              {k.label}
+            </button>
+          ))}
+        </div>
+      )}
+
+      {visible.map((s) => (
         <section key={s.key} className="author-section">
           {/* 한 종류만 있을 땐 소제목이 오히려 군더더기라 생략합니다 */}
-          {sections.length > 1 && (
+          {sections.length > 1 && !only && (
             <h3 className="author-section-title">
               {s.title}
             </h3>
@@ -111,6 +152,8 @@ export default function AuthorResearch({ data, author, onClear, onEdit, onToggle
               embedded
               focus={focus}
               authorTool={toolFor('publications')}
+              filter={showKinds ? pubFilter : undefined}
+              filterRow={showKinds ? null : undefined}
             />
           )}
           {s.key === 'theses' && <Theses items={theses} onEdit={onEdit.theses} focus={focus} authorTool={toolFor('publications')} />}

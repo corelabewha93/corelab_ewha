@@ -394,8 +394,13 @@ export default function Publications({
   embedded = false,
   focus = null,
   authorTool = null,
+  filter: controlledFilter,
+  filterRow,
 }) {
-  const [filter, setFilter] = useState('all')
+  // filter: 위에서 종류(Journal/Conference/Book)를 정해 줄 때 쓰는 값. 없으면 이 화면이 직접 고릅니다.
+  // filterRow: undefined면 기본 필터 칩, null이면 칩 없음, 그 밖의 값이면 그것을 대신 보여줍니다.
+  const [ownFilter, setFilter] = useState('all')
+  const filter = controlledFilter ?? ownFilter
   const [query, setQuery] = useState(initialQuery)
   const [showAll, setShowAll] = useState(false)
   const moreRef = useRef(null)
@@ -494,18 +499,22 @@ export default function Publications({
 
       {pubs.length > 0 && (
         <div className={`pub-toolbar${embedded ? '' : ' pub-toolbar-pin'}`} ref={barRef}>
-          <div className="filter-row">
-            {FILTERS.filter((f) => f.key === 'all' || presentTypes.has(f.key)).map((f) => (
-              <button
-                key={f.key}
-                type="button"
-                className={`filter-chip${filter === f.key ? ' active' : ''}`}
-                onClick={() => setFilter(f.key)}
-              >
-                {f.label}
-              </button>
-            ))}
-          </div>
+          {filterRow !== undefined ? (
+            filterRow
+          ) : (
+            <div className="filter-row">
+              {FILTERS.filter((f) => f.key === 'all' || presentTypes.has(f.key)).map((f) => (
+                <button
+                  key={f.key}
+                  type="button"
+                  className={`filter-chip${filter === f.key ? ' active' : ''}`}
+                  onClick={() => setFilter(f.key)}
+                >
+                  {f.label}
+                </button>
+              ))}
+            </div>
+          )}
           <SearchBox value={query} onChange={setQuery} />
         </div>
       )}
