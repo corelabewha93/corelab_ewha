@@ -7,88 +7,45 @@ import { flushSync } from 'react-dom'
  * 배경: 좁은 화면에서 한글을 어절 단위(keep-all)로 줄바꿈하며 양쪽 정렬하면,
  *       긴 어절이 다음 줄로 넘어간 줄은 남는 공간이 단어 사이 몇 군데에만 몰려 크게 벌어집니다.
  *       반대로 글자 단위로 줄바꿈하면 어절이 아무 데서나 쪼개져 읽기 어렵고,
- *       "글자 사이 정렬(inter-character)"은 아이폰(사파리) 등 일부 브라우저가 지원하지 않습니다.
+ *       "글자 사이 정렬(inter-character)"은 브라우저마다 지원이 달라 믿고 쓸 수 없습니다.
  *
  * 방법: 평소에는 어절을 쪼개지 않고(keep-all) 단어 사이로만 정렬합니다.
- *       다만 어느 줄의 단어 간격이 너무 벌어질 것 같으면, 그 줄 끝에서 밀려난 '긴 어절' 하나만
- *       글자 사이에서 끊어도 되게(<wbr>) 열어 줘서 줄이 알맞게 채워지도록 합니다.
- *       → 대부분의 어절은 그대로이고, 꼭 필요한 곳만 쪼개집니다.
+ *       그런 다음 실제로 그려진 줄을 위에서부터 하나씩 재 보고,
+ *       단어 사이가 지나치게 벌어진 줄이 있으면 그 줄에서 밀려난 '다음 어절' 하나만
+ *       글자 사이에서 끊어도 되게(<wbr>) 열어 줘서 줄이 알맞게 채워지게 합니다.
+ *       (예측이 아니라 실제 화면 기준이라, 폰트·기기가 달라도 그대로 맞습니다.)
  * PC(701px 이상)와 영문 화면은 이전과 똑같이 동작합니다.
  */
 
 const NARROW_QUERY = '(max-width: 700px)'
 const HANGUL = /[가-힣]/
-const HANGUL_ONE = /[가-힣]/
-/** 줄의 단어 사이가 (기본 띄어쓰기보다) 글자 크기의 이만큼 넘게 더 벌어질 것 같으면 어절을 연다 */
-const LOOSE_EM = 0.4
-/** 간격이 이만큼(글자 크기 대비) 넘게 벌어질 땐, 다음 줄 첫머리에 한 글자만 남는 끊김도 허용한다 */
-const VERY_LOOSE_EM = 0.6
-/** 끊을 때 앞·뒤에 최소한 남길 글자 수 (한 글자만 덩그러니 남는 끊김은 피한다) */
-const MIN_PART = 2
+const DIGIT = /[0-9]/
+/** 단어 사이 간격이 글자 크기의 이 배수를 넘으면 '벌어졌다'고 본다 (기본 띄어쓰기는 약 0.27배) */
+const GAP_LOOSE = 0.62
+/** 이만큼 넘게 벌어지면, 뒤에 한 글자만 남기거나 숫자·한글 경계에서 끊는 것도 허용 */
+const GAP_VERY_LOOSE = 0.95
+const MAX_STEPS = 60
+/** 글자 사이를 벌리는 최대치(글자 크기 배). 이 정도면 눈에 거의 띄지 않는다 */
+const MAX_LS = 0.06
+/** 간격이 특히 심하게(이 배수 이상) 벌어진 줄에는 조금 더 허용 */
+const MAX_LS_WIDE = 0.1
 
-let _canvas
-const _cache = new Map()
-function measure(font, str) {
-  const key = font + '|' + str
-  const hit = _cache.get(key)
-  if (hit !== undefined) return hit
-  _canvas ||= document.createElement('canvas').getContext('2d')
-  _canvas.font = font
-  const w = _canvas.measureText(str).width
-  if (_cache.size > 4000) _cache.clear()
-  _cache.set(key, w)
-  return w
-}
-
-/** 어절 안에서 끊을 수 있는 자리(앞쪽 글자 수) 목록: 양옆이 모두 한글 음절인 곳 */
-function breakPoints(word, minTail = MIN_PART) {
+/**
+ * 어절 안에서 끊을 수 있는 자리(앞쪽 글자 수).
+ * level 1: 양옆이 한글이고 앞·뒤 모두 2글자 이상
+ * level 2: 앞 2글자 이상·뒤 1글자 이상, 숫자와 한글 사이도 허용
+ */
+function breakPoints(word, level) {
+  const minTail = level >= 2 ? 1 : 2
   const pts = []
-  for (let p = MIN_PART; p <= word.length - minTail; p++) {
-    if (HANGUL_ONE.test(word[p - 1]) && HANGUL_ONE.test(word[p])) pts.push(p)
+  for (let p = 2; p <= word.length - minTail; p++) {
+    const a = word[p - 1]
+    const b = word[p]
+    const hh = HANGUL.test(a) && HANGUL.test(b)
+    const dh = level >= 2 && ((DIGIT.test(a) && HANGUL.test(b)) || (HANGUL.test(a) && DIGIT.test(b)))
+    if (hh || dh) pts.push(p)
   }
   return pts
-}
-
-/** 글을 줄 단위로 흉내 내 보면서, 열어 줘야 할 어절 번호들을 찾는다 */
-function planOpen(text, width, font, fontSize) {
-  const open = new Map() // 토큰 번호 -> 끊을 수 있는 자리들
-  const tokens = text.split(/(\s+)/)
-  const sp = measure(font, ' ')
-  let x = 0
-  let gaps = 0
-  let empty = true
-  for (let i = 0; i < tokens.length; i++) {
-    const tok = tokens[i]
-    if (!tok) continue
-    if (i % 2 === 1) {
-      if (tok.includes('\n')) { x = 0; gaps = 0; empty = true }
-      continue
-    }
-    const w = measure(font, tok)
-    if (empty) { x = w; gaps = 0; empty = false; continue }
-    if (x + sp + w <= width + 0.5) { x += sp + w; gaps += 1; continue }
-
-    // 이 어절이 다음 줄로 밀려난다. 지금 줄이 얼마나 벌어질지 본다.
-    const extra = (width - x) / Math.max(gaps, 0.0001)
-    if (extra > LOOSE_EM * fontSize) {
-      // 앞은 늘 2글자 이상. 뒤에 한 글자만 남기는 끊김은 간격이 아주 벌어질 때만 허용
-      const pts = breakPoints(tok, extra > VERY_LOOSE_EM * fontSize ? 1 : MIN_PART)
-      let best = -1
-      for (const p of pts) {
-        if (x + sp + measure(font, tok.slice(0, p)) <= width + 0.5) best = p
-      }
-      if (best > 0) {
-        open.set(i, pts)
-        x = measure(font, tok.slice(best))
-        gaps = 0
-        empty = false
-        continue
-      }
-    }
-    x = w
-    gaps = 0
-  }
-  return open
 }
 
 function useNarrow() {
@@ -104,23 +61,100 @@ function useNarrow() {
   return narrow
 }
 
-function render(text, open) {
-  if (!open || open.size === 0) return text
+function render(text, levels, spacing) {
+  if ((!levels || levels.size === 0) && (!spacing || spacing.size === 0)) return text
   const tokens = text.split(/(\s+)/)
   const out = []
   tokens.forEach((tok, i) => {
-    const pts = open.get(i)
-    if (!pts) {
-      out.push(tok)
-      return
+    const level = levels?.get(i)
+    let piece = tok
+    if (level && level <= 2) {
+      const parts = []
+      let prev = 0
+      breakPoints(tok, level).forEach((p) => {
+        parts.push(tok.slice(prev, p), <wbr key={`${i}-${p}`} />)
+        prev = p
+      })
+      parts.push(tok.slice(prev))
+      piece = parts
     }
-    let prev = 0
-    pts.forEach((p) => {
-      out.push(tok.slice(prev, p), <wbr key={`${i}-${p}`} />)
-      prev = p
-    })
-    out.push(tok.slice(prev))
+    const ls = spacing?.get(i)
+    out.push(ls ? <span key={`s${i}`} style={{ letterSpacing: `${ls}em` }}>{piece}</span> : piece)
   })
+  return out
+}
+
+/**
+ * 지금 그려진 문단의 줄들을 분석한다. (마지막 줄·줄바꿈으로 끝나는 줄은 정렬되지 않으므로 제외)
+ * 줄마다: gap(가장 큰 단어 사이, 글자 크기 배), nextI/nextFirst(다음 줄 첫 어절), toks(이 줄에 통째로 들어 있는 어절들)
+ */
+function analyze(el, text) {
+  const fs = parseFloat(getComputedStyle(el).fontSize)
+  const tokens = text.split(/(\s+)/)
+  const starts = []
+  let off = 0
+  for (const t of tokens) { starts.push(off); off += t.length }
+
+  const nodes = []
+  const tw = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
+  let acc = 0
+  while (tw.nextNode()) {
+    const n = tw.currentNode
+    nodes.push({ n, s: acc, e: acc + n.nodeValue.length })
+    acc += n.nodeValue.length
+  }
+  if (!nodes.length) return []
+  const locate = (pos) => {
+    for (const x of nodes) if (pos < x.e) return { n: x.n, o: pos - x.s }
+    const l = nodes[nodes.length - 1]
+    return { n: l.n, o: l.n.nodeValue.length }
+  }
+  const locateEnd = (pos) => {
+    for (const x of nodes) if (pos <= x.e && pos > x.s) return { n: x.n, o: pos - x.s }
+    const l = nodes[nodes.length - 1]
+    return { n: l.n, o: l.n.nodeValue.length }
+  }
+
+  const frags = []
+  tokens.forEach((tok, i) => {
+    if (i % 2 === 1 || !tok) return
+    const a = locate(starts[i])
+    const b = locateEnd(starts[i] + tok.length)
+    const r = document.createRange()
+    r.setStart(a.n, a.o)
+    r.setEnd(b.n, b.o)
+    const rects = Array.from(r.getClientRects()).filter((q) => q.width > 0.5)
+    rects.forEach((q, k) => frags.push({ i, top: Math.round(q.top), left: q.left, right: q.right, first: k === 0, n: rects.length }))
+  })
+
+  const lines = new Map()
+  for (const f of frags) {
+    if (!lines.has(f.top)) lines.set(f.top, [])
+    lines.get(f.top).push(f)
+  }
+  const tops = [...lines.keys()].sort((a, b) => a - b)
+  const out = []
+  for (let li = 0; li < tops.length - 1; li++) {
+    const L = lines.get(tops[li]).sort((a, b) => a.left - b.left)
+    const lastTok = L[L.length - 1].i
+    if (tokens[lastTok + 1] && tokens[lastTok + 1].includes('\n')) continue
+    let gap = 0
+    for (let k = 1; k < L.length; k++) {
+      if (L[k].i !== L[k - 1].i) gap = Math.max(gap, (L[k].left - L[k - 1].right) / fs)
+    }
+    const next = lines.get(tops[li + 1]).sort((a, b) => a.left - b.left)[0]
+    out.push({
+      key: `${L[0].i}:${L[0].first ? 1 : 0}`,
+      gap,
+      gaps: Math.max(L.filter((f, k) => k > 0 && f.i !== L[k - 1].i).length, 1),
+      nextI: next.i,
+      nextFirst: next.first,
+      nextTok: tokens[next.i],
+      toks: L.filter((f) => f.n === 1).map((f) => ({ i: f.i, chars: tokens[f.i].length })),
+      width: L[L.length - 1].right - L[0].left,
+      fs,
+    })
+  }
   return out
 }
 
@@ -128,46 +162,76 @@ export default function SoftJustify({ text, as: Tag = 'p', className = '', ...re
   const narrow = useNarrow()
   const active = narrow && HANGUL.test(text)
   const ref = useRef(null)
-  const [plan, setPlan] = useState({ text: '', open: null })
+  const [plan, setPlan] = useState({ text: '', levels: null, spacing: null })
 
   useEffect(() => {
     const el = ref.current
     if (!active || !el) return undefined
     let lastW = -1
     const run = (force) => {
-      const cs = getComputedStyle(el)
-      const width = el.clientWidth - parseFloat(cs.paddingLeft) - parseFloat(cs.paddingRight)
+      const width = el.clientWidth
       if (!(width > 0)) return
       if (!force && Math.abs(width - lastW) < 0.5) return
       lastW = width
-      const fontSize = parseFloat(cs.fontSize)
-      const font = `${cs.fontStyle} ${cs.fontWeight} ${cs.fontSize} ${cs.fontFamily}`
-      const open = planOpen(text, width, font, fontSize)
-      flushSync(() => setPlan((prev) => {
-        if (prev.text === text && sameOpen(prev.open, open)) return prev
-        return { text, open }
-      }))
+      // 1) 처음 상태(어절을 하나도 쪼개지 않음)로 되돌린 뒤
+      let levels = new Map()
+      let spacing = new Map()
+      flushSync(() => setPlan({ text, levels, spacing }))
+      // 2) 위에서부터 벌어진 줄을 하나씩 찾아, 그 다음 줄로 밀려난 어절을 열어 준다
+      //    (고칠 때마다 실제로 다시 그려 보고 다음 줄로 — 폰트·기기가 달라도 화면 그대로 기준)
+      for (let step = 0; step < MAX_STEPS; step++) {
+        const hit = analyze(el, text).find((ln) => {
+          if (ln.gap <= GAP_LOOSE || !ln.nextFirst) return false
+          const lv = levels.get(ln.nextI) || 0
+          return !(lv > 2 || lv >= 2 || (lv >= 1 && ln.gap <= GAP_VERY_LOOSE))
+        })
+        if (!hit) break
+        const have = levels.get(hit.nextI) || 0
+        let level = hit.gap > GAP_VERY_LOOSE ? 2 : 1
+        if (level <= have) level = have + 1
+        while (level <= 2 && breakPoints(hit.nextTok, level).length === 0) {
+          level = hit.gap > GAP_VERY_LOOSE ? level + 1 : 3
+        }
+        levels = new Map(levels)
+        levels.set(hit.nextI, level > 2 ? 3 : level) // 3 = 더 열 수 없어 '시도 완료'
+        flushSync(() => setPlan({ text, levels, spacing }))
+      }
+      // 3) 어절을 열어도 안 되는 줄(영어·숫자 등)은 글자 사이를 아주 조금만 벌려 간격 부담을 나눈다
+      const tried = new Set()
+      for (let step = 0; step < MAX_STEPS; step++) {
+        const hit = analyze(el, text).find((ln) => ln.gap > GAP_LOOSE && !tried.has(ln.key) && ln.toks.length > 0)
+        if (!hit) break
+        tried.add(hit.key)
+        const chars = hit.toks.reduce((n, t) => n + t.chars, 0)
+        const slackEm = (hit.gap - 0.27) * hit.gaps
+        const ls = Math.min(hit.gap > 1.1 ? MAX_LS_WIDE : MAX_LS, (slackEm * 0.8) / chars)
+        if (!(ls > 0.004)) continue
+        const before = spacing
+        spacing = new Map(spacing)
+        hit.toks.forEach((t) => spacing.set(t.i, ls))
+        flushSync(() => setPlan({ text, levels, spacing }))
+        const now = analyze(el, text).find((ln) => ln.key === hit.key)
+        // 줄바꿈 위치가 달라졌거나 나아지지 않았으면 되돌린다
+        if (!now || now.nextI !== hit.nextI || now.nextFirst !== hit.nextFirst || now.gap >= hit.gap) {
+          spacing = before
+          flushSync(() => setPlan({ text, levels, spacing }))
+        }
+      }
     }
-    // 크기가 바뀔 때마다(첫 표시 포함) 그림이 그려지기 전에 바로 다시 계산한다
     const ro = new ResizeObserver(() => run(false))
     ro.observe(el)
     const fonts = document.fonts
-    if (fonts?.ready) fonts.ready.then(() => { _cache.clear(); run(true) })
+    if (fonts?.ready) fonts.ready.then(() => run(true))
     return () => ro.disconnect()
   }, [active, text])
 
-  const open = active && plan.text === text ? plan.open : null
+  const ok = active && plan.text === text
+  const levels = ok ? plan.levels : null
+  const spacing = ok ? plan.spacing : null
   const cls = `${className}${active ? ' sj' : ''}`.trim()
   return (
     <Tag ref={ref} className={cls || undefined} {...rest}>
-      {render(text, open)}
+      {render(text, levels, spacing)}
     </Tag>
   )
-}
-
-function sameOpen(a, b) {
-  if (a === b) return true
-  if (!a || !b || a.size !== b.size) return false
-  for (const k of b.keys()) if (!a.has(k)) return false
-  return true
 }
