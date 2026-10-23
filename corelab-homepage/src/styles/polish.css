@@ -591,3 +591,39 @@ html .faculty-contact .faculty-scholar a { font-size: 0.85rem; }
 html body .pub-author-head .pub-author-name {
   margin-top: 0;
 }
+
+/* 개인 연구 실적: 종류 버튼(All · Journal · Conference · Book · Dissertations · Projects · Patents) (2026-10-23)
+   고른 종류만 아래에 보입니다. 검색칸만 남은 줄은 오른쪽 끝으로. */
+html body .author-kinds {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+  margin: 0 0 var(--space-4);
+}
+html body .pub-toolbar > .pub-search:only-child {
+  margin-left: auto;
+}
+@media (max-width: 700px) {
+  html body .author-kinds {
+    gap: 0.2rem 1.3rem;
+    margin-bottom: var(--space-3);
+  }
+  /* 모바일 필터(밑줄 글자 탭)와 같은 모양 */
+  html body .author-kinds .filter-chip {
+    border: none;
+    border-radius: 0;
+    background: none;
+    padding: 0.4rem 0 0.45rem;
+    font-size: 0.95rem;
+    font-weight: 500;
+    color: var(--color-text-muted);
+    box-shadow: inset 0 -2px 0 transparent;
+  }
+  html body .author-kinds .filter-chip.active {
+    background: none;
+    color: var(--color-primary);
+    font-weight: 700;
+    box-shadow: inset 0 -2px 0 var(--color-primary);
+  }
+}
+
