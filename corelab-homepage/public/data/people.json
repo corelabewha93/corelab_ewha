@@ -244,9 +244,9 @@
         "hwang.et@ewha.ac.kr"
       ],
       "photoCrop": {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
+        "x": 100,
+        "y": 55,
+        "zoom": 1.13
       },
       "links": [],
       "nameEn": "Hye Jung Hwang",
