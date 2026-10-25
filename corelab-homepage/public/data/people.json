@@ -214,7 +214,7 @@
     {
       "id": "hwang-hyejeong",
       "name": "황혜정",
-      "photo": "images/people/황혜정-mvl79con.jpg",
+      "photo": "images/people/황혜정-mvnfy50a.jpg",
       "degree": "MA",
       "bio": "사각지대를 '두리번'거립니다",
       "detail": [
@@ -244,9 +244,9 @@
         "hwang.et@ewha.ac.kr"
       ],
       "photoCrop": {
-        "x": 46.5,
-        "y": 65.7,
-        "zoom": 2.84
+        "x": 56.1,
+        "y": 10,
+        "zoom": 1.25
       },
       "links": [],
       "nameEn": "Hye Jung Hwang",
