@@ -212,6 +212,41 @@
       ]
     },
     {
+      "name": "임연서",
+      "photo": "images/people/im-yeonseo-p1017.jpg",
+      "photoCrop": {
+        "x": 37.6,
+        "y": 70.2,
+        "zoom": 1.47
+      },
+      "degree": "MA",
+      "bio": "",
+      "detail": [
+        "#학력",
+        "이화여자대학교 교육공학과 석사과정 | 2026-09~현재",
+        "이화여자대학교 교육공학과 학사 | 2022~2026",
+        "#경력",
+        "루트컨설팅 변화솔루션사업부 인턴 | 2025",
+        "#Contact",
+        "imys@ewha.ac.kr"
+      ],
+      "links": [],
+      "id": "person-mue0fxe71xi",
+      "nameEn": "Yeonseo Im",
+      "pubNames": [],
+      "hideResearch": "hidden",
+      "bioEn": "",
+      "detailEn": [
+        "#Education",
+        "M.A. student, Educational Technology, Ewha Womans University | 2026-09~present",
+        "B.A., Educational Technology, Ewha Womans University | 2022~2026",
+        "#Experience",
+        "Intern, Change Solutions Division, Root Consulting | 2025",
+        "#Contact",
+        "imys@ewha.ac.kr"
+      ]
+    },
+    {
       "id": "hwang-hyejeong",
       "name": "황혜정",
       "photo": "images/people/황혜정-mvnt7gr5.jpg",
@@ -278,41 +313,6 @@
         "Spatial cognition, metacognition, learning analytics",
         "#Contact",
         "hwang.et@ewha.ac.kr"
-      ]
-    },
-    {
-      "name": "임연서",
-      "photo": "images/people/im-yeonseo-p1017.jpg",
-      "photoCrop": {
-        "x": 37.6,
-        "y": 70.2,
-        "zoom": 1.47
-      },
-      "degree": "MA",
-      "bio": "",
-      "detail": [
-        "#학력",
-        "이화여자대학교 교육공학과 석사과정 | 2026-09~현재",
-        "이화여자대학교 교육공학과 학사 | 2022~2026",
-        "#경력",
-        "루트컨설팅 변화솔루션사업부 인턴 | 2025",
-        "#Contact",
-        "imys@ewha.ac.kr"
-      ],
-      "links": [],
-      "id": "person-mue0fxe71xi",
-      "nameEn": "Yeonseo Im",
-      "pubNames": [],
-      "hideResearch": "hidden",
-      "bioEn": "",
-      "detailEn": [
-        "#Education",
-        "M.A. student, Educational Technology, Ewha Womans University | 2026-09~present",
-        "B.A., Educational Technology, Ewha Womans University | 2022~2026",
-        "#Experience",
-        "Intern, Change Solutions Division, Root Consulting | 2025",
-        "#Contact",
-        "imys@ewha.ac.kr"
       ]
     },
     {
