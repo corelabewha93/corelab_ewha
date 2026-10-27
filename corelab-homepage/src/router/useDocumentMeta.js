@@ -1,7 +1,7 @@
 import { useEffect } from 'react'
 import { useLang } from '../i18n/LangContext'
 
-const SITE_NAME = 'CoRe Lab | 이화여자대학교 교육공학과'
+const SITE_NAME = 'CoRe Lab(코어랩) | 이화여자대학교 교육공학과 임규연 교수 연구실'
 const DEFAULT_DESCRIPTION =
   '이화여자대학교 교육공학과 임규연 교수 연구실 CoRe Lab — 협력학습(CSCL), 학습분석학, 협력적 문제해결을 연구합니다.'
 
