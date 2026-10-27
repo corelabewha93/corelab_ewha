@@ -142,10 +142,14 @@ h1.section-title {
   padding: var(--space-6) var(--space-3);
   overflow: hidden;
   color: var(--color-on-primary);
-  background:
+  /* 그라데이션이 어떤 이유로 안 그려져도(변수 오류·기기 문제) 녹색이 남도록 단색을 따로 깝니다 */
+  background-color: #00462a;
+  background-image:
     radial-gradient(900px 600px at 82% -10%, rgba(69, 162, 188, 0.28), rgba(69, 162, 188, 0) 62%),
     radial-gradient(700px 520px at 8% 110%, rgba(217, 201, 122, 0.12), rgba(217, 201, 122, 0) 60%),
-    linear-gradient(135deg, #003a22 0%, var(--color-primary) 48%, #01532f 100%);
+    linear-gradient(135deg, #003a22 0%, #00462a 48%, #01532f 100%);
+  /* 고대비·강제 색상 모드에서도 배경이 흰색으로 바뀌지 않게 */
+  forced-color-adjust: none;
 }
 
 .hero-intro {
