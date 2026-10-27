@@ -23,8 +23,8 @@ html {
 }
 
 body {
-  background: var(--color-bg);
-  color: var(--color-text);
+  background: var(--color-bg, #ffffff);
+  color: var(--color-text, #222623);
   font-family: var(--font-sans);
   line-height: 1.65;
   letter-spacing: -0.005em;
@@ -37,7 +37,7 @@ body {
 }
 
 a {
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   text-decoration: none;
 }
 
@@ -55,14 +55,14 @@ button {
 }
 
 .container {
-  max-width: var(--max-width);
+  max-width: var(--max-width, 1080px);
   margin: 0 auto;
-  padding: 0 var(--space-3);
+  padding: 0 var(--space-3, 1.5rem);
 }
 
 .page {
-  padding-top: var(--space-5);
-  padding-bottom: var(--space-6);
+  padding-top: var(--space-5, 3rem);
+  padding-bottom: var(--space-6, 4.5rem);
   min-height: 60vh;
 }
 
@@ -71,8 +71,8 @@ button {
   font-size: 1.7rem;
   font-weight: 700;
   letter-spacing: -0.02em;
-  margin: 0 0 var(--space-4);
-  color: var(--color-text);
+  margin: 0 0 var(--space-4, 2rem);
+  color: var(--color-text, #222623);
 }
 
 .section-title::before {
@@ -80,7 +80,7 @@ button {
   display: block;
   width: 28px;
   height: 2px;
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   margin-bottom: 0.9rem;
 }
 
@@ -90,16 +90,16 @@ h1.section-title {
 
 /* 랩 모토: Lab Overview 맨 위에서 크게 강조합니다. */
 .lab-motto {
-  margin: 0 0 var(--space-4);
-  padding: var(--space-3) 0 var(--space-4);
-  border-bottom: 1px solid var(--color-border);
+  margin: 0 0 var(--space-4, 2rem);
+  padding: var(--space-3, 1.5rem) 0 var(--space-4, 2rem);
+  border-bottom: 1px solid var(--color-border, #e0e2de);
 }
 
 .lab-motto-kr {
   margin: 0;
   font-size: clamp(1.6rem, 4vw, 2.4rem);
   font-weight: 800;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   letter-spacing: -0.02em;
   line-height: 1.25;
 }
@@ -110,7 +110,7 @@ h1.section-title {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 @media (max-width: 560px) {
@@ -118,8 +118,8 @@ h1.section-title {
     font-size: 1.7rem;
   }
   .page {
-    padding-top: var(--space-4);
-    padding-bottom: var(--space-4);
+    padding-top: var(--space-4, 2rem);
+    padding-bottom: var(--space-4, 2rem);
     min-height: 50vh;
   }
 }
@@ -134,14 +134,14 @@ h1.section-title {
   width: 100vw;
   margin-left: calc(50% - 50vw);
   margin-right: calc(50% - 50vw);
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-6, 4.5rem);
   min-height: min(100vh, 860px);
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-6) var(--space-3);
+  padding: var(--space-6, 4.5rem) var(--space-3, 1.5rem);
   overflow: hidden;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   /* 그라데이션이 어떤 이유로 안 그려져도(변수 오류·기기 문제) 녹색이 남도록 단색을 따로 깝니다 */
   background-color: #00462a;
   background-image:
@@ -530,7 +530,7 @@ h1.section-title {
 }
 
 .section {
-  margin-bottom: var(--space-6);
+  margin-bottom: var(--space-6, 4.5rem);
 }
 
 /* ---------- Header ---------- */
@@ -539,8 +539,8 @@ h1.section-title {
   position: sticky;
   top: 0;
   z-index: 100;
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  background: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
   border-bottom: 1px solid rgba(255, 255, 255, 0.12);
 }
 
@@ -548,14 +548,14 @@ h1.section-title {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  min-height: var(--header-h);
+  min-height: var(--header-h, 64px);
 }
 
 .brand {
   display: flex;
   flex-direction: column;
   gap: 0.15rem;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   line-height: 1.2;
 }
 
@@ -617,7 +617,7 @@ h1.section-title {
 
 .nav a {
   position: relative;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   opacity: 0.78;
   font-size: 0.9rem;
   font-weight: 500;
@@ -671,7 +671,7 @@ h1.section-title {
   left: 11px;
   right: 11px;
   height: 1.5px;
-  background: var(--color-on-primary);
+  background: var(--color-on-primary, #ffffff);
   border-radius: 1px;
   transition: transform 0.2s ease, opacity 0.2s ease;
 }
@@ -696,7 +696,7 @@ h1.section-title {
     left: 0;
     right: 0;
     top: 100%;
-    background: var(--color-primary);
+    background: var(--color-primary, #00462a);
     flex-direction: column;
     gap: 0;
     max-height: 0;
@@ -710,7 +710,7 @@ h1.section-title {
     visibility: visible;
   }
   .nav a {
-    padding: 0.95rem var(--space-3);
+    padding: 0.95rem var(--space-3, 1.5rem);
     font-size: 1rem;
     border-top: 1px solid rgba(255, 255, 255, 0.1);
     opacity: 0.85;
@@ -727,11 +727,11 @@ h1.section-title {
 
 /* ---------- Footer ---------- */
 .site-footer {
-  background: var(--color-subtle);
-  border-top: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  padding: var(--space-5) 0 var(--space-3);
-  margin-top: var(--space-6);
+  background: var(--color-subtle, #f6f7f5);
+  border-top: 1px solid var(--color-border, #e0e2de);
+  color: var(--color-text-muted, #6c716d);
+  padding: var(--space-5, 3rem) 0 var(--space-3, 1.5rem);
+  margin-top: var(--space-6, 4.5rem);
 }
 
 .footer-inner {
@@ -744,7 +744,7 @@ h1.section-title {
 .footer-emblem {
   height: 54px;
   width: auto;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-3, 1.5rem);
   opacity: 0.9;
 }
 
@@ -762,17 +762,17 @@ h1.section-title {
 /* ---------- Buttons ---------- */
 .btn-primary {
   display: inline-block;
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  background: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
   padding: 0.6rem 1.3rem;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   font-weight: 600;
   border: none;
   cursor: pointer;
 }
 
 .btn-primary:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-dark, #00331f);
   text-decoration: none;
 }
 
@@ -780,7 +780,7 @@ h1.section-title {
 .tabs-layout {
   display: flex;
   align-items: flex-start;
-  gap: var(--space-4);
+  gap: var(--space-4, 2rem);
 }
 
 .tabs-nav {
@@ -790,7 +790,7 @@ h1.section-title {
   gap: 0.15rem;
   position: sticky;
   /* 상단 고정 헤더 바로 아래에 붙도록 (헤더에 가려지지 않게) */
-  top: calc(var(--header-h, 64px) + var(--space-3));
+  top: calc(var(--header-h, 64px) + var(--space-3, 1.5rem));
 }
 
 .tabs-content {
@@ -802,23 +802,23 @@ h1.section-title {
   background: none;
   border: none;
   border-left: 3px solid transparent;
-  border-radius: 0 var(--radius) var(--radius) 0;
+  border-radius: 0 var(--radius, 6px) var(--radius, 6px) 0;
   padding: 0.55rem 0.75rem;
   font-size: 0.95rem;
   text-align: left;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
   white-space: nowrap;
 }
 
 .tab-btn:hover {
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .tab-btn.active {
-  color: var(--color-primary);
-  border-left-color: var(--color-primary);
-  background: var(--color-primary-soft);
+  color: var(--color-primary, #00462a);
+  border-left-color: var(--color-primary, #00462a);
+  background: var(--color-primary-soft, rgba(0, 70, 42, 0.06));
   font-weight: 600;
 }
 
@@ -826,7 +826,7 @@ h1.section-title {
   .tabs-layout {
     flex-direction: column;
     align-items: stretch;
-    gap: var(--space-3);
+    gap: var(--space-3, 1.5rem);
   }
 
   .tabs-nav {
@@ -844,18 +844,18 @@ h1.section-title {
   /* 모바일 하위 메뉴: 알약(pill) 모양으로 "누를 수 있는 메뉴"임이 분명하게 보이도록 */
   .tab-btn {
     flex: 0 0 auto;
-    border: 1px solid var(--color-border);
+    border: 1px solid var(--color-border, #e0e2de);
     border-radius: 999px;
     padding: 0.38rem 0.85rem;
-    background: var(--color-surface);
+    background: var(--color-surface, #ffffff);
     font-size: 0.84rem;
     white-space: nowrap;
   }
 
   .tab-btn.active {
-    border-color: var(--color-primary);
-    background: var(--color-primary);
-    color: var(--color-on-primary);
+    border-color: var(--color-primary, #00462a);
+    background: var(--color-primary, #00462a);
+    color: var(--color-on-primary, #ffffff);
     /* 굵기를 바꾸면 폭이 달라져 줄바꿈이 흔들리므로 굵기는 고정 */
     font-weight: 400;
   }
@@ -875,9 +875,9 @@ h1.section-title {
 
 /* ---------- Cards / grids ---------- */
 .card {
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
 }
 
@@ -888,8 +888,8 @@ h1.section-title {
 
 /* 뉴스: 클릭 없이 기사 전체가 그대로 보이는 매거진형 레이아웃. 최신 글이 맨 위. */
 .news-article {
-  padding: var(--space-4) 0;
-  border-bottom: 1px solid var(--color-border);
+  padding: var(--space-4, 2rem) 0;
+  border-bottom: 1px solid var(--color-border, #e0e2de);
 }
 
 .news-list > :first-child .news-article {
@@ -904,20 +904,20 @@ h1.section-title {
   font-weight: 700;
   font-size: 1.15rem;
   margin: 0 0 0.6rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .news-article-subtitle {
   font-weight: 500;
   font-size: 0.92rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   margin: -0.3rem 0 0.9rem;
 }
 
 .news-article-p {
   font-size: 0.95rem;
   line-height: 1.75;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   margin: 0 0 0.85rem;
   white-space: pre-wrap;
   text-align: justify;
@@ -939,10 +939,10 @@ h1.section-title {
 
 /* 대표 사진: 제목 바로 아래, 실제 뉴스 기사처럼 원본 비율 그대로 보여줍니다. 크기·정렬은 관리자가 선택. */
 .news-article-hero {
-  margin-bottom: var(--space-3);
-  border-radius: var(--radius);
+  margin-bottom: var(--space-3, 1.5rem);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  background: var(--color-placeholder);
+  background: var(--color-placeholder, #eff0ed);
 }
 
 .news-article-hero img {
@@ -953,12 +953,12 @@ h1.section-title {
 
 /* 본문 중간에 [사진2]처럼 표시해둔 자리에 들어가는 사진 */
 .news-article-inline-img {
-  margin-top: var(--space-3);
-  margin-bottom: var(--space-3);
+  margin-top: var(--space-3, 1.5rem);
+  margin-bottom: var(--space-3, 1.5rem);
   max-width: 440px;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  background: var(--color-placeholder);
+  background: var(--color-placeholder, #eff0ed);
 }
 
 .news-article-inline-img img {
@@ -997,8 +997,8 @@ h1.section-title {
 .news-article-images {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
-  gap: var(--space-2);
-  margin: var(--space-3) 0 0;
+  gap: var(--space-2, 1rem);
+  margin: var(--space-3, 1.5rem) 0 0;
 }
 
 .news-article-images.single {
@@ -1007,8 +1007,8 @@ h1.section-title {
 
 .news-article-img {
   aspect-ratio: 4 / 3;
-  background: var(--color-placeholder);
-  border-radius: var(--radius);
+  background: var(--color-placeholder, #eff0ed);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
 }
 
@@ -1020,9 +1020,9 @@ h1.section-title {
 
 .news-article-link {
   display: inline-block;
-  margin-top: var(--space-2);
+  margin-top: var(--space-2, 1rem);
   font-size: 0.85rem;
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   font-weight: 600;
 }
 
@@ -1040,7 +1040,7 @@ h1.section-title {
 .news-list-grid {
   display: flex;
   flex-direction: column;
-  gap: var(--space-3);
+  gap: var(--space-3, 1.5rem);
 }
 
 /* 숨긴 소식 (관리자에게만 보임) */
@@ -1067,7 +1067,7 @@ h1.section-title {
 }
 
 .news-hidden-note {
-  margin: 0 0 var(--space-2);
+  margin: 0 0 var(--space-2, 1rem);
   font-size: 0.8rem;
   font-weight: 600;
   color: #a0651c;
@@ -1083,15 +1083,15 @@ h1.section-title {
   font-weight: 600;
   padding: 0.22rem 0.65rem;
   border-radius: 999px;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong, #c8cbc6);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
 }
 
 .news-hide-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-primary, #00462a);
 }
 
 .news-hide-btn.is-hidden {
@@ -1102,19 +1102,19 @@ h1.section-title {
 
 .news-list-card {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-3, 1.5rem);
   width: 100%;
   text-align: left;
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2);
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
+  padding: var(--space-2, 1rem);
   cursor: pointer;
   transition: border-color 0.15s ease, box-shadow 0.15s ease;
 }
 
 .news-list-card:hover {
-  border-color: var(--color-border-strong);
+  border-color: var(--color-border-strong, #c8cbc6);
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
 }
 
@@ -1124,9 +1124,9 @@ h1.section-title {
   /* 카드 높이(글이 길어지면 늘어남)에 맞춰 사진이 세로로 늘어나지 않도록, 항상 같은 비율(정사각형)로 고정합니다. */
   aspect-ratio: 1 / 1;
   align-self: flex-start;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  background: var(--color-placeholder);
+  background: var(--color-placeholder, #eff0ed);
 }
 
 .news-list-thumb img {
@@ -1151,7 +1151,7 @@ h1.section-title {
   font-size: 1.02rem;
   font-weight: 700;
   line-height: 1.45;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   display: -webkit-box;
   -webkit-line-clamp: 2;
   -webkit-box-orient: vertical;
@@ -1161,14 +1161,14 @@ h1.section-title {
 .news-list-subtitle {
   margin: 0 0 0.3rem;
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-weight: 500;
 }
 
 .news-list-excerpt {
   margin: 0;
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   line-height: 1.5;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -1195,10 +1195,10 @@ h1.section-title {
   background: none;
   border: none;
   padding: 0;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-3, 1.5rem);
   font-size: 0.9rem;
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   cursor: pointer;
 }
 
@@ -1219,7 +1219,7 @@ h1.section-title {
 .people-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-  gap: var(--space-4) var(--space-3);
+  gap: var(--space-4, 2rem) var(--space-3, 1.5rem);
   /* 기본값(stretch)이면 카드 하나를 펼쳤을 때 같은 줄의 다른 카드들까지
      키가 늘어나며 화면이 출렁이듯 움직여 보입니다. start로 바꿔서 펼친
      카드만 커지고 나머지는 그 자리에 그대로 있게 합니다. */
@@ -1243,9 +1243,9 @@ h1.section-title {
   width: 1.8rem;
   height: 1.8rem;
   border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-accent);
+  border: 1px solid var(--color-border, #e0e2de);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-accent, #45a2bc);
   font-size: 0.9rem;
   line-height: 1;
   cursor: pointer;
@@ -1256,23 +1256,23 @@ h1.section-title {
 }
 
 .admin-edit-btn:hover {
-  background: var(--color-accent);
-  color: var(--color-on-primary);
-  border-color: var(--color-accent);
+  background: var(--color-accent, #45a2bc);
+  color: var(--color-on-primary, #ffffff);
+  border-color: var(--color-accent, #45a2bc);
 }
 
 .person-photo {
   width: 148px;
   aspect-ratio: 3 / 4;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
   margin: 0 auto 0.9rem;
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   font-size: 2rem;
   font-weight: 700;
   transition: box-shadow 0.15s ease;
@@ -1330,12 +1330,12 @@ h1.section-title {
 }
 
 .person-name-btn:hover:not(:disabled) .person-name {
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
 }
 
 .chevron {
   font-size: 0.65rem;
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   transition: transform 0.15s ease;
 }
 
@@ -1350,14 +1350,14 @@ h1.section-title {
 }
 
 .person-position {
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   font-size: 0.85rem;
   margin: 0.3rem 0 0;
 }
 
 .person-bio {
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   margin: 0.4rem 0 0;
   line-height: 1.5;
 }
@@ -1368,10 +1368,10 @@ h1.section-title {
   list-style: none;
   margin: 0.6rem 0 0;
   padding: 0.6rem 0 0;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border, #e0e2de);
   text-align: left;
   font-size: 0.85rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   display: flex;
   flex-direction: column;
   gap: 0.35rem;
@@ -1386,21 +1386,21 @@ h1.section-title {
 
 .person-detail li.person-detail-strong {
   font-weight: 600;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 .person-detail li::before {
   content: '–';
   position: absolute;
   left: 0;
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
 }
 
 .person-detail li.person-detail-intro {
   padding-left: 0;
   font-weight: 700;
   font-size: 0.9rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   line-height: 1.4;
 }
 
@@ -1412,7 +1412,7 @@ h1.section-title {
   padding-left: 0;
   margin-top: 0.5rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   font-size: 0.78rem;
 }
 
@@ -1424,7 +1424,7 @@ h1.section-title {
   padding-left: 0;
   margin-top: 0.6rem;
   padding-top: 0.6rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border, #e0e2de);
 }
 
 .person-detail li.person-detail-pub::before {
@@ -1466,15 +1466,15 @@ h1.section-title {
   font-weight: 600;
   padding: 0.2rem 0.65rem;
   border-radius: 999px;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong, #c8cbc6);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
 }
 
 .person-pub-toggle:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-primary, #00462a);
 }
 
 .person-pub-toggle.is-hidden {
@@ -1498,17 +1498,17 @@ h1.section-title {
 
 /* 관리자가 숨겨진 모아보기 화면을 볼 때 안내 */
 .author-hidden-note {
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-3, 1.5rem);
   padding: 0.7rem 0.9rem;
   font-size: 0.85rem;
   color: #8a5a17;
   background: #fff7e8;
   border: 1px solid #e6c58f;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
 }
 
 .people-group + .people-group {
-  margin-top: var(--space-5);
+  margin-top: var(--space-5, 3rem);
 }
 
 .people-group-title,
@@ -1518,8 +1518,8 @@ h1.section-title {
   gap: 0.9rem;
   font-size: 0.85rem;
   font-weight: 700;
-  color: var(--color-primary);
-  margin: 0 0 var(--space-4);
+  color: var(--color-primary, #00462a);
+  margin: 0 0 var(--space-4, 2rem);
   letter-spacing: 0.08em;
 }
 
@@ -1528,7 +1528,7 @@ h1.section-title {
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--color-border);
+  background: var(--color-border, #e0e2de);
 }
 
 /* ---------- Research lists ---------- */
@@ -1538,14 +1538,14 @@ h1.section-title {
 .pub-stats {
   display: grid;
   grid-template-columns: repeat(5, 1fr);
-  margin: 0 0 var(--space-4);
-  border-top: 2px solid var(--color-primary);
-  border-bottom: 1px solid var(--color-border);
+  margin: 0 0 var(--space-4, 2rem);
+  border-top: 2px solid var(--color-primary, #00462a);
+  border-bottom: 1px solid var(--color-border, #e0e2de);
 }
 
 .pub-stats > div {
   padding: 0.9rem 0.9rem 0.85rem;
-  border-left: 1px solid var(--color-border);
+  border-left: 1px solid var(--color-border, #e0e2de);
 }
 
 .pub-stats > div:first-child {
@@ -1558,7 +1558,7 @@ h1.section-title {
   font-weight: 600;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   white-space: nowrap;
 }
 
@@ -1567,7 +1567,7 @@ h1.section-title {
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.1;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   font-variant-numeric: tabular-nums;
 }
 
@@ -1578,7 +1578,7 @@ h1.section-title {
   font-size: 0.72rem;
   font-weight: 600;
   letter-spacing: 0.02em;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   vertical-align: 0.15em;
 }
 
@@ -1589,7 +1589,7 @@ h1.section-title {
   justify-content: space-between;
   gap: 0.75rem;
   flex-wrap: wrap;
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-4, 2rem);
 }
 
 .pub-toolbar .filter-row {
@@ -1602,8 +1602,8 @@ h1.section-title {
   display: flex;
   align-items: center;
   width: 13.5rem;
-  border-bottom: 1px solid var(--color-border);
-  color: var(--color-text-muted);
+  border-bottom: 1px solid var(--color-border, #e0e2de);
+  color: var(--color-text-muted, #6c716d);
   transition:
     border-color 0.2s,
     width 0.25s ease,
@@ -1613,8 +1613,8 @@ h1.section-title {
 .pub-search:focus-within,
 .pub-search.has-value {
   width: 17rem;
-  border-bottom-color: var(--color-primary);
-  color: var(--color-primary);
+  border-bottom-color: var(--color-primary, #00462a);
+  color: var(--color-primary, #00462a);
 }
 
 .pub-search-icon {
@@ -1631,11 +1631,11 @@ h1.section-title {
   padding: 0.4rem 0;
   font: inherit;
   font-size: 0.86rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .pub-search-input::placeholder {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   opacity: 0.75;
 }
 
@@ -1652,22 +1652,22 @@ h1.section-title {
   padding: 0 0.1rem 0 0.4rem;
   font-size: 1.1rem;
   line-height: 1;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
 }
 
 .pub-search-clear:hover {
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .pub-search-summary {
-  margin: calc(-1 * var(--space-2)) 0 var(--space-3);
+  margin: calc(-1 * var(--space-2, 1rem)) 0 var(--space-3, 1.5rem);
   font-size: 0.84rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .pub-search-summary strong {
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   font-weight: 600;
 }
 
@@ -1676,12 +1676,12 @@ h1.section-title {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-2, 1rem);
   flex-wrap: wrap;
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-4, 2rem);
   padding: 1rem 0 1.1rem;
-  border-top: 2px solid var(--color-primary);
-  border-bottom: 1px solid var(--color-border);
+  border-top: 2px solid var(--color-primary, #00462a);
+  border-bottom: 1px solid var(--color-border, #e0e2de);
 }
 
 .pub-author-eyebrow {
@@ -1690,7 +1690,7 @@ h1.section-title {
   font-weight: 600;
   letter-spacing: 0.06em;
   text-transform: uppercase;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .pub-author-name {
@@ -1701,29 +1701,29 @@ h1.section-title {
   font-size: 1.6rem;
   font-weight: 700;
   line-height: 1.15;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 .pub-author-count {
   font-size: 0.95rem;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .pub-author-breakdown {
   margin: 0.35rem 0 0;
   font-size: 0.84rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .pub-author-clear {
   background: none;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border, #e0e2de);
   border-radius: 999px;
   padding: 0.3rem 0.9rem;
   font: inherit;
   font-size: 0.82rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
   transition:
     border-color 0.15s,
@@ -1731,19 +1731,19 @@ h1.section-title {
 }
 
 .pub-author-clear:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-primary, #00462a);
 }
 
 /* 연구 실적 모아보기 — 종류별 소제목(People의 "MA Program" 줄과 같은 모양) */
 .author-section + .author-section {
-  margin-top: var(--space-5);
+  margin-top: var(--space-5, 3rem);
 }
 
 .author-section-count {
   order: 2;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   letter-spacing: 0;
 }
 
@@ -1754,7 +1754,7 @@ h1.section-title {
 /* 모아보기 중인 사람의 이름은 저자 목록에서 초록색으로만 살짝 구분 (굵게 하지 않음) */
 mark.pub-hl-author {
   background: none;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 mark.pub-hl {
@@ -1768,17 +1768,17 @@ mark.pub-hl {
   display: flex;
   gap: 0.4rem;
   flex-wrap: wrap;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-3, 1.5rem);
 }
 
 .filter-chip {
   background: none;
-  border: 1px solid var(--color-border);
+  border: 1px solid var(--color-border, #e0e2de);
   border-radius: 999px;
   padding: 0.3rem 0.85rem;
   font-size: 0.84rem;
   cursor: pointer;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   transition:
     background 0.15s,
     color 0.15s,
@@ -1786,14 +1786,14 @@ mark.pub-hl {
 }
 
 .filter-chip:hover {
-  border-color: var(--color-border-strong);
-  color: var(--color-text);
+  border-color: var(--color-border-strong, #c8cbc6);
+  color: var(--color-text, #222623);
 }
 
 .filter-chip.active {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
+  background: var(--color-primary, #00462a);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
   font-weight: 600;
 }
 
@@ -1801,9 +1801,9 @@ mark.pub-hl {
 .pub-year-group {
   display: grid;
   grid-template-columns: 4.5rem 1fr;
-  gap: 0 var(--space-3);
-  padding: var(--space-2) 0;
-  border-top: 1px solid var(--color-border);
+  gap: 0 var(--space-3, 1.5rem);
+  padding: var(--space-2, 1rem) 0;
+  border-top: 1px solid var(--color-border, #e0e2de);
 }
 
 .pub-year-group:first-of-type {
@@ -1813,11 +1813,11 @@ mark.pub-hl {
 
 .pub-year-title {
   position: sticky;
-  top: calc(var(--header-h) + 1rem);
+  top: calc(var(--header-h, 64px) + 1rem);
   align-self: start;
   margin: 0;
   padding-top: 0.85rem;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   font-size: 1.15rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -1834,7 +1834,7 @@ mark.pub-hl {
 .project-item,
 .patent-item {
   padding: 0.85rem 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border, #e0e2de);
 }
 
 .pub-item:last-child,
@@ -1848,7 +1848,7 @@ mark.pub-hl {
   font-size: 0.98rem;
   font-weight: 600;
   line-height: 1.5;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   word-break: keep-all;
 }
 
@@ -1857,13 +1857,13 @@ mark.pub-hl {
 }
 
 .pub-title a:hover {
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 .pub-authors {
   margin: 0.2rem 0 0;
   font-size: 0.86rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   line-height: 1.5;
 }
 
@@ -1881,14 +1881,14 @@ mark.pub-hl {
 }
 
 .pub-details {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .pub-type-tag {
   font-size: 0.7rem;
   font-weight: 600;
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
+  color: var(--color-text-muted, #6c716d);
+  border: 1px solid var(--color-border, #e0e2de);
   border-radius: 3px;
   padding: 0.05rem 0.4rem;
 }
@@ -1909,8 +1909,8 @@ mark.pub-hl {
 
 /* 저역서 (저서 / 번역서 / 저서 (챕터 저술)) — 연한 초록 */
 .pub-type-tag-book {
-  color: var(--color-primary);
-  background: var(--color-primary-soft);
+  color: var(--color-primary, #00462a);
+  background: var(--color-primary-soft, rgba(0, 70, 42, 0.06));
   border-color: rgba(0, 70, 42, 0.18);
 }
 
@@ -1925,7 +1925,7 @@ mark.pub-hl {
 .pub-role-label {
   margin-right: 0.3rem;
   font-size: 0.78rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   opacity: 0.8;
 }
 
@@ -1977,7 +1977,7 @@ mark.pub-hl {
 .pub-doi {
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
 }
 
 /* 등재 등급 배지: SSCI(진한 초록) · SCIE(청록빛 초록, 구분용) > Scopus(연초록) > KCI(회색) — 해당하는 것을 모두 나란히 */
@@ -1998,7 +1998,7 @@ mark.pub-hl {
 }
 
 .pub-index-ssci {
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   color: #fff;
 }
 
@@ -2010,7 +2010,7 @@ mark.pub-hl {
 
 .pub-index-scopus {
   background: #e3f1ea;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 .pub-index-kci {
@@ -2025,15 +2025,15 @@ mark.pub-hl {
   font-weight: 600;
   padding: 0.1rem 0.5rem;
   border-radius: 999px;
-  border: 1px solid var(--color-border);
-  color: var(--color-text-muted);
-  margin-left: var(--space-1);
+  border: 1px solid var(--color-border, #e0e2de);
+  color: var(--color-text-muted, #6c716d);
+  margin-left: var(--space-1, 0.5rem);
   vertical-align: 0.1em;
 }
 
 .badge.ongoing {
-  color: var(--color-accent);
-  border-color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
+  border-color: var(--color-accent, #45a2bc);
 }
 
 /* 종료 = 성공적 마무리: 차분한 에메랄드 톤 + 체크 */
@@ -2077,15 +2077,15 @@ mark.pub-hl {
   font-weight: 600;
   padding: 0.22rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong, #c8cbc6);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
 }
 
 .patent-hide-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-primary, #00462a);
 }
 
 .patent-hide-btn.is-hidden {
@@ -2107,16 +2107,16 @@ mark.pub-hl {
   font-weight: 600;
   padding: 0.22rem 0.6rem;
   border-radius: 999px;
-  border: 1px solid var(--color-border-strong);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  border: 1px solid var(--color-border-strong, #c8cbc6);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
   z-index: 5;
 }
 
 .pub-exclude-btn:hover {
-  border-color: var(--color-primary);
-  color: var(--color-primary);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-primary, #00462a);
 }
 
 .pub-exclude-btn.is-excluded {
@@ -2191,12 +2191,12 @@ mark.pub-hl {
 }
 
 .project-meta {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-variant-numeric: tabular-nums;
 }
 
 .project-sep {
-  color: var(--color-border-strong);
+  color: var(--color-border-strong, #c8cbc6);
 }
 
 .project-scale {
@@ -2205,7 +2205,7 @@ mark.pub-hl {
 
 .project-budget {
   font-weight: 600;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .project-members {
@@ -2213,9 +2213,9 @@ mark.pub-hl {
   gap: 0.6rem;
   margin-top: 0.55rem;
   padding-top: 0.5rem;
-  border-top: 1px dashed var(--color-border);
+  border-top: 1px dashed var(--color-border, #e0e2de);
   font-size: 0.84rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .project-members-label {
@@ -2223,7 +2223,7 @@ mark.pub-hl {
   font-size: 0.72rem;
   font-weight: 700;
   letter-spacing: 0.02em;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   padding-top: 0.12rem;
 }
 
@@ -2237,21 +2237,21 @@ mark.pub-hl {
   margin-right: 0.3rem;
   font-size: 0.72rem;
   font-weight: 600;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .project-desc-label {
   margin: 0.7rem 0 0;
   font-size: 0.84rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .project-desc {
   margin: 0.2rem 0 0;
   font-size: 0.86rem;
   line-height: 1.6;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 @media (max-width: 700px) {
@@ -2276,10 +2276,10 @@ mark.pub-hl {
 
 .members-remove {
   height: 2.1rem;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-muted, #6c716d);
   font-size: 1rem;
   cursor: pointer;
 }
@@ -2296,9 +2296,9 @@ mark.pub-hl {
   font-weight: 600;
   padding: 0.3rem 0.7rem;
   border-radius: 999px;
-  border: 1px dashed var(--color-border-strong);
+  border: 1px dashed var(--color-border-strong, #c8cbc6);
   background: none;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   cursor: pointer;
 }
 
@@ -2316,9 +2316,9 @@ mark.pub-hl {
 .book-row {
   display: grid;
   grid-template-columns: 4.5rem 1fr;
-  gap: 0 var(--space-3);
+  gap: 0 var(--space-3, 1.5rem);
   padding: 0.9rem 0;
-  border-bottom: 1px solid var(--color-border);
+  border-bottom: 1px solid var(--color-border, #e0e2de);
 }
 
 .book-row:last-child {
@@ -2326,7 +2326,7 @@ mark.pub-hl {
 }
 
 .book-row-year {
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   font-size: 1.1rem;
   font-weight: 700;
   font-variant-numeric: tabular-nums;
@@ -2338,7 +2338,7 @@ mark.pub-hl {
   font-size: 1rem;
   font-weight: 700;
   line-height: 1.5;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   word-break: keep-all;
 }
 
@@ -2351,8 +2351,8 @@ mark.pub-hl {
   letter-spacing: 0.02em;
   padding: 0.15rem 0.45rem;
   border-radius: 3px;
-  background: var(--color-primary-soft);
-  color: var(--color-primary);
+  background: var(--color-primary-soft, rgba(0, 70, 42, 0.06));
+  color: var(--color-primary, #00462a);
 }
 
 .book-role-badge.book-role-translation {
@@ -2361,21 +2361,21 @@ mark.pub-hl {
 }
 
 .book-role-badge.book-role-custom {
-  background: var(--color-subtle);
-  color: var(--color-text-muted);
-  border: 1px solid var(--color-border);
+  background: var(--color-subtle, #f6f7f5);
+  color: var(--color-text-muted, #6c716d);
+  border: 1px solid var(--color-border, #e0e2de);
 }
 
 .book-authors {
   margin: 0.2rem 0 0;
   font-size: 0.86rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .book-role-label {
   display: inline-block;
   min-width: 3.4rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   opacity: 0.75;
 }
 
@@ -2396,11 +2396,11 @@ mark.pub-hl {
   .pub-stats {
     grid-template-columns: 1fr 1fr;
     max-width: none;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-3, 1.5rem);
     padding: 0;
     background: none;
-    border-top: 1px solid var(--color-primary);
-    border-bottom: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-primary, #00462a);
+    border-bottom: 1px solid var(--color-border, #e0e2de);
     border-radius: 0;
   }
 
@@ -2408,13 +2408,13 @@ mark.pub-hl {
   .pub-stats > div:first-child {
     padding: 0.55rem 0 0.5rem;
     border-left: none;
-    border-top: 1px solid var(--color-border);
+    border-top: 1px solid var(--color-border, #e0e2de);
   }
 
   /* 2칸 줄의 오른쪽 칸은 가는 세로선으로 구분 */
   .pub-stats > div:nth-child(2n + 3) {
     padding-left: 0.9rem;
-    border-left: 1px solid var(--color-border);
+    border-left: 1px solid var(--color-border, #e0e2de);
   }
 
   /* 맨 위 총계 줄 */
@@ -2460,15 +2460,15 @@ mark.pub-hl {
 
   .pub-year-group {
     display: block;
-    padding-top: var(--space-3);
+    padding-top: var(--space-3, 1.5rem);
   }
 
   /* 모바일: 연도(과제 기간)도 스크롤하는 동안 상단 띠 바로 아래에 고정 */
   .pub-year-title {
     position: sticky;
-    top: calc(var(--header-h) + 1px + var(--bar-h));
+    top: calc(var(--header-h, 64px) + 1px + var(--bar-h));
     z-index: 5;
-    background: var(--color-bg);
+    background: var(--color-bg, #ffffff);
     padding: 0.4rem 0;
     display: flex;
     align-items: baseline;
@@ -2495,19 +2495,19 @@ mark.pub-hl {
 .tools-grid {
   display: grid;
   grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-3, 1.5rem);
 }
 
 .tool-card {
-  padding: var(--space-2);
+  padding: var(--space-2, 1rem);
 }
 
 .tool-card .tool-image {
   aspect-ratio: 16/10;
-  background: var(--color-placeholder);
-  border-radius: var(--radius);
+  background: var(--color-placeholder, #eff0ed);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-2, 1rem);
 }
 
 .tool-card .tool-image img {
@@ -2520,8 +2520,8 @@ mark.pub-hl {
   display: inline-block;
   font-size: 0.75rem;
   font-weight: 500;
-  color: var(--color-primary);
-  background: var(--color-primary-soft);
+  color: var(--color-primary, #00462a);
+  background: var(--color-primary-soft, rgba(0, 70, 42, 0.06));
   border-radius: 999px;
   padding: 0.2rem 0.7rem;
   margin-right: 0.35rem;
@@ -2532,7 +2532,7 @@ mark.pub-hl {
 .gallery-grid {
   display: grid;
   grid-template-columns: repeat(2, 1fr);
-  gap: var(--space-2);
+  gap: var(--space-2, 1rem);
 }
 
 @media (min-width: 600px) {
@@ -2556,8 +2556,8 @@ mark.pub-hl {
   position: relative;
   aspect-ratio: 4 / 3;
   overflow: hidden;
-  border-radius: var(--radius);
-  background: var(--color-placeholder);
+  border-radius: var(--radius, 6px);
+  background: var(--color-placeholder, #eff0ed);
   cursor: pointer;
   border: none;
   padding: 0;
@@ -2598,7 +2598,7 @@ mark.pub-hl {
 .gallery-item-caption {
   margin: 0.5rem 0 0;
   font-size: 0.85rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   line-height: 1.4;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -2614,7 +2614,7 @@ mark.pub-hl {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3);
+  padding: var(--space-3, 1.5rem);
   z-index: 110;
 }
 
@@ -2623,9 +2623,9 @@ mark.pub-hl {
   --lb-pad: 16px;
   --lb-photo-h: min(44vh, 400px);
   position: relative;
-  background: var(--color-surface);
+  background: var(--color-surface, #ffffff);
   border-radius: 24px;
-  border-top: 3px solid var(--color-primary);
+  border-top: 3px solid var(--color-primary, #00462a);
   box-shadow: 0 18px 44px rgba(0, 0, 0, 0.22);
   width: min(92vw, calc(var(--lb-photo-h) * 1.25 + var(--lb-pad) * 2));
   max-height: 90vh;
@@ -2647,7 +2647,7 @@ mark.pub-hl {
   border: none;
   background: rgba(255, 255, 255, 0.88);
   box-shadow: 0 1px 4px rgba(0, 0, 0, 0.18);
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   font-size: 1rem;
   line-height: 1;
   cursor: pointer;
@@ -2655,7 +2655,7 @@ mark.pub-hl {
 }
 
 .lightbox-close:hover {
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 /* 목록 그리드(4:3)보다 세로로 조금 더 긴 5:4 비율로 고정합니다.
@@ -2668,7 +2668,7 @@ mark.pub-hl {
   aspect-ratio: 5 / 4;
   border-radius: 16px;
   overflow: hidden;
-  background: var(--color-placeholder);
+  background: var(--color-placeholder, #eff0ed);
 }
 
 .lightbox-photo-frame img {
@@ -2710,7 +2710,7 @@ mark.pub-hl {
   margin: 0 0.4rem;
   border-radius: 50%;
   background: rgba(255, 255, 255, 0.5);
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-size: 1.1rem;
   line-height: 1;
   display: flex;
@@ -2724,7 +2724,7 @@ mark.pub-hl {
 .lightbox-nav:active .lightbox-nav-icon {
   opacity: 1;
   background: rgba(255, 255, 255, 0.9);
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .lightbox-counter {
@@ -2756,13 +2756,13 @@ mark.pub-hl {
   border-radius: 50%;
   border: none;
   padding: 0;
-  background: var(--color-border);
+  background: var(--color-border, #e0e2de);
   cursor: pointer;
   transition: background 0.2s ease, width 0.2s ease;
 }
 
 .lightbox-dot.active {
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   width: 1rem; /* 지금 보고 있는 사진은 길쭉한 알약 모양 */
   border-radius: 999px;
 }
@@ -2771,12 +2771,12 @@ mark.pub-hl {
   width: 100%;
   margin-top: 0.6rem;
   padding: 0.65rem 0.25rem 0.1rem;
-  border-top: 1px dashed var(--color-border);
+  border-top: 1px dashed var(--color-border, #e0e2de);
   text-align: center;
 }
 
 .lightbox-caption {
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   margin: 0;
   font-size: 1rem;
   font-weight: 700;
@@ -2784,7 +2784,7 @@ mark.pub-hl {
 }
 
 .lightbox-body {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   margin: 0.35rem 0 0;
   font-size: 0.84rem;
   line-height: 1.6;
@@ -2810,37 +2810,37 @@ mark.pub-hl {
 /* ---------- Contact ---------- */
 .contact-box {
   display: grid;
-  gap: var(--space-1);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-3);
+  gap: var(--space-1, 0.5rem);
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
+  padding: var(--space-3, 1.5rem);
 }
 
 .contact-row {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-2, 1rem);
 }
 
 .contact-label {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   min-width: 80px;
   font-size: 0.9rem;
 }
 
 /* ---------- Misc ---------- */
 .muted {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .empty-state {
-  color: var(--color-text-muted);
-  padding: var(--space-4) 0;
+  color: var(--color-text-muted, #6c716d);
+  padding: var(--space-4, 2rem) 0;
 }
 
 .error-state {
   color: #a33;
-  padding: var(--space-4) 0;
+  padding: var(--space-4, 2rem) 0;
 }
 
 /* ---------- Admin: footer link, floating register button, modals ---------- */
@@ -2849,9 +2849,9 @@ mark.pub-hl {
   background: none;
   border: none;
   padding: 0.2rem;
-  margin-top: var(--space-3);
+  margin-top: var(--space-3, 1.5rem);
   font-size: 0.66rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   opacity: 0.05;
   cursor: pointer;
   transition: opacity 0.2s ease;
@@ -2863,15 +2863,15 @@ mark.pub-hl {
 }
 
 .admin-only-date {
-  color: var(--color-accent) !important;
+  color: var(--color-accent, #45a2bc) !important;
 }
 
 .admin-fab {
   position: fixed;
-  right: var(--space-3);
-  bottom: var(--space-3);
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  right: var(--space-3, 1.5rem);
+  bottom: var(--space-3, 1.5rem);
+  background: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
   border: none;
   border-radius: 999px;
   padding: 0.55rem 1.1rem;
@@ -2883,15 +2883,15 @@ mark.pub-hl {
 }
 
 .admin-fab:hover {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-dark, #00331f);
 }
 
 .admin-toast {
   position: fixed;
   left: 50%;
-  bottom: var(--space-3);
+  bottom: var(--space-3, 1.5rem);
   transform: translateX(-50%);
-  background: var(--color-text);
+  background: var(--color-text, #222623);
   color: #fff;
   border-radius: 999px;
   padding: 0.6rem 1.2rem;
@@ -2909,14 +2909,14 @@ mark.pub-hl {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3);
+  padding: var(--space-3, 1.5rem);
   z-index: 50;
 }
 
 .modal-card {
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  padding: var(--space-4);
+  background: var(--color-surface, #ffffff);
+  border-radius: var(--radius, 6px);
+  padding: var(--space-4, 2rem);
   width: 100%;
   max-width: 380px;
   max-height: 85vh;
@@ -2935,7 +2935,7 @@ mark.pub-hl {
   display: flex;
   align-items: center;
   justify-content: center;
-  padding: var(--space-3);
+  padding: var(--space-3, 1.5rem);
   overscroll-behavior: contain;
   /* 헤더(z-index:100)보다 위에 있어야 스크롤된 화면에서도 팝업이 가려지거나
      클릭이 헤더에 가로채이지 않습니다. */
@@ -2944,9 +2944,9 @@ mark.pub-hl {
 
 .person-modal-card {
   position: relative;
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  border-top: 3px solid var(--color-primary);
+  background: var(--color-surface, #ffffff);
+  border-radius: var(--radius, 6px);
+  border-top: 3px solid var(--color-primary, #00462a);
   box-shadow: 0 20px 48px rgba(0, 0, 0, 0.22);
   width: 100%;
   max-width: 480px;
@@ -2954,7 +2954,7 @@ mark.pub-hl {
   max-height: 85dvh;
   /* 카드 전체가 아니라 아래 이력(.person-modal-scroll)만 스크롤됩니다. 사진 · 이름은 위에 고정. */
   overflow: hidden;
-  padding: var(--space-4) var(--space-4) 0;
+  padding: var(--space-4, 2rem) var(--space-4, 2rem) 0;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -2978,7 +2978,7 @@ mark.pub-hl {
   -webkit-overflow-scrolling: touch;
   /* 이력 끝까지 내려가도 뒤 화면이 따라 움직이지 않게 합니다. */
   overscroll-behavior: contain;
-  padding: 0 0 var(--space-4);
+  padding: 0 0 var(--space-4, 2rem);
 }
 
 .person-modal-scroll::-webkit-scrollbar {
@@ -2996,33 +2996,33 @@ mark.pub-hl {
   width: 1.9rem;
   height: 1.9rem;
   border-radius: 50%;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  color: var(--color-text-muted);
+  border: 1px solid var(--color-border, #e0e2de);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-text-muted, #6c716d);
   font-size: 1.1rem;
   line-height: 1;
   cursor: pointer;
 }
 
 .person-modal-close:hover {
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .person-modal-photo {
   flex: 0 0 auto;
   width: 116px;
   aspect-ratio: 3 / 4;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   font-size: 2rem;
   font-weight: 700;
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
-  margin: 0 auto var(--space-2);
+  margin: 0 auto var(--space-2, 1rem);
 }
 
 .person-modal-photo img {
@@ -3040,7 +3040,7 @@ mark.pub-hl {
   margin: 0;
   font-size: 1.3rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   text-align: center;
 }
 
@@ -3048,7 +3048,7 @@ mark.pub-hl {
   margin: 0.2rem 0 0;
   font-size: 0.85rem;
   font-weight: 500;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   text-align: center;
   letter-spacing: 0.01em;
 }
@@ -3059,7 +3059,7 @@ mark.pub-hl {
 
 @media (max-width: 520px) {
   .person-modal-card {
-    padding: var(--space-3) var(--space-3) 0;
+    padding: var(--space-3, 1.5rem) var(--space-3, 1.5rem) 0;
     max-height: 88vh;
     max-height: 88dvh;
   }
@@ -3069,22 +3069,22 @@ mark.pub-hl {
 }
 
 .modal-title {
-  margin: 0 0 var(--space-2);
-  color: var(--color-primary);
+  margin: 0 0 var(--space-2, 1rem);
+  color: var(--color-primary, #00462a);
   font-size: 1.2rem;
 }
 
 .modal-hint {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-size: 0.85rem;
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-3, 1.5rem);
 }
 
 .modal-field {
   display: block;
-  margin-bottom: var(--space-2);
+  margin-bottom: var(--space-2, 1rem);
   font-size: 0.82rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .modal-field > span {
@@ -3095,17 +3095,17 @@ mark.pub-hl {
 .modal-input {
   width: 100%;
   box-sizing: border-box;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
   padding: 0.5rem 0.6rem;
   font-size: 0.95rem;
   font-family: inherit;
-  color: var(--color-text);
-  background: var(--color-bg);
+  color: var(--color-text, #222623);
+  background: var(--color-bg, #ffffff);
 }
 
 .modal-input:focus {
-  outline: 2px solid var(--color-accent);
+  outline: 2px solid var(--color-accent, #45a2bc);
   outline-offset: 1px;
 }
 
@@ -3115,40 +3115,40 @@ mark.pub-hl {
 }
 
 .modal-status {
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   font-size: 0.85rem;
-  margin: var(--space-2) 0 0;
+  margin: var(--space-2, 1rem) 0 0;
 }
 
 .modal-error {
   color: #a33;
   font-size: 0.85rem;
-  margin: var(--space-2) 0 0;
+  margin: var(--space-2, 1rem) 0 0;
 }
 
 .modal-actions {
   display: flex;
   justify-content: flex-end;
-  gap: var(--space-2);
-  margin-top: var(--space-3);
+  gap: var(--space-2, 1rem);
+  margin-top: var(--space-3, 1.5rem);
 }
 
 .modal-btn-secondary {
   background: none;
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
   padding: 0.55rem 1.1rem;
   font-size: 0.9rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   cursor: pointer;
 }
 
 .modal-btn-secondary:hover {
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .modal-steps {
-  margin: 0 0 var(--space-3);
+  margin: 0 0 var(--space-3, 1.5rem);
   padding-left: 1.2rem;
   font-size: 0.88rem;
   line-height: 1.6;
@@ -3158,8 +3158,8 @@ mark.pub-hl {
 }
 
 .modal-steps code {
-  background: var(--color-bg);
-  border: 1px solid var(--color-border);
+  background: var(--color-bg, #ffffff);
+  border: 1px solid var(--color-border, #e0e2de);
   border-radius: 4px;
   padding: 0.05rem 0.35rem;
   font-size: 0.82rem;
@@ -3183,23 +3183,23 @@ mark.pub-hl {
 
 .person-affiliation {
   font-size: 0.85rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   margin: 0.3rem 0 0;
 }
 
 .admin-fab-group {
   position: fixed;
-  right: var(--space-3);
-  bottom: var(--space-3);
+  right: var(--space-3, 1.5rem);
+  bottom: var(--space-3, 1.5rem);
   display: flex;
   gap: 0.5rem;
   z-index: 40;
 }
 
 .admin-fab-btn {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
-  border: 1px solid var(--color-primary);
+  background: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
+  border: 1px solid var(--color-primary, #00462a);
   border-radius: 999px;
   padding: 0.55rem 1.1rem;
   font-size: 0.85rem;
@@ -3209,16 +3209,16 @@ mark.pub-hl {
 }
 
 .admin-fab-btn:hover:not(:disabled) {
-  background: var(--color-primary-dark);
+  background: var(--color-primary-dark, #00331f);
 }
 
 .admin-fab-btn.secondary {
-  background: var(--color-surface);
-  color: var(--color-primary);
+  background: var(--color-surface, #ffffff);
+  color: var(--color-primary, #00462a);
 }
 
 .admin-fab-btn.secondary:hover:not(:disabled) {
-  background: var(--color-bg);
+  background: var(--color-bg, #ffffff);
 }
 
 .admin-fab-btn:disabled {
@@ -3227,19 +3227,19 @@ mark.pub-hl {
 }
 
 .reorder-banner {
-  background: var(--color-surface);
-  border: 1px dashed var(--color-accent);
-  border-radius: var(--radius);
+  background: var(--color-surface, #ffffff);
+  border: 1px dashed var(--color-accent, #45a2bc);
+  border-radius: var(--radius, 6px);
   padding: 0.6rem 0.9rem;
   font-size: 0.85rem;
-  color: var(--color-text);
-  margin: 0 0 var(--space-3);
+  color: var(--color-text, #222623);
+  margin: 0 0 var(--space-3, 1.5rem);
 }
 
 .person-card.reordering {
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2) 0.5rem;
+  border: 1px dashed var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
+  padding: var(--space-2, 1rem) 0.5rem;
 }
 
 .reorder-controls {
@@ -3252,16 +3252,16 @@ mark.pub-hl {
 .reorder-controls button {
   width: 2.2rem;
   height: 2rem;
-  border: 1px solid var(--color-border);
-  background: var(--color-surface);
-  border-radius: var(--radius);
-  color: var(--color-accent);
+  border: 1px solid var(--color-border, #e0e2de);
+  background: var(--color-surface, #ffffff);
+  border-radius: var(--radius, 6px);
+  color: var(--color-accent, #45a2bc);
   cursor: pointer;
   font-size: 0.8rem;
 }
 
 .reorder-controls button:hover:not(:disabled) {
-  border-color: var(--color-accent);
+  border-color: var(--color-accent, #45a2bc);
 }
 
 .reorder-controls button:disabled {
@@ -3271,9 +3271,9 @@ mark.pub-hl {
 
 /* 학위논문 순서 바꾸기: 항목 아래에 ▲▼ 버튼 */
 .pub-item.pub-item-reordering {
-  border: 1px dashed var(--color-border);
-  border-radius: var(--radius);
-  padding: var(--space-2) 0.9rem;
+  border: 1px dashed var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
+  padding: var(--space-2, 1rem) 0.9rem;
 }
 
 .pub-reorder-controls {
@@ -3283,12 +3283,12 @@ mark.pub-hl {
 .footer-admin-row {
   display: flex;
   justify-content: center;
-  gap: var(--space-2);
+  gap: var(--space-2, 1rem);
 }
 
 .field-hint {
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   margin: 0.3rem 0 0;
 }
 
@@ -3296,7 +3296,7 @@ mark.pub-hl {
   background: none;
   border: none;
   padding: 0;
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   font-size: 0.8rem;
   cursor: pointer;
   text-decoration: underline;
@@ -3310,7 +3310,7 @@ mark.pub-hl {
 .modal-btn-danger {
   background: none;
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   padding: 0.55rem 0.6rem;
   font-size: 0.85rem;
   color: #a33;
@@ -3329,7 +3329,7 @@ mark.pub-hl {
 
 .image-field {
   display: flex;
-  gap: var(--space-2);
+  gap: var(--space-2, 1rem);
   align-items: flex-start;
 }
 
@@ -3337,10 +3337,10 @@ mark.pub-hl {
   width: 72px;
   height: 72px;
   flex: 0 0 72px;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  border: 1px solid var(--color-border);
-  background: var(--color-bg);
+  border: 1px solid var(--color-border, #e0e2de);
+  background: var(--color-bg, #ffffff);
 }
 
 .image-field-thumb img {
@@ -3422,16 +3422,16 @@ mark.pub-hl {
 }
 
 .image-field-thumb-open.active {
-  outline: 2px solid var(--color-primary);
+  outline: 2px solid var(--color-primary, #00462a);
   outline-offset: -2px;
 }
 
 .crop-editor-panel {
   margin-top: 0.6rem;
-  padding: var(--space-3);
-  border: 1px solid var(--color-border);
-  border-radius: var(--radius);
-  background: var(--color-bg);
+  padding: var(--space-3, 1.5rem);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-radius: var(--radius, 6px);
+  background: var(--color-bg, #ffffff);
 }
 
 .crop-panel-done {
@@ -3440,19 +3440,19 @@ mark.pub-hl {
 
 .crop-editor {
   display: flex;
-  gap: var(--space-3);
+  gap: var(--space-3, 1.5rem);
   align-items: center;
   flex-wrap: wrap;
 }
 
 .crop-preview {
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   cursor: grab;
   touch-action: none;
   flex: 0 0 auto;
-  box-shadow: 0 0 0 1px var(--color-border);
+  box-shadow: 0 0 0 1px var(--color-border, #e0e2de);
 }
 
 .crop-preview:active {
@@ -3464,7 +3464,7 @@ mark.pub-hl {
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   font-size: 0.8rem;
 }
 
@@ -3488,7 +3488,7 @@ mark.pub-hl {
 .crop-help {
   margin: 0;
   font-size: 0.8rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .crop-controls label {
@@ -3505,7 +3505,7 @@ mark.pub-hl {
 
 .crop-controls input[type='range'] {
   flex: 1;
-  accent-color: var(--color-accent);
+  accent-color: var(--color-accent, #45a2bc);
 }
 
 .crop-reset {
@@ -3516,11 +3516,11 @@ mark.pub-hl {
 
 @media (max-width: 520px) {
   .admin-fab-group {
-    right: var(--space-2);
-    bottom: var(--space-2);
+    right: var(--space-2, 1rem);
+    bottom: var(--space-2, 1rem);
   }
   .modal-card {
-    padding: var(--space-3);
+    padding: var(--space-3, 1.5rem);
   }
 }
 
@@ -3541,7 +3541,7 @@ mark.pub-hl {
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  gap: var(--space-2);
+  gap: var(--space-2, 1rem);
 }
 
 .news-preview-more {
@@ -3552,7 +3552,7 @@ mark.pub-hl {
 .news-preview-grid {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-  gap: var(--space-3);
+  gap: var(--space-3, 1.5rem);
 }
 
 .news-preview-card {
@@ -3565,7 +3565,7 @@ mark.pub-hl {
 }
 
 .news-preview-card:hover .title {
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 .news-preview-card .news-preview-thumb img {
@@ -3578,8 +3578,8 @@ mark.pub-hl {
 
 .news-preview-thumb {
   aspect-ratio: 16 / 10;
-  background: var(--color-placeholder);
-  border-radius: var(--radius);
+  background: var(--color-placeholder, #eff0ed);
+  border-radius: var(--radius, 6px);
   overflow: hidden;
   margin-bottom: 0.5rem;
 }
@@ -3592,7 +3592,7 @@ mark.pub-hl {
 }
 
 .news-preview-card .date {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-size: 0.78rem;
   margin-bottom: 0.2rem;
 }
@@ -3601,7 +3601,7 @@ mark.pub-hl {
   font-weight: 600;
   font-size: 0.95rem;
   margin: 0;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   line-height: 1.4;
 }
 
@@ -3609,18 +3609,18 @@ mark.pub-hl {
 .faculty-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-5);
+  gap: var(--space-5, 3rem);
 }
 
 .faculty-profile {
   display: flex;
-  gap: var(--space-4);
+  gap: var(--space-4, 2rem);
   align-items: flex-start;
-  padding: var(--space-4);
-  background: var(--color-surface);
-  border: 1px solid var(--color-border);
-  border-top: 3px solid var(--color-primary);
-  border-radius: var(--radius);
+  padding: var(--space-4, 2rem);
+  background: var(--color-surface, #ffffff);
+  border: 1px solid var(--color-border, #e0e2de);
+  border-top: 3px solid var(--color-primary, #00462a);
+  border-radius: var(--radius, 6px);
   box-shadow: 0 2px 12px rgba(0, 0, 0, 0.03);
 }
 
@@ -3628,14 +3628,14 @@ mark.pub-hl {
   flex: 0 0 200px;
   width: 200px;
   aspect-ratio: 3 / 4;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   box-shadow: 0 1px 2px rgba(0, 0, 0, 0.06);
   overflow: hidden;
-  background: var(--color-primary);
+  background: var(--color-primary, #00462a);
   display: flex;
   align-items: center;
   justify-content: center;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   font-size: 2.4rem;
   font-weight: 700;
 }
@@ -3656,42 +3656,42 @@ mark.pub-hl {
   margin: 0 0 0.2rem;
   font-size: 1.5rem;
   font-weight: 700;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .faculty-position {
   margin: 0;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   font-weight: 600;
   font-size: 0.95rem;
 }
 
 .faculty-affiliation {
   margin: 0.15rem 0 0;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-size: 0.9rem;
 }
 
 .faculty-rule {
   width: 100%;
   height: 1px;
-  background: var(--color-border);
-  margin: var(--space-2) 0;
+  background: var(--color-border, #e0e2de);
+  margin: var(--space-2, 1rem) 0;
 }
 
 .faculty-bio {
-  margin: 0 0 var(--space-2);
+  margin: 0 0 var(--space-2, 1rem);
   font-size: 0.93rem;
   line-height: 1.75;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 .faculty-meta {
   display: flex;
   flex-wrap: wrap;
-  gap: var(--space-4);
-  padding: var(--space-2) 0;
-  border-top: 1px solid var(--color-border);
+  gap: var(--space-4, 2rem);
+  padding: var(--space-2, 1rem) 0;
+  border-top: 1px solid var(--color-border, #e0e2de);
 }
 
 .faculty-contact {
@@ -3704,7 +3704,7 @@ mark.pub-hl {
   /* 교수님 소개(.faculty-bio)와 같은 색·굵기로 맞춤 — 이전엔 굵게+진하게 해서 너무 튀었음 */
   font-size: 0.92rem;
   font-weight: 400;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   line-height: 1.7;
   flex: 1;
   min-width: 160px;
@@ -3718,16 +3718,16 @@ mark.pub-hl {
 .faculty-meta-label {
   display: block;
   font-size: 0.75rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   text-transform: uppercase;
   letter-spacing: 0.04em;
   margin-bottom: 0.4rem;
 }
 
 .faculty-history {
-  border-top: 1px solid var(--color-border);
-  margin-top: var(--space-2);
-  padding-top: var(--space-2);
+  border-top: 1px solid var(--color-border, #e0e2de);
+  margin-top: var(--space-2, 1rem);
+  padding-top: var(--space-2, 1rem);
   text-align: left;
 }
 
@@ -3740,7 +3740,7 @@ mark.pub-hl {
 }
 
 .faculty-scholar a {
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   font-weight: 600;
   font-size: 0.85rem;
 }
@@ -3752,10 +3752,10 @@ mark.pub-hl {
 .faculty-history-table {
   display: grid;
   grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
-  gap: var(--space-4);
-  border-top: 1px solid var(--color-border);
-  margin-top: var(--space-3);
-  padding-top: var(--space-3);
+  gap: var(--space-4, 2rem);
+  border-top: 1px solid var(--color-border, #e0e2de);
+  margin-top: var(--space-3, 1.5rem);
+  padding-top: var(--space-3, 1.5rem);
   text-align: left;
 }
 
@@ -3768,9 +3768,9 @@ mark.pub-hl {
   margin: 0 0 0.6rem;
   font-size: 0.8rem;
   font-weight: 700;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   padding-bottom: 0.4rem;
-  border-bottom: 2px solid var(--color-primary);
+  border-bottom: 2px solid var(--color-primary, #00462a);
 }
 
 .faculty-history-col ul {
@@ -3781,7 +3781,7 @@ mark.pub-hl {
   flex-direction: column;
   gap: 0.5rem;
   font-size: 0.82rem;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   line-height: 1.5;
 }
 
@@ -3805,12 +3805,12 @@ mark.pub-hl {
   letter-spacing: -0.01em;
   font-weight: 400;
   font-variant-numeric: tabular-nums;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   white-space: nowrap;
 }
 
 .person-detail-link {
-  color: var(--color-accent);
+  color: var(--color-accent, #45a2bc);
   text-decoration: underline;
 }
 
@@ -3824,8 +3824,8 @@ mark.pub-hl {
   .faculty-profile {
     flex-direction: column;
     align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-3) var(--space-2);
+    gap: var(--space-3, 1.5rem);
+    padding: var(--space-3, 1.5rem) var(--space-2, 1rem);
     /* 부모(.page container)보다 넓어지지 않도록 */
     min-width: 0;
     max-width: 100%;
@@ -3854,7 +3854,7 @@ mark.pub-hl {
   }
   .faculty-meta {
     flex-direction: column;
-    gap: var(--space-2);
+    gap: var(--space-2, 1rem);
   }
   .faculty-contact {
     align-items: flex-start;
@@ -3875,12 +3875,12 @@ mark.pub-hl {
   /* 학력/수상/경력을 한 줄에 한 칸씩 세로로 쌓아서 화면 밖으로 넘치지 않게 */
   .faculty-history-table {
     grid-template-columns: 1fr;
-    gap: var(--space-3);
+    gap: var(--space-3, 1.5rem);
   }
 }
 
 .news-preview-head {
-  margin-bottom: var(--space-4);
+  margin-bottom: var(--space-4, 2rem);
 }
 
 .news-preview-head .section-title {
@@ -3888,12 +3888,12 @@ mark.pub-hl {
 }
 
 .news-preview-more {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-weight: 500;
 }
 
 .news-preview-more:hover {
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   text-decoration: none;
 }
 
@@ -3905,7 +3905,7 @@ mark.pub-hl {
 /* 소식 미리보기: 최대 3칸, 카드 한 장은 최대 250px 너비로 아담하게 (왼쪽부터 채움) */
 .news-preview-grid {
   grid-template-columns: repeat(3, minmax(0, 250px));
-  gap: var(--space-3) var(--space-4);
+  gap: var(--space-3, 1.5rem) var(--space-4, 2rem);
 }
 
 .news-preview-card .title {
@@ -3919,7 +3919,7 @@ mark.pub-hl {
 }
 
 .chevron {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 /* =====================================================================
@@ -3927,18 +3927,18 @@ mark.pub-hl {
    ===================================================================== */
 @media (max-width: 720px) {
   .site-footer {
-    margin-top: var(--space-5);
-    padding-top: var(--space-4);
+    margin-top: var(--space-5, 3rem);
+    padding-top: var(--space-4, 2rem);
   }
 
   /* 홈 Latest News: 큰 세로 카드 대신 News 목록처럼 사진 왼쪽 + 제목 오른쪽 */
   .news-preview-grid {
-    gap: var(--space-2);
+    gap: var(--space-2, 1rem);
   }
   .news-preview-card {
     display: flex;
     align-items: center;
-    gap: var(--space-2);
+    gap: var(--space-2, 1rem);
   }
   .news-preview-card .news-preview-thumb {
     flex: 0 0 84px;
@@ -3963,7 +3963,7 @@ mark.pub-hl {
 
   /* News 목록 카드 */
   .news-list-card {
-    gap: var(--space-2);
+    gap: var(--space-2, 1rem);
     padding: 0.85rem;
   }
   .news-list-title {
@@ -4016,15 +4016,15 @@ mark.pub-hl {
     font-size: 0.9rem;
   }
   .people-group-title {
-    margin-bottom: var(--space-2);
+    margin-bottom: var(--space-2, 1rem);
   }
   .people-group + .people-group {
-    margin-top: var(--space-4);
+    margin-top: var(--space-4, 2rem);
   }
 
   /* Lab Life */
   .gallery-grid {
-    gap: var(--space-2) 0.75rem;
+    gap: var(--space-2, 1rem) 0.75rem;
   }
   .gallery-item-caption {
     font-size: 0.82rem;
@@ -4058,7 +4058,7 @@ a[x-apple-data-detectors] {
   justify-content: center;
   align-items: center;
   gap: 0.3rem;
-  margin: var(--space-5) 0 var(--space-2);
+  margin: var(--space-5, 3rem) 0 var(--space-2, 1rem);
 }
 
 .page-btn {
@@ -4066,21 +4066,21 @@ a[x-apple-data-detectors] {
   height: 2.2rem;
   padding: 0 0.5rem;
   border: 1px solid transparent;
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   background: none;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-size: 0.92rem;
   cursor: pointer;
 }
 
 .page-btn:hover:not(:disabled):not(.active) {
-  color: var(--color-primary);
-  background: var(--color-primary-soft);
+  color: var(--color-primary, #00462a);
+  background: var(--color-primary-soft, rgba(0, 70, 42, 0.06));
 }
 
 .page-btn.active {
-  background: var(--color-primary);
-  color: var(--color-on-primary);
+  background: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
   font-weight: 600;
 }
 
@@ -4095,7 +4095,7 @@ a[x-apple-data-detectors] {
 }
 
 .page-gap {
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   padding: 0 0.1rem;
 }
 
@@ -4104,16 +4104,16 @@ a[x-apple-data-detectors] {
   margin: 0.35rem 0 0;
   font-size: 0.9rem;
   line-height: 1.6;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 .tool-ack {
   margin: 0.55rem 0 0;
   padding-top: 0.5rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border, #e0e2de);
   font-size: 0.78rem;
   line-height: 1.55;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 
 /* ---------- 모바일 고정 제목 띠 (Research · Publications 등) ---------- */
@@ -4128,7 +4128,7 @@ a[x-apple-data-detectors] {
 
   .page-sticky-bar {
     position: fixed;
-    top: calc(var(--header-h) + 1px);
+    top: calc(var(--header-h, 64px) + 1px);
     left: 0;
     right: 0;
     z-index: 90;
@@ -4136,9 +4136,9 @@ a[x-apple-data-detectors] {
     display: flex;
     align-items: center;
     gap: 0.55rem;
-    padding: 0 var(--space-3);
-    background: var(--color-bg);
-    border-bottom: 1px solid var(--color-border);
+    padding: 0 var(--space-3, 1.5rem);
+    background: var(--color-bg, #ffffff);
+    border-bottom: 1px solid var(--color-border, #e0e2de);
     font-size: 0.9rem;
     transform: translateY(-100%);
     opacity: 0;
@@ -4153,18 +4153,18 @@ a[x-apple-data-detectors] {
 
   .page-sticky-title {
     font-weight: 700;
-    color: var(--color-text);
+    color: var(--color-text, #222623);
   }
 
   .page-sticky-sub {
-    color: var(--color-primary);
+    color: var(--color-primary, #00462a);
     font-weight: 600;
   }
 
   .page-sticky-sub::before {
     content: '·';
     margin-right: 0.55rem;
-    color: var(--color-text-muted);
+    color: var(--color-text-muted, #6c716d);
     font-weight: 400;
   }
 }
@@ -4176,11 +4176,11 @@ a[x-apple-data-detectors] {
 @media (min-width: 701px) {
   .page-title-pin {
     position: sticky;
-    top: var(--header-h);
+    top: var(--header-h, 64px);
     z-index: 30;
-    margin-top: calc(-1 * var(--space-3));
-    padding: var(--space-3) 0 var(--space-4);
-    background: var(--color-bg);
+    margin-top: calc(-1 * var(--space-3, 1.5rem));
+    padding: var(--space-3, 1.5rem) 0 var(--space-4, 2rem);
+    background: var(--color-bg, #ffffff);
   }
 
   .page-title-pin .section-title {
@@ -4188,24 +4188,24 @@ a[x-apple-data-detectors] {
   }
 
   .page-title-pin ~ .tabs-layout .tabs-nav {
-    top: calc(var(--header-h) + var(--title-h, 0px));
+    top: calc(var(--header-h, 64px) + var(--title-h, 0px));
   }
 
   .page-title-pin ~ .tabs-layout .pub-author-head {
     position: sticky;
-    top: calc(var(--header-h) + var(--title-h, 0px));
+    top: calc(var(--header-h, 64px) + var(--title-h, 0px));
     z-index: 20;
-    background: var(--color-bg);
-    box-shadow: 0 -1px 0 var(--color-bg); /* 제목 띠와의 사이 1px 틈 메우기 */
+    background: var(--color-bg, #ffffff);
+    box-shadow: 0 -1px 0 var(--color-bg, #ffffff); /* 제목 띠와의 사이 1px 틈 메우기 */
   }
 
   /* 연도: 고정된 머리말 바로 아래에 붙음 */
   .page-title-pin ~ .tabs-layout .pub-year-title {
-    top: calc(var(--header-h) + var(--title-h, 0px) + 0.25rem);
+    top: calc(var(--header-h, 64px) + var(--title-h, 0px) + 0.25rem);
   }
 
   .page-title-pin ~ .tabs-layout .author-research .pub-year-title {
-    top: calc(var(--header-h) + var(--title-h, 0px) + var(--author-h, 0px) + 0.25rem);
+    top: calc(var(--header-h, 64px) + var(--title-h, 0px) + var(--author-h, 0px) + 0.25rem);
   }
 }
 
@@ -4218,7 +4218,7 @@ html.modal-locked .site-header {
 
 /* About 메뉴로 내려올 때 Lab Overview 제목이 고정 헤더에 가려지지 않도록 */
 #overview {
-  scroll-margin-top: calc(var(--header-h) + 0.5rem);
+  scroll-margin-top: calc(var(--header-h, 64px) + 0.5rem);
 }
 
 /* PC 상단 헤더: 넓은 화면에서 메뉴·로고를 조금 더 크고 여유 있게 (모바일 721px 미만은 그대로) */

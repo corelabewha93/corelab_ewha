@@ -2,7 +2,7 @@
 html body .tools-list {
   display: flex;
   flex-direction: column;
-  gap: var(--space-4);
+  gap: var(--space-4, 2rem);
 }
 
 html body .tool-feature {
@@ -23,7 +23,7 @@ html body .tool-name {
   font-size: 1.2rem;
   font-weight: 700;
   line-height: 1.35;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
 }
 
 html body .tool-link {
@@ -45,7 +45,7 @@ html body .tool-devs-k {
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 html body .tool-related {
@@ -57,7 +57,7 @@ html body .tool-related-title {
   font-size: 0.8rem;
   font-weight: 700;
   letter-spacing: 0.01em;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 
 html body .tool-related-list {
@@ -82,7 +82,7 @@ html body .tool-desc {
   margin: 0.9rem 0 0;
   font-size: 0.93rem;
   line-height: 1.75;
-  color: var(--color-text);
+  color: var(--color-text, #222623);
   word-break: keep-all;
 }
 
@@ -106,7 +106,7 @@ html body .tool-fig a {
   aspect-ratio: 15 / 8; /* 플랫폼 화면 비율(약 1.87:1)에 맞춰 잘리지 않게 */
   overflow: hidden;
   border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: var(--radius);
+  border-radius: var(--radius, 6px);
   background: #f4f5f4;
 }
 

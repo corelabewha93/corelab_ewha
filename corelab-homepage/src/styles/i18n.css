@@ -14,7 +14,7 @@ html .lang-btn {
   background: none;
   border: 0;
   padding: 0.35rem 0.32rem;
-  color: var(--color-on-primary);
+  color: var(--color-on-primary, #ffffff);
   opacity: 0.5;
   font-family: var(--font-sans);
   font-size: 0.74rem;
@@ -78,7 +78,7 @@ html .lang-btn:not(.on):focus-visible {
   }
   html .site-header .container {
     /* 680px = (1080px 칸 폭 ÷ 2) + 오른쪽 28px + 버튼 약 65px + 메뉴와의 간격 약 45px */
-    padding-right: clamp(var(--space-3), calc(680px - 50%), 140px);
+    padding-right: clamp(var(--space-3, 1.5rem), calc(680px - 50%), 140px);
   }
 }
 

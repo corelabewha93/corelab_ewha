@@ -36,7 +36,7 @@ html .news-article-p {
 html .lab-keywords {
   margin: 1.6rem 0 0;
   padding-top: 1.2rem;
-  border-top: 1px solid var(--color-border);
+  border-top: 1px solid var(--color-border, #e0e2de);
 }
 html .lab-keywords-in {
   display: flex;
@@ -49,7 +49,7 @@ html .lab-keyword {
   padding: 0.36rem 0.85rem;
   border-radius: 18px;
   background: #e4f2e9;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   font-size: 0.76rem;
   font-weight: 500;
   line-height: 1.4;
@@ -108,7 +108,7 @@ html .lab-keyword {
 @media (min-width: 721px) {
   html .news-preview-grid {
     grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: var(--space-3) var(--space-3);
+    gap: var(--space-3, 1.5rem) var(--space-3, 1.5rem);
   }
   html .news-preview-card .title {
     text-wrap: balance;
@@ -129,17 +129,17 @@ html .pub-more::after {
   content: '';
   flex: 1;
   height: 1px;
-  background: var(--color-border);
+  background: var(--color-border, #e0e2de);
 }
 html .pub-more-btn {
   display: inline-flex;
   align-items: center;
   gap: 0.7rem;
   padding: 0.72rem 1.4rem;
-  border: 1px solid var(--color-border-strong);
+  border: 1px solid var(--color-border-strong, #c8cbc6);
   border-radius: 999px;
-  background: var(--color-bg);
-  color: var(--color-primary);
+  background: var(--color-bg, #ffffff);
+  color: var(--color-primary, #00462a);
   font: inherit;
   font-size: 0.88rem;
   font-weight: 600;
@@ -154,8 +154,8 @@ html .pub-more-btn {
 }
 html .pub-more-meta {
   padding-left: 0.7rem;
-  border-left: 1px solid var(--color-border);
-  color: var(--color-text-muted);
+  border-left: 1px solid var(--color-border, #e0e2de);
+  color: var(--color-text-muted, #6c716d);
   font-size: 0.8rem;
   font-weight: 500;
   font-variant-numeric: tabular-nums;
@@ -168,9 +168,9 @@ html .pub-more-chev {
 }
 html .pub-more-btn:hover,
 html .pub-more-btn:focus-visible {
-  background: var(--color-primary);
-  border-color: var(--color-primary);
-  color: var(--color-on-primary);
+  background: var(--color-primary, #00462a);
+  border-color: var(--color-primary, #00462a);
+  color: var(--color-on-primary, #ffffff);
   box-shadow: 0 6px 18px -10px rgba(0, 70, 42, 0.55);
 }
 html .pub-more-btn:hover .pub-more-meta,
@@ -205,14 +205,14 @@ html .pub-older {
 @media (hover: none) {
   /* 휴대폰: 누른 뒤 초록색이 남아 있지 않도록 */
   html .pub-more-btn:hover {
-    background: var(--color-bg);
-    border-color: var(--color-border-strong);
-    color: var(--color-primary);
+    background: var(--color-bg, #ffffff);
+    border-color: var(--color-border-strong, #c8cbc6);
+    color: var(--color-primary, #00462a);
     box-shadow: none;
   }
   html .pub-more-btn:hover .pub-more-meta {
-    color: var(--color-text-muted);
-    border-left-color: var(--color-border);
+    color: var(--color-text-muted, #6c716d);
+    border-left-color: var(--color-border, #e0e2de);
   }
 }
 /* 모바일: 버튼을 한 단계 작고 가볍게 */
@@ -243,11 +243,11 @@ html .pub-older {
    (헤더와 제목 띠 사이 틈은 배경색으로 덮어, 그 틈으로 목록이 비쳐 보이지 않게 합니다) */
 @media (min-width: 701px) {
   html {
-    --pin-top: calc(var(--header-h) + 1px + var(--space-5) - var(--space-3));
+    --pin-top: calc(var(--header-h, 64px) + 1px + var(--space-5, 3rem) - var(--space-3, 1.5rem));
   }
   html .page-title-pin {
     top: var(--pin-top);
-    box-shadow: 0 calc(var(--header-h) - var(--pin-top)) 0 var(--color-bg);
+    box-shadow: 0 calc(var(--header-h, 64px) - var(--pin-top)) 0 var(--color-bg, #ffffff);
   }
   html .page-title-pin ~ .tabs-layout .tabs-nav,
   html .page-title-pin ~ .tabs-layout .pub-author-head {
@@ -269,11 +269,11 @@ html .pub-older {
    목록이 아주 짧거나 비어 있어도 메뉴 높이만큼은 칸이 확보되도록 최소 높이를 둡니다. */
 @media (min-width: 701px) {
   html .page-title-pin ~ .tabs-layout {
-    margin-bottom: calc(-2 * var(--space-6));
+    margin-bottom: calc(-2 * var(--space-6, 4.5rem));
   }
   html .page-title-pin ~ .tabs-layout > .tabs-content {
-    padding-bottom: calc(2 * var(--space-6));
-    min-height: calc(2 * var(--space-6) + 12.5rem);
+    padding-bottom: calc(2 * var(--space-6, 4.5rem));
+    min-height: calc(2 * var(--space-6, 4.5rem) + 12.5rem);
   }
 }
 
@@ -298,7 +298,7 @@ html .pub-older {
 html .patent-number {
   margin: 0.2rem 0 0;
   font-size: 0.82rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
   font-variant-numeric: tabular-nums;
 }
 
@@ -331,23 +331,23 @@ html .pub-award.pub-award-org-badge svg {
 html .news-list-summary {
   margin: -0.4rem 0 0.9rem;
   font-size: 0.82rem;
-  color: var(--color-text-muted);
+  color: var(--color-text-muted, #6c716d);
 }
 html .pagination {
-  margin-top: var(--space-5);
-  padding-top: var(--space-3);
-  border-top: 1px solid var(--color-border);
+  margin-top: var(--space-5, 3rem);
+  padding-top: var(--space-3, 1.5rem);
+  border-top: 1px solid var(--color-border, #e0e2de);
 }
 html .page-btn {
-  border-color: var(--color-border);
-  color: var(--color-text);
+  border-color: var(--color-border, #e0e2de);
+  color: var(--color-text, #222623);
   font-weight: 500;
 }
 html .page-btn.page-arrow {
   border-color: transparent;
 }
 html .page-btn.active {
-  border-color: var(--color-primary);
+  border-color: var(--color-primary, #00462a);
 }
 
 /* Lab Life 사진 크게 보기 (2026-10-23 "갤러리 액자")
@@ -410,7 +410,7 @@ html body .lightbox-caption {
   font-weight: 700;
   line-height: 1.4;
   letter-spacing: -0.015em;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
   word-break: keep-all;
 }
 html body .lightbox-body {
@@ -461,7 +461,7 @@ html .faculty-history-col .edu-degree {
   font-size: 0.74rem;
   font-weight: 700;
   letter-spacing: 0.04em;
-  color: var(--color-primary);
+  color: var(--color-primary, #00462a);
 }
 html .faculty-history-col .edu-main { display: block; min-width: 0; }
 html .faculty-history-col .edu-univ {
@@ -515,20 +515,20 @@ html .faculty-contact .faculty-scholar a { font-size: 0.85rem; }
 @media (min-width: 701px) {
   html body .pub-toolbar.pub-toolbar-pin {
     position: sticky;
-    top: calc(var(--pin-top, var(--header-h)) + var(--title-h, 0px));
+    top: calc(var(--pin-top, var(--header-h, 64px)) + var(--title-h, 0px));
     z-index: 25;
-    margin-top: calc(-1 * var(--space-1));
-    margin-bottom: var(--space-3);
-    padding: var(--space-1) 0 calc(var(--space-2) - 0.25rem);
-    background: var(--color-bg);
-    box-shadow: 0 -1px 0 var(--color-bg);
+    margin-top: calc(-1 * var(--space-1, 0.5rem));
+    margin-bottom: var(--space-3, 1.5rem);
+    padding: var(--space-1, 0.5rem) 0 calc(var(--space-2, 1rem) - 0.25rem);
+    background: var(--color-bg, #ffffff);
+    box-shadow: 0 -1px 0 var(--color-bg, #ffffff);
     transition: box-shadow 0.18s ease;
   }
   html body .pub-toolbar.pub-toolbar-pin.is-stuck {
-    box-shadow: 0 -1px 0 var(--color-bg), 0 1px 0 var(--color-border);
+    box-shadow: 0 -1px 0 var(--color-bg, #ffffff), 0 1px 0 var(--color-border, #e0e2de);
   }
   html body .page-title-pin ~ .tabs-layout .pubs-pinned .pub-year-title {
-    top: calc(var(--pin-top, var(--header-h)) + var(--title-h, 0px) + var(--pubbar-h, 0px));
+    top: calc(var(--pin-top, var(--header-h, 64px)) + var(--title-h, 0px) + var(--pubbar-h, 0px));
   }
 }
 
@@ -548,18 +548,18 @@ html .faculty-contact .faculty-scholar a { font-size: 0.85rem; }
     padding: 0.4rem 0 0.45rem;
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--color-text-muted);
+    color: var(--color-text-muted, #6c716d);
     box-shadow: inset 0 -2px 0 transparent;
     transition: color 0.15s, box-shadow 0.15s;
   }
   html body .pub-toolbar .filter-chip.active {
     background: none;
-    color: var(--color-primary);
+    color: var(--color-primary, #00462a);
     font-weight: 700;
-    box-shadow: inset 0 -2px 0 var(--color-primary);
+    box-shadow: inset 0 -2px 0 var(--color-primary, #00462a);
   }
   html body .pub-toolbar .filter-chip:hover:not(.active) {
-    color: var(--color-text);
+    color: var(--color-text, #222623);
   }
 }
 
@@ -574,7 +574,7 @@ html body .author-kinds {
   display: flex;
   flex-wrap: wrap;
   gap: 0.4rem;
-  margin: 0 0 var(--space-4);
+  margin: 0 0 var(--space-4, 2rem);
 }
 html body .pub-toolbar > .pub-search:only-child {
   margin-left: auto;
@@ -582,7 +582,7 @@ html body .pub-toolbar > .pub-search:only-child {
 @media (max-width: 700px) {
   html body .author-kinds {
     gap: 0.2rem 1.3rem;
-    margin-bottom: var(--space-3);
+    margin-bottom: var(--space-3, 1.5rem);
   }
   /* 모바일 필터(밑줄 글자 탭)와 같은 모양 */
   html body .author-kinds .filter-chip {
@@ -592,14 +592,14 @@ html body .pub-toolbar > .pub-search:only-child {
     padding: 0.4rem 0 0.45rem;
     font-size: 0.95rem;
     font-weight: 500;
-    color: var(--color-text-muted);
+    color: var(--color-text-muted, #6c716d);
     box-shadow: inset 0 -2px 0 transparent;
   }
   html body .author-kinds .filter-chip.active {
     background: none;
-    color: var(--color-primary);
+    color: var(--color-primary, #00462a);
     font-weight: 700;
-    box-shadow: inset 0 -2px 0 var(--color-primary);
+    box-shadow: inset 0 -2px 0 var(--color-primary, #00462a);
   }
 }
 

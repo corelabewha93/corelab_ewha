@@ -47,7 +47,7 @@ html .hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > :nth-child(2).
 html body .footer-emblem {
   height: 88px;
   width: auto;
-  margin-bottom: var(--space-3);
+  margin-bottom: var(--space-3, 1.5rem);
 }
 
 /* 홈 요소 줄이기 (교수님 최종 피드백, C안)
