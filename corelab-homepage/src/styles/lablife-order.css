@@ -44,3 +44,27 @@
   padding: 0;
   font-size: 0.78rem;
 }
+
+/* 사진 밑 제목: 짧은 초록 선 + 굵은 먹색 글씨 (페이지 제목 위 초록 선과 같은 포인트) */
+html body .gallery-item-caption {
+  margin-top: 0.75rem;
+  font-size: 0.92rem;
+  font-weight: 700;
+  letter-spacing: -0.02em;
+  line-height: 1.45;
+  color: #222623;
+}
+html body .gallery-item-caption::before {
+  content: '';
+  display: block;
+  width: 18px;
+  height: 2px;
+  background-color: #00462a;
+  margin-bottom: 0.45rem;
+}
+@media (max-width: 700px) {
+  html body .gallery-item-caption {
+    font-size: 0.84rem;
+    margin-top: 0.6rem;
+  }
+}
