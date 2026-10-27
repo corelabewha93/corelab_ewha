@@ -137,8 +137,8 @@ Sitemap: ${siteUrl}sitemap.xml
  */
 const PREVIEW_PAGES = [
   { path: 'news', title: 'News | CoRe Lab', desc: '이화여자대학교 교육공학과 CoRe Lab의 연구 성과 · 수상 · 활동 소식', image: 'images/og/og-news.png', alt: 'CoRe Lab News — 연구실 소식' },
-  { path: 'research', title: 'Research | CoRe Lab', desc: 'CoRe Lab의 논문 · 학위논문 · 연구과제 · 특허 — 협력학습(CSCL), 학습분석학, 협력적 문제해결', image: 'images/og/og-research.png', alt: 'CoRe Lab Research — 연구' },
-  { path: 'people', title: 'People | CoRe Lab', desc: 'CoRe Lab의 지도교수 · 재학생 · 졸업생을 소개합니다.', image: 'images/og/og-people.png', alt: 'CoRe Lab People — 구성원' },
+  { path: 'research', title: 'Research | CoRe Lab', desc: '임규연 교수 연구실 CoRe Lab의 논문 · 학위논문 · 연구과제 · 특허 — 협력학습(CSCL), 학습분석학, 협력적 문제해결', image: 'images/og/og-research.png', alt: 'CoRe Lab Research — 연구' },
+  { path: 'people', title: 'People · 임규연 교수 | CoRe Lab', desc: '이화여대 교육공학과 임규연(Kyu Yon Lim) 교수와 CoRe Lab 재학생·졸업생을 소개합니다.', image: 'images/og/og-people.png', alt: 'CoRe Lab People — 구성원' },
   { path: 'lablife', title: 'Lab Life | CoRe Lab', desc: '함께 공부하고 함께 나눈 CoRe Lab의 시간들', image: 'images/og/og-lablife.png', alt: 'CoRe Lab Lab Life — 연구실 생활' },
 ]
 
@@ -263,7 +263,18 @@ function linkPreviewPagesPlugin() {
       }
       const pplPg = pages.find((p) => p.path === 'people')
       if (pplPg) {
-        pplPg.crawl = '<p>지도교수: 임규연 (Kyu Yon Lim), 이화여자대학교 교육공학과 교수.</p>'
+        try {
+          const f = JSON.parse(readFileSync(join(root, 'public/data/people.json'), 'utf8')).faculty?.[0]
+          const ints = (f?.researchInterests ?? []).map((x) => escText(x)).join(', ')
+          const bio = String(f?.bio ?? '')
+            .split(/\n+/)
+            .filter(Boolean)
+            .map((l) => `<p>${escText(l)}</p>`)
+            .join('')
+          pplPg.crawl = `<h2>임규연 교수 (Kyu Yon Lim)</h2><p>${escText(f?.position ?? '교수')}, ${escText(f?.affiliation ?? '이화여자대학교 교육공학과')} — 이화여대 임규연 교수</p>${bio}${ints ? `<p>Research Interests: ${ints}</p>` : ''}`
+        } catch {
+          pplPg.crawl = '<p>지도교수: 임규연 (Kyu Yon Lim), 이화여자대학교 교육공학과 교수.</p>'
+        }
       }
 
       pages.forEach((pg) => {
