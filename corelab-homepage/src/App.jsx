@@ -17,6 +17,7 @@ import './styles/justify.css'
 import './styles/motto.css'
 import './styles/polish.css'
 import './styles/i18n.css'
+import './styles/paint-safe.css'
 
 const ROUTES = {
   '/': About,
