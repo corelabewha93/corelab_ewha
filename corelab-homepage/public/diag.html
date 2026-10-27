@@ -1,0 +1,155 @@
+<!doctype html>
+<html lang="ko">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="robots" content="noindex, nofollow" />
+    <title>화면 점검 | CoRe Lab</title>
+    <style>
+      body { font: 15px/1.55 system-ui, -apple-system, 'Noto Sans KR', sans-serif; margin: 0; padding: 16px; color: #222; background: #fff; }
+      h1 { font-size: 19px; margin: 0 0 4px; }
+      p.sub { margin: 0 0 14px; color: #666; font-size: 13px; }
+      h2 { font-size: 15px; margin: 18px 0 6px; padding-top: 10px; border-top: 1px solid #ddd; }
+      .row { display: flex; gap: 8px; align-items: flex-start; padding: 3px 0; word-break: break-all; }
+      .row b { flex: none; width: 1.4em; }
+      .ok b { color: #0a7a3d; }
+      .no b { color: #c62828; }
+      .info b { color: #888; }
+      .sw { display: flex; flex-wrap: wrap; gap: 10px; }
+      .sw > div { width: 140px; }
+      .sw .box { height: 56px; border-radius: 6px; }
+      .sw small { display: block; font-size: 12px; color: #555; margin-top: 3px; }
+      #t1 { background: linear-gradient(135deg, #003a22, #00462a 50%, #01532f); }
+      #t2 { background: var(--x, #00462a); }
+      #t3 { border: 1px solid #ccc; border-top: 4px solid var(--x, #00462a); background: #fff; }
+      #t4 { background: #fff; box-shadow: 0 4px 14px rgba(0, 0, 0, 0.35); }
+      #t5 { background: #00462a; }
+      #cv { width: 140px; height: 56px; border-radius: 6px; background: #00462a; display: block; }
+      #fonttest { font-family: 'Pretendard Variable', Pretendard, sans-serif; font-size: 16px; }
+      pre { white-space: pre-wrap; word-break: break-all; font-size: 12px; background: #f4f4f4; padding: 8px; border-radius: 6px; }
+    </style>
+    <link rel="stylesheet" id="sitecss" />
+  </head>
+  <body>
+    <h1>화면 점검 페이지</h1>
+    <p class="sub">이 화면을 그대로 캡처해서 보내 주세요. (맨 아래까지 스크롤해서 두세 장)</p>
+
+    <h2>1. 이 브라우저</h2>
+    <div id="env"></div>
+
+    <h2>2. 그려지는지 (색 상자가 모두 보여야 정상)</h2>
+    <div class="sw">
+      <div><div class="box" id="t1"></div><small>그라데이션 배경</small></div>
+      <div><div class="box" id="t2"></div><small>var() 색 배경</small></div>
+      <div><div class="box" id="t3"></div><small>테두리 + 위쪽 초록 줄</small></div>
+      <div><div class="box" id="t4"></div><small>그림자</small></div>
+      <div><canvas id="cv" width="280" height="112"></canvas><small>캔버스(글씨 보이면 정상)</small></div>
+    </div>
+
+    <h2>3. 사이트 스타일이 이 브라우저에서 적용되는지</h2>
+    <div id="css"></div>
+
+    <h2>4. 글꼴</h2>
+    <div id="fonts"></div>
+    <p id="fonttest">임규연 교수 · Exploring How We Learn Together 0123</p>
+
+    <h2>5. 기능 지원</h2>
+    <div id="feat"></div>
+
+    <script>
+      var $ = function (id) { return document.getElementById(id) }
+      function line(el, ok, text) {
+        var d = document.createElement('div')
+        d.className = 'row ' + (ok === true ? 'ok' : ok === false ? 'no' : 'info')
+        d.innerHTML = '<b>' + (ok === true ? '✓' : ok === false ? '✕' : '·') + '</b><span></span>'
+        d.lastChild.textContent = text
+        $(el).appendChild(d)
+      }
+
+      // 1) 환경
+      line('env', null, 'UA: ' + navigator.userAgent)
+      line('env', null, '화면: ' + innerWidth + '×' + innerHeight + ' · 배율 ' + devicePixelRatio + ' · 언어 ' + (navigator.languages || [navigator.language]).join(','))
+      line('env', null, '주소: ' + location.href)
+      line('env', null, '이전 페이지: ' + (document.referrer || '(없음)'))
+      line('env', null, '보이는 상태: ' + document.visibilityState + ' · 절전/데이터 절약: ' + (navigator.connection && navigator.connection.saveData ? '켜짐' : '꺼짐'))
+      var mq = function (q) { try { return matchMedia(q).matches } catch (e) { return '?' } }
+      line('env', null, '다크: ' + mq('(prefers-color-scheme: dark)') + ' · 강제색상: ' + mq('(forced-colors: active)') + ' · 대비: ' + mq('(prefers-contrast: more)') + ' · 동작줄이기: ' + mq('(prefers-reduced-motion: reduce)'))
+
+      // 2) 캔버스
+      try {
+        var c = $('cv').getContext('2d')
+        c.fillStyle = '#e8c97a'
+        c.font = '600 44px Georgia, serif'
+        c.fillText('CoRe', 20, 70)
+      } catch (e) { line('env', false, '캔버스 오류: ' + e.message) }
+
+      // 3) 실제 사이트 CSS 적용 여부
+      ;(async function () {
+        try {
+          var res = await fetch('./', { cache: 'no-store' })
+          var html = await res.text()
+          line('css', res.ok, '홈 HTML 받기: ' + res.status + ' (' + html.length + '자)')
+          var m = html.match(/href="([^"]*assets\/[^"]*\.css)"/)
+          if (!m) { line('css', false, 'CSS 링크를 못 찾음'); return }
+          var cssUrl = new URL(m[1], location.href).href
+          var r2 = await fetch(cssUrl, { cache: 'no-store' })
+          var css = await r2.text()
+          line('css', r2.ok, 'CSS 받기: ' + r2.status + ' · ' + css.length + '자 · ' + cssUrl.split('/').pop())
+          line('css', css.indexOf('.faculty-profile') > -1, 'CSS 안에 교수님 카드 규칙(.faculty-profile) 있음')
+          line('css', css.indexOf('.hero-intro') > -1, 'CSS 안에 히어로 규칙(.hero-intro) 있음')
+          line('css', css.indexOf('--color-primary') > -1, 'CSS 안에 색 변수(--color-primary) 정의 있음')
+          line('css', css.length > 100000, 'CSS 크기가 정상 범위(10만자 이상)')
+          $('sitecss').href = cssUrl
+          await new Promise(function (r) { $('sitecss').onload = r; $('sitecss').onerror = r; setTimeout(r, 4000) })
+          var probe = document.createElement('div')
+          probe.innerHTML = '<section class="hero-intro" style="position:absolute;left:-9999px;top:0;min-height:0;height:20px"></section><div class="faculty-profile" style="position:absolute;left:-9999px;top:30px"></div>'
+          document.body.appendChild(probe)
+          var h = getComputedStyle(probe.children[0]), f = getComputedStyle(probe.children[1])
+          line('css', h.backgroundImage !== 'none', '히어로 배경 그림(그라데이션): ' + h.backgroundImage.slice(0, 40))
+          line('css', h.backgroundColor !== 'rgba(0, 0, 0, 0)', '히어로 배경색: ' + h.backgroundColor)
+          line('css', f.borderTopWidth !== '0px', '교수님 카드 위쪽 줄: ' + f.borderTopWidth + ' ' + f.borderTopColor)
+          line('css', f.boxShadow !== 'none', '교수님 카드 그림자: ' + f.boxShadow.slice(0, 40))
+          line('css', null, '변수 --color-primary = ' + (getComputedStyle(document.documentElement).getPropertyValue('--color-primary') || '(비어 있음)'))
+          document.body.removeChild(probe)
+        } catch (e) {
+          line('css', false, '오류: ' + e.message)
+        }
+
+        // 4) 글꼴
+        try {
+          await document.fonts.load('400 16px "Pretendard Variable"', '임규연')
+          await document.fonts.ready
+          var loaded = Array.from(document.fonts).filter(function (x) { return x.status === 'loaded' }).length
+          line('fonts', loaded > 0, '내장 글꼴 불러옴: ' + loaded + '개 (0이면 얇은 기본 글꼴로 보임)')
+        } catch (e) { line('fonts', false, '글꼴 오류: ' + e.message) }
+        try {
+          var t = await Promise.race([
+            fetch('https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css', { mode: 'no-cors' }).then(function () { return '가능' }),
+            new Promise(function (r) { setTimeout(function () { r('5초 안에 응답 없음') }, 5000) }),
+          ])
+          line('fonts', null, '외부 글꼴 서버(예전 방식) 접속: ' + t)
+        } catch (e) { line('fonts', null, '외부 글꼴 서버(예전 방식) 접속: 막힘(' + e.message + ')') }
+      })()
+
+      // 5) 기능
+      var sup = function (n, a, b) { try { return CSS.supports(a, b) } catch (e) { return false } }
+      ;[
+        ['gradient', 'background-image', 'radial-gradient(900px 600px at 82% -10%, red, blue)'],
+        ['min()', 'height', 'min(100vh, 680px)'],
+        ['clamp()', 'font-size', 'clamp(1rem, 4vw, 2rem)'],
+        ['inset', 'inset', '0'],
+        ['aspect-ratio', 'aspect-ratio', '3 / 4'],
+        ['mask-image', '-webkit-mask-image', 'linear-gradient(#000, transparent)'],
+        ['backdrop-filter', '-webkit-backdrop-filter', 'blur(4px)'],
+        ['text-wrap', 'text-wrap', 'pretty'],
+        ['100dvh', 'height', '100dvh'],
+        [':has()', 'selector(:has(a))'],
+      ].forEach(function (x) {
+        var ok = x.length === 2 ? CSS.supports(x[1]) : sup(x[0], x[1], x[2])
+        line('feat', ok, x[0])
+      })
+      line('feat', typeof ResizeObserver !== 'undefined', 'ResizeObserver')
+      line('feat', !!window.CSS && !!CSS.supports, 'CSS.supports')
+    </script>
+  </body>
+</html>
