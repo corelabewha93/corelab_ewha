@@ -1,0 +1,71 @@
+/*
+ * 구글 앱·인앱 브라우저 등에서 "색이 안 칠해지는" 문제 대비 — 마지막에 덮어쓰는 안전 장치.
+ *
+ * 원인이 되는 것들(그라데이션 배경, var() 색, 강제 색상/고대비 모드, 글자 속 그라데이션)을
+ * 쓰지 않는 단색·고정값으로 한 번 더 칠합니다. 정상 브라우저에서는 이전과 거의 똑같이 보입니다.
+ * (색 값은 기존 디자인과 동일 — 그라데이션 중간색만 사용)
+ */
+
+/* 강제 색상(고대비·일부 앱 보기 모드)에서도 사이트가 정한 색을 그대로 */
+html body .hero-intro,
+html body .pub-type-tag,
+html body .pub-award,
+html body .pub-index,
+html body .badge,
+html body .faculty-profile,
+html body .faculty-photo {
+  forced-color-adjust: none;
+}
+
+/* 학위논문 배지 */
+html body .pub-type-tag-phd {
+  color: #f6c945;
+  background-image: none;
+  background-color: #00502f;
+  border-color: #00462a;
+}
+html body .pub-type-tag-ma {
+  color: #1e6b46;
+  background-image: none;
+  background-color: #e8f4ed;
+  border-color: #bcdccb;
+}
+html body .pub-type-tag-book {
+  color: #00462a;
+  background-image: none;
+  background-color: #e6efe9;
+  border-color: #b8cfc3;
+}
+html body .pub-type-tag-translation {
+  background-image: none;
+  background-color: #eef0f2;
+}
+
+/* 수상 배지 */
+html body .pub-award,
+html body .pub-award.pub-award-org-badge {
+  color: #8a6a12;
+  background-image: none;
+  background-color: #f9efcf;
+  border-color: #e3cf8a;
+}
+
+/* 종료 배지 */
+html body .badge.badge-done {
+  background-image: none;
+  background-color: #e9f6ee;
+}
+
+/* 교수님 카드 프레임 — 테두리·위쪽 초록 줄을 글자 하나하나 고정값으로 */
+html body .faculty-profile {
+  background-color: #ffffff;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #e0e2de;
+  border-top-width: 3px;
+  border-top-color: #00462a;
+  border-radius: 6px;
+}
+html body .faculty-photo {
+  background-color: #00462a;
+}
