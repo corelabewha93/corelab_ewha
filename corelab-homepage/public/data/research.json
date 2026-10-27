@@ -160,15 +160,19 @@
       "type": "conference",
       "authors": [
         "김혜민",
-        "전효정",
         "윤이슬",
+        "전효정",
         "임규연"
       ],
       "title": "AI 기반 교수자 대시보드의 설계 요소 탐색: 체계적 문헌고찰을 바탕으로",
       "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
       "details": "서울",
       "doi": "",
-      "link": ""
+      "link": "",
+      "translators": [],
+      "titleEn": "",
+      "venueEn": "",
+      "award": ""
     },
     {
       "id": "pub-12",
