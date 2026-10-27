@@ -207,6 +207,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   // 캔버스(HeroTrace)가 문장을 쓰기 시작하는 순간 true — 이름 · 가로선 · 부제 · 모토 등장 시간표(hero-trace.css)가 이 순간부터 흐릅니다.
   const [go, setGo] = useState(false)
   const goSeen = useRef(false)
+  const heroRef = useRef(null)
   const [logoStage, setLogoStage] = useState(animated ? (TRACE ? 1 : 0) : 3)
 
   // 로고의 점·어깨선을 그릴 자리 = 이름 속 "Co" 글자의 왼쪽 위 ~ "Re" 글자의 오른쪽 아래.
@@ -371,6 +372,38 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     document.documentElement.classList.remove('hero-intro-playing')
   }
 
+  // 일부 안드로이드 크롬(특히 문자·메신저 링크로 막 켜졌을 때)에서 히어로의 녹색 배경이 그려지지 않고 흰색으로 남는 경우가 있어,
+  // 처음 몇 초 동안과 화면이 다시 보일 때마다 배경 층을 새로 만들어 다시 그리게 합니다. (눈에 보이는 변화는 없습니다)
+  useEffect(() => {
+    const el = heroRef.current
+    if (!el) return undefined
+    let raf1 = 0
+    let raf2 = 0
+    const nudge = () => {
+      el.style.willChange = 'transform'
+      cancelAnimationFrame(raf1)
+      raf1 = requestAnimationFrame(() => {
+        raf2 = requestAnimationFrame(() => {
+          el.style.willChange = ''
+        })
+      })
+    }
+    const timers = [150, 700, 1600, 3200, 6000, 9500].map((ms) => setTimeout(nudge, ms))
+    const onVis = () => document.visibilityState === 'visible' && nudge()
+    document.addEventListener('visibilitychange', onVis)
+    window.addEventListener('pageshow', nudge)
+    window.addEventListener('resize', nudge)
+    return () => {
+      timers.forEach(clearTimeout)
+      cancelAnimationFrame(raf1)
+      cancelAnimationFrame(raf2)
+      document.removeEventListener('visibilitychange', onVis)
+      window.removeEventListener('pageshow', nudge)
+      window.removeEventListener('resize', nudge)
+      el.style.willChange = ''
+    }
+  }, [])
+
   // 안전장치: 4초가 지나도록 인트로가 시작되지 않으면(브라우저가 프레임을 멈춘 경우 등) 완성된 화면을 바로 보여 줍니다.
   useEffect(() => {
     if (!animated) return undefined
@@ -416,7 +449,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   let lastPart = null
 
   return (
-    <section className={`hero-intro${animated ? ' hero-intro-animated hero-trace' : ''}${skipped ? ' hero-skipped' : ''}${go || skipped ? ' hero-go' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`} onClick={skip}>
+    <section ref={heroRef} className={`hero-intro${animated ? ' hero-intro-animated hero-trace' : ''}${skipped ? ' hero-skipped' : ''}${go || skipped ? ' hero-go' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`} onClick={skip}>
       <HeroTrace animated={animated} skipped={skipped} onGo={() => { goSeen.current = true; setGo(true) }} onStall={skip} />
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
