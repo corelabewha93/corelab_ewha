@@ -1,6 +1,98 @@
 [
   {
     "images": [
+      "images/lablife/lablife-2026-11-mvqeqw83.jpg",
+      "images/lablife/lablife-2026-11-mvqeqyr9.jpg",
+      "images/lablife/lablife-2026-11-mvqer0wa.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 23.4,
+        "y": 47.2,
+        "zoom": 1
+      },
+      {
+        "x": 39.7,
+        "y": 67.7,
+        "zoom": 1
+      },
+      {
+        "x": 37.1,
+        "y": 54.4,
+        "zoom": 1
+      }
+    ],
+    "caption": "교수님 하사 도넛",
+    "captionEn": "",
+    "body": "날 좋은 가을날, 교수님께서 크리스피 도넛을 하사하고 연구모임을 떠나셨다.",
+    "bodyEn": "",
+    "date": "2026-10",
+    "id": "lablife-mvqer2v5p9z",
+    "order": 1
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-10-mvhib9ny.jpg",
+      "images/lablife/lablife-2026-10-mvhib6zp.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      }
+    ],
+    "caption": "홈페이지 완성 기념, 치킨 회동!",
+    "captionEn": "Celebrating the Website Launch with a Chicken Gathering!",
+    "body": "CoRe Lab 홈페이지 오픈을 앞두고, 제작 담당자끼리 소소한 치킨 회동을 가졌습니다🍗 \n\n(낮에는 교수님과 자연솜씨에서 식사를 했지만 사진을 남기지 못해 아쉬웠다는 후문이...)",
+    "bodyEn": "With the CoRe Lab website launch just around the corner, the students who worked on the website got together for a casual fried chicken night🍗 (We also had a great lunch with Professor Lim at 'Jayeon Somsi' earlier today, but sadly forgot to take pictures...)",
+    "date": "2026-10",
+    "id": "lablife-mvhibc3cf6b",
+    "order": 2
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-10-mv26q5jd.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      }
+    ],
+    "caption": "'북극성'을 바라보며....🌟",
+    "body": "고개를 들어 저 밤하늘을 바라봅니다\n저 멀리 빛나는 별 하나가 보입니다\n아아, 언제쯤 저 곳에 닿을 수 있을까요\n저 별을 길잡이 삼아 이 길을 걷습니다\n저 별은...북극성 'LIM'",
+    "date": "2026-10",
+    "id": "lablife-mv26q7je1gz",
+    "order": 3
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-10-mvou0f5j.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 0,
+        "y": 39.5,
+        "zoom": 1
+      }
+    ],
+    "caption": "압도적 퀴즈 1등..! 코어랩을 빛낸 위인",
+    "captionEn": "",
+    "body": "교육공학과 일반대학원 전공 기초 수업에서 수강생 19명 중 압도적인 퀴즈 1등을 차지한 주람쌤! 코어랩을 당당히 빛내다!!",
+    "bodyEn": "",
+    "date": "2026-10",
+    "id": "lablife-mvou0hfturf",
+    "order": 4
+  },
+  {
+    "images": [
       "images/lablife/lablife-2026-07-muf45dpv.jpg",
       "images/lablife/lablife-2026-07-mue8bc1j.jpg"
     ],
@@ -21,177 +113,8 @@
       }
     ],
     "captionEn": "Spring 2026 Thesis Defense",
-    "bodyEn": "We took a group photo at the thesis defense of Yujin Jung (center), CoRe Lab’s only graduate of the spring 2026 semester.\nOur advisor, who couldn’t make it that day, joined us via a composited photo.\nWord is that, wisely, we used a photo of her from 12 years ago—and so escaped her wrath😉"
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2025-11-muedh79o.jpg",
-      "images/lablife/lablife-2025-11-muedh8l7.jpg",
-      "images/lablife/lablife-2025-11-muedhc67.jpg",
-      "images/lablife/lablife-2025-11-muedhewb.jpg",
-      "images/lablife/lablife-2025-11-muiewxd8.jpg"
-    ],
-    "caption": "2025년 교수님 생파🎂🎉",
-    "body": "교수님 생신을 맞이하여 교육관 멀티미디어실에서 다함께 파티를 했다. 플랜카드를 만들어 화면에 띄우고, 무화과 타르트도 나눠 먹었다. 삼각대가 없어서 사진 구도가 꽤나 재밌었는데, 내년에는 더 예쁘게 찍겠다는 다짐..📸\n\n마지막 사진은 줌(Zoom) 모임에서 격하게 교수님의 탄신을 축하드린 코어랩 일동!",
-    "date": "2025-11",
-    "id": "lablife-muedhhyb7e6",
-    "imageCrops": [
-      {
-        "x": 36.6,
-        "y": 37.7,
-        "zoom": 1.16
-      },
-      {
-        "x": 49.6,
-        "y": 43.7,
-        "zoom": 1.02
-      },
-      {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      {
-        "x": 49.2,
-        "y": 41.5,
-        "zoom": 1
-      },
-      {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      }
-    ]
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-01-mufhz075.jpg",
-      "images/lablife/lablife-2026-01-mufhz3g1.jpg"
-    ],
-    "caption": "2026년 홈커밍데이🏠",
-    "body": "새해를 맞이해 모인 식사 자리에 코어랩 졸업생 선생님들이 함께했다🍽️ 다음에 또 만나요~",
-    "date": "2026-01",
-    "id": "lablife-muedy3v00z7",
-    "imageCrops": [
-      {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      }
-    ]
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-05-mueef6e3.jpg",
-      "images/lablife/lablife-2026-05-mueef9cq.jpg",
-      "images/lablife/lablife-2026-05-mueefcjn.jpg"
-    ],
-    "caption": "2026년 한국교육공학회 춘계학술대회",
-    "body": "26년 5월 9일, 이화여자대학교에서 한국교육공학회 춘계학술대회가 개최되었다.\n\n본 대회에서 우리 교수님은 우수심사위원상, 김혜준 박사를 비롯한 코어랩 선생님들은 '교육 분야에서의 책임있는 AI(Responsible AI) 연구 동향: BERTopic 기반 토픽모델링 분석'을 주제로 우수 포스터 장려상을 수상했다!! 축축~~!!",
-    "date": "2026-05",
-    "id": "lablife-mueefff6jlf",
-    "imageCrops": [
-      {
-        "x": 94.7,
-        "y": 70.7,
-        "zoom": 1.08
-      },
-      {
-        "x": 42.4,
-        "y": 49.6,
-        "zoom": 1.09
-      },
-      {
-        "x": 52,
-        "y": 82.5,
-        "zoom": 1
-      }
-    ],
-    "captionEn": "KSET Spring Conference 2026",
-    "bodyEn": "On May 9, 2026, the Korean Society for Educational Technology Spring Conference was held at Ewha Womans University.\n\nProf. Kyu Yon Lim received the Outstanding Reviewer Award,\nand Kim et al. (2026) received the Outstanding Poster Encouragement Award for “Research Trends in Responsible AI in Education: A BERTopic-based Topic Modeling Analysis”!! Congratulations~~!!"
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-05-mueendn3.jpg",
-      "images/lablife/lablife-2026-05-mueengv4.jpg"
-    ],
-    "caption": "2026년 스승의 날",
-    "body": "스승의 날을 맞이하여 우르르 몰려간 코어랩!! 교수님 연구실에서 함께 귀여운 사진 촬영 완료!!💐",
-    "date": "2026-05",
-    "id": "lablife-mueenk4gytg",
-    "imageCrops": [
-      {
-        "x": 91.5,
-        "y": 31.9,
-        "zoom": 1
-      },
-      {
-        "x": 100,
-        "y": 8.7,
-        "zoom": 1
-      }
-    ]
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2024-04-mufaw14v.jpg",
-      "images/lablife/lablife-2024-04-mufaw414.jpg"
-    ],
-    "caption": "2024년 교육관 벚꽃 앞에서🌸",
-    "body": "2024년 4월 9일. 날이 너무 좋아서...벚꽃보다 아름다운 교수님과 함께 교육관 벚꽃나무 앞에서 한 컷...아니 두 컷~",
-    "date": "2024-04",
-    "id": "lablife-mufaw79ffvg",
-    "imageCrops": [
-      {
-        "x": 72.9,
-        "y": 65.8,
-        "zoom": 1.38
-      },
-      {
-        "x": 0,
-        "y": 100,
-        "zoom": 1
-      }
-    ],
-    "captionEn": "Under the Cherry Blossoms at the Education Building, 2024🌸",
-    "bodyEn": "April 9, 2024. The weather was too nice... so we took a shot with our professor-lovelier than the cherry blossoms-in front of the cherry trees by the Education Building... no, two shots~"
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2024-12-mufi1lwi.jpg"
-    ],
-    "caption": "2024 재학생-졸업생 연말모임",
-    "body": "2024년 12월 26일, 코어랩 재학생과 졸업생이 한 자리에 모였다~! 다들 너무 보고 싶었어요!!",
-    "date": "2024-12",
-    "id": "lablife-mufayb6v7fu",
-    "imageCrops": [
-      {
-        "x": 0,
-        "y": 50.7,
-        "zoom": 1.08
-      }
-    ]
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2023-02-mufb18mn.jpg"
-    ],
-    "caption": "2023년 이공연구를 마무리하며",
-    "body": "2020년부터 이어진 3여년 간의 이공연구를 마무리하며 2023년 2월 23일 이공연구에 참여한 연구진들과 남긴 기념사진!! 그간 너무 고생했어요~~",
-    "date": "2023-02",
-    "id": "lablife-mufb1ayuga0",
-    "imageCrops": [
-      {
-        "x": 7.4,
-        "y": 50.4,
-        "zoom": 1
-      }
-    ]
+    "bodyEn": "We took a group photo at the thesis defense of Yujin Jung (center), CoRe Lab’s only graduate of the spring 2026 semester.\nOur advisor, who couldn’t make it that day, joined us via a composited photo.\nWord is that, wisely, we used a photo of her from 12 years ago—and so escaped her wrath😉",
+    "order": 5
   },
   {
     "images": [
@@ -225,34 +148,77 @@
         "y": 31.9,
         "zoom": 1
       }
-    ]
+    ],
+    "order": 6
   },
   {
     "images": [
-      "images/lablife/lablife-2024-10-muiepa4a.jpg",
-      "images/lablife/lablife-2024-10-muiepc3z.jpg",
-      "images/lablife/lablife-2024-10-muiezuzh.jpg",
-      "images/lablife/lablife-2024-10-muiep85i.jpg"
+      "images/lablife/lablife-2026-05-mueef6e3.jpg",
+      "images/lablife/lablife-2026-05-mueef9cq.jpg",
+      "images/lablife/lablife-2026-05-mueefcjn.jpg"
     ],
-    "caption": "2024년 1, 2학기 논문 발표회",
-    "body": "2024년 1학기에 졸업한 이다혜 석사, 진명화 박사, 그리고 2024년 2학기 졸업한 김혜준 박사가 코어랩 전통을 만들었다.\n\n바로 교수님 연구실 앞에서 기념 촬영! 두둥~🥁!! \n\n그간 열심히 공부하며 훌륭한 논문과 함께 졸업하신 세 선생님의 앞날에 꽃길만 가득하길 빕니다 :)\n- 코어랩 일동.",
-    "date": "2024-10",
-    "id": "lablife-muiepdx5kjx",
+    "caption": "2026년 한국교육공학회 춘계학술대회",
+    "body": "26년 5월 9일, 이화여자대학교에서 한국교육공학회 춘계학술대회가 개최되었다.\n\n본 대회에서 우리 교수님은 우수심사위원상, 김혜준 박사를 비롯한 코어랩 선생님들은 '교육 분야에서의 책임있는 AI(Responsible AI) 연구 동향: BERTopic 기반 토픽모델링 분석'을 주제로 우수 포스터 장려상을 수상했다!! 축축~~!!",
+    "date": "2026-05",
+    "id": "lablife-mueefff6jlf",
+    "imageCrops": [
+      {
+        "x": 94.7,
+        "y": 70.7,
+        "zoom": 1.08
+      },
+      {
+        "x": 42.4,
+        "y": 49.6,
+        "zoom": 1.09
+      },
+      {
+        "x": 52,
+        "y": 82.5,
+        "zoom": 1
+      }
+    ],
+    "captionEn": "KSET Spring Conference 2026",
+    "bodyEn": "On May 9, 2026, the Korean Society for Educational Technology Spring Conference was held at Ewha Womans University.\n\nProf. Kyu Yon Lim received the Outstanding Reviewer Award,\nand Kim et al. (2026) received the Outstanding Poster Encouragement Award for “Research Trends in Responsible AI in Education: A BERTopic-based Topic Modeling Analysis”!! Congratulations~~!!",
+    "order": 7
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-05-mueendn3.jpg",
+      "images/lablife/lablife-2026-05-mueengv4.jpg"
+    ],
+    "caption": "2026년 스승의 날",
+    "body": "스승의 날을 맞이하여 우르르 몰려간 코어랩!! 교수님 연구실에서 함께 귀여운 사진 촬영 완료!!💐",
+    "date": "2026-05",
+    "id": "lablife-mueenk4gytg",
+    "imageCrops": [
+      {
+        "x": 91.5,
+        "y": 31.9,
+        "zoom": 1
+      },
+      {
+        "x": 100,
+        "y": 8.7,
+        "zoom": 1
+      }
+    ],
+    "order": 8
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-01-mufhz075.jpg",
+      "images/lablife/lablife-2026-01-mufhz3g1.jpg"
+    ],
+    "caption": "2026년 홈커밍데이🏠",
+    "body": "새해를 맞이해 모인 식사 자리에 코어랩 졸업생 선생님들이 함께했다🍽️ 다음에 또 만나요~",
+    "date": "2026-01",
+    "id": "lablife-muedy3v00z7",
     "imageCrops": [
       {
         "x": 50,
-        "y": 100,
+        "y": 50,
         "zoom": 1
-      },
-      {
-        "x": 0,
-        "y": 44.5,
-        "zoom": 1
-      },
-      {
-        "x": 50.8,
-        "y": 37.8,
-        "zoom": 1.48
       },
       {
         "x": 50,
@@ -260,30 +226,7 @@
         "zoom": 1
       }
     ],
-    "captionEn": "Spring & Fall 2024 Thesis Defenses",
-    "bodyEn": "Dahye Lee (M.A.) and Dr. Myunghwa Jin, who graduated in spring 2024, and Dr. Hyejun Kim, who graduated in fall 2024, started a CoRe Lab tradition:\na commemorative photo in front of the professor’s office! Ta-da~🥁!!\n\nTo the three who studied so hard and graduated with wonderful theses—\nwe wish you nothing but bright paths ahead :)\n- All of CoRe Lab."
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2025-05-muieu9yf.jpg",
-      "images/lablife/lablife-2025-05-muieu7vy.jpg"
-    ],
-    "caption": "2025년 한국교육공학회 춘계학술대회",
-    "body": "2025년 5월 31일 열린 한국교육공학회 춘계학술대회에서 코어랩의 자랑 진명화 쌤이 우수 박사학위논문상을 수상했다. 🥳💐",
-    "date": "2025-05",
-    "id": "lablife-muieubwl8ke",
-    "imageCrops": [
-      {
-        "x": 50,
-        "y": 50,
-        "zoom": 1
-      },
-      {
-        "x": 20.1,
-        "y": 35.7,
-        "zoom": 1.16
-      }
-    ]
+    "order": 9
   },
   {
     "images": [
@@ -325,33 +268,40 @@
     "date": "2025-12",
     "id": "lablife-munt1vvfbp9",
     "captionEn": "December 2025, First Snow❄️",
-    "bodyEn": "The day the first snow (a blizzard!) fell while Juram & Hyojeong were studying together at the Industry–Academia Cooperation Building.\nA romantic shot with an international student we met for the first time while escaping the snowy path☃️🤳🏻\n\nWe’re also attaching scenes of the campus full of romance on the day of the first snow~"
+    "bodyEn": "The day the first snow (a blizzard!) fell while Juram & Hyojeong were studying together at the Industry–Academia Cooperation Building.\nA romantic shot with an international student we met for the first time while escaping the snowy path☃️🤳🏻\n\nWe’re also attaching scenes of the campus full of romance on the day of the first snow~",
+    "order": 10
   },
   {
     "images": [
-      "images/lablife/lablife-2026-10-mv26q5jd.jpg"
+      "images/lablife/lablife-2025-11-muedh79o.jpg",
+      "images/lablife/lablife-2025-11-muedh8l7.jpg",
+      "images/lablife/lablife-2025-11-muedhc67.jpg",
+      "images/lablife/lablife-2025-11-muedhewb.jpg",
+      "images/lablife/lablife-2025-11-muiewxd8.jpg"
     ],
+    "caption": "2025년 교수님 생파🎂🎉",
+    "body": "교수님 생신을 맞이하여 교육관 멀티미디어실에서 다함께 파티를 했다. 플랜카드를 만들어 화면에 띄우고, 무화과 타르트도 나눠 먹었다. 삼각대가 없어서 사진 구도가 꽤나 재밌었는데, 내년에는 더 예쁘게 찍겠다는 다짐..📸\n\n마지막 사진은 줌(Zoom) 모임에서 격하게 교수님의 탄신을 축하드린 코어랩 일동!",
+    "date": "2025-11",
+    "id": "lablife-muedhhyb7e6",
     "imageCrops": [
+      {
+        "x": 36.6,
+        "y": 37.7,
+        "zoom": 1.16
+      },
+      {
+        "x": 49.6,
+        "y": 43.7,
+        "zoom": 1.02
+      },
       {
         "x": 50,
         "y": 50,
         "zoom": 1
-      }
-    ],
-    "caption": "'북극성'을 바라보며....🌟",
-    "body": "고개를 들어 저 밤하늘을 바라봅니다\n저 멀리 빛나는 별 하나가 보입니다\n아아, 언제쯤 저 곳에 닿을 수 있을까요\n저 별을 길잡이 삼아 이 길을 걷습니다\n저 별은...북극성 'LIM'",
-    "date": "2026-10",
-    "id": "lablife-mv26q7je1gz"
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-10-mvhib9ny.jpg",
-      "images/lablife/lablife-2026-10-mvhib6zp.jpg"
-    ],
-    "imageCrops": [
+      },
       {
-        "x": 50,
-        "y": 50,
+        "x": 49.2,
+        "y": 41.5,
         "zoom": 1
       },
       {
@@ -360,59 +310,125 @@
         "zoom": 1
       }
     ],
-    "caption": "홈페이지 완성 기념, 치킨 회동!",
-    "captionEn": "Celebrating the Website Launch with a Chicken Gathering!",
-    "body": "CoRe Lab 홈페이지 오픈을 앞두고, 제작 담당자끼리 소소한 치킨 회동을 가졌습니다🍗 \n\n(낮에는 교수님과 자연솜씨에서 식사를 했지만 사진을 남기지 못해 아쉬웠다는 후문이...)",
-    "bodyEn": "With the CoRe Lab website launch just around the corner, the students who worked on the website got together for a casual fried chicken night🍗 (We also had a great lunch with Professor Lim at 'Jayeon Somsi' earlier today, but sadly forgot to take pictures...)",
-    "date": "2026-10",
-    "id": "lablife-mvhibc3cf6b"
+    "order": 11
   },
   {
     "images": [
-      "images/lablife/lablife-2026-10-mvou0f5j.jpg"
+      "images/lablife/lablife-2025-05-muieu9yf.jpg",
+      "images/lablife/lablife-2025-05-muieu7vy.jpg"
     ],
+    "caption": "2025년 한국교육공학회 춘계학술대회",
+    "body": "2025년 5월 31일 열린 한국교육공학회 춘계학술대회에서 코어랩의 자랑 진명화 쌤이 우수 박사학위논문상을 수상했다. 🥳💐",
+    "date": "2025-05",
+    "id": "lablife-muieubwl8ke",
+    "imageCrops": [
+      {
+        "x": 50,
+        "y": 50,
+        "zoom": 1
+      },
+      {
+        "x": 20.1,
+        "y": 35.7,
+        "zoom": 1.16
+      }
+    ],
+    "order": 12
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2024-12-mufi1lwi.jpg"
+    ],
+    "caption": "2024 재학생-졸업생 연말모임",
+    "body": "2024년 12월 26일, 코어랩 재학생과 졸업생이 한 자리에 모였다~! 다들 너무 보고 싶었어요!!",
+    "date": "2024-12",
+    "id": "lablife-mufayb6v7fu",
     "imageCrops": [
       {
         "x": 0,
-        "y": 39.5,
-        "zoom": 1
+        "y": 50.7,
+        "zoom": 1.08
       }
     ],
-    "caption": "압도적 퀴즈 1등..! 코어랩을 빛낸 위인",
-    "captionEn": "",
-    "body": "교육공학과 일반대학원 전공 기초 수업에서 수강생 19명 중 압도적인 퀴즈 1등을 차지한 주람쌤! 코어랩을 당당히 빛내다!!",
-    "bodyEn": "",
-    "date": "2026-10",
-    "id": "lablife-mvou0hfturf"
+    "order": 13
   },
   {
     "images": [
-      "images/lablife/lablife-2026-11-mvqeqw83.jpg",
-      "images/lablife/lablife-2026-11-mvqeqyr9.jpg",
-      "images/lablife/lablife-2026-11-mvqer0wa.jpg"
+      "images/lablife/lablife-2024-10-muiepa4a.jpg",
+      "images/lablife/lablife-2024-10-muiepc3z.jpg",
+      "images/lablife/lablife-2024-10-muiezuzh.jpg",
+      "images/lablife/lablife-2024-10-muiep85i.jpg"
     ],
+    "caption": "2024년 1, 2학기 논문 발표회",
+    "body": "2024년 1학기에 졸업한 이다혜 석사, 진명화 박사, 그리고 2024년 2학기 졸업한 김혜준 박사가 코어랩 전통을 만들었다.\n\n바로 교수님 연구실 앞에서 기념 촬영! 두둥~🥁!! \n\n그간 열심히 공부하며 훌륭한 논문과 함께 졸업하신 세 선생님의 앞날에 꽃길만 가득하길 빕니다 :)\n- 코어랩 일동.",
+    "date": "2024-10",
+    "id": "lablife-muiepdx5kjx",
     "imageCrops": [
       {
-        "x": 23.4,
-        "y": 47.2,
+        "x": 50,
+        "y": 100,
         "zoom": 1
       },
       {
-        "x": 39.7,
-        "y": 67.7,
+        "x": 0,
+        "y": 44.5,
         "zoom": 1
       },
       {
-        "x": 37.1,
-        "y": 54.4,
+        "x": 50.8,
+        "y": 37.8,
+        "zoom": 1.48
+      },
+      {
+        "x": 50,
+        "y": 50,
         "zoom": 1
       }
     ],
-    "caption": "교수님 하사 도넛",
-    "captionEn": "",
-    "body": "날 좋은 가을날, 교수님께서 크리스피 도넛을 하사하고 연구모임을 떠나셨다.",
-    "bodyEn": "",
-    "date": "2026-10",
-    "id": "lablife-mvqer2v5p9z"
+    "captionEn": "Spring & Fall 2024 Thesis Defenses",
+    "bodyEn": "Dahye Lee (M.A.) and Dr. Myunghwa Jin, who graduated in spring 2024, and Dr. Hyejun Kim, who graduated in fall 2024, started a CoRe Lab tradition:\na commemorative photo in front of the professor’s office! Ta-da~🥁!!\n\nTo the three who studied so hard and graduated with wonderful theses—\nwe wish you nothing but bright paths ahead :)\n- All of CoRe Lab.",
+    "order": 14
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2024-04-mufaw14v.jpg",
+      "images/lablife/lablife-2024-04-mufaw414.jpg"
+    ],
+    "caption": "2024년 교육관 벚꽃 앞에서🌸",
+    "body": "2024년 4월 9일. 날이 너무 좋아서...벚꽃보다 아름다운 교수님과 함께 교육관 벚꽃나무 앞에서 한 컷...아니 두 컷~",
+    "date": "2024-04",
+    "id": "lablife-mufaw79ffvg",
+    "imageCrops": [
+      {
+        "x": 72.9,
+        "y": 65.8,
+        "zoom": 1.38
+      },
+      {
+        "x": 0,
+        "y": 100,
+        "zoom": 1
+      }
+    ],
+    "captionEn": "Under the Cherry Blossoms at the Education Building, 2024🌸",
+    "bodyEn": "April 9, 2024. The weather was too nice... so we took a shot with our professor-lovelier than the cherry blossoms-in front of the cherry trees by the Education Building... no, two shots~",
+    "order": 15
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2023-02-mufb18mn.jpg"
+    ],
+    "caption": "2023년 이공연구를 마무리하며",
+    "body": "2020년부터 이어진 3여년 간의 이공연구를 마무리하며 2023년 2월 23일 이공연구에 참여한 연구진들과 남긴 기념사진!! 그간 너무 고생했어요~~",
+    "date": "2023-02",
+    "id": "lablife-mufb1ayuga0",
+    "imageCrops": [
+      {
+        "x": 7.4,
+        "y": 50.4,
+        "zoom": 1
+      }
+    ],
+    "order": 16
   }
 ]
