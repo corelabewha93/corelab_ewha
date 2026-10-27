@@ -384,5 +384,35 @@
     "bodyEn": "",
     "date": "2026-11",
     "id": "lablife-mvou0hfturf"
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-11-mvqeqw83.jpg",
+      "images/lablife/lablife-2026-11-mvqeqyr9.jpg",
+      "images/lablife/lablife-2026-11-mvqer0wa.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 23.4,
+        "y": 47.2,
+        "zoom": 1
+      },
+      {
+        "x": 39.7,
+        "y": 67.7,
+        "zoom": 1
+      },
+      {
+        "x": 37.1,
+        "y": 54.4,
+        "zoom": 1
+      }
+    ],
+    "caption": "교수님 하사 도넛",
+    "captionEn": "",
+    "body": "날 좋은 가을날, 교수님께서 크리스피 도넛을 하사하고 연구모임을 떠나셨다.",
+    "bodyEn": "",
+    "date": "2026-11",
+    "id": "lablife-mvqer2v5p9z"
   }
 ]
