@@ -32,6 +32,25 @@
   },
   {
     "images": [
+      "images/lablife/lablife-2026-10-mvou0f5j.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 0,
+        "y": 39.5,
+        "zoom": 1
+      }
+    ],
+    "caption": "압도적 퀴즈 1등..! 코어랩을 빛낸 위인",
+    "captionEn": "",
+    "body": "교육공학과 일반대학원 전공 기초 수업에서 수강생 19명 중 압도적인 퀴즈 1등을 차지한 주람쌤! 코어랩을 당당히 빛내다!!",
+    "bodyEn": "",
+    "date": "2026-10",
+    "id": "lablife-mvou0hfturf",
+    "order": 2
+  },
+  {
+    "images": [
       "images/lablife/lablife-2026-10-mvhib9ny.jpg",
       "images/lablife/lablife-2026-10-mvhib6zp.jpg"
     ],
@@ -53,7 +72,7 @@
     "bodyEn": "With the CoRe Lab website launch just around the corner, the students who worked on the website got together for a casual fried chicken night🍗 (We also had a great lunch with Professor Lim at 'Jayeon Somsi' earlier today, but sadly forgot to take pictures...)",
     "date": "2026-10",
     "id": "lablife-mvhibc3cf6b",
-    "order": 2
+    "order": 3
   },
   {
     "images": [
@@ -70,25 +89,6 @@
     "body": "고개를 들어 저 밤하늘을 바라봅니다\n저 멀리 빛나는 별 하나가 보입니다\n아아, 언제쯤 저 곳에 닿을 수 있을까요\n저 별을 길잡이 삼아 이 길을 걷습니다\n저 별은...북극성 'LIM'",
     "date": "2026-10",
     "id": "lablife-mv26q7je1gz",
-    "order": 3
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-10-mvou0f5j.jpg"
-    ],
-    "imageCrops": [
-      {
-        "x": 0,
-        "y": 39.5,
-        "zoom": 1
-      }
-    ],
-    "caption": "압도적 퀴즈 1등..! 코어랩을 빛낸 위인",
-    "captionEn": "",
-    "body": "교육공학과 일반대학원 전공 기초 수업에서 수강생 19명 중 압도적인 퀴즈 1등을 차지한 주람쌤! 코어랩을 당당히 빛내다!!",
-    "bodyEn": "",
-    "date": "2026-10",
-    "id": "lablife-mvou0hfturf",
     "order": 4
   },
   {
