@@ -206,6 +206,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
   const [skipped, setSkipped] = useState(false)
   // 캔버스(HeroTrace)가 문장을 쓰기 시작하는 순간 true — 이름 · 가로선 · 부제 · 모토 등장 시간표(hero-trace.css)가 이 순간부터 흐릅니다.
   const [go, setGo] = useState(false)
+  const goSeen = useRef(false)
   const [logoStage, setLogoStage] = useState(animated ? (TRACE ? 1 : 0) : 3)
 
   // 로고의 점·어깨선을 그릴 자리 = 이름 속 "Co" 글자의 왼쪽 위 ~ "Re" 글자의 오른쪽 아래.
@@ -370,6 +371,16 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
     document.documentElement.classList.remove('hero-intro-playing')
   }
 
+  // 안전장치: 4초가 지나도록 인트로가 시작되지 않으면(브라우저가 프레임을 멈춘 경우 등) 완성된 화면을 바로 보여 줍니다.
+  useEffect(() => {
+    if (!animated) return undefined
+    const t = setTimeout(() => {
+      if (!goSeen.current) skip()
+    }, 4000)
+    return () => clearTimeout(t)
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [])
+
   // "CoRe Lab" 배치로 바뀐 직후(화면에 그려지기 전), 각 글자를 원래 자리·크기로 되돌려 놓고
   // 새 자리까지 한 번에 부드럽게 미끄러지게 합니다.
   useLayoutEffect(() => {
@@ -406,7 +417,7 @@ export default function HeroIntro({ labName = '', tagline = '', affiliation = []
 
   return (
     <section className={`hero-intro${animated ? ' hero-intro-animated hero-trace' : ''}${skipped ? ' hero-skipped' : ''}${go || skipped ? ' hero-go' : ''} hero-phase-${phase}${logoStage >= 2 ? ' hero-logo-dots' : ''}${logoStage >= 3 ? ' hero-logo-curve' : ''}`} onClick={skip}>
-      <HeroTrace animated={animated} skipped={skipped} onGo={() => setGo(true)} />
+      <HeroTrace animated={animated} skipped={skipped} onGo={() => { goSeen.current = true; setGo(true) }} onStall={skip} />
       <div className="hero-intro-content">
         <h1 className="hero-name" ref={nameRef} aria-label={labName}>
           {TRACE ? (

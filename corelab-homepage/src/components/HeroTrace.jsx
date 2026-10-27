@@ -525,11 +525,13 @@ function draw(ctx, s, t) {
   }
 }
 
-export default function HeroTrace({ animated, skipped = false, onGo }) {
+export default function HeroTrace({ animated, skipped = false, onGo, onStall }) {
   const ref = useRef(null)
   const goRef = useRef(onGo)
+  const stallRef = useRef(onStall)
   useEffect(() => {
     goRef.current = onGo
+    stallRef.current = onStall
   })
   useEffect(() => {
     const cv = ref.current
@@ -542,6 +544,7 @@ export default function HeroTrace({ animated, skipped = false, onGo }) {
     const s = { W: 0, H: 0 }
     let ok = false
     let raf = 0
+    let guard = 0
     let cancelled = false
     const size = () => {
       s.W = host.clientWidth || window.innerWidth
@@ -560,9 +563,27 @@ export default function HeroTrace({ animated, skipped = false, onGo }) {
     const onResize = () => size()
     let t0 = 0
     let went = false
+    let last = 0
+    let frames = 0
+    // 연출이 끊기면(=프레임이 안 오거나 한참 뒤에 이어지면) 어색한 중간 장면에 멈추지 않고 완성된 화면으로 바로 넘어갑니다.
+    // 예) 문자·메신저의 링크로 열 때 페이지가 잠깐 '보이지 않는 상태'로 시작하면 브라우저가 프레임을 멈춰 둡니다.
+    const bail = () => {
+      if (cancelled) return
+      cancelled = true
+      cancelAnimationFrame(raf)
+      ctx.clearRect(0, 0, s.W, s.H)
+      stallRef.current?.()
+    }
     const tick = () => {
       if (cancelled) return
-      const t = (performance.now() - t0) / 1000
+      const now = performance.now()
+      if (last && now - last > 700) {
+        bail()
+        return
+      }
+      last = now
+      frames += 1
+      const t = (now - t0) / 1000
       if (!went) {
         went = true
         goRef.current?.()
@@ -583,14 +604,28 @@ export default function HeroTrace({ animated, skipped = false, onGo }) {
     ])
     fontReady.then(() => {
       if (cancelled) return
+      if (document.visibilityState === 'hidden') {
+        bail()
+        return
+      }
       size()
       t0 = performance.now()
+      // 시작 뒤 2.5초가 지났는데 프레임이 몇 장밖에 안 그려졌다면 화면이 멈춘 것으로 보고 넘어갑니다.
+      guard = setTimeout(() => {
+        if (frames < 12) bail()
+      }, 2500)
       raf = requestAnimationFrame(tick)
     })
+    const onVis = () => {
+      if (document.visibilityState === 'hidden') bail()
+    }
+    document.addEventListener('visibilitychange', onVis)
     window.addEventListener('resize', onResize)
     return () => {
       cancelled = true
+      clearTimeout(guard)
       cancelAnimationFrame(raf)
+      document.removeEventListener('visibilitychange', onVis)
       window.removeEventListener('resize', onResize)
     }
   }, [animated, skipped])
