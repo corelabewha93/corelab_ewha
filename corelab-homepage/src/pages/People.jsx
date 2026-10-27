@@ -69,7 +69,10 @@ export default function People() {
   const [draft, setDraft] = useState(null) // { tab, ids } 순서 바꾸기 중일 때
 
   const { tr, seedOf } = useLang()
-  useDocumentMeta('People', tr('CoRe Lab의 교수진, 대학원생, 졸업생을 소개합니다.', 'Faculty, graduate students, and alumni of CoRe Lab.'))
+  useDocumentMeta(
+    tr('People · 임규연 교수', 'People · Prof. Kyu Yon Lim'),
+    tr('이화여대 교육공학과 임규연(Kyu Yon Lim) 교수와 CoRe Lab 재학생·졸업생을 소개합니다.', 'Prof. Kyu Yon Lim and the graduate students and alumni of CoRe Lab, Ewha Womans University.'),
+  )
   useNoZoom() // 사진 확대(줌인) 차단 — Lab Life와 동일
   const [savingOrder, setSavingOrder] = useState(false)
 
