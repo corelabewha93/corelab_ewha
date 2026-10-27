@@ -137,8 +137,10 @@ Sitemap: ${siteUrl}sitemap.xml
  */
 const PREVIEW_PAGES = [
   { path: 'news', title: 'News | CoRe Lab', desc: '이화여자대학교 교육공학과 CoRe Lab의 연구 성과 · 수상 · 활동 소식', image: 'images/og/og-news.png', alt: 'CoRe Lab News — 연구실 소식' },
-  { path: 'research', title: 'Research | CoRe Lab', desc: '임규연 교수 연구실 CoRe Lab의 논문 · 학위논문 · 연구과제 · 특허 — 협력학습(CSCL), 학습분석학, 협력적 문제해결', image: 'images/og/og-research.png', alt: 'CoRe Lab Research — 연구' },
-  { path: 'people', title: 'People · 임규연 교수 | CoRe Lab', desc: '이화여대 교육공학과 임규연(Kyu Yon Lim) 교수와 CoRe Lab 재학생·졸업생을 소개합니다.', image: 'images/og/og-people.png', alt: 'CoRe Lab People — 구성원' },
+  { path: 'research', title: 'Research | CoRe Lab', desc: '이화여대 임규연 교수 연구실 CoRe Lab의 논문 · 학위논문 · 연구과제 · 교육 특허 — AI 교육, 교수자-AI 협력, 협력학습(CSCL), 학습분석학',
+    keywords: '이화여대 임규연, 임규연 교수, 교육공학 논문, 교육공학 학위논문, 교육 특허, AI 교육 연구, 교수자-AI 협력, 교육을 활용한 AI 연구, 협력학습, 학습분석학, CSCL', image: 'images/og/og-research.png', alt: 'CoRe Lab Research — 연구' },
+  { path: 'people', title: 'People · 임규연 교수 | CoRe Lab', desc: '이화여대(이대) 교육공학과 임규연(Kyu Yon Lim) 교수와 CoRe Lab 재학생·졸업생을 소개합니다.',
+    keywords: '임규연, 임규연 교수, 이화여대 임규연, 이대 임규연, 이대 교공, 이화여대 교공, 이대 교육공학, 교육공학 대학원, 교육공학 교수, 코어랩 구성원', image: 'images/og/og-people.png', alt: 'CoRe Lab People — 구성원' },
   { path: 'lablife', title: 'Lab Life | CoRe Lab', desc: '함께 공부하고 함께 나눈 CoRe Lab의 시간들', image: 'images/og/og-lablife.png', alt: 'CoRe Lab Lab Life — 연구실 생활' },
 ]
 
@@ -183,6 +185,7 @@ function previewHtml(html, siteUrl, pg) {
   let out = html.replace(/<title>[\s\S]*?<\/title>/, () => `<title>${escAttr(pg.title)}</title>`)
   out = out.replace(/<link rel="canonical" href="[^"]*"\s*\/?>/, () => `<link rel="canonical" href="${escAttr(url)}" />`)
   out = setMetaTag(out, 'name', 'description', pg.desc)
+  if (pg.keywords) out = setMetaTag(out, 'name', 'keywords', pg.keywords)
   out = setMetaTag(out, 'property', 'og:type', pg.type ?? 'website')
   out = setMetaTag(out, 'property', 'og:url', url)
   out = setMetaTag(out, 'property', 'og:title', pg.title)
@@ -251,7 +254,22 @@ function linkPreviewPagesPlugin() {
         try {
           const r = JSON.parse(readFileSync(join(root, 'public/data/research.json'), 'utf8'))
           const pubs = (r.publications ?? []).filter((x) => x && !x.hidden && x.title)
-          resPg.crawl = `<h2>Publications</h2><ul>${pubs
+          const pats = (r.patents ?? []).filter((x) => x && !x.hidden && x.title)
+          const patHtml = pats.length
+            ? `<h2>Patents (교육 특허)</h2><ul>${pats
+                .map(
+                  (x) =>
+                    `<li>${escText((x.inventors ?? []).join(', '))}. ${escText(x.title)}. ${escText(x.number ?? '')} ${escText(x.date ?? '')}</li>`,
+                )
+                .join('')}</ul>`
+            : ''
+          const projHtml = (r.projects ?? []).length
+            ? `<h2>Projects</h2><ul>${r.projects
+                .filter((x) => x && !x.hidden && x.title)
+                .map((x) => `<li>${escText(x.title)} (${escText(x.funder ?? '')})</li>`)
+                .join('')}</ul>`
+            : ''
+          resPg.crawl = `${projHtml}${patHtml}<h2>Publications</h2><ul>${pubs
             .map(
               (x) =>
                 `<li>${escText((x.authors ?? []).join(', '))} (${escText(x.year)}). ${escText(x.title)}. ${escText(x.venue ?? '')}</li>`,
@@ -271,7 +289,7 @@ function linkPreviewPagesPlugin() {
             .filter(Boolean)
             .map((l) => `<p>${escText(l)}</p>`)
             .join('')
-          pplPg.crawl = `<h2>임규연 교수 (Kyu Yon Lim)</h2><p>${escText(f?.position ?? '교수')}, ${escText(f?.affiliation ?? '이화여자대학교 교육공학과')} — 이화여대 임규연 교수</p>${bio}${ints ? `<p>Research Interests: ${ints}</p>` : ''}`
+          pplPg.crawl = `<h2>임규연 교수 (Kyu Yon Lim)</h2><p>${escText(f?.position ?? '교수')}, ${escText(f?.affiliation ?? '이화여자대학교 교육공학과')} — 이화여대 임규연 교수</p><p>이화여대(이대) 교육공학과(교공) 교수. 교육공학 분야에서 AI 교육, 교수자-AI 협력, 협력학습, 학습분석학을 연구합니다.</p>${bio}${ints ? `<p>Research Interests: ${ints}</p>` : ''}`
         } catch {
           pplPg.crawl = '<p>지도교수: 임규연 (Kyu Yon Lim), 이화여자대학교 교육공학과 교수.</p>'
         }
