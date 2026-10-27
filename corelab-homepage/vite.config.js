@@ -52,6 +52,19 @@ function siteUrlPlugin() {
   }
 }
 
+
+// 검색엔진용: 숨기지 않은 소식 목록 (사이트맵과 미리보기 페이지가 같이 씁니다)
+function readVisibleNews(root = process.cwd()) {
+  try {
+    const list = JSON.parse(readFileSync(join(root, 'public/data/news.json'), 'utf8'))
+    return (Array.isArray(list) ? list : []).filter(
+      (n) => n && !n.hidden && /^[A-Za-z0-9._-]+$/.test(n.id ?? '') && !n.id.startsWith('.'),
+    )
+  } catch {
+    return []
+  }
+}
+
 // 검색엔진에 노출할 실제 페이지 목록. 새 메뉴(페이지)가 생기면 여기에도 추가해주세요.
 // (App.jsx의 ROUTES와 맞춰둡니다. 관리자 전용/임시 페이지는 넣지 않습니다.)
 const SITEMAP_ROUTES = [
@@ -77,13 +90,20 @@ function seoFilesPlugin() {
       const siteUrl = resolveSiteUrl(base)
       const today = new Date().toISOString().slice(0, 10)
 
-      const urls = SITEMAP_ROUTES.map(
-        ({ path, priority }) => `  <url>
+      const newsRoutes = readVisibleNews().map((n) => ({
+        path: `news/${n.id}`,
+        priority: '0.7',
+        lastmod: String(n.updatedAt || n.createdAt || '').slice(0, 10) || today,
+      }))
+      const urls = [...SITEMAP_ROUTES, ...newsRoutes]
+        .map(
+          ({ path, priority, lastmod }) => `  <url>
     <loc>${siteUrl}${path}</loc>
-    <lastmod>${today}</lastmod>
+    <lastmod>${lastmod || today}</lastmod>
     <priority>${priority}</priority>
   </url>`,
-      ).join('\n')
+        )
+        .join('\n')
 
       const sitemap = `<?xml version="1.0" encoding="UTF-8"?>
 <urlset xmlns="http://www.sitemaps.org/schemas/sitemap/0.9">
@@ -137,6 +157,27 @@ function dropMetaTag(html, attr, key) {
   return html.replace(re, '')
 }
 
+const escText = escAttr
+
+/** 검색엔진(특히 네이버·다음)이 화면 코드를 실행하지 않아도 읽을 수 있는 본문 요약 */
+function crawlHtml(siteUrl, pg, extra) {
+  const nav = [
+    ['', 'Home'],
+    ['news', 'News'],
+    ['research', 'Research'],
+    ['people', 'People'],
+    ['lablife', 'Lab Life'],
+  ]
+    .map(([p, label]) => `<li><a href="${siteUrl}${p}">${label}</a></li>`)
+    .join('')
+  return `<noscript data-seo>
+      <h1>${escText(pg.h1 ?? pg.title)}</h1>
+      <p>${escText(pg.desc)}</p>
+      ${extra ?? ''}
+      <ul>${nav}</ul>
+    </noscript>`
+}
+
 function previewHtml(html, siteUrl, pg) {
   const url = `${siteUrl}${pg.path}`
   let out = html.replace(/<title>[\s\S]*?<\/title>/, () => `<title>${escAttr(pg.title)}</title>`)
@@ -156,6 +197,7 @@ function previewHtml(html, siteUrl, pg) {
   out = setMetaTag(out, 'name', 'twitter:title', pg.title)
   out = setMetaTag(out, 'name', 'twitter:description', pg.desc)
   out = setMetaTag(out, 'name', 'twitter:image', pg.imageUrl)
+  out = out.replace(/<noscript data-seo>[\s\S]*?<\/noscript>/, () => crawlHtml(siteUrl, pg, pg.crawl))
   return out
 }
 
@@ -179,27 +221,50 @@ function linkPreviewPagesPlugin() {
       const abs = (p) => (/^https?:\/\//.test(p) ? p : `${siteUrl}${encodeURI(String(p).replace(/^\/+/, ''))}`)
       const pages = PREVIEW_PAGES.map((pg) => ({ ...pg, imageUrl: `${abs(pg.image)}?v=${BUILD_ID}` }))
 
-      let news = []
-      try {
-        news = JSON.parse(readFileSync(join(root, 'public/data/news.json'), 'utf8'))
-      } catch {
-        news = []
-      }
-      ;(Array.isArray(news) ? news : []).forEach((n) => {
-        // 숨긴 소식, 주소로 쓸 수 없는 id는 건너뜁니다 (그런 소식도 사이트에서는 그대로 열립니다).
-        if (!n || n.hidden || !/^[A-Za-z0-9._-]+$/.test(n.id ?? '') || n.id.startsWith('.')) return
+      const news = readVisibleNews(root)
+      news.forEach((n) => {
         const photo = (Array.isArray(n.images) && n.images.find(Boolean)) || n.thumbnail || n.image || ''
-        const firstLine = (Array.isArray(n.body) ? n.body : [n.body]).find((l) => l && !/^\s*\[/.test(l)) ?? ''
+        const bodyLines = (Array.isArray(n.body) ? n.body : [n.body]).filter((l) => l && !/^\s*\[/.test(l))
+        const firstLine = bodyLines[0] ?? ''
         pages.push({
           path: `news/${n.id}`,
           type: 'article',
           title: `${clip(n.title, 90)} | CoRe Lab`,
+          h1: n.title,
           desc: clip(n.subtitle || n.summary || firstLine || 'CoRe Lab 소식', 120),
           imageUrl: photo ? abs(photo) : `${abs('images/og/og-news.png')}?v=${BUILD_ID}`,
           photo: Boolean(photo),
           alt: clip(n.title, 90),
+          crawl: bodyLines.map((l) => `<p>${escText(l)}</p>`).join('\n      '),
         })
       })
+
+      // 소식 목록 · 논문 목록도 본문 텍스트로 넣어 둡니다
+      const newsPg = pages.find((p) => p.path === 'news')
+      if (newsPg) {
+        newsPg.crawl = `<ul>${news
+          .map((n) => `<li><a href="${siteUrl}news/${n.id}">${escText(n.title)}</a></li>`)
+          .join('')}</ul>`
+      }
+      const resPg = pages.find((p) => p.path === 'research')
+      if (resPg) {
+        try {
+          const r = JSON.parse(readFileSync(join(root, 'public/data/research.json'), 'utf8'))
+          const pubs = (r.publications ?? []).filter((x) => x && !x.hidden && x.title)
+          resPg.crawl = `<h2>Publications</h2><ul>${pubs
+            .map(
+              (x) =>
+                `<li>${escText((x.authors ?? []).join(', '))} (${escText(x.year)}). ${escText(x.title)}. ${escText(x.venue ?? '')}</li>`,
+            )
+            .join('')}</ul>`
+        } catch {
+          /* 목록을 못 읽어도 빌드는 계속합니다 */
+        }
+      }
+      const pplPg = pages.find((p) => p.path === 'people')
+      if (pplPg) {
+        pplPg.crawl = '<p>지도교수: 임규연 (Kyu Yon Lim), 이화여자대학교 교육공학과 교수.</p>'
+      }
 
       pages.forEach((pg) => {
         const dir = join(outDir, pg.path)

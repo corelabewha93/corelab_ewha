@@ -42,7 +42,7 @@
     <meta name="x-ms-format-detection" content="none" />
     <meta name="theme-color" content="#00462a" />
     <!-- Pretendard 글꼴은 사이트에 직접 포함되어 있습니다(src/styles/pretendard.css). 외부 CDN을 쓰지 않아 앱 안 브라우저에서도 같은 글꼴로 보입니다. -->
-    <title>CoRe Lab | Ewha Womans University</title>
+    <title>CoRe Lab(코어랩) | 이화여자대학교 교육공학과 임규연 교수 연구실</title>
     <meta
       name="description"
       content="이화여자대학교 교육공학과 임규연 교수 연구실 CoRe Lab — 협력학습(CSCL), 학습분석학, 협력적 문제해결을 연구합니다. Exploring How We Learn Together."
@@ -54,18 +54,53 @@
     <script type="application/ld+json">
       {
         "@context": "https://schema.org",
-        "@type": "ResearchOrganization",
-        "name": "CoRe Lab",
-        "alternateName": "이화여자대학교 교육공학과 임규연 교수 연구실",
-        "url": "%SITE_URL%",
-        "logo": "%SITE_URL%images/logo.svg",
-        "description": "협력학습(CSCL), 학습분석학, 협력적 문제해결을 연구하는 이화여자대학교 교육공학과 연구실입니다.",
-        "parentOrganization": {
-          "@type": "CollegeOrUniversity",
-          "name": "이화여자대학교 (Ewha Womans University)"
-        }
+        "@graph": [
+          {
+            "@type": "WebSite",
+            "@id": "%SITE_URL%#website",
+            "name": "CoRe Lab",
+            "alternateName": ["코어랩", "CoRe Lab Ewha", "Collaborative Learning Research Lab"],
+            "url": "%SITE_URL%",
+            "inLanguage": ["ko", "en"]
+          },
+          {
+            "@type": "ResearchOrganization",
+            "@id": "%SITE_URL%#lab",
+            "name": "CoRe Lab",
+            "alternateName": ["코어랩", "Collaborative Learning Research Lab", "이화여자대학교 교육공학과 임규연 교수 연구실"],
+            "url": "%SITE_URL%",
+            "logo": "%SITE_URL%images/logo.svg",
+            "description": "협력학습(CSCL), 학습분석학, 협력적 문제해결을 연구하는 이화여자대학교 교육공학과 연구실입니다.",
+            "parentOrganization": {
+              "@type": "CollegeOrUniversity",
+              "name": "이화여자대학교 (Ewha Womans University)"
+            },
+            "department": {
+              "@type": "Organization",
+              "name": "이화여자대학교 사범대학 교육공학과 (Department of Educational Technology)"
+            },
+            "founder": { "@id": "%SITE_URL%#lim" },
+            "knowsAbout": ["협력학습", "컴퓨터지원협력학습(CSCL)", "학습분석학", "협력적 문제해결", "자기조절학습", "교육공학"]
+          },
+          {
+            "@type": "Person",
+            "@id": "%SITE_URL%#lim",
+            "name": "임규연",
+            "alternateName": "Kyu Yon Lim",
+            "jobTitle": "교수",
+            "affiliation": { "@id": "%SITE_URL%#lab" },
+            "worksFor": { "@type": "CollegeOrUniversity", "name": "이화여자대학교" },
+            "sameAs": ["https://scholar.google.com/citations?user=TyXm6PcAAAAJ"]
+          }
+        ]
       }
     </script>
+
+    <!--
+      검색 사이트 소유 확인용 태그 자리 (Google Search Console / 네이버 서치어드바이저에서 받은 코드를 아래처럼 넣습니다)
+      <meta name="google-site-verification" content="발급받은코드" />
+      <meta name="naver-site-verification" content="발급받은코드" />
+    -->
 
     <!-- 링크 공유 미리보기 (카카오톡 · 페이스북 · 슬랙 · 문자 등) -->
     <meta property="og:type" content="website" />
@@ -88,6 +123,16 @@
   </head>
   <body>
     <div id="root"></div>
+    <noscript data-seo>
+      <h1>CoRe Lab(코어랩) — 이화여자대학교 교육공학과 임규연 교수 연구실</h1>
+      <p>CoRe Lab(Collaborative Learning Research Lab)은 이화여자대학교 사범대학 교육공학과 임규연 교수 연구실입니다. Exploring How We Learn Together — 함께 배우는 과정을 들여다봅니다. 협력학습(CSCL), 학습분석학, 협력적 문제해결, 자기조절학습, 학습경험설계(LXD)를 연구합니다.</p>
+      <ul>
+        <li><a href="%BASE_URL%news">News — 연구실 소식</a></li>
+        <li><a href="%BASE_URL%research">Research — 논문 · 학위논문 · 연구과제 · 특허</a></li>
+        <li><a href="%BASE_URL%people">People — 지도교수 · 구성원</a></li>
+        <li><a href="%BASE_URL%lablife">Lab Life — 연구실 생활</a></li>
+      </ul>
+    </noscript>
     <script type="module" src="/src/main.jsx"></script>
   </body>
 </html>
