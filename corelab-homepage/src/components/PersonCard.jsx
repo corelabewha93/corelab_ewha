@@ -29,20 +29,6 @@ function splitHistoryLine(line) {
 }
 
 /**
- * 교수님 박사 학력의 세부전공 표기 — 교수님 요청: "Instructional Systems" 대신 학과명
- * "Department of Learning and Performance Systems"로. 관리자 화면에 예전 표기가 남아 있어도 화면에서는 학과명으로 보이고,
- * 관리자 화면에서 고쳐 저장하면 이 함수는 아무것도 바꾸지 않습니다.
- */
-const PSU_DEPT = 'Department of Learning and Performance Systems'
-function fixEducationLine(line) {
-  if (typeof line !== 'string' || !/Instructional\s+Systems?/i.test(line)) return line
-  return line
-    .replace(/\(\s*Instructional\s+Systems?\s*\)/i, `(${PSU_DEPT})`)
-    .replace(/Ph\.?\s*D\.?\s+in\s+Instructional\s+Systems?/i, `Ph.D., ${PSU_DEPT}`)
-    .replace(/Instructional\s+Systems?/i, PSU_DEPT)
-}
-
-/**
  * 학력 한 줄을 "대학명 / 학위 · 전공"으로 나눠 보여줍니다(화면 표시용 — 관리자 데이터는 그대로).
  * 지원하는 입력: "대학명 Ph.D. (전공)", "Ph.D., 전공, 대학명". 어느 형식에도 맞지 않으면 원문 그대로 보여줍니다.
  */
@@ -99,7 +85,7 @@ function FacultyProfile({ person: raw, onEdit, reorder }) {
     return () => window.removeEventListener('resize', check)
   }, [bioOpen, person.bio])
   const interests = Array.isArray(person.researchInterests) ? person.researchInterests : []
-  const education = (Array.isArray(person.education) ? person.education : []).map(fixEducationLine)
+  const education = (Array.isArray(person.education) ? person.education : [])
   const career = Array.isArray(person.career) ? person.career : []
   const awards = Array.isArray(person.awards) ? person.awards : []
   const hasHistory = education.length > 0 || career.length > 0 || awards.length > 0
