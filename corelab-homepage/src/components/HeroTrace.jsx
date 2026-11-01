@@ -293,7 +293,7 @@ function restRect(el, cvRect) {
 }
 
 /** 모토 속 단어들이 화면에서 몇 번째 줄에 놓이는지(모바일의 두 줄 모토 포함)를 읽습니다. */
-function readWords(el, dy) {
+function readWords(el, dy, dxLeft) {
   const words = []
   const walker = document.createTreeWalker(el, NodeFilter.SHOW_TEXT)
   let node = walker.nextNode()
@@ -305,7 +305,7 @@ function readWords(el, dy) {
       rg.setStart(node, m.index)
       rg.setEnd(node, m.index + m[0].length)
       const rc = rg.getClientRects()[0]
-      words.push({ w: m[0], top: (rc ? rc.top : 0) - dy })
+      words.push({ w: m[0], top: (rc ? rc.top : 0) - dy, left: rc ? rc.left - dxLeft : undefined })
       m = re.exec(node.data)
     }
     node = walker.nextNode()
@@ -345,7 +345,9 @@ function layout(ctx, s, host, cv) {
   const mr = restRect(mottoEl, cvRect)
   // 화면에 그려진 모토 줄의 위치(등장 효과의 이동분은 뺌). 줄 안 글자 영역의 위쪽 = 이 값, 기준선 = 이 값 + 글꼴 ascent
   const dy = mottoEl.getBoundingClientRect().top - mr.top
-  const words = readWords(mottoEl, dy)
+  // 단어의 가로 자리도 실제 모토(DOM)에서 그대로 읽어 옴 — 캔버스가 따로 계산하면 단어마다 1~2px씩 어긋나 색이 바뀔 때 글자가 움직여 보임
+  const dx = mottoEl.getBoundingClientRect().left - cvRect.left - mr.left
+  const words = readWords(mottoEl, dy, cvRect.left + dx)
   const lines = []
   words.forEach((w) => {
     ;(lines[w.line] = lines[w.line] || []).push(w)
@@ -449,6 +451,7 @@ function draw(ctx, s, t) {
     let x = s.cx - total / 2
     items.forEach((it) => {
       x += it.gap
+      if (Number.isFinite(it.r.left)) x = it.r.left
       const c = mixW(colOf(it.r.grp), white)
       const finalA = 0.9 // 실제 모토의 투명도(rgba(255,255,255,.9))와 맞춤
       const a = 1 - (1 - finalA) * white
