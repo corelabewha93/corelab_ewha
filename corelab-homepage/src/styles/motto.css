@@ -29,15 +29,15 @@
   }
 }
 
-/* 모토 색: 이화 민트 기반 소프트 톤 #58B8A2 (글꼴·이탤릭·크기·위치는 그대로).
+/* 모토 색: 이화 민트 기반 밝은 아쿠아 톤 #8FD3C6 (예전 #58B8A2에서 변경: 초록 배경에서 더 또렷하게) (글꼴·이탤릭·크기·위치는 그대로).
    인트로에서는 캔버스가 흰색으로 써 내려온 문장을 같은 자리에서 이어받은 뒤,
    1.2초에 걸쳐 흰색 → 민트로 조용히 물듭니다. */
 .hero-intro .hero-motto {
-  color: #58b8a2;
+  color: #8fd3c6;
 }
 @keyframes hero-motto-tint {
   from { color: rgba(255, 255, 255, 0.9); }
-  to   { color: #58b8a2; }
+  to   { color: #8fd3c6; }
 }
 html .hero-intro.hero-trace.hero-go.hero-phase-done .hero-after > :nth-child(2).hero-motto {
   animation: hero-tr-show 0.12s linear 6.4s both, hero-motto-tint 1.2s ease 6.4s both;
@@ -51,7 +51,7 @@ html body .footer-emblem {
 }
 
 /* 홈 요소 줄이기 (교수님 최종 피드백, C안)
-   ① 모토: 이탤릭을 빼고 "CoRe Lab"과 같은 글꼴(Playfair Display 500)로 통일. 색(#58B8A2)은 그대로
+   ① 모토: 이탤릭을 빼고 "CoRe Lab"과 같은 글꼴(Playfair Display 500)로 통일. 색(#8FD3C6)은 그대로
    ② 한글 소속 두 줄: 같은 색으로
    ③ 영문 풀네임(COLLABORATIVE … LAB): PC에서 "CoRe Lab"과 좌우 폭을 맞춤(글자 간격은 HeroIntro.jsx가 계산) */
 html body .hero-intro .hero-motto {
