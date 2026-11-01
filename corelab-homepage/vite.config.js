@@ -161,6 +161,11 @@ function dropMetaTag(html, attr, key) {
 
 const escText = escAttr
 
+/** 개발 중 샘플 안내 문구가 관리자 데이터에 남아 있는 경우인지 판별 */
+function isPlaceholderText(s) {
+  return typeof s === 'string' && /public\/images\/|이 파일에서 파일명을 지정|썸네일 이미지는/.test(s)
+}
+
 /** 검색엔진(특히 네이버·다음)이 화면 코드를 실행하지 않아도 읽을 수 있는 본문 요약 */
 function crawlHtml(siteUrl, pg, extra) {
   const nav = [
@@ -174,7 +179,7 @@ function crawlHtml(siteUrl, pg, extra) {
     .join('')
   return `<noscript data-seo>
       <h1>${escText(pg.h1 ?? pg.title)}</h1>
-      <p>${escText(pg.desc)}</p>
+      ${pg.skipDescInCrawl ? '' : `<p>${escText(pg.desc)}</p>`}
       ${extra ?? ''}
       <ul>${nav}</ul>
     </noscript>`
@@ -234,7 +239,10 @@ function linkPreviewPagesPlugin() {
           type: 'article',
           title: `${clip(n.title, 90)} | CoRe Lab`,
           h1: n.title,
-          desc: clip(n.subtitle || n.summary || firstLine || 'CoRe Lab 소식', 120),
+          // 요약(summary)에 예전 안내 문구가 남아 있어도 검색 결과에 나가지 않도록, 실제 본문 첫 줄을 우선 사용
+          desc: clip(n.subtitle || firstLine || (isPlaceholderText(n.summary) ? '' : n.summary) || 'CoRe Lab 소식', 120),
+          // 본문이 이미 아래에 그대로 들어가므로 같은 문장을 한 번 더 넣지 않음
+          skipDescInCrawl: bodyLines.length > 0,
           imageUrl: photo ? abs(photo) : `${abs('images/og/og-news.png')}?v=${BUILD_ID}`,
           photo: Boolean(photo),
           alt: clip(n.title, 90),
