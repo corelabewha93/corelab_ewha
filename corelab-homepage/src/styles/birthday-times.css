@@ -1,0 +1,223 @@
+/* 교수님 생신(2026-11-14) 기념 — Research 위 얇은 배너 + 신문 보기 창.
+   배경·테두리는 단색 · 풀어 쓴 값만 사용 (구글 앱 안 브라우저 등에서도 같게 보이도록) */
+html body .bdt-banner {
+  display: flex;
+  align-items: center;
+  gap: 0.9rem;
+  margin: 0 0 1.4rem;
+  padding: 0.85rem 1rem 0.85rem 1.1rem;
+  background-color: #00462a;
+  color: #ffffff;
+  border-top-width: 3px;
+  border-top-style: solid;
+  border-top-color: #e5c26b;
+  border-right-width: 0;
+  border-bottom-width: 0;
+  border-left-width: 0;
+  border-radius: 12px;
+  -webkit-text-fill-color: currentColor;
+  forced-color-adjust: none;
+}
+html body .bdt-cake {
+  flex: none;
+  font-size: 1.7rem;
+  line-height: 1;
+}
+html body .bdt-text {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+html body .bdt-text p {
+  margin: 0;
+}
+html body .bdt-line1 {
+  font-size: 1rem;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+  color: #ffffff;
+}
+html body .bdt-line2 {
+  margin-top: 0.15rem;
+  font-size: 0.88rem;
+  color: rgba(255, 255, 255, 0.85);
+  line-height: 1.4;
+}
+html body .bdt-paper {
+  font-family: 'Playfair Display', Georgia, serif;
+  font-style: italic;
+  font-weight: 600;
+  font-size: 1.05rem;
+  color: #e5c26b;
+}
+html body .bdt-open {
+  flex: none;
+  appearance: none;
+  cursor: pointer;
+  padding: 0.55rem 1.1rem;
+  border-radius: 999px;
+  border-width: 0;
+  background-color: #e5c26b;
+  color: #00462a;
+  font: inherit;
+  font-size: 0.92rem;
+  font-weight: 700;
+}
+html body .bdt-open:hover {
+  background-color: #f0d38d;
+}
+html body .bdt-x {
+  flex: none;
+  appearance: none;
+  cursor: pointer;
+  width: 2rem;
+  height: 2rem;
+  padding: 0;
+  border-width: 0;
+  border-radius: 50%;
+  background-color: transparent;
+  color: rgba(255, 255, 255, 0.75);
+  font-size: 1.5rem;
+  line-height: 1;
+}
+html body .bdt-x:hover {
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+}
+html body .bdt-open:focus-visible,
+html body .bdt-x:focus-visible,
+html body .bdt-close:focus-visible,
+html body .bdt-tab:focus-visible,
+html body .bdt-zoom:focus-visible {
+  outline: 3px solid #8fd3c6;
+  outline-offset: 2px;
+}
+
+@media (max-width: 640px) {
+  html body .bdt-banner {
+    flex-wrap: wrap;
+    gap: 0.6rem 0.7rem;
+    padding: 0.8rem 0.8rem 0.8rem 0.9rem;
+  }
+  html body .bdt-text {
+    flex-basis: calc(100% - 4.6rem);
+  }
+  html body .bdt-line1 {
+    font-size: 0.95rem;
+  }
+  html body .bdt-line2 {
+    font-size: 0.82rem;
+  }
+  html body .bdt-sub {
+    display: block;
+  }
+  html body .bdt-open {
+    margin-left: 2.6rem;
+  }
+  html body .bdt-x {
+    margin-left: auto;
+  }
+}
+
+/* ── 신문 보기 창 ── */
+html body .bdt-overlay {
+  position: fixed;
+  top: 0;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 3000;
+  display: flex;
+  align-items: stretch;
+  justify-content: center;
+  background-color: rgba(10, 18, 14, 0.86);
+}
+html body .bdt-viewer {
+  display: flex;
+  flex-direction: column;
+  width: min(100%, 980px);
+  height: 100%;
+  background-color: #1b241f;
+}
+html body .bdt-bar {
+  flex: none;
+  display: flex;
+  align-items: center;
+  gap: 0.8rem;
+  padding: 0.6rem 0.8rem;
+  background-color: #00462a;
+  color: #ffffff;
+}
+html body .bdt-tabs {
+  display: flex;
+  gap: 0.4rem;
+  min-width: 0;
+  flex: 1 1 auto;
+}
+html body .bdt-tab {
+  appearance: none;
+  cursor: pointer;
+  padding: 0.45rem 0.95rem;
+  border-width: 0;
+  border-radius: 999px;
+  background-color: rgba(255, 255, 255, 0.12);
+  color: rgba(255, 255, 255, 0.92);
+  font: inherit;
+  font-size: 0.9rem;
+  font-weight: 600;
+  white-space: nowrap;
+}
+html body .bdt-tab.is-on {
+  background-color: #e5c26b;
+  color: #00462a;
+}
+html body .bdt-zoom {
+  flex: none;
+  font-size: 0.85rem;
+  color: #8fd3c6;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+}
+html body .bdt-close {
+  flex: none;
+  appearance: none;
+  cursor: pointer;
+  width: 2.2rem;
+  height: 2.2rem;
+  padding: 0;
+  border-width: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.14);
+  color: #ffffff;
+  font-size: 1.6rem;
+  line-height: 1;
+}
+html body .bdt-scroll {
+  flex: 1 1 auto;
+  overflow: auto;
+  -webkit-overflow-scrolling: touch;
+  padding: 0.8rem;
+}
+html body .bdt-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  background-color: #ffffff;
+  border-radius: 4px;
+}
+
+@media (max-width: 640px) {
+  html body .bdt-bar {
+    gap: 0.5rem;
+    padding: 0.5rem 0.6rem;
+  }
+  html body .bdt-tab {
+    padding: 0.4rem 0.7rem;
+    font-size: 0.82rem;
+  }
+  html body .bdt-zoom {
+    font-size: 0.78rem;
+  }
+  html body .bdt-scroll {
+    padding: 0.4rem;
+  }
+}
