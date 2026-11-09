@@ -8,6 +8,7 @@ import { showToast } from '../../admin/toast'
 import { publicationFields, projectFields, patentFields, toolFields } from '../../admin/schemas'
 import Tabs from '../../components/Tabs'
 import PageTitle from '../../components/PageTitle'
+import BirthdayTimesBanner from '../../components/BirthdayTimesBanner'
 import EditModal from '../../components/admin/LazyEditModal'
 import { AdminFab } from '../../components/admin/AdminControls'
 import { useDocumentMeta } from '../../router/useDocumentMeta'
@@ -169,6 +170,9 @@ export default function Research() {
       <PageTitle pinDesktop sub={authorFilter ? authorFilter.displayName : TABS.find((t) => t.key === tab)?.label}>
         Research
       </PageTitle>
+
+      {/* 2026-11-14 교수님 생신 하루만 뜨는 특별판 신문 배너 (다른 날에는 아무것도 나오지 않음) */}
+      <BirthdayTimesBanner />
 
       <div className={`tabs-layout${authorFilter ? ' is-author' : ''}`}>
         {/* 모아보기 중에는 어떤 탭도 선택된 것으로 표시하지 않습니다. 탭을 누르면 모아보기가 끝납니다. */}
