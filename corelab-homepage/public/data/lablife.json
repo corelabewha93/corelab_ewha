@@ -468,5 +468,35 @@
       }
     ],
     "order": 18
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-11-mwe9wi7i.jpg",
+      "images/lablife/lablife-2026-11-mwe9wl5u.jpg",
+      "images/lablife/lablife-2026-11-mwe9womo.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 44,
+        "y": 24,
+        "zoom": 1
+      },
+      {
+        "x": 70.7,
+        "y": 18.4,
+        "zoom": 1
+      },
+      {
+        "x": 1.3,
+        "y": 38.7,
+        "zoom": 1
+      }
+    ],
+    "caption": "The KyuYon Times",
+    "captionEn": "",
+    "body": "'더 큐욘 타임즈' 1면과 2면에 실린 본인의 기사를 읽고 계신 우리 교수님.\n\n다분한 F 모먼트를 마구마구 표출했다는 후문이다.",
+    "bodyEn": "",
+    "date": "2026-11",
+    "id": "lablife-mwe9wrdlbz5"
   }
 ]
