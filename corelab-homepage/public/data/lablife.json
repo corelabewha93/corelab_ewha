@@ -1,6 +1,44 @@
 [
   {
     "images": [
+      "images/lablife/lablife-2026-11-mwe9nigs.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 100,
+        "y": 99,
+        "zoom": 1
+      }
+    ],
+    "caption": "재계 서열 1위와 톱스타를 제치고...",
+    "captionEn": "",
+    "body": "본교 홍보실 사진조교의 카메라에 포착된 사진.\n\n세계적인 아이돌보다, 재계 1순위보다 이목을 끈 이가 있었으니, 바로 우리 교수님🖤",
+    "bodyEn": "",
+    "date": "2026-11",
+    "id": "lablife-mwe9nkkaaot",
+    "order": 1
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-11-mw0ctqee.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 44.2,
+        "y": 50,
+        "zoom": 1.03
+      }
+    ],
+    "caption": "참깨 탄생을 축하합니다!🎉",
+    "captionEn": "",
+    "body": "2026년 10월 30일 금요일 밤, 이주원 선생님의 소중한 참깨(이니셜: LJH)가 건강하게 태어났습니다. 3.46kg 자연분만으로 엄마도, 참깨도 씩씩하게 회복 중입니다. 많이 축하해 주세요!\n\n참깨군, 엄마 뱃속에서 우리 코어랩과 연구 같이 했으니, 무럭무럭 씩씩하고 멋지게 커주세요~!",
+    "bodyEn": "",
+    "date": "2026-11",
+    "id": "lablife-mw0ctsnxia6",
+    "order": 2
+  },
+  {
+    "images": [
       "images/lablife/lablife-2026-10-mvqndypy.jpg",
       "images/lablife/lablife-2026-11-mvqeqyr9.jpg",
       "images/lablife/lablife-2026-11-mvqer0wa.jpg"
@@ -28,7 +66,7 @@
     "bodyEn": "",
     "date": "2026-10",
     "id": "lablife-mvqer2v5p9z",
-    "order": 1
+    "order": 3
   },
   {
     "images": [
@@ -47,7 +85,7 @@
     "bodyEn": "",
     "date": "2026-10",
     "id": "lablife-mvou0hfturf",
-    "order": 2
+    "order": 4
   },
   {
     "images": [
@@ -72,7 +110,7 @@
     "bodyEn": "With the CoRe Lab website launch just around the corner, the students who worked on the website got together for a casual fried chicken night🍗 (We also had a great lunch with Professor Lim at 'Jayeon Somsi' earlier today, but sadly forgot to take pictures...)",
     "date": "2026-10",
     "id": "lablife-mvhibc3cf6b",
-    "order": 3
+    "order": 5
   },
   {
     "images": [
@@ -89,7 +127,7 @@
     "body": "고개를 들어 저 밤하늘을 바라봅니다\n저 멀리 빛나는 별 하나가 보입니다\n아아, 언제쯤 저 곳에 닿을 수 있을까요\n저 별을 길잡이 삼아 이 길을 걷습니다\n저 별은...북극성 'LIM'",
     "date": "2026-10",
     "id": "lablife-mv26q7je1gz",
-    "order": 4
+    "order": 6
   },
   {
     "images": [
@@ -114,7 +152,7 @@
     ],
     "captionEn": "Spring 2026 Thesis Defense",
     "bodyEn": "We took a group photo at the thesis defense of Yujin Jung (center), CoRe Lab’s only graduate of the spring 2026 semester.\nOur advisor, who couldn’t make it that day, joined us via a composited photo.\nWord is that, wisely, we used a photo of her from 12 years ago—and so escaped her wrath😉",
-    "order": 5
+    "order": 7
   },
   {
     "images": [
@@ -149,7 +187,7 @@
         "zoom": 1
       }
     ],
-    "order": 6
+    "order": 8
   },
   {
     "images": [
@@ -180,7 +218,7 @@
     ],
     "captionEn": "KSET Spring Conference 2026",
     "bodyEn": "On May 9, 2026, the Korean Society for Educational Technology Spring Conference was held at Ewha Womans University.\n\nProf. Kyu Yon Lim received the Outstanding Reviewer Award,\nand Kim et al. (2026) received the Outstanding Poster Encouragement Award for “Research Trends in Responsible AI in Education: A BERTopic-based Topic Modeling Analysis”!! Congratulations~~!!",
-    "order": 7
+    "order": 9
   },
   {
     "images": [
@@ -203,7 +241,7 @@
         "zoom": 1
       }
     ],
-    "order": 8
+    "order": 10
   },
   {
     "images": [
@@ -226,7 +264,7 @@
         "zoom": 1
       }
     ],
-    "order": 9
+    "order": 11
   },
   {
     "images": [
@@ -269,7 +307,7 @@
     "id": "lablife-munt1vvfbp9",
     "captionEn": "December 2025, First Snow❄️",
     "bodyEn": "The day the first snow (a blizzard!) fell while Juram & Hyojeong were studying together at the Industry–Academia Cooperation Building.\nA romantic shot with an international student we met for the first time while escaping the snowy path☃️🤳🏻\n\nWe’re also attaching scenes of the campus full of romance on the day of the first snow~",
-    "order": 10
+    "order": 12
   },
   {
     "images": [
@@ -310,7 +348,7 @@
         "zoom": 1
       }
     ],
-    "order": 11
+    "order": 13
   },
   {
     "images": [
@@ -333,7 +371,7 @@
         "zoom": 1.16
       }
     ],
-    "order": 12
+    "order": 14
   },
   {
     "images": [
@@ -350,7 +388,7 @@
         "zoom": 1.08
       }
     ],
-    "order": 13
+    "order": 15
   },
   {
     "images": [
@@ -387,7 +425,7 @@
     ],
     "captionEn": "Spring & Fall 2024 Thesis Defenses",
     "bodyEn": "Dahye Lee (M.A.) and Dr. Myunghwa Jin, who graduated in spring 2024, and Dr. Hyejun Kim, who graduated in fall 2024, started a CoRe Lab tradition:\na commemorative photo in front of the professor’s office! Ta-da~🥁!!\n\nTo the three who studied so hard and graduated with wonderful theses—\nwe wish you nothing but bright paths ahead :)\n- All of CoRe Lab.",
-    "order": 14
+    "order": 16
   },
   {
     "images": [
@@ -412,7 +450,7 @@
     ],
     "captionEn": "Under the Cherry Blossoms at the Education Building, 2024🌸",
     "bodyEn": "April 9, 2024. The weather was too nice... so we took a shot with our professor-lovelier than the cherry blossoms-in front of the cherry trees by the Education Building... no, two shots~",
-    "order": 15
+    "order": 17
   },
   {
     "images": [
@@ -429,42 +467,6 @@
         "zoom": 1
       }
     ],
-    "order": 16
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-11-mw0ctqee.jpg"
-    ],
-    "imageCrops": [
-      {
-        "x": 44.2,
-        "y": 50,
-        "zoom": 1.03
-      }
-    ],
-    "caption": "참깨 탄생을 축하합니다!🎉",
-    "captionEn": "",
-    "body": "2026년 10월 30일 금요일 밤, 이주원 선생님의 소중한 참깨(이니셜: LJH)가 건강하게 태어났습니다. 3.46kg 자연분만으로 엄마도, 참깨도 씩씩하게 회복 중입니다. 많이 축하해 주세요!\n\n참깨군, 엄마 뱃속에서 우리 코어랩과 연구 같이 했으니, 무럭무럭 씩씩하고 멋지게 커주세요~!",
-    "bodyEn": "",
-    "date": "2026-11",
-    "id": "lablife-mw0ctsnxia6"
-  },
-  {
-    "images": [
-      "images/lablife/lablife-2026-11-mwe9nigs.jpg"
-    ],
-    "imageCrops": [
-      {
-        "x": 100,
-        "y": 99,
-        "zoom": 1
-      }
-    ],
-    "caption": "재계 서열 1위와 톱스타를 제치고...",
-    "captionEn": "",
-    "body": "본교 홍보실 사진조교의 카메라에 포착된 사진.\n\n세계적인 아이돌보다, 재계 1순위보다 이목을 끈 이가 있었으니, 바로 우리 교수님🖤",
-    "bodyEn": "",
-    "date": "2026-11",
-    "id": "lablife-mwe9nkkaaot"
+    "order": 18
   }
 ]
