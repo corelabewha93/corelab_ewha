@@ -498,5 +498,59 @@
     "bodyEn": "",
     "date": "2026-11",
     "id": "lablife-mwe9wrdlbz5"
+  },
+  {
+    "images": [
+      "images/lablife/lablife-2026-11-mwhbdm2e.jpg",
+      "images/lablife/lablife-2026-11-mwhbdo2r.jpg",
+      "images/lablife/lablife-2026-11-mwhbdq17.jpg",
+      "images/lablife/lablife-2026-11-mwhbdryh.jpg",
+      "images/lablife/lablife-2026-11-mwhbdu2j.jpg",
+      "images/lablife/lablife-2026-11-mwhbdw9f.jpg",
+      "images/lablife/lablife-2026-11-mwhbdy7c.jpg"
+    ],
+    "imageCrops": [
+      {
+        "x": 88,
+        "y": 100,
+        "zoom": 1
+      },
+      {
+        "x": 20.5,
+        "y": 91.3,
+        "zoom": 1
+      },
+      {
+        "x": 100,
+        "y": 0,
+        "zoom": 1
+      },
+      {
+        "x": 100,
+        "y": 25,
+        "zoom": 1
+      },
+      {
+        "x": 96,
+        "y": 39.4,
+        "zoom": 1
+      },
+      {
+        "x": 100,
+        "y": 75.7,
+        "zoom": 1
+      },
+      {
+        "x": 0.5,
+        "y": 58.2,
+        "zoom": 1
+      }
+    ],
+    "caption": "2026 한국교육정보미디어학회·한국교육공학회 추계공동학술대회",
+    "captionEn": "",
+    "body": "또 한번의 학술대회를 잘 마무리한 코어랩 일원들. 모두 고생했어요~",
+    "bodyEn": "",
+    "date": "2026-11",
+    "id": "lablife-mwhbdzw50yj"
   }
 ]
