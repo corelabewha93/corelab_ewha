@@ -1,6 +1,41 @@
 {
   "publications": [
     {
+      "id": "pub-mwh9uiqn0ec",
+      "year": 2026,
+      "type": "conference",
+      "authors": [
+        "진명화",
+        "이주원",
+        "이다혜",
+        "임규연"
+      ],
+      "title": "영어 작문에서 AI 기반 피드백 유형에 따른 EFL 학습자의 피드백 활용 행동과 인식",
+      "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": "",
+      "award": "우수논문상",
+      "awardOrg": ""
+    },
+    {
+      "id": "pub-mwh9uiqnvkh",
+      "year": 2026,
+      "type": "conference",
+      "authors": [
+        "이주원",
+        "윤이슬",
+        "김선영",
+        "진명화",
+        "임규연"
+      ],
+      "title": "컴퓨터 지원 협력학습에서 학습자의 역할, 그룹 성과 및 AI 피드백 활용 간의 관계",
+      "venue": "교육정보미디어학회-교육공학회 공동추계학술대회",
+      "details": "서울",
+      "doi": "",
+      "link": ""
+    },
+    {
       "id": "pub-1",
       "year": 2026,
       "type": "journal",
